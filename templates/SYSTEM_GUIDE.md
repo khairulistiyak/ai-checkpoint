@@ -1,64 +1,46 @@
-# 📖 System Guide — Checkpoint-Based Task Ledger
+# System Guide
 
-## কেন এই System?
-
-AI agents (Gemini, GPT, Claude) দিয়ে প্রজেক্ট করতে গেলে common সমস্যা:
-- Agent ভুলে যায় কোথায় ছিল
-- একই কাজ আবার করে
-- Steps skip করে
-- Context হারায়
-
-**Checkpoint-Based Task Ledger** এই সমস্যা সমাধান করে।
+> How the Checkpoint Task Ledger works.
 
 ---
 
-## 📁 System Architecture
+## Structure
 
 ```
-your-project/
-├── .agents/
-│   └── AGENTS.md           ← 🤖 Auto-loaded workflow rules (HOW to work)
-├── plan/
-│   ├── PROGRESS.md         ← 🔴 Progress tracker (WHERE we are) — READ FIRST
-│   ├── RULES.md            ← ⚠️ Code rules (WHAT conventions to follow)
-│   ├── SYSTEM_GUIDE.md     ← 📖 This guide (WHY this system works)
-│   ├── steps/              ← 📋 Execution plans (step-by-step instructions)
-│   │   ├── plan_01.md                    ← Default plan (generic name OK)
-│   │   ├── bugfix-feature-name.md        ← Meaningful name ✅ PREFERRED
-│   │   └── refactor-component.md         ← Meaningful name ✅ PREFERRED
-│   └── drafts/             ← 📝 R&D / Notes / Ideas (free-form scratch pad)
-│       ├── README.md
-│       └── *.md                          ← যেকোনো নামে যেকোনো file
-├── src/
-│   └── ...
+.agents/          ← System (agent reads these)
+├── PROGRESS.md   ← Where we are
+├── RULES.md      ← How to code
+├── AGENTS.md     ← How to work
+└── scripts/      ← CLI tool
+
+plan/             ← Your plans (clean folder)
+├── *.md          ← Step-by-step plans
+└── drafts/       ← Notes & ideas
 ```
 
-### Architecture — File & Folder Separation
-
-| File/Folder | Role | Contents | কখন পড়বে |
-|-------------|------|----------|-----------|
-| **AGENTS.md** | HOW to work | Workflow rules, error recovery, reading order | Auto-loaded প্রতি session |
-| **RULES.md** | WHAT rules | Import, styling, naming, verification | কাজ শুরুর আগে |
-| **PROGRESS.md** | WHERE we are | Checkboxes, %, metadata, blockers, log | **সবার আগে, প্রতিবার** |
-| **steps/*.md** | WHAT to do | Step-by-step details, code, props, layouts | Step execute করার সময় |
-| **drafts/*.md** | IDEAS & R&D | Free-form notes, research, brainstorming | **শুধু user বললে** — auto-execute নয় |
-
----
-
-## 🔄 Data Flow
+## Flow
 
 ```
-নতুন Session → AGENTS.md (auto) → PROGRESS.md → RULES.md → steps/*.md → কাজ → ./l c X.Y "note" → 🔁 Loop
+New Session
+    ↓
+Read PROGRESS.md → know what's done
+    ↓
+Read RULES.md → know conventions
+    ↓
+Read plan/*.md → get step details
+    ↓
+Do the work → create/edit files
+    ↓
+./l c X.Y "note" → mark complete
+    ↓
+Repeat ↑
 ```
 
----
+## CLI
 
-## 📋 CLI Commands
-
-| Command | কি করে |
-|---------|--------|
-| `./l` | Dashboard দেখাও |
-| `./l start 2.1` | Step 2.1 শুরু করো (file create + [~]) |
-| `./l c 2.1 "note"` | Step 2.1 complete করো (verify + [x]) |
-| `./l v` | Plan/Progress sync validate করো |
-| `./l h` | Help দেখাও |
+| Command | Does |
+|---------|------|
+| `./l` | Show dashboard |
+| `./l start 1.1` | Begin step |
+| `./l c 1.1 "msg"` | Complete step |
+| `./l v` | Validate sync |

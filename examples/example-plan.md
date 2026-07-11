@@ -1,69 +1,56 @@
-# Example Plan — Todo App
+# Example: Todo App Plan
 
-এটা একটা example plan file। নিজের project এ এরকম plan বানাও।
+> This is a sample plan file. Copy this format for your own projects.
 
 ---
 
 ## Phase 1: Setup
 
-### Step 1.1 — Project initialization (`package.json`)
+### Step 1.1 — Initialize project (`package.json`)
 
-**File**: `package.json`
+**File**: `package.json`  
 **Action**: Create
 
-**কি করবে**: Initialize npm project
+**Details**: Standard npm init with React + Vite.
 
-**Exact Details**:
-```json
-{
-  "name": "my-app",
-  "version": "1.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build"
-  }
-}
-```
-
-**✅ Done check**: `package.json` exists
+**✅ Done**: File exists with name and scripts.
 
 ---
 
-### Step 1.2 — Main entry point (`src/main.tsx`)
+### Step 1.2 — App entry point (`src/main.tsx`)
 
-**File**: `src/main.tsx`
+**File**: `src/main.tsx`  
 **Action**: Create
 
-**কি করবে**: React app entry point
+**Details**: React 18 createRoot with StrictMode.
 
-**Exact Details**:
-```tsx
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
-```
-
-**✅ Done check**: File exists, imports work
+**✅ Done**: File exists, no import errors.
 
 ---
 
-## Phase 2: Components
+## Phase 2: UI Components
 
 ### Step 2.1 — Button component (`src/components/Button.tsx`)
 
-**File**: `src/components/Button.tsx`
+**File**: `src/components/Button.tsx`  
 **Action**: Create
 
-**কি করবে**: Reusable button component
+**Details**:
+- Props: `children`, `onClick`, `variant` (primary / secondary)
+- Uses Tailwind for styling
 
-**Exact Details**:
-- Props: `children`, `onClick`, `variant` (primary/secondary)
-- Styled with Tailwind
+**✅ Done**: Exports `Button` component.
 
-**✅ Done check**: File exists, exports Button component
+---
+
+### Step 2.2 — TodoList component (`src/components/TodoList.tsx`)
+
+**File**: `src/components/TodoList.tsx`  
+**Action**: Create
+
+**Details**:
+- Renders array of todo items
+- Each item has checkbox + delete button
+- Uses `Button` component
+
+**✅ Done**: Renders list, buttons work.

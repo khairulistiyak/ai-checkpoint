@@ -1,52 +1,32 @@
-# 🔴 STATUS: IN PROGRESS — NOT COMPLETE
+# Progress Tracker
 
-<!--
-╔═══════════════════════════════════════════════════════════╗
-║  ⚠️  ANY MODEL: READ THIS FILE COMPLETELY FIRST!         ║
-║  1. Check what's DONE vs PENDING below                    ║
-║  2. Read plan/steps/*.md for step details                 ║
-║  3. After EACH step → update this file                    ║
-║  4. When ALL done → change header to ✅ TASK COMPLETE ALL ║
-╚═══════════════════════════════════════════════════════════╝
--->
+> Agent reads this **first** every session.
 
 ---
 
-## 🎯 Project Metadata
+## Project
 
 | Key | Value |
 |-----|-------|
-| **Project** | {{PROJECT_NAME}} |
-| **Language** | {{LANG}} |
-| **Framework** | {{FRAMEWORK}} |
-| **Styling** | {{STYLING}} |
-| **Started** | {{DATE}} |
-| **Last Updated** | — |
-| **Last Agent** | — |
-| **Active Plan** | `plan/steps/plan_01.md` |
-| **Rules File** | `plan/RULES.md` |
+| Project | _your-project-name_ |
+| Started | _date_ |
 
 ---
 
-## 📊 Overall Progress
+## Overall Progress
 
 ```
 [░░░░░░░░░░░░░░░░░░░░] 0% (0/0 steps)
 ```
 
-## 👉 NEXT: Step 1.1 — [First Step Title]
-> 📋 Details → `plan/steps/` → Phase 1 → Step 1.1
-
-## 🚧 BLOCKERS
-> কোনো blocker নেই। ✅
+## 👉 NEXT: Step 1.1 — _First step title_
+> 📋 Details → `plan/` → Phase 1 → Step 1.1
 
 ---
 
-## 🔷 Phase 1: Initial Setup — 🔴 0% PENDING
-> ⚠️ Depends on: None
+## 🔷 Phase 1: _Phase Name_ — 🔴 0% PENDING
 
-- [ ] **Step 1.1** — [First Step Title] (`file/path`)
-  - [1-line summary of what to do]
+- [ ] **Step 1.1** — _Step title_ (`file/path`)
 
 <!--
 UPDATE LOG:

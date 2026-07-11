@@ -1,130 +1,228 @@
-# 🧠 Checkpoint-Based Task Ledger
+<div align="center">
 
-> AI Agent দিয়ে project execution — structured, tracked, resumable.
+# 🧠 Checkpoint Task Ledger
 
-**Clean Structure**: System files `.agents/` এ, `plan/` folder শুধু তোমার `.md` files।
+**A portable CLI system for AI-assisted project execution with progress tracking.**
 
----
+Stop your AI agent from forgetting where it left off.
 
-## ✨ Features
+[![Version](https://img.shields.io/badge/version-5.0-blue.svg)](https://github.com)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%3E%3D16-brightgreen.svg)](https://nodejs.org)
 
-- 📂 **Clean plan/ folder** — শুধু তোমার plan files, system files আলাদা
-- 📊 **Visual Dashboard** — progress board with percentages
-- 🔄 **Resumable** — যেকোনো সময় থামো, পরে শুরু করো
-- ✅ **Auto-Verify** — step complete করার আগে file check
-- 📋 **Dynamic Plan Names** — যেকোনো নামে `.md` file
-- 📝 **Drafts Folder** — R&D notes, agent auto-execute করে না
-- 🤖 **Agent-Agnostic** — Gemini, GPT, Claude, Copilot — সব কাজ করে
+</div>
 
 ---
 
-## 🚀 Quick Start
+## The Problem
+
+When using AI coding assistants (Gemini, GPT, Claude, Copilot) for multi-step projects:
+
+- 🔁 They **redo completed work** after context resets
+- ⏭️ They **skip steps** or lose track of progress  
+- 🧠 They **forget project rules** between sessions
+- 📊 There's **no clear progress tracking**
+
+## The Solution
+
+A lightweight CLI + markdown system that gives any AI agent:
+
+- ✅ A **progress tracker** it reads first every session
+- 📋 **Step-by-step plans** with exact instructions
+- ⚠️ **Coding rules** specific to your project
+- 🔒 **Auto-verification** before marking steps complete
+
+---
+
+## Quick Start
 
 ```bash
-# 1. Clone
+# Clone this repo
 git clone https://github.com/YOUR_USERNAME/checkpoint-task-ledger.git
 
-# 2. Go to your project
-cd /path/to/your-project
+# Go to your project
+cd ~/my-project
 
-# 3. Install
-bash /path/to/checkpoint-task-ledger/setup.sh
+# Install (one command!)
+bash ~/checkpoint-task-ledger/setup.sh
 
-# 4. Done!
-./l        # Dashboard
-./l h      # Help
+# See dashboard
+./l
 ```
+
+That's it. Your project now has the ledger system.
 
 ---
 
-## 📁 What Gets Installed
+## What Gets Installed
 
 ```
 your-project/
-├── .agents/                       ← 🔧 System (agent manages this)
-│   ├── AGENTS.md                  ← Workflow rules (auto-loaded)
-│   ├── PROGRESS.md                ← Tracker (কোথায় আছি)
-│   ├── RULES.md                   ← Coding rules
-│   ├── SYSTEM_GUIDE.md            ← Guide
-│   └── scripts/
-│       └── ledger.cjs             ← CLI tool
 │
-├── plan/                          ← 📝 CLEAN! শুধু তোমার files
-│   ├── my-feature.md              ← তোমার plan (যেকোনো নাম!)
-│   ├── bugfix-auth.md             ← আরেকটা plan
-│   └── drafts/                    ← R&D notes
-│       └── ideas.md
+├── .agents/                    ← System files (hidden)
+│   ├── AGENTS.md               │  Agent workflow rules
+│   ├── PROGRESS.md             │  Progress tracker
+│   ├── RULES.md                │  Coding conventions
+│   └── scripts/ledger.cjs      │  CLI engine
 │
-├── l                              ← ⚡ Shortcut (./l)
-└── src/                           ← তোমার code
+├── plan/                       ← Your plans (clean!)
+│   ├── my-feature.md           │  Any name works
+│   └── drafts/                 │  Notes & ideas
+│
+└── l                           ← CLI shortcut
 ```
 
-**Key Point**: `plan/` folder একদম clean — শুধু তোমার `.md` plan files।
-System files সব `.agents/` এ লুকানো।
+> **Design**: `plan/` folder stays clean — only your `.md` files.  
+> All system files live in `.agents/`.
 
 ---
 
-## 📋 Commands
+## Commands
 
-| Command | কি করে |
-|---------|--------|
-| `./l` | 📊 Dashboard |
-| `./l start 2.1` | ▶️ Step শুরু |
-| `./l c 2.1 "note"` | ✅ Step complete |
-| `./l v` | 🔍 Validate |
-| `./l h` | ❓ Help |
+```bash
+./l                    # Dashboard
+./l start 1.1          # Begin a step
+./l c 1.1 "done msg"   # Complete a step
+./l v                  # Validate sync
+./l h                  # Help
+```
+
+### Dashboard Preview
+
+```
+┌──────────────────────────────────────────────────────┐
+│ LEDGER PROGRESS BOARD                                │
+└──────────────────────────────────────────────────────┘
+
+🟢 Phase 1: Setup            [████████████] COMPLETE
+┌──────────────────────────────────────────────────────┐
+│ 🟡 Phase 2: Components     [██████░░░░░░] 50% ACTIVE │
+├──────────────────────────────────────────────────────┤
+│    [✓] Step 2.1 — Button component                   │
+│    [/] Step 2.2 — Dropdown menu                      │
+│    [ ] Step 2.3 — Modal dialog                       │
+└──────────────────────────────────────────────────────┘
+⚪ Phase 3: Testing          [░░░░░░░░░░░░] PENDING
+
+│ OVERALL: [████████░░░░░░░░░░░░] 40% (4/10)           │
+│ 👉 NEXT: Step 2.2 — Dropdown menu                    │
+```
 
 ---
 
-## 📋 Plan File Naming
+## How It Works
 
-`plan/` folder এ যেকোনো নামে `.md` file রাখো:
+### 1. Create a Plan
+
+Add a `.md` file to `plan/` with any name:
+
+```markdown
+<!-- plan/add-auth.md -->
+
+## Phase 1: Setup
+
+### Step 1.1 — Create auth types (`src/types/auth.ts`)
+
+**File**: `src/types/auth.ts`
+**Action**: Create
+
+**Details**:
+- User interface with id, email, role
+- AuthState type
+
+**✅ Done**: File exists with exported types
+```
+
+### 2. Register Steps
+
+Add matching entries to `.agents/PROGRESS.md`:
+
+```markdown
+## 🔷 Phase 1: Setup — 🔴 0% PENDING
+
+- [ ] **Step 1.1** — Create auth types (`src/types/auth.ts`)
+```
+
+### 3. Work
+
+```bash
+./l start 1.1          # Creates file + marks [~] running
+# ... do the work ...
+./l c 1.1 "Types done" # Verifies file + marks [x] complete
+```
+
+### 4. Resume Anytime
+
+Open a new AI session → agent reads `.agents/PROGRESS.md` → knows exactly where to continue.
+
+---
+
+## Plan Files
+
+Name your plans however you want:
 
 ```
 plan/
-├── bugfix-upload.md         ← meaningful name ✅
-├── add-dark-mode.md         ← descriptive name ✅
-├── plan_01.md               ← generic name (OK)
+├── bugfix-sidebar.md        ✅ Descriptive
+├── add-dark-mode.md         ✅ Feature-based
+├── sprint-3-tasks.md        ✅ Sprint-based
+├── plan_01.md               ✅ Generic
 └── drafts/
-    └── random-idea.md       ← R&D notes
+    └── research-notes.md    📝 Not auto-executed
 ```
+
+> **Drafts rule**: Files in `plan/drafts/` are never auto-executed.  
+> The agent only reads them when you explicitly ask.
 
 ---
 
-## 🔄 Workflow
+## Works With
 
-```
-1. Install করো       → bash setup.sh
-2. Plan বানাও        → plan/my-plan.md
-3. Steps add করো     → .agents/PROGRESS.md
-4. কাজ শুরু          → ./l start 1.1
-5. কাজ শেষ           → ./l c 1.1 "done"
-6. 🔁 Repeat until ✅
-```
-
----
-
-## 📦 This Repo
-
-```
-checkpoint-task-ledger/
-├── README.md              ← এই file
-├── setup.sh               ← Installer
-├── .gitignore
-├── scripts/
-│   └── ledger.cjs         ← CLI v5.0
-├── templates/             ← Template files
-│   ├── AGENTS.md
-│   ├── PROGRESS.md
-│   ├── RULES.md
-│   ├── SYSTEM_GUIDE.md
-│   └── drafts-README.md
-└── examples/
-    └── example-plan.md
-```
+| AI Tool | How |
+|---------|-----|
+| **Gemini** (Antigravity/Code Assist) | Auto-loads `.agents/AGENTS.md` |
+| **Cursor AI** | Reads `.agents/` directory |
+| **GitHub Copilot** | Reads `plan/` files in context |
+| **ChatGPT / Claude** | Paste `.agents/AGENTS.md` content |
+| **Any AI** with file access | Just point it to `PROGRESS.md` |
 
 ---
 
-## 📄 License
+## Auto-Verification
 
-MIT — Use freely, share freely.
+When you run `./l c 1.1 "done"`, the CLI automatically:
+
+1. ✅ Checks the target file **exists**
+2. ✅ Checks it's **not empty** (> 10 bytes)
+3. ✅ Updates progress **percentage**
+4. ✅ Writes to the **update log**
+5. ✅ Advances the **NEXT pointer**
+
+If verification fails → step stays incomplete. No false progress.
+
+---
+
+## File Reference
+
+| File | Location | Purpose |
+|------|----------|---------|
+| `AGENTS.md` | `.agents/` | How the agent should work |
+| `PROGRESS.md` | `.agents/` | What's done, what's next |
+| `RULES.md` | `.agents/` | Project coding rules |
+| `*.md` | `plan/` | Your step-by-step plans |
+| `*.md` | `plan/drafts/` | Notes (not auto-executed) |
+| `ledger.cjs` | `.agents/scripts/` | CLI engine |
+
+---
+
+## Requirements
+
+- **Node.js** ≥ 16
+- **Any OS** — macOS, Linux, Windows (Git Bash / WSL)
+- **No dependencies** — zero `npm install` needed
+
+---
+
+## License
+
+MIT — free to use, modify, and share.

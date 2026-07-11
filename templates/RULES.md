@@ -1,54 +1,40 @@
-# ⚠️ CODE RULES — এই Project এর Coding Conventions
+# Coding Rules
+
+> Project-specific conventions the agent must follow.
 
 ---
 
-## 🎯 Project Identity
+## Project
 
 | Key | Value |
 |-----|-------|
-| **Project Name** | {{PROJECT_NAME}} |
-| **Language** | {{LANG}} |
-| **Framework** | {{FRAMEWORK}} |
-| **Styling** | {{STYLING}} |
-| **Source Directory** | `src/` |
+| Language | _TypeScript / JavaScript / Python_ |
+| Framework | _React / Next.js / Vue_ |
+| Styling | _Tailwind / CSS Modules / Vanilla_ |
 
 ---
 
-## 📦 Import Conventions
+## Import Order
 
-- Write down your project's import rules here (e.g., extension usage, path aliases, order).
+1. External packages
+2. Internal modules
+3. Styles
 
----
+## Naming
 
-## 🎨 Styling Conventions
+- Components: `PascalCase`
+- Functions: `camelCase`
+- Files: `kebab-case` or `PascalCase`
 
-- Write down color tokens, font sizes, global styles, and general styling rules here.
+## Safety
 
----
+- Don't delete existing code without being told
+- Don't add new dependencies unless specified
+- Don't leave console.log in production code
 
-## 🧱 Component / Module Patterns
-
-- Write down export patterns (named vs default), folder structure, naming conventions.
-
----
-
-## 🔒 Safety Rules
-
-1. **কোনো existing code DELETE করো না** — শুধু replace/modify when told
-2. **কোনো file rename করো না** — unless explicitly asked
-3. **নতুন dependency add করো না** — unless specified in plan
-4. **Debug/log statements রাখো না** — production code এ
-5. **Proper typing/documentation ব্যবহার করো** — project conventions অনুযায়ী
-
----
-
-## ✅ Verification Commands
+## Verify
 
 | Command | Purpose |
 |---------|---------|
-| `npm run dev` | Development server |
-| `npm run build` | Production build |
-| `npm test` | Run tests |
-| `npm run lint` | Lint / static analysis |
-
-> ⚠️ **Phase complete হলে** উপরের verification commands রান করে নিশ্চিত হও কোনো error নেই।
+| `npm run dev` | Dev server |
+| `npm run build` | Build check |
