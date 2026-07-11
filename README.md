@@ -2,43 +2,37 @@
 
 > AI Agent দিয়ে project execution — structured, tracked, resumable.
 
-**যেকোনো AI model** (Gemini, GPT, Claude, Copilot) কে organized রাখতে এই system ব্যবহার করো। Agent ভুলে যাবে না কোথায় ছিল, steps skip করবে না, আর progress track হবে automatically।
+**Clean Structure**: System files `.agents/` এ, `plan/` folder শুধু তোমার `.md` files।
 
 ---
 
 ## ✨ Features
 
+- 📂 **Clean plan/ folder** — শুধু তোমার plan files, system files আলাদা
 - 📊 **Visual Dashboard** — progress board with percentages
-- 🔄 **Resumable** — যেকোনো সময় থামো, পরে আবার শুরু করো
-- ✅ **Auto-Verify** — step complete করার আগে file exist/content check
-- 📋 **Dynamic Plan Files** — যেকোনো নামে `.md` plan file
-- 📝 **Drafts Folder** — R&D notes, ideas — agent auto-execute করে না
-- 🤖 **Agent-Agnostic** — যেকোনো AI model কাজ করতে পারবে
-- ⚡ **One-Command Setup** — `bash setup.sh` দিলেই install
+- 🔄 **Resumable** — যেকোনো সময় থামো, পরে শুরু করো
+- ✅ **Auto-Verify** — step complete করার আগে file check
+- 📋 **Dynamic Plan Names** — যেকোনো নামে `.md` file
+- 📝 **Drafts Folder** — R&D notes, agent auto-execute করে না
+- 🤖 **Agent-Agnostic** — Gemini, GPT, Claude, Copilot — সব কাজ করে
 
 ---
 
 ## 🚀 Quick Start
 
-### 1. Clone
 ```bash
+# 1. Clone
 git clone https://github.com/YOUR_USERNAME/checkpoint-task-ledger.git
-```
 
-### 2. Go to your project
-```bash
+# 2. Go to your project
 cd /path/to/your-project
-```
 
-### 3. Install
-```bash
+# 3. Install
 bash /path/to/checkpoint-task-ledger/setup.sh
-```
 
-### 4. Done! 🎉
-```bash
-./l        # Dashboard দেখো
-./l h      # Help দেখো
+# 4. Done!
+./l        # Dashboard
+./l h      # Help
 ```
 
 ---
@@ -47,18 +41,26 @@ bash /path/to/checkpoint-task-ledger/setup.sh
 
 ```
 your-project/
-├── .agents/
-│   ├── AGENTS.md              ← 🤖 Agent workflow rules (auto-loaded)
+├── .agents/                       ← 🔧 System (agent manages this)
+│   ├── AGENTS.md                  ← Workflow rules (auto-loaded)
+│   ├── PROGRESS.md                ← Tracker (কোথায় আছি)
+│   ├── RULES.md                   ← Coding rules
+│   ├── SYSTEM_GUIDE.md            ← Guide
 │   └── scripts/
-│       └── ledger.cjs         ← ⚙️ CLI tool
-├── plan/
-│   ├── PROGRESS.md            ← 🔴 Tracker (কোথায় আছি)
-│   ├── RULES.md               ← ⚠️ Coding rules
-│   ├── SYSTEM_GUIDE.md        ← 📖 Guide
-│   ├── steps/                 ← 📋 Plan files (যেকোনো নাম.md)
-│   └── drafts/                ← 📝 R&D notes (free-form)
-└── l                          ← ⚡ Shortcut (./l)
+│       └── ledger.cjs             ← CLI tool
+│
+├── plan/                          ← 📝 CLEAN! শুধু তোমার files
+│   ├── my-feature.md              ← তোমার plan (যেকোনো নাম!)
+│   ├── bugfix-auth.md             ← আরেকটা plan
+│   └── drafts/                    ← R&D notes
+│       └── ideas.md
+│
+├── l                              ← ⚡ Shortcut (./l)
+└── src/                           ← তোমার code
 ```
+
+**Key Point**: `plan/` folder একদম clean — শুধু তোমার `.md` plan files।
+System files সব `.agents/` এ লুকানো।
 
 ---
 
@@ -66,97 +68,63 @@ your-project/
 
 | Command | কি করে |
 |---------|--------|
-| `./l` | 📊 Dashboard — progress board দেখাও |
-| `./l start 2.1` | ▶️ Step 2.1 শুরু করো (file create + mark running) |
-| `./l c 2.1 "note"` | ✅ Step 2.1 complete (auto-verify + update log) |
-| `./l v` | 🔍 Validate — plan/progress sync check |
-| `./l h` | ❓ Help menu |
+| `./l` | 📊 Dashboard |
+| `./l start 2.1` | ▶️ Step শুরু |
+| `./l c 2.1 "note"` | ✅ Step complete |
+| `./l v` | 🔍 Validate |
+| `./l h` | ❓ Help |
 
 ---
 
 ## 📋 Plan File Naming
 
-`plan/steps/` folder এ যেকোনো নামে `.md` file রাখো:
+`plan/` folder এ যেকোনো নামে `.md` file রাখো:
 
 ```
-plan/steps/
-├── plan_01.md                    ← generic name (OK)
-├── bugfix-upload-feature.md      ← meaningful name ✅
-├── add-dark-mode.md              ← descriptive name ✅
-└── refactor-sidebar.md           ← any-name-works.md ✅
+plan/
+├── bugfix-upload.md         ← meaningful name ✅
+├── add-dark-mode.md         ← descriptive name ✅
+├── plan_01.md               ← generic name (OK)
+└── drafts/
+    └── random-idea.md       ← R&D notes
 ```
-
-CLI automatically সব `.md` file scan করে step খুঁজে বের করে। কোনো hardcoded filename নেই!
-
----
-
-## 📝 Drafts — R&D Notes
-
-`plan/drafts/` এ যেকোনো notes রাখো — agent নিজে থেকে execute করবে না:
-
-```
-plan/drafts/
-├── feature-idea.md           ← তোমার idea
-├── api-research.md           ← research notes
-├── color-palette.md          ← design notes
-└── anything.md               ← যা ইচ্ছা!
-```
-
-Agent কে বললে পড়বে: *"drafts/feature-idea.md পড়ো এবং implement করো"*
 
 ---
 
 ## 🔄 Workflow
 
 ```
-1. Plan বানাও     → plan/steps/my-plan.md
-2. Steps add করো  → plan/PROGRESS.md
-3. কাজ শুরু       → ./l start 1.1
-4. কাজ শেষ        → ./l c 1.1 "done note"
-5. পরের step      → ./l start 1.2
-6. 🔁 Repeat until ✅ TASK COMPLETE ALL
+1. Install করো       → bash setup.sh
+2. Plan বানাও        → plan/my-plan.md
+3. Steps add করো     → .agents/PROGRESS.md
+4. কাজ শুরু          → ./l start 1.1
+5. কাজ শেষ           → ./l c 1.1 "done"
+6. 🔁 Repeat until ✅
 ```
 
 ---
 
-## 🤖 Works With
-
-| AI Tool | Support |
-|---------|---------|
-| Google Gemini (Antigravity) | ✅ Full (auto-loads AGENTS.md) |
-| GitHub Copilot | ✅ Full (reads plan/) |
-| ChatGPT / GPT-4 | ✅ Manual (paste AGENTS.md) |
-| Claude | ✅ Manual (paste AGENTS.md) |
-| Cursor AI | ✅ Full (reads .agents/) |
-| Any AI with file access | ✅ Works |
-
----
-
-## 📦 Repo Structure
+## 📦 This Repo
 
 ```
 checkpoint-task-ledger/
 ├── README.md              ← এই file
-├── setup.sh               ← One-command installer
+├── setup.sh               ← Installer
 ├── .gitignore
 ├── scripts/
-│   └── ledger.cjs         ← CLI tool (v4.0 — dynamic)
-├── templates/
-│   ├── PROGRESS.md        ← Progress tracker template
-│   ├── RULES.md           ← Code rules template
-│   ├── SYSTEM_GUIDE.md    ← System guide template
-│   ├── AGENTS.md          ← Agent rules template
-│   └── drafts-README.md   ← Drafts folder README
+│   └── ledger.cjs         ← CLI v5.0
+├── templates/             ← Template files
+│   ├── AGENTS.md
+│   ├── PROGRESS.md
+│   ├── RULES.md
+│   ├── SYSTEM_GUIDE.md
+│   └── drafts-README.md
 └── examples/
-    └── example-plan.md    ← Example plan file
+    └── example-plan.md
 ```
 
 ---
 
 ## 📄 License
 
-MIT — Use freely, modify freely, share freely.
-
----
-
-Made with 🧠 by [Your Name]
+MIT — Use freely, share freely.
