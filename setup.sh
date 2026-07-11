@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # ═══════════════════════════════════════════════════════════════════════
-# Checkpoint-Based Task Ledger — Setup Script v5.0
+# ai-checkpoint — Setup Script v5.0
 # 
 # CLEAN STRUCTURE:
 #   .agents/  → System files (PROGRESS, RULES, scripts)
 #   plan/     → ONLY user's .md plan files (empty by default!)
 #
-# Usage: bash /path/to/checkpoint-task-ledger/setup.sh
+# Usage: bash /path/to/ai-checkpoint/setup.sh
 # ═══════════════════════════════════════════════════════════════════════
 
 set -e
@@ -23,7 +23,7 @@ PROJECT_DIR="$(pwd)"
 
 echo ""
 echo -e "${BOLD}${CYAN}┌──────────────────────────────────────────────────────┐${NC}"
-echo -e "${BOLD}${CYAN}│   🧠 Checkpoint Task Ledger v5.0 — Clean Setup       │${NC}"
+echo -e "${BOLD}${CYAN}│   🧠 ai-checkpoint — Setup                           │${NC}"
 echo -e "${BOLD}${CYAN}└──────────────────────────────────────────────────────┘${NC}"
 echo ""
 echo -e "${CYAN}Project:${NC} $PROJECT_DIR"

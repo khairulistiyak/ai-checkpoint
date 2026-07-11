@@ -1,228 +1,221 @@
 <div align="center">
 
-# 🧠 Checkpoint Task Ledger
+<img src="https://img.shields.io/badge/%F0%9F%A7%A0-ai--checkpoint-blueviolet?style=for-the-badge&labelColor=1a1b27" alt="ai-checkpoint" />
 
-**A portable CLI system for AI-assisted project execution with progress tracking.**
+# ai-checkpoint
 
-Stop your AI agent from forgetting where it left off.
+**Your AI forgets. This doesn't.**
 
-[![Version](https://img.shields.io/badge/version-5.0-blue.svg)](https://github.com)
-[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Node](https://img.shields.io/badge/node-%3E%3D16-brightgreen.svg)](https://nodejs.org)
+A zero-dependency CLI that tracks progress across AI coding sessions.  
+Works with Gemini, GPT, Claude, Copilot — any AI with file access.
+
+[![MIT License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
+[![Node](https://img.shields.io/badge/node-%E2%89%A516-brightgreen?style=flat-square)](https://nodejs.org)
+[![Zero Dependencies](https://img.shields.io/badge/dependencies-0-blue?style=flat-square)](#)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](#contributing)
+
+[Install](#install) · [How it Works](#how-it-works) · [Commands](#commands) · [Examples](#examples)
 
 </div>
 
 ---
 
-## The Problem
+## Why?
 
-When using AI coding assistants (Gemini, GPT, Claude, Copilot) for multi-step projects:
+AI coding assistants lose context between sessions. On multi-step projects, they:
 
-- 🔁 They **redo completed work** after context resets
-- ⏭️ They **skip steps** or lose track of progress  
-- 🧠 They **forget project rules** between sessions
-- 📊 There's **no clear progress tracking**
+- 🔁 **Redo** completed work
+- ⏭️ **Skip** steps  
+- 🧠 **Forget** project conventions
+- 📊 **Can't track** progress
 
-## The Solution
-
-A lightweight CLI + markdown system that gives any AI agent:
-
-- ✅ A **progress tracker** it reads first every session
-- 📋 **Step-by-step plans** with exact instructions
-- ⚠️ **Coding rules** specific to your project
-- 🔒 **Auto-verification** before marking steps complete
+**ai-checkpoint** fixes this with a simple markdown + CLI system that any AI can read.
 
 ---
 
-## Quick Start
+## Install
 
 ```bash
-# Clone this repo
-git clone https://github.com/YOUR_USERNAME/checkpoint-task-ledger.git
-
-# Go to your project
+git clone https://github.com/khairulistiyak/ai-checkpoint.git
 cd ~/my-project
-
-# Install (one command!)
-bash ~/checkpoint-task-ledger/setup.sh
-
-# See dashboard
-./l
+bash ~/ai-checkpoint/setup.sh
 ```
 
-That's it. Your project now has the ledger system.
+Done. Run `./l` to see the dashboard.
 
 ---
 
-## What Gets Installed
+## What Gets Created
 
 ```
 your-project/
 │
-├── .agents/                    ← System files (hidden)
-│   ├── AGENTS.md               │  Agent workflow rules
-│   ├── PROGRESS.md             │  Progress tracker
-│   ├── RULES.md                │  Coding conventions
-│   └── scripts/ledger.cjs      │  CLI engine
+├── .agents/                ← System (auto-managed)
+│   ├── AGENTS.md            ← How the AI should work
+│   ├── PROGRESS.md          ← What's done, what's next
+│   ├── RULES.md             ← Project coding rules
+│   └── scripts/ledger.cjs   ← CLI engine
 │
-├── plan/                       ← Your plans (clean!)
-│   ├── my-feature.md           │  Any name works
-│   └── drafts/                 │  Notes & ideas
+├── plan/                   ← Your plans (clean folder)
+│   └── drafts/              ← Scratch notes
 │
-└── l                           ← CLI shortcut
+└── l                       ← CLI shortcut
 ```
 
-> **Design**: `plan/` folder stays clean — only your `.md` files.  
-> All system files live in `.agents/`.
+`plan/` starts empty. You add `.md` plan files with any name you want.
+
+---
+
+## How it Works
+
+```
+1. You write a plan          →  plan/add-auth.md
+2. You register steps        →  .agents/PROGRESS.md
+3. AI reads progress first   →  knows exactly where to resume
+4. AI does the work          →  creates/edits files
+5. CLI marks it done         →  ./l c 1.1 "done"
+6. Repeat                    →  until ✅ complete
+```
+
+The AI reads `PROGRESS.md` at the start of every session. It always knows what's done and what's next.
 
 ---
 
 ## Commands
 
 ```bash
-./l                    # Dashboard
-./l start 1.1          # Begin a step
-./l c 1.1 "done msg"   # Complete a step
-./l v                  # Validate sync
-./l h                  # Help
+./l                     # Show dashboard
+./l start 1.1           # Begin a step (creates files, marks running)
+./l c 1.1 "msg"         # Complete step (verifies file, updates progress)
+./l v                   # Validate plan ↔ progress sync
+./l h                   # Help
 ```
 
-### Dashboard Preview
+### Dashboard
 
 ```
 ┌──────────────────────────────────────────────────────┐
 │ LEDGER PROGRESS BOARD                                │
 └──────────────────────────────────────────────────────┘
 
-🟢 Phase 1: Setup            [████████████] COMPLETE
+ 🟢 Phase 1: Setup               [████████████] COMPLETE
 ┌──────────────────────────────────────────────────────┐
-│ 🟡 Phase 2: Components     [██████░░░░░░] 50% ACTIVE │
+│ 🟡 Phase 2: Components         [██████░░░░░░] 50%    │
 ├──────────────────────────────────────────────────────┤
 │    [✓] Step 2.1 — Button component                   │
 │    [/] Step 2.2 — Dropdown menu                      │
 │    [ ] Step 2.3 — Modal dialog                       │
 └──────────────────────────────────────────────────────┘
-⚪ Phase 3: Testing          [░░░░░░░░░░░░] PENDING
+ ⚪ Phase 3: Testing             [░░░░░░░░░░░░] PENDING
 
+┌──────────────────────────────────────────────────────┐
 │ OVERALL: [████████░░░░░░░░░░░░] 40% (4/10)           │
 │ 👉 NEXT: Step 2.2 — Dropdown menu                    │
+└──────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## How It Works
+## Examples
 
-### 1. Create a Plan
+### Plan File
 
-Add a `.md` file to `plan/` with any name:
+Create `plan/add-auth.md`:
 
 ```markdown
-<!-- plan/add-auth.md -->
+## Phase 1: Auth Setup
 
-## Phase 1: Setup
+### Step 1.1 — User types (`src/types/user.ts`)
 
-### Step 1.1 — Create auth types (`src/types/auth.ts`)
-
-**File**: `src/types/auth.ts`
+**File**: `src/types/user.ts`
 **Action**: Create
+**Details**: User interface with id, email, role fields.
+**✅ Done**: File exists with exported types.
 
-**Details**:
-- User interface with id, email, role
-- AuthState type
+### Step 1.2 — Auth hook (`src/hooks/useAuth.ts`)
 
-**✅ Done**: File exists with exported types
+**File**: `src/hooks/useAuth.ts`
+**Action**: Create
+**Details**: Login, logout, getCurrentUser functions.
+**✅ Done**: Hook exports all 3 functions.
 ```
 
-### 2. Register Steps
+### Progress File
 
-Add matching entries to `.agents/PROGRESS.md`:
+Register steps in `.agents/PROGRESS.md`:
 
 ```markdown
-## 🔷 Phase 1: Setup — 🔴 0% PENDING
+## 🔷 Phase 1: Auth Setup — 🔴 0% PENDING
 
-- [ ] **Step 1.1** — Create auth types (`src/types/auth.ts`)
+- [ ] **Step 1.1** — User types (`src/types/user.ts`)
+- [ ] **Step 1.2** — Auth hook (`src/hooks/useAuth.ts`)
 ```
 
-### 3. Work
+### Workflow
 
 ```bash
-./l start 1.1          # Creates file + marks [~] running
-# ... do the work ...
-./l c 1.1 "Types done" # Verifies file + marks [x] complete
+./l start 1.1           # Creates src/types/user.ts with boilerplate
+# ... AI writes the code ...
+./l c 1.1 "User types"  # ✅ Verified & marked done
+./l start 1.2           # Next step
 ```
-
-### 4. Resume Anytime
-
-Open a new AI session → agent reads `.agents/PROGRESS.md` → knows exactly where to continue.
-
----
-
-## Plan Files
-
-Name your plans however you want:
-
-```
-plan/
-├── bugfix-sidebar.md        ✅ Descriptive
-├── add-dark-mode.md         ✅ Feature-based
-├── sprint-3-tasks.md        ✅ Sprint-based
-├── plan_01.md               ✅ Generic
-└── drafts/
-    └── research-notes.md    📝 Not auto-executed
-```
-
-> **Drafts rule**: Files in `plan/drafts/` are never auto-executed.  
-> The agent only reads them when you explicitly ask.
-
----
-
-## Works With
-
-| AI Tool | How |
-|---------|-----|
-| **Gemini** (Antigravity/Code Assist) | Auto-loads `.agents/AGENTS.md` |
-| **Cursor AI** | Reads `.agents/` directory |
-| **GitHub Copilot** | Reads `plan/` files in context |
-| **ChatGPT / Claude** | Paste `.agents/AGENTS.md` content |
-| **Any AI** with file access | Just point it to `PROGRESS.md` |
 
 ---
 
 ## Auto-Verification
 
-When you run `./l c 1.1 "done"`, the CLI automatically:
+When completing a step, the CLI automatically:
 
-1. ✅ Checks the target file **exists**
-2. ✅ Checks it's **not empty** (> 10 bytes)
-3. ✅ Updates progress **percentage**
-4. ✅ Writes to the **update log**
-5. ✅ Advances the **NEXT pointer**
+1. Checks the target file **exists**
+2. Checks it's **not empty**
+3. Updates **progress percentage**
+4. Writes to the **update log**  
+5. Advances the **NEXT pointer**
 
-If verification fails → step stays incomplete. No false progress.
+No false progress. If verification fails, the step stays incomplete.
 
 ---
 
-## File Reference
+## Works With Any AI
 
-| File | Location | Purpose |
-|------|----------|---------|
-| `AGENTS.md` | `.agents/` | How the agent should work |
-| `PROGRESS.md` | `.agents/` | What's done, what's next |
-| `RULES.md` | `.agents/` | Project coding rules |
-| `*.md` | `plan/` | Your step-by-step plans |
-| `*.md` | `plan/drafts/` | Notes (not auto-executed) |
-| `ledger.cjs` | `.agents/scripts/` | CLI engine |
+| Tool | Setup |
+|------|-------|
+| **Gemini** / Antigravity | Auto-loads `.agents/AGENTS.md` |
+| **Cursor AI** | Reads `.agents/` automatically |
+| **GitHub Copilot** | Include files in context |
+| **ChatGPT / Claude** | Paste `PROGRESS.md` content |
+| **Any AI** | Point it to `.agents/PROGRESS.md` |
 
 ---
 
 ## Requirements
 
 - **Node.js** ≥ 16
-- **Any OS** — macOS, Linux, Windows (Git Bash / WSL)
-- **No dependencies** — zero `npm install` needed
+- **Zero npm dependencies**
+- Works on macOS, Linux, Windows (WSL/Git Bash)
+
+---
+
+## Contributing
+
+PRs welcome! Feel free to:
+
+- Add new template types
+- Improve the dashboard UI
+- Add integrations (VS Code extension, npm package)
+- Fix bugs
 
 ---
 
 ## License
 
-MIT — free to use, modify, and share.
+[MIT](LICENSE) — use freely, modify freely, share freely.
+
+<div align="center">
+<br>
+
+**Built for developers who use AI to build things.**
+
+<sub>If this helped you, consider giving it a ⭐</sub>
+
+</div>

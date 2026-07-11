@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Checkpoint-Based Task Ledger CLI Tool (v5.0)
+ * ai-checkpoint CLI Tool (v5.0)
  * 
  * CLEAN STRUCTURE:
  *   .agents/  → system files (PROGRESS, RULES, scripts)
