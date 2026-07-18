@@ -16,21 +16,21 @@
 ## Overall Progress
 
 ```
-[░░░░░░░░░░░░░░░░░░░░] 0% (0/27 steps)
+[████░░░░░░░░░░░░░░░░] 19% (5/27 steps complete)
 ```
 
-## 👉 NEXT: Step 1.1 — Add safety header to CLI
-> 📋 Details → `plan/phase-1-core-hardening.md` → Step 1.1
+## 👉 NEXT: Step 2.1 — Add `checkpoint save` command (`.agents/scripts/ledger.cjs`)
+> 📋 Details → `plan/` → Phase 2 → Step 2.1
 
 ---
 
-## 🔷 Phase 1: Core Hardening — 🔴 0% PENDING (0/5)
+## 🔷 Phase 1: Core Hardening — ✅ 100% COMPLETE
 
-- [ ] **Step 1.1** — Add safety header to CLI (`.agents/scripts/ledger.cjs`)
-- [ ] **Step 1.2** — Add `doctor` command (`.agents/scripts/ledger.cjs`)
-- [ ] **Step 1.3** — Add real validation to `validate` command (`.agents/scripts/ledger.cjs`)
-- [ ] **Step 1.4** — Update RULES.md template with micro-file rules (`templates/RULES.md`)
-- [ ] **Step 1.5** — Update setup.sh with safe paths (`setup.sh`)
+- [x] **Step 1.1** — Add safety header to CLI (`.agents/scripts/ledger.cjs`)
+- [x] **Step 1.2** — Add `doctor` command (`.agents/scripts/ledger.cjs`)
+- [x] **Step 1.3** — Add real validation to `validate` command (`.agents/scripts/ledger.cjs`)
+- [x] **Step 1.4** — Update RULES.md template with micro-file rules (`templates/RULES.md`)
+- [x] **Step 1.5** — Update setup.sh with safe paths (`setup.sh`)
 
 ---
 
@@ -79,4 +79,9 @@
 <!--
 UPDATE LOG:
 2026-07-18: Initial setup - all 5 phases planned with 27 atomic steps
+[2026-07-19 03:28] Step 1.1 completed — strict mode, rejected-promise handling, and --help support added | Agent: CLI
+[2026-07-19 03:30] Step 1.2 completed — doctor validates required files, progress format, and git repository | Agent: CLI
+[2026-07-19 03:36] Step 1.3 completed — Real validation added: file bounds, IDs, and 150-line rule; block-on-complete configured | Agent: CLI
+[2026-07-19 03:39] Step 1.4 completed — RULES template enforces micro-file monorepo and protected paths | Agent: CLI
+[2026-07-19 03:43] Step 1.5 completed — setup.sh uses set -euo pipefail and safe path quoting | Agent: CLI
 -->

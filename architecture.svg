@@ -1,0 +1,356 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', sans-serif">
+  <defs>
+    <!-- Background -->
+    <rect id="bg" width="1200" height="1600" fill="#000000" />
+    
+    <!-- Dot Grid Pattern -->
+    <pattern id="dotGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.5" fill="#ffffff" opacity="0.05" />
+    </pattern>
+
+    <!-- Gradients -->
+    <linearGradient id="glowLine" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0" />
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="1" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+    </linearGradient>
+
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.03" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.01" />
+    </linearGradient>
+
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.05" />
+    </linearGradient>
+    
+    <radialGradient id="spotlight" cx="50%" cy="0%" r="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Filters -->
+    <filter id="blurGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="24" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+
+    <!-- Arrowheads -->
+    <marker id="arrow" markerWidth="16" markerHeight="16" refX="14" refY="8" orient="auto-start-reverse">
+      <path d="M 4 2 L 14 8 L 4 14" fill="none" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+  </defs>
+
+  <style>
+    /* Typography */
+    .hero { font-size: 48px; font-weight: 700; fill: #ffffff; letter-spacing: -2px; }
+    .hero-sub { font-size: 18px; font-weight: 400; fill: #a1a1aa; letter-spacing: 0px; }
+    
+    .layer-tag { font-size: 11px; font-weight: 600; fill: #71717a; letter-spacing: 4px; text-transform: uppercase; }
+    
+    .card-title { font-size: 16px; font-weight: 600; fill: #ffffff; letter-spacing: -0.5px; }
+    .card-desc { font-size: 13px; font-weight: 400; fill: #a1a1aa; }
+    
+    .mono { font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace; font-size: 12px; }
+    
+    /* Shapes */
+    .card { fill: url(#cardBg); stroke: url(#borderGrad); stroke-width: 1; rx: 12; ry: 12; }
+    .pill { fill: #000000; stroke: #3f3f46; stroke-width: 1; rx: 999; ry: 999; }
+    .node { fill: #000000; stroke: #27272a; stroke-width: 1; rx: 8; ry: 8; }
+    
+    /* Edges */
+    .wire { stroke: #27272a; stroke-width: 1.5; fill: none; }
+    .wire-active { stroke: #ffffff; stroke-width: 1.5; fill: none; }
+    .wire-dashed { stroke: #52525b; stroke-width: 1; stroke-dasharray: 4 4; fill: none; }
+  </style>
+
+  <!-- Base Background -->
+  <use href="#bg" />
+  
+  <!-- Ambient Spotlight (Top Center) -->
+  <rect x="0" y="0" width="1200" height="800" fill="url(#spotlight)" />
+
+  <!-- Dot Grid -->
+  <rect width="1200" height="1600" fill="url(#dotGrid)" />
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- HEADER -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <g transform="translate(600, 140)" text-anchor="middle">
+    <rect x="-80" y="-80" width="160" height="24" class="pill" />
+    <text y="-64" class="mono" fill="#d4d4d8" font-size="11">SYSTEM ARCHITECTURE</text>
+    
+    <text class="hero" y="0">ai-checkpoint</text>
+    <text class="hero-sub" y="32">The micro-file monorepo framework for autonomous AI.</text>
+    
+    <!-- Glowing horizontal line -->
+    <path d="M -200 70 L 200 70" stroke="url(#glowLine)" stroke-width="1.5" filter="url(#blurGlow)" />
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- LAYER 1: INSTALLATION -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <text x="100" y="270" class="layer-tag">L1 / Initialization</text>
+  
+  <g transform="translate(450, 280)">
+    <rect class="card" width="300" height="80" />
+    <rect x="16" y="16" width="32" height="32" class="node" />
+    <text x="32" y="36" text-anchor="middle" font-size="16" fill="#ffffff">⚡</text>
+    
+    <text x="64" y="36" class="card-title">setup.sh</text>
+    <text x="64" y="56" class="card-desc mono">curl -sL ... | bash</text>
+
+    <!-- Branching Wires -->
+    <path d="M 150 80 L 150 110 M 150 110 L -210 110 L -210 140 M 150 110 L 510 110 L 510 140" class="wire" marker-end="url(#arrow)" />
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- LAYER 2: PROJECT STRUCTURE -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <text x="100" y="430" class="layer-tag">L2 / File System</text>
+
+  <!-- .agents/ directory -->
+  <g transform="translate(100, 450)">
+    <rect class="card" width="480" height="260" />
+    
+    <!-- Header area -->
+    <rect x="0" y="0" width="480" height="50" fill="#ffffff" fill-opacity="0.02" />
+    <line x1="0" y1="50" x2="480" y2="50" class="wire" />
+    
+    <text x="24" y="32" class="card-title">.agents/</text>
+    <text x="456" y="32" text-anchor="end" class="card-desc mono">System Restricted</text>
+    
+    <!-- Items -->
+    <g transform="translate(24, 70)">
+      <rect class="node" width="206" height="52" />
+      <text x="16" y="24" class="card-title" font-size="14">AGENTS.md</text>
+      <text x="16" y="42" class="card-desc" font-size="12">Workflow instructions</text>
+    </g>
+    <g transform="translate(250, 70)">
+      <rect class="node" width="206" height="52" />
+      <text x="16" y="24" class="card-title" font-size="14">RULES.md</text>
+      <text x="16" y="42" class="card-desc" font-size="12">Coding conventions</text>
+    </g>
+    <g transform="translate(24, 138)">
+      <rect class="node" width="206" height="52" stroke="#ffffff" stroke-width="1.5" filter="url(#blurGlow)" />
+      <rect class="node" width="206" height="52" />
+      <text x="16" y="24" class="card-title" font-size="14">PROGRESS.md</text>
+      <text x="16" y="42" class="card-desc" font-size="12">Auto-updated state</text>
+    </g>
+    <g transform="translate(250, 138)">
+      <rect class="node" width="206" height="52" />
+      <text x="16" y="24" class="card-title" font-size="14">ledger.cjs</text>
+      <text x="16" y="42" class="card-desc" font-size="12">24KB Core Engine</text>
+    </g>
+    
+    <g transform="translate(24, 206)">
+      <rect class="node" width="432" height="32" />
+      <text x="216" y="22" text-anchor="middle" class="card-desc mono" font-size="11">SYSTEM_GUIDE.md — Quick Reference</text>
+    </g>
+  </g>
+
+  <!-- plan/ directory -->
+  <g transform="translate(620, 450)">
+    <rect class="card" width="480" height="190" />
+    
+    <!-- Header area -->
+    <rect x="0" y="0" width="480" height="50" fill="#ffffff" fill-opacity="0.02" />
+    <line x1="0" y1="50" x2="480" y2="50" class="wire" />
+    
+    <text x="24" y="32" class="card-title">plan/</text>
+    <text x="456" y="32" text-anchor="end" class="card-desc mono">User Writable</text>
+    
+    <g transform="translate(24, 70)">
+      <rect class="node" width="206" height="64" />
+      <text x="16" y="24" class="card-title" font-size="14">phase-1.md</text>
+      <text x="16" y="42" class="card-desc mono" font-size="11">Step 1.1 / auth</text>
+      <text x="16" y="56" class="card-desc mono" font-size="11">Step 1.2 / ui</text>
+    </g>
+    <g transform="translate(250, 70)">
+      <rect class="node" width="206" height="64" />
+      <text x="16" y="24" class="card-title" font-size="14">phase-2.md</text>
+      <text x="16" y="42" class="card-desc mono" font-size="11">Step 2.1 / api</text>
+      <text x="16" y="56" class="card-desc mono" font-size="11">Step 2.2 / db</text>
+    </g>
+    
+    <g transform="translate(24, 150)">
+      <rect class="node" width="432" height="24" stroke-dasharray="4" />
+      <text x="216" y="16" text-anchor="middle" class="card-desc mono" font-size="11">drafts/ — Safe from AI execution</text>
+    </g>
+  </g>
+
+  <!-- CLI shortcut bridge -->
+  <g transform="translate(620, 660)">
+    <rect class="node" width="480" height="50" />
+    <text x="24" y="30" class="card-title mono">./l</text>
+    <text x="456" y="30" text-anchor="end" class="card-desc mono">→ node .agents/scripts/ledger.cjs</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- LAYER 3: AGENT LOOP -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <text x="100" y="780" class="layer-tag">L3 / Execution Loop</text>
+  
+  <g transform="translate(100, 800)">
+    <!-- Main container -->
+    <rect class="card" width="1000" height="180" />
+    
+    <!-- Connector line -->
+    <path d="M 130 90 L 870 90" class="wire-active" />
+
+    <!-- Step 1 -->
+    <g transform="translate(40, 40)">
+      <rect class="node" width="160" height="100" />
+      <rect x="0" y="0" width="160" height="100" fill="url(#spotlight)" rx="8" />
+      <text x="80" y="32" text-anchor="middle" class="card-title">Read</text>
+      <text x="80" y="56" text-anchor="middle" class="card-desc">PROGRESS.md</text>
+      <text x="80" y="76" text-anchor="middle" class="card-desc">RULES.md</text>
+    </g>
+
+    <!-- Step 2 -->
+    <g transform="translate(280, 40)">
+      <rect class="node" width="160" height="100" />
+      <text x="80" y="32" text-anchor="middle" class="card-title">Locate</text>
+      <text x="80" y="56" text-anchor="middle" class="card-desc">Find 👉 NEXT</text>
+      <text x="80" y="76" text-anchor="middle" class="card-desc mono" font-size="11">Target Step X.Y</text>
+    </g>
+
+    <!-- Step 3 -->
+    <g transform="translate(520, 40)">
+      <rect class="node" width="160" height="100" />
+      <text x="80" y="32" text-anchor="middle" class="card-title">Execute</text>
+      <text x="80" y="56" text-anchor="middle" class="card-desc">Write Code</text>
+      <text x="80" y="76" text-anchor="middle" class="card-desc mono" font-size="11">1 Step = 1 File</text>
+    </g>
+
+    <!-- Step 4 -->
+    <g transform="translate(760, 40)">
+      <rect class="node" width="200" height="100" />
+      <!-- glowing border for step 4 -->
+      <rect class="node" width="200" height="100" stroke="#ffffff" stroke-width="1.5" />
+      <text x="100" y="32" text-anchor="middle" class="card-title">Verify &amp; Commit</text>
+      <text x="100" y="56" text-anchor="middle" class="card-desc mono">./l c X.Y</text>
+      <text x="100" y="76" text-anchor="middle" class="card-desc">Advance Pointer</text>
+    </g>
+    
+    <!-- Arrows on the connector line -->
+    <path d="M 230 90 L 250 90" class="wire-active" marker-end="url(#arrow)" />
+    <path d="M 470 90 L 490 90" class="wire-active" marker-end="url(#arrow)" />
+    <path d="M 710 90 L 730 90" class="wire-active" marker-end="url(#arrow)" />
+
+    <!-- Loop back wire -->
+    <path d="M 860 140 L 860 160 L 120 160 L 120 140" class="wire-dashed" marker-end="url(#arrow)" />
+    <rect x="420" y="150" width="160" height="20" fill="#000000" />
+    <text x="500" y="164" text-anchor="middle" class="card-desc mono" font-size="11">Loop for Next Step</text>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- LAYER 4: CLI COMMANDS -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <text x="100" y="1050" class="layer-tag">L4 / Core Interface</text>
+
+  <g transform="translate(100, 1070)">
+    <rect class="card" width="1000" height="140" />
+
+    <g transform="translate(40, 40)">
+      <rect class="node" width="160" height="60" />
+      <text x="24" y="28" class="card-title mono">./l</text>
+      <text x="24" y="48" class="card-desc">Status Dashboard</text>
+    </g>
+
+    <g transform="translate(225, 40)">
+      <rect class="node" width="170" height="60" />
+      <text x="24" y="28" class="card-title mono">./l start X.Y</text>
+      <text x="24" y="48" class="card-desc">Initialize Step</text>
+    </g>
+
+    <g transform="translate(420, 40)">
+      <rect class="node" width="180" height="60" stroke="#ffffff" />
+      <text x="24" y="28" class="card-title mono">./l c X.Y "msg"</text>
+      <text x="24" y="48" class="card-desc">Verify &amp; Mark Done</text>
+    </g>
+
+    <g transform="translate(625, 40)">
+      <rect class="node" width="150" height="60" />
+      <text x="24" y="28" class="card-title mono">./l v</text>
+      <text x="24" y="48" class="card-desc">Validate Sync</text>
+    </g>
+
+    <g transform="translate(800, 40)">
+      <rect class="node" width="160" height="60" />
+      <text x="24" y="28" class="card-title mono">./l rollback</text>
+      <text x="24" y="48" class="card-desc">Revert State</text>
+    </g>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- LAYER 5: DATA FLOW (LINEAR) -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <text x="100" y="1280" class="layer-tag">L5 / System State Flow</text>
+
+  <g transform="translate(100, 1300)">
+    <path d="M 120 50 L 920 50" class="wire" />
+    
+    <!-- User -->
+    <g transform="translate(0, 20)">
+      <rect class="node" width="160" height="60" />
+      <text x="80" y="28" text-anchor="middle" class="card-title">User Intent</text>
+      <text x="80" y="46" text-anchor="middle" class="card-desc mono" font-size="11">plan/*.md</text>
+      <path d="M 160 30 L 210 30" class="wire-active" marker-end="url(#arrow)" />
+    </g>
+
+    <!-- AI -->
+    <g transform="translate(220, 20)">
+      <rect class="node" width="160" height="60" />
+      <text x="80" y="28" text-anchor="middle" class="card-title">AI Engine</text>
+      <text x="80" y="46" text-anchor="middle" class="card-desc mono" font-size="11">Parse &amp; Write</text>
+      <path d="M 160 30 L 210 30" class="wire-active" marker-end="url(#arrow)" />
+    </g>
+
+    <!-- Ledger -->
+    <g transform="translate(440, 20)">
+      <rect class="node" width="160" height="60" />
+      <text x="80" y="28" text-anchor="middle" class="card-title">Ledger CLI</text>
+      <text x="80" y="46" text-anchor="middle" class="card-desc mono" font-size="11">./l execute</text>
+      <path d="M 160 30 L 210 30" class="wire-active" marker-end="url(#arrow)" />
+    </g>
+
+    <!-- Verification -->
+    <g transform="translate(660, 20)">
+      <rect class="node" width="160" height="60" />
+      <text x="80" y="28" text-anchor="middle" class="card-title">Verification</text>
+      <text x="80" y="46" text-anchor="middle" class="card-desc mono" font-size="11">Check Rules</text>
+      <path d="M 160 30 L 210 30" class="wire-active" marker-end="url(#arrow)" />
+    </g>
+
+    <!-- State -->
+    <g transform="translate(880, 20)">
+      <rect class="node" width="120" height="60" stroke="#ffffff" />
+      <text x="60" y="28" text-anchor="middle" class="card-title">State</text>
+      <text x="60" y="46" text-anchor="middle" class="card-desc mono" font-size="11">PROGRESS</text>
+    </g>
+  </g>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- FOOTER -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <g transform="translate(100, 1480)">
+    <!-- Metadata pills -->
+    <g>
+      <rect class="pill" width="120" height="32" />
+      <text x="60" y="20" text-anchor="middle" class="mono" font-size="11" fill="#a1a1aa">0 DEPENDENCIES</text>
+    </g>
+    <g transform="translate(132, 0)">
+      <rect class="pill" width="100" height="32" />
+      <text x="50" y="20" text-anchor="middle" class="mono" font-size="11" fill="#a1a1aa">NODE.JS 16+</text>
+    </g>
+    <g transform="translate(244, 0)">
+      <rect class="pill" width="160" height="32" />
+      <text x="80" y="20" text-anchor="middle" class="mono" font-size="11" fill="#a1a1aa">PURE MARKDOWN STATE</text>
+    </g>
+    
+    <text x="1000" y="20" text-anchor="end" class="mono" font-size="11" fill="#52525b">ai-checkpoint v1.1 // designed by Antigravity</text>
+  </g>
+
+</svg>

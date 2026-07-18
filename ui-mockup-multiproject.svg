@@ -1,0 +1,230 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', sans-serif">
+  <defs>
+    <!-- Dark base background -->
+    <rect id="bg" width="1400" height="900" fill="#09090b" />
+    
+    <!-- Gradients -->
+    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+
+    <linearGradient id="successGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10b981" />
+      <stop offset="100%" stop-color="#059669" />
+    </linearGradient>
+
+    <!-- UI Elements -->
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="16" stdDeviation="24" flood-color="#000000" flood-opacity="0.8" />
+    </filter>
+
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <style>
+    text { fill: #ffffff; }
+    .text-sub { fill: #a1a1aa; }
+    .text-dim { fill: #52525b; }
+    
+    .font-mono { font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace; }
+    .font-bold { font-weight: 600; }
+    .font-black { font-weight: 900; letter-spacing: -1px; }
+    
+    .panel { fill: #18181b; stroke: #27272a; stroke-width: 1.5; rx: 16; ry: 16; }
+    .button-primary { fill: url(#brandGrad); rx: 8; ry: 8; }
+    .button-outline { fill: transparent; stroke: #3f3f46; stroke-width: 1; rx: 8; ry: 8; }
+  </style>
+
+  <!-- Background -->
+  <use href="#bg" />
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-opacity="0.03" />
+  </pattern>
+  <rect width="1400" height="900" fill="url(#grid)" />
+
+  <!-- APP CONTAINER -->
+  <g transform="translate(40, 40)" filter="url(#shadow)">
+    <!-- App Outline -->
+    <rect width="1320" height="820" rx="20" fill="#09090b" stroke="#27272a" stroke-width="1.5" />
+    
+    <!-- Window Controls -->
+    <circle cx="28" cy="28" r="6" fill="#ef4444" />
+    <circle cx="48" cy="28" r="6" fill="#eab308" />
+    <circle cx="68" cy="28" r="6" fill="#22c55e" />
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- LEFT SIDEBAR: MULTI-PROJECT MANAGER -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <g transform="translate(0, 60)">
+      <line x1="320" y1="0" x2="320" y2="760" stroke="#27272a" stroke-width="1.5" />
+      
+      <!-- Brand -->
+      <text x="24" y="30" font-size="20" class="font-black">ai-checkpoint</text>
+      <text x="24" y="46" font-size="11" class="text-sub font-mono">Control Center v2.0</text>
+      
+      <!-- ADD NEW PROJECT BUTTON -->
+      <g transform="translate(24, 80)">
+        <rect width="272" height="40" class="button-primary" filter="url(#glow)"/>
+        <rect width="272" height="40" class="button-primary" />
+        <text x="136" y="25" font-size="14" class="font-bold" text-anchor="middle">➕ Initialize New Project Folder</text>
+      </g>
+
+      <text x="24" y="156" font-size="11" class="font-bold text-sub" letter-spacing="1">ACTIVE WORKSPACES (8)</text>
+
+      <!-- PROJECT LIST -->
+      <g transform="translate(16, 170)">
+        
+        <!-- Project 1 (Active) -->
+        <g transform="translate(0, 0)">
+          <rect width="288" height="64" rx="12" fill="#27272a" stroke="#3b82f6" stroke-width="1.5" />
+          <!-- Neon dot -->
+          <circle cx="24" cy="32" r="4" fill="#3b82f6" filter="url(#glow)" />
+          
+          <text x="40" y="28" font-size="14" class="font-bold">E-commerce API</text>
+          <text x="270" y="28" font-size="12" class="font-bold text-sub" text-anchor="end">75%</text>
+          <text x="40" y="46" font-size="11" class="font-mono text-sub">~/projects/ecom-api</text>
+          
+          <!-- Mini Progress Bar -->
+          <rect x="40" y="52" width="230" height="4" rx="2" fill="#09090b" />
+          <rect x="40" y="52" width="170" height="4" rx="2" fill="#3b82f6" />
+        </g>
+
+        <!-- Project 2 -->
+        <g transform="translate(0, 72)">
+          <rect width="288" height="64" rx="12" fill="transparent" stroke="transparent" />
+          <circle cx="24" cy="32" r="4" fill="#10b981" />
+          <text x="40" y="28" font-size="14" class="font-bold text-sub">AI Dashboard UI</text>
+          <text x="270" y="28" font-size="12" class="font-bold text-sub" text-anchor="end">100%</text>
+          <text x="40" y="46" font-size="11" class="font-mono text-dim">~/workspace/ai-ui</text>
+        </g>
+
+        <!-- Project 3 -->
+        <g transform="translate(0, 144)">
+          <rect width="288" height="64" rx="12" fill="transparent" stroke="transparent" />
+          <circle cx="24" cy="32" r="4" fill="#f59e0b" />
+          <text x="40" y="28" font-size="14" class="font-bold text-sub">CRM Backend</text>
+          <text x="270" y="28" font-size="12" class="font-bold text-sub" text-anchor="end">12%</text>
+          <text x="40" y="46" font-size="11" class="font-mono text-dim">~/dev/clients/crm-node</text>
+        </g>
+
+        <!-- Project 4 -->
+        <g transform="translate(0, 216)">
+          <rect width="288" height="64" rx="12" fill="transparent" stroke="transparent" />
+          <circle cx="24" cy="32" r="4" fill="#71717a" />
+          <text x="40" y="28" font-size="14" class="font-bold text-sub">Personal Blog</text>
+          <text x="270" y="28" font-size="12" class="font-bold text-sub" text-anchor="end">Paused</text>
+          <text x="40" y="46" font-size="11" class="font-mono text-dim">~/blog-nextjs</text>
+        </g>
+        
+        <!-- (Other projects visually fade out) -->
+        <g transform="translate(0, 288)" opacity="0.5">
+          <circle cx="24" cy="32" r="4" fill="#71717a" />
+          <text x="40" y="28" font-size="14" class="font-bold text-sub">Payment Webhook</text>
+          <text x="40" y="46" font-size="11" class="font-mono text-dim">~/stripe-service</text>
+        </g>
+      </g>
+    </g>
+
+    <!-- ══════════════════════════════════════════════════════ -->
+    <!-- MAIN CONTENT AREA (FOR SELECTED PROJECT) -->
+    <!-- ══════════════════════════════════════════════════════ -->
+    <g transform="translate(320, 60)">
+      
+      <!-- TOP HEADER (Path & Status) -->
+      <g transform="translate(40, 20)">
+        <text y="14" font-size="28" class="font-bold">E-commerce API</text>
+        
+        <!-- Folder Path Tag -->
+        <rect x="0" y="26" width="180" height="24" rx="6" fill="#18181b" stroke="#3f3f46" stroke-width="1" />
+        <text x="10" y="42" font-size="12" class="font-mono text-sub">📁 ~/projects/ecom-api</text>
+
+        <rect x="190" y="26" width="110" height="24" rx="6" fill="#10b981" fill-opacity="0.1" stroke="#10b981" stroke-opacity="0.3" />
+        <text x="245" y="42" font-size="11" class="font-bold text-success" text-anchor="middle">INSTALLED ✅</text>
+        
+        <!-- Status Right -->
+        <text x="920" y="20" font-size="14" class="text-sub" text-anchor="end">AI Agent: <tspan fill="#ffffff" class="font-bold">Running</tspan></text>
+        <circle cx="940" cy="15" r="4" fill="#3b82f6" filter="url(#glow)"/>
+      </g>
+
+      <line x1="40" y1="80" x2="960" y2="80" stroke="#27272a" stroke-width="1.5" />
+
+      <!-- SPLIT VIEW: FILES & LOGS -->
+      <!-- Left: File System State -->
+      <g transform="translate(40, 110)">
+        <text x="0" y="10" font-size="14" class="font-bold">Project State (.agents &amp; plan)</text>
+        
+        <rect y="30" width="340" height="420" class="panel" />
+        
+        <g transform="translate(20, 60)">
+          <!-- .agents folder -->
+          <text x="0" y="0" font-size="13" class="font-mono text-sub">📁 .agents/</text>
+          <text x="20" y="24" font-size="13" class="font-mono text-sub">📄 AGENTS.md</text>
+          <text x="20" y="48" font-size="13" class="font-mono text-sub">📄 RULES.md</text>
+          <text x="20" y="72" font-size="13" class="font-mono" fill="#10b981">📄 PROGRESS.md (Updated 2m ago)</text>
+          <text x="20" y="96" font-size="13" class="font-mono text-sub">📁 scripts/</text>
+          <text x="40" y="120" font-size="13" class="font-mono text-sub">📄 ledger.cjs</text>
+          
+          <!-- plan folder -->
+          <text x="0" y="160" font-size="13" class="font-mono text-sub">📁 plan/</text>
+          <text x="20" y="184" font-size="13" class="font-mono text-sub">📝 01-database.md <tspan fill="#10b981">✓</tspan></text>
+          <text x="20" y="208" font-size="13" class="font-mono" fill="#3b82f6">📝 02-auth-api.md ⏳</text>
+          <text x="20" y="232" font-size="13" class="font-mono text-sub">📝 03-payments.md</text>
+          <text x="20" y="256" font-size="13" class="font-mono text-sub">📁 drafts/</text>
+        </g>
+      </g>
+
+      <!-- Right: Live Execution Logs for THIS project -->
+      <g transform="translate(410, 110)">
+        <text x="0" y="10" font-size="14" class="font-bold">Terminal Logs (~/projects/ecom-api)</text>
+        
+        <rect y="30" width="550" height="420" fill="#000000" stroke="#27272a" stroke-width="1.5" rx="16" ry="16" />
+        
+        <g transform="translate(20, 60)" class="font-mono" font-size="12">
+          <text y="0" fill="#a1a1aa">$ ./l start 2.1</text>
+          <text y="24" fill="#3b82f6">[SYSTEM] Checking plan: plan/02-auth-api.md</text>
+          <text y="48" fill="#3b82f6">[SYSTEM] Created src/controllers/auth.ts</text>
+          <text y="72" fill="#10b981">[AI] Writing login handler logic...</text>
+          <text y="96" fill="#a1a1aa">...</text>
+          <text y="120" fill="#a1a1aa">$ ./l c 2.1 "Implemented JWT Login"</text>
+          
+          <text y="152" fill="#10b981">✓ File exists: src/controllers/auth.ts</text>
+          <text y="176" fill="#10b981">✓ File is not empty</text>
+          <text y="200" fill="#10b981">✓ Updated .agents/PROGRESS.md</text>
+          
+          <text y="236" fill="#34d399" font-weight="bold">✅ Step 2.1 Complete — "Implemented JWT Login"</text>
+          <text y="260" fill="#d4d4d8">📊 Progress: 18/24 steps (75%)</text>
+          
+          <text y="296" fill="#a1a1aa">$ ./l start 2.2</text>
+          <!-- Cursor -->
+          <rect x="130" y="286" width="8" height="12" fill="#ffffff" />
+        </g>
+      </g>
+      
+      <!-- BOTTOM: QUICK ACTIONS -->
+      <g transform="translate(40, 560)">
+        <rect width="920" height="120" class="panel" />
+        <text x="24" y="36" font-size="16" class="font-bold">Project Quick Actions</text>
+        
+        <!-- Action Buttons -->
+        <g transform="translate(24, 60)">
+          <rect width="140" height="36" class="button-outline" />
+          <text x="70" y="23" font-size="13" text-anchor="middle">Open in VS Code</text>
+          
+          <rect x="160" width="140" height="36" class="button-outline" />
+          <text x="230" y="23" font-size="13" text-anchor="middle">View PROGRESS.md</text>
+
+          <rect x="320" width="140" height="36" class="button-outline" stroke="#ef4444" />
+          <text x="390" y="23" font-size="13" text-anchor="middle" fill="#ef4444">Rollback Last Step</text>
+        </g>
+      </g>
+
+    </g>
+  </g>
+</svg>

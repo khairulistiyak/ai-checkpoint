@@ -10,7 +10,7 @@
 # Usage: bash /path/to/ai-checkpoint/setup.sh
 # ═══════════════════════════════════════════════════════════════════════
 
-set -e
+set -euo pipefail
 
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -48,10 +48,10 @@ chmod +x "$PROJECT_DIR/l"
 # 4. Copy system files to .agents/ (NOT plan/)
 copy_if_new() {
   if [ -f "$2" ]; then
-    echo -e "  ${YELLOW}⚠ $(basename $2) already exists — skip${NC}"
+    echo -e "  ${YELLOW}⚠ $(basename "$2") already exists — skip${NC}"
   else
     cp "$1" "$2"
-    echo -e "  ${GREEN}✔ Created $(basename $2)${NC}"
+    echo -e "  ${GREEN}✔ Created $(basename "$2")${NC}"
   fi
 }
 

@@ -1,22 +1,30 @@
 #!/usr/bin/env node
+'use strict';
+
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled rejection:', err);
+  process.exit(1);
+});
 
 /**
  * ai-checkpoint CLI Tool (v5.0)
- * 
+ *
  * CLEAN STRUCTURE:
  *   .agents/  → system files (PROGRESS, RULES, scripts)
  *   plan/     → ONLY user's .md plan files (clean!)
- * 
+ *
  * Usage:
  *   ./l                     → Dashboard
  *   ./l start <step>        → Initialize step
  *   ./l c <step> "note"     → Complete step
  *   ./l v                   → Validate
+ *   ./l doctor              → Health check
  *   ./l h                   → Help
  */
 
 const fs = require('fs');
 const path = require('path');
+const { execSync } = require('child_process');
 
 // ═══════════════════════════════════════════════════════════════════════
 // PATHS — System files in .agents/, plans in plan/
@@ -74,7 +82,8 @@ ${colors.bright}Commands:${colors.reset}
   ${colors.green}./l${colors.reset}                      Dashboard
   ${colors.green}./l start <step>${colors.reset}          Step শুরু করো
   ${colors.green}./l c <step> "note"${colors.reset}       Step complete করো
-  ${colors.green}./l v${colors.reset}                     Validate sync
+  ${colors.green}./l v${colors.reset}                     Validate (sync + files + 150-line)
+  ${colors.green}./l doctor${colors.reset}                Health check
   ${colors.green}./l h${colors.reset}                     Help
 
 ${colors.bright}Plan File Naming:${colors.reset}
@@ -94,6 +103,31 @@ function checkFiles() {
     log.info(`Run the setup script first: bash /path/to/checkpoint-task-ledger/setup.sh`);
     process.exit(1);
   }
+}
+
+function doctorCommand() {
+  const required = [
+    ['.agents/', AGENTS_DIR, 'directory'],
+    ['.agents/PROGRESS.md', PROGRESS_PATH, 'file'],
+    ['.agents/RULES.md', path.join(AGENTS_DIR, 'RULES.md'), 'file'],
+    ['.agents/AGENTS.md', path.join(AGENTS_DIR, 'AGENTS.md'), 'file'],
+    ['plan/', PLAN_DIR, 'directory'],
+    ['.git/', path.join(process.cwd(), '.git'), 'directory']
+  ];
+  const errors = required.flatMap(([label, target, type]) => {
+    if (!fs.existsSync(target)) return [`❌ Missing ${label}`];
+    const validType = type === 'directory' ? fs.statSync(target).isDirectory() : fs.statSync(target).isFile();
+    return validType ? [] : [`❌ Invalid ${label}`];
+  });
+  if (fs.existsSync(PROGRESS_PATH)) {
+    const progress = fs.readFileSync(PROGRESS_PATH, 'utf8');
+    if (!/^#\s+.+/m.test(progress) || !/^##\s+Project/m.test(progress)) errors.push('❌ Invalid .agents/PROGRESS.md');
+  }
+  if (errors.length) {
+    errors.forEach(error => console.error(error));
+    process.exit(1);
+  }
+  console.log('✅ All checks passed');
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -199,7 +233,7 @@ function findStepInPlanFiles(stepNum) {
     const pfPath = path.join(PLAN_DIR, pf);
     const pfContent = fs.readFileSync(pfPath, 'utf8');
     const pfLines = pfContent.split(/\r?\n/);
-    const hasStep = pfLines.some(line => line.startsWith(`### Step ${stepNum} `) || line.startsWith(`### Step ${stepNum} —`));
+    const hasStep = pfLines.some(line => /^#{2,3}\s+Step\s+/.test(line) && line.includes(stepNum));
     if (hasStep) return { planLines: pfLines, foundFile: pf };
   }
   return { planLines: [], foundFile: null };
@@ -287,11 +321,11 @@ function startCommand(stepNum) {
 
   let fileLine = "", actionLine = "", insideStep = false;
   for (const line of planLines) {
-    if (line.startsWith(`### Step ${stepNum} `) || line.startsWith(`### Step ${stepNum} —`)) { insideStep = true; continue; }
-    if (insideStep && line.startsWith('### ')) break;
+    if (/^#{2,3}\s+Step\s+/.test(line) && line.includes(stepNum)) { insideStep = true; continue; }
+    if (insideStep && /^#{2,3}\s+Step\s+/.test(line)) break;
     if (insideStep) {
-      if (line.includes('**File**:')) fileLine = line;
-      if (line.includes('**Action**:')) actionLine = line;
+      if (/^\s*-\s*\*\*File:?\*\*:?\s+/.test(line)) fileLine = line;
+      if (/^\s*-\s*\*\*Action:?\*\*:?\s+/.test(line)) actionLine = line;
     }
   }
 
@@ -301,7 +335,7 @@ function startCommand(stepNum) {
       const filePath = fileMatches[1].trim();
       const targetAbsPath = path.join(process.cwd(), filePath);
       let action = 'create';
-      if (actionLine) { const m = actionLine.match(/\*\*Action\*\*:\s*\[?(.*?)\]?$/i); if (m) action = m[1].trim().toLowerCase(); }
+      if (actionLine) { const m = actionLine.match(/\*\*Action:?\*\*:?\s*\[?(.*?)\]?$/i); if (m) action = m[1].trim().toLowerCase(); }
       
       if ((action.includes('modify') || action.includes('update')) && fs.existsSync(targetAbsPath)) {
         log.info(`File exists, action is "${action}". Skipping boilerplate.`);
@@ -343,7 +377,9 @@ function completeCommand(stepNum, comment) {
   for (const p of phases) { const s = p.steps.find(st => st.number === stepNum); if (s) { targetStep = s; targetPhase = p; break; } }
   if (!targetStep) { log.error(`Step ${stepNum} not found!`); process.exit(1); }
   if (targetStep.status === 'done') { log.warn(`Already completed.`); process.exit(0); }
-  
+
+  validateCommand();
+
   // Verify
   const v = verifyTargetFile(targetStep.title);
   if (!v.verified) {
@@ -417,41 +453,76 @@ function completeCommand(stepNum, comment) {
 function validateCommand() {
   checkFiles();
   const planFiles = getPlanFiles();
-  if (planFiles.length === 0) { log.warn(`plan/ folder এ কোনো .md file নেই। Plan add করো।`); return; }
-  
-  log.header("Validating Ledger Alignment");
-  
-  const { phases } = parseProgress();
-  const progressSteps = {};
-  phases.forEach(p => p.steps.forEach(s => { progressSteps[s.number] = s.title; }));
-  
-  let mismatches = 0;
-  
-  planFiles.forEach(pf => {
-    const content = fs.readFileSync(path.join(PLAN_DIR, pf), 'utf8');
-    log.info(`Scanning: plan/${pf}`);
-    content.split(/\r?\n/).forEach(line => {
-      const m = line.match(/^###\s*Step\s*(\d+\.\d+)\s*—\s*(.*)$/);
-      if (m) {
-        if (!progressSteps[m[1]]) { log.error(`Step ${m[1]} ("${m[2]}") in plan MISSING in PROGRESS.md!`); mismatches++; }
-        else delete progressSteps[m[1]];
-      }
-    });
-  });
-  
-  Object.keys(progressSteps).forEach(num => { log.error(`Step ${num} in PROGRESS.md MISSING in plan files!`); mismatches++; });
-  
-  console.log("");
-  if (mismatches === 0) {
-    console.log(`${colors.green}┌${'─'.repeat(74)}┐`);
-    console.log("│                  ✅  PLAN VALIDATION PASSED  ✅                         │");
-    console.log(`└${'─'.repeat(74)}┘${colors.reset}\n`);
-  } else {
-    console.log(`${colors.red}┌${'─'.repeat(74)}┐`);
-    console.log(`│                  ❌  ${mismatches} MISMATCH(ES) FOUND  ❌                          │`);
-    console.log(`└${'─'.repeat(74)}┘${colors.reset}\n`);
+  if (planFiles.length === 0) {
+    log.error('No plan/*.md files found.');
     process.exit(1);
   }
+
+  log.header('Validating Project');
+  const { phases } = parseProgress();
+  const progressSteps = new Map();
+  phases.forEach(phase => phase.steps.forEach(step => progressSteps.set(step.number, step)));
+  const planSteps = new Map();
+  let failures = 0;
+
+  planFiles.forEach(planFile => {
+    const lines = fs.readFileSync(path.join(PLAN_DIR, planFile), 'utf8').split(/\r?\n/);
+    let currentStep = null;
+    lines.forEach(line => {
+      const heading = line.match(/^#{2,3}\s+Step\s+(\d+\.\d+)\s+—\s+(.+)$/);
+      if (heading) {
+        currentStep = { number: heading[1], title: heading[2], file: null, planFile };
+        if (planSteps.has(currentStep.number)) {
+          log.error(`Duplicate Step ${currentStep.number} in plan/${planFile}`);
+          failures++;
+        }
+        planSteps.set(currentStep.number, currentStep);
+        return;
+      }
+      if (!currentStep) return;
+      const file = line.match(/^-\s+\*\*File:?\*\*:?\s+`([^`]+)`/);
+      if (file) currentStep.file = file[1];
+    });
+  });
+
+  planSteps.forEach((step, number) => {
+    if (!progressSteps.has(number)) {
+      log.error(`Step ${number} in plan/${step.planFile} missing in PROGRESS.md`);
+      failures++;
+    }
+  });
+  progressSteps.forEach((step, number) => {
+    const planStep = planSteps.get(number);
+    if (!planStep) {
+      log.error(`Step ${number} in PROGRESS.md missing in plan files`);
+      failures++;
+      return;
+    }
+    if (!planStep.file) {
+      log.error(`Step ${number} has no declared File`);
+      failures++;
+      return;
+    }
+    const target = path.join(process.cwd(), planStep.file);
+    if (step.status === 'done' && !fs.existsSync(target)) {
+      log.error(`${planStep.file} missing for completed Step ${number}`);
+      failures++;
+      return;
+    }
+    if (!fs.existsSync(target) || planStep.file.startsWith('.agents/')) return;
+    const effectiveLines = fs.readFileSync(target, 'utf8').split(/\r?\n/)
+      .filter(line => line.trim() && !/^\s*(\/\/|#(?!\!)|\/\*|\*|<!--)/.test(line)).length;
+    if (effectiveLines > 150) {
+      log.error(`${planStep.file} exceeds 150 lines (${effectiveLines} lines)`);
+      failures++;
+    }
+  });
+
+  if (failures) {
+    log.error(`Validation failed with ${failures} error(s)`);
+    process.exit(1);
+  }
+  log.success('Validation passed');
 }
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -461,10 +532,11 @@ const args = process.argv.slice(2);
 const cmd = args[0] ? args[0].toLowerCase() : 'status';
 
 switch (cmd) {
-  case 'help': case '-h': case 'h': showHelp(); break;
+  case 'help': case '--help': case '-h': case 'h': showHelp(); break;
   case 'status': case 's': statusCommand(); break;
   case 'start': startCommand(args[1]); break;
   case 'complete': case 'c': completeCommand(args[1], args[2]); break;
   case 'validate': case 'v': validateCommand(); break;
+  case 'doctor': doctorCommand(); break;
   default: log.error(`Unknown: "${cmd}"`); showHelp(); process.exit(1);
 }
