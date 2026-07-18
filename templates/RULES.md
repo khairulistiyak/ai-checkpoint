@@ -43,6 +43,31 @@ project/
 
 ---
 
+## RULE 1 — Atomic Step Format
+
+Every step in `plan/*.md` must use this format:
+
+```markdown
+### Step X.Y — [Clear Title]
+- **File:** `exact/path/to/file.ext`
+- **Action:** CREATE | EDIT | DELETE
+- **Content:** [Complete code OR one unambiguous instruction]
+- **Done-check:** `exact command` → expected output
+- **Depends:** X.(Y-1) | None
+```
+
+### Forbidden Words
+Do not use: "appropriately", "as needed", "properly", "etc.", "and so on", "refactor nicely", "improve", "optimize".
+
+### Step Requirements
+1. One step = one file = one action.
+2. Done-check must be runnable and verifiable.
+3. Content is full code or has only one interpretation.
+4. If two people could implement it differently, split the step.
+5. Dependencies form a straight chain: 1.1 → 1.2 → 1.3.
+
+---
+
 ## Project Settings
 
 | Key | Value |

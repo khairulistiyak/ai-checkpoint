@@ -1,51 +1,62 @@
 # Agent Workflow Rules
 
-> Auto-loaded every session. Tells the AI agent how to work.
+> Auto-loaded every session. Follow this order exactly.
 
 ---
 
-## Before Starting Any Work
+## Before Starting
 
-1. Read `.agents/PROGRESS.md` — know what's done and what's next
-2. Read `.agents/RULES.md` — know the coding conventions
-3. Find the next pending step in `plan/*.md`
-4. Start working
+1. Read `.agents/PROGRESS.md`.
+2. Read `.agents/RULES.md`.
+3. Find the next pending step in `plan/*.md`.
+4. Confirm the step has File, Action, Content, Done-check, and Depends.
+5. Run `./l start X.Y`.
 
----
+## Strict Loop
+
+1. Read one step only.
+2. Change the one declared file only.
+3. Run the declared Done-check.
+4. If it fails, fix the same file and run it once more.
+5. If it fails twice, mark the step BLOCKED and stop.
+6. Run `./l v`.
+7. Fix validation failures without changing step scope.
+8. Run `./l c X.Y "note"`.
+9. Report completion and stop before the next step.
 
 ## Rules
 
-- **1 step = 1 file** — finish one before starting the next
-- **Start**: `./l start X.Y` — creates files, marks running
-- **Complete**: `./l c X.Y "note"` — verifies, marks done
-- **Never skip** steps or redo completed ones
-- **Never auto-execute** files in `plan/drafts/`
-- **On error**: fix in the same step, don't create new ones
+- One step = one file = one action.
+- Never skip or redo completed steps.
+- Never execute `plan/drafts/`.
+- Never guess missing requirements; mark BLOCKED.
+- Never add features or refactors outside the step.
+- Never complete a step when Done-check or `./l v` fails.
 
-## Checkpoint Workflow
+## Checkpoints
 
-- **After risky changes:** Run `./l cp save "description"` to create recovery point
-- **Before complex refactoring:** Always checkpoint first
-- **On failure:** Use `./l cp back` to recover last known-good state
-- **Checkpoints require validation:** You cannot save a checkpoint if `./l v` fails
+- Before risky changes: `./l cp save "description"`.
+- After a complex verified step: `./l cp save "description"`.
+- On failure: `./l cp back --force <tag>`.
+- Checkpoint save requires `./l v` to pass.
 
-Example flow:
+## Completion Report
+
+```text
+Step X.Y complete — [title]
+File: [path]
+Done-check: passed
+Validation: passed
+Progress: X/Y
+Next: Step X.Y — [title]
 ```
-./l start 2.3
-# ... make changes ...
-./l v                          # validate first
-./l cp save "refactored auth"  # only if validation passes
-./l c 2.3 "done"
-```
 
----
+## Blocked Report
 
-## After Each Step
-
-Report to the user:
-```
-✅ Step X.Y Complete — [title]
-📁 File: [path]
-📊 Progress: X/Y steps
-👉 Next: Step X.Y — [title]
+```text
+Step X.Y BLOCKED — [title]
+File: [path]
+Done-check failed twice: [command]
+Error: [exact output]
+Required clarification: [one precise requirement]
 ```

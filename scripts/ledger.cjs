@@ -84,6 +84,8 @@ ${colors.bright}Commands:${colors.reset}
   ${colors.green}./l c <step> "note"${colors.reset}       Step complete করো
   ${colors.green}./l v${colors.reset}                     Validate (sync + files + 150-line)
   ${colors.green}./l doctor${colors.reset}                Health check
+  ${colors.green}./l new-plan <name>${colors.reset}       Create plan from template
+  ${colors.green}./l cp save|list|back${colors.reset}     Checkpoints
   ${colors.green}./l h${colors.reset}                     Help
 
 ${colors.bright}Plan File Naming:${colors.reset}
@@ -606,6 +608,27 @@ function checkpointBack(tag, force) {
   if (stashId) log.info(`Stashed changes: ${stashId} (use git stash pop to restore)`);
 }
 
+function newPlanCommand(name) {
+  if (!name || !/^[a-zA-Z0-9-]{1,50}$/.test(name)) {
+    log.error('Plan name must use 1-50 letters, numbers, or dashes');
+    process.exit(1);
+  }
+  const templatePath = path.join(process.cwd(), 'templates', 'PLAN_TEMPLATE.md');
+  const targetPath = path.join(PLAN_DIR, `${name}.md`);
+  if (!fs.existsSync(templatePath)) {
+    log.error('Missing templates/PLAN_TEMPLATE.md');
+    process.exit(1);
+  }
+  if (fs.existsSync(targetPath)) {
+    log.error(`plan/${name}.md already exists`);
+    process.exit(1);
+  }
+  fs.mkdirSync(PLAN_DIR, { recursive: true });
+  const template = fs.readFileSync(templatePath, 'utf8');
+  fs.writeFileSync(targetPath, template.replace('[Your Plan Name]', name), 'utf8');
+  log.success(`Created plan/${name}.md — edit it to add your steps`);
+}
+
 // ═══════════════════════════════════════════════════════════════════════
 // Main
 // ═══════════════════════════════════════════════════════════════════════
@@ -619,6 +642,7 @@ switch (cmd) {
   case 'complete': case 'c': completeCommand(args[1], args[2]); break;
   case 'validate': case 'v': validateCommand(); break;
   case 'doctor': doctorCommand(); break;
+  case 'new-plan': case 'np': newPlanCommand(args[1]); break;
   case 'checkpoint': case 'cp': {
     const sub = args[1];
     if (sub === 'save') checkpointSave(args[2]);

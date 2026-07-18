@@ -16,11 +16,11 @@
 ## Overall Progress
 
 ```
-[███████░░░░░░░░░░░░░] 37% (10/27 steps complete)
+[███████████░░░░░░░░░] 56% (15/27 steps complete)
 ```
 
-## 👉 NEXT: Step 3.1 — Create PLAN_TEMPLATE.md (`templates/PLAN_TEMPLATE.md`)
-> 📋 Details → `plan/` → Phase 3 → Step 3.1
+## 👉 NEXT: Step 4.1 — Make setup.sh idempotent (`setup.sh`)
+> 📋 Details → `plan/` → Phase 4 → Step 4.1
 
 ---
 
@@ -44,13 +44,13 @@
 
 ---
 
-## 🔷 Phase 3: Templates Upgrade — 🔴 0% PENDING (0/5)
+## 🔷 Phase 3: Templates Upgrade — ✅ 100% COMPLETE
 
-- [ ] **Step 3.1** — Create PLAN_TEMPLATE.md (`templates/PLAN_TEMPLATE.md`)
-- [ ] **Step 3.2** — Add `new-plan` command to CLI (`.agents/scripts/ledger.cjs`)
-- [ ] **Step 3.3** — Update AGENTS.md with strict loop (`templates/AGENTS.md`)
-- [ ] **Step 3.4** — Update RULES.md template (`templates/RULES.md`)
-- [ ] **Step 3.5** — Create example atomic plan (`examples/atomic-plan-example.md`)
+- [x] **Step 3.1** — Create PLAN_TEMPLATE.md (`templates/PLAN_TEMPLATE.md`)
+- [x] **Step 3.2** — Add `new-plan` command to CLI (`.agents/scripts/ledger.cjs`)
+- [x] **Step 3.3** — Update AGENTS.md with strict loop (`templates/AGENTS.md`)
+- [x] **Step 3.4** — Update RULES.md template (`templates/RULES.md`)
+- [x] **Step 3.5** — Create example atomic plan (`examples/atomic-plan-example.md`)
 
 ---
 
@@ -89,4 +89,9 @@ UPDATE LOG:
 [2026-07-19 05:17] Step 2.3 completed — checkpoint back successfully handles tree checkout and stash without detached HEAD | Agent: CLI
 [2026-07-19 05:18] Step 2.4 completed — AGENTS template documents checkpoint workflow | Agent: CLI
 [2026-07-19 05:18] Step 2.5 completed — SYSTEM_GUIDE checkpoint commands and instructions added | Agent: CLI
+[2026-07-19 05:28] Step 3.1 completed — atomic PLAN_TEMPLATE created | Agent: CLI
+[2026-07-19 05:35] Step 3.2 completed — new-plan command validates names and copies atomic template | Agent: CLI
+[2026-07-19 05:37] Step 3.3 completed — AGENTS template enforces strict loop and 2-strike blocking | Agent: CLI
+[2026-07-19 05:38] Step 3.4 completed — RULE 1 atomic format and forbidden language added | Agent: CLI
+[2026-07-19 05:39] Step 3.5 completed — atomic plan example documents good and bad step formats | Agent: CLI
 -->
