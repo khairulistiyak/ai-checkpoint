@@ -16,11 +16,11 @@
 ## Overall Progress
 
 ```
-[████░░░░░░░░░░░░░░░░] 19% (5/27 steps complete)
+[███████░░░░░░░░░░░░░] 37% (10/27 steps complete)
 ```
 
-## 👉 NEXT: Step 2.1 — Add `checkpoint save` command (`.agents/scripts/ledger.cjs`)
-> 📋 Details → `plan/` → Phase 2 → Step 2.1
+## 👉 NEXT: Step 3.1 — Create PLAN_TEMPLATE.md (`templates/PLAN_TEMPLATE.md`)
+> 📋 Details → `plan/` → Phase 3 → Step 3.1
 
 ---
 
@@ -34,13 +34,13 @@
 
 ---
 
-## 🔷 Phase 2: Checkpoint & Rollback — 🟡 0% IN PROGRESS (0/5)
+## 🔷 Phase 2: Checkpoint & Rollback — ✅ 100% COMPLETE
 
-- [~] **Step 2.1** — Add `checkpoint save` command (`.agents/scripts/ledger.cjs`)
-- [ ] **Step 2.2** — Add `checkpoint list` command (`.agents/scripts/ledger.cjs`)
-- [ ] **Step 2.3** — Add `checkpoint back` command (`.agents/scripts/ledger.cjs`)
-- [ ] **Step 2.4** — Update AGENTS.md with checkpoint workflow (`templates/AGENTS.md`)
-- [ ] **Step 2.5** — Add checkpoint documentation to SYSTEM_GUIDE.md (`templates/SYSTEM_GUIDE.md`)
+- [x] **Step 2.1** — Add `checkpoint save` command (`.agents/scripts/ledger.cjs`)
+- [x] **Step 2.2** — Add `checkpoint list` command (`.agents/scripts/ledger.cjs`)
+- [x] **Step 2.3** — Add `checkpoint back` command (`.agents/scripts/ledger.cjs`)
+- [x] **Step 2.4** — Update AGENTS.md with checkpoint workflow (`templates/AGENTS.md`)
+- [x] **Step 2.5** — Add checkpoint documentation to SYSTEM_GUIDE.md (`templates/SYSTEM_GUIDE.md`)
 
 ---
 
@@ -84,4 +84,9 @@ UPDATE LOG:
 [2026-07-19 03:36] Step 1.3 completed — Real validation added: file bounds, IDs, and 150-line rule; block-on-complete configured | Agent: CLI
 [2026-07-19 03:39] Step 1.4 completed — RULES template enforces micro-file monorepo and protected paths | Agent: CLI
 [2026-07-19 03:43] Step 1.5 completed — setup.sh uses set -euo pipefail and safe path quoting | Agent: CLI
+[2026-07-19 04:46] Step 2.1 completed — cp save command with validation gate and git tagging | Agent: CLI
+[2026-07-19 05:09] Step 2.2 completed — cp list shows aicp tags with messages | Agent: CLI
+[2026-07-19 05:17] Step 2.3 completed — checkpoint back successfully handles tree checkout and stash without detached HEAD | Agent: CLI
+[2026-07-19 05:18] Step 2.4 completed — AGENTS template documents checkpoint workflow | Agent: CLI
+[2026-07-19 05:18] Step 2.5 completed — SYSTEM_GUIDE checkpoint commands and instructions added | Agent: CLI
 -->

@@ -577,11 +577,14 @@ function checkpointBack(tag, force) {
   try {
     const dirty = execSync('git status --porcelain', { stdio: 'pipe' }).toString().trim();
     if (dirty) {
-      const msg = `aicp-rollback-${Math.floor(Date.now()/1000)}`;
+      const msg = `aicp-rollback-${Math.floor(Date.now() / 1000)}`;
       execSync(`git stash push -u -m "${msg}"`, { stdio: 'inherit' });
       stashId = msg;
     }
-  } catch (e) { log.error('Stash failed'); process.exit(1); }
+  } catch (e) {
+    log.error('Stash failed');
+    process.exit(1);
+  }
   if (!tag) {
     checkpointList();
     log.info('Specify tag: ./l cp back <tag>');
@@ -592,8 +595,13 @@ function checkpointBack(tag, force) {
     log.warn(`Rollback to ${tag}? Use --force to confirm.`);
     process.exit(1);
   }
-  try { execSync(`git checkout ${tag}`, { stdio: 'inherit' }); }
-  catch (e) { log.error(`Checkout failed: ${tag}`); process.exit(1); }
+  try {
+    execSync(`git rev-parse --verify "refs/tags/${tag}"^{}`, { stdio: 'pipe' });
+    execSync(`git checkout "${tag}" -- .`, { stdio: 'inherit' });
+  } catch (e) {
+    log.error(`Checkout failed: ${tag}`);
+    process.exit(1);
+  }
   log.success(`Rolled back to ${tag}`);
   if (stashId) log.info(`Stashed changes: ${stashId} (use git stash pop to restore)`);
 }
@@ -615,7 +623,11 @@ switch (cmd) {
     const sub = args[1];
     if (sub === 'save') checkpointSave(args[2]);
     else if (sub === 'list') checkpointList();
-    else if (sub === 'back') checkpointBack(args[2], args.includes('--force'));
+    else if (sub === 'back') {
+      const force = args.includes('--force');
+      const tag = args.slice(2).find(a => a !== '--force');
+      checkpointBack(tag, force);
+    }
     else { log.error('Usage: ./l cp save|list|back'); process.exit(1); }
     break;
   }

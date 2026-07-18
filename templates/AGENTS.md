@@ -22,6 +22,22 @@
 - **Never auto-execute** files in `plan/drafts/`
 - **On error**: fix in the same step, don't create new ones
 
+## Checkpoint Workflow
+
+- **After risky changes:** Run `./l cp save "description"` to create recovery point
+- **Before complex refactoring:** Always checkpoint first
+- **On failure:** Use `./l cp back` to recover last known-good state
+- **Checkpoints require validation:** You cannot save a checkpoint if `./l v` fails
+
+Example flow:
+```
+./l start 2.3
+# ... make changes ...
+./l v                          # validate first
+./l cp save "refactored auth"  # only if validation passes
+./l c 2.3 "done"
+```
+
 ---
 
 ## After Each Step
