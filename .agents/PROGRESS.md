@@ -34,9 +34,9 @@
 
 ---
 
-## 🔷 Phase 2: Checkpoint & Rollback — 🔴 0% PENDING (0/5)
+## 🔷 Phase 2: Checkpoint & Rollback — 🟡 0% IN PROGRESS (0/5)
 
-- [ ] **Step 2.1** — Add `checkpoint save` command (`.agents/scripts/ledger.cjs`)
+- [~] **Step 2.1** — Add `checkpoint save` command (`.agents/scripts/ledger.cjs`)
 - [ ] **Step 2.2** — Add `checkpoint list` command (`.agents/scripts/ledger.cjs`)
 - [ ] **Step 2.3** — Add `checkpoint back` command (`.agents/scripts/ledger.cjs`)
 - [ ] **Step 2.4** — Update AGENTS.md with checkpoint workflow (`templates/AGENTS.md`)
