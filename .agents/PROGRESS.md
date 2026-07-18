@@ -16,11 +16,11 @@
 ## Overall Progress
 
 ```
-[███████████░░░░░░░░░] 56% (15/27 steps complete)
+[████████████████░░░░] 78% (21/27 steps complete)
 ```
 
-## 👉 NEXT: Step 4.1 — Make setup.sh idempotent (`setup.sh`)
-> 📋 Details → `plan/` → Phase 4 → Step 4.1
+## 👉 NEXT: Step 5.1 — Dogfood test plan (`plan/dogfood-test.md`)
+> 📋 Details → `plan/` → Phase 5 → Step 5.1
 
 ---
 
@@ -54,14 +54,14 @@
 
 ---
 
-## 🔷 Phase 4: DX & Distribution — 🔴 0% PENDING (0/6)
+## 🔷 Phase 4: DX & Distribution — ✅ 100% COMPLETE
 
-- [ ] **Step 4.1** — Make setup.sh idempotent (`setup.sh`)
-- [ ] **Step 4.2** — Create install.sh (`install.sh`)
-- [ ] **Step 4.3** — Add comprehensive walkthrough (`examples/walkthrough.md`)
-- [ ] **Step 4.4** — Add shellcheck CI workflow (`.github/workflows/shellcheck.yml`)
-- [ ] **Step 4.5** — Create CHANGELOG.md (`CHANGELOG.md`)
-- [ ] **Step 4.6** — Update README.md with quickstart (`README.md`)
+- [x] **Step 4.1** — Make setup.sh idempotent (`setup.sh`)
+- [x] **Step 4.2** — Create install.sh (`install.sh`)
+- [x] **Step 4.3** — Add comprehensive walkthrough (`examples/walkthrough.md`)
+- [x] **Step 4.4** — Add shellcheck CI workflow (`.github/workflows/shellcheck.yml`)
+- [x] **Step 4.5** — Create CHANGELOG.md (`CHANGELOG.md`)
+- [x] **Step 4.6** — Update README.md with quickstart (`README.md`)
 
 ---
 
@@ -94,4 +94,10 @@ UPDATE LOG:
 [2026-07-19 05:37] Step 3.3 completed — AGENTS template enforces strict loop and 2-strike blocking | Agent: CLI
 [2026-07-19 05:38] Step 3.4 completed — RULE 1 atomic format and forbidden language added | Agent: CLI
 [2026-07-19 05:39] Step 3.5 completed — atomic plan example documents good and bad step formats | Agent: CLI
+[2026-07-19 05:44] Step 4.1 completed — setup now prompts before reinstalling | Agent: CLI
+[2026-07-19 05:46] Step 4.2 completed — one-line installer with real github remote | Agent: CLI
+[2026-07-19 05:48] Step 4.3 completed — micro-file TODO walkthrough added | Agent: CLI
+[2026-07-19 05:49] Step 4.4 completed — GitHub CI validates shell scripts on macOS and Linux | Agent: CLI
+[2026-07-19 05:49] Step 4.5 completed — semver CHANGELOG written | Agent: CLI
+[2026-07-19 05:51] Step 4.6 completed — README now documents 60-second setup, RULE 0/1, and recovery | Agent: CLI
 -->

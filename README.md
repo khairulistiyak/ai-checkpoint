@@ -18,6 +18,38 @@ Works with Gemini, GPT, Claude, Copilot — any AI with file access.
 
 </div>
 
+## 60-Second Quickstart
+
+```bash
+mkdir my-project && cd my-project
+git init
+curl -fsSL https://raw.githubusercontent.com/khairulistiyak/ai-checkpoint/main/install.sh | bash
+
+./l new-plan my-feature
+# Edit plan/my-feature.md using its atomic-step template.
+# Copy its steps into .agents/PROGRESS.md.
+./l start 1.1
+./l v
+./l c 1.1 "done"
+./l cp save "feature complete"
+```
+
+### RULE 0: Micro-Files
+
+One file has one job and stays within 150 effective lines. Import modules through their `index.js` barrel.
+
+### RULE 1: Atomic Steps
+
+Every plan step declares exactly one File, Action, Content, Done-check, and Depends value. Ambiguous work is a BLOCKED step, not a guess.
+
+### Recovery
+
+`./l cp save "message"` saves a validated Git checkpoint. `./l cp list` displays tags. `./l cp back --force <tag>` restores a checkpoint after auto-stashing local work.
+
+- [Walkthrough](examples/walkthrough.md)
+- [Atomic plan example](examples/atomic-plan-example.md)
+- [System guide](templates/SYSTEM_GUIDE.md)
+
 ---
 
 ## Why?

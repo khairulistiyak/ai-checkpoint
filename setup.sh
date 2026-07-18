@@ -21,6 +21,15 @@ BOLD='\033[1m'
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(pwd)"
 
+if [ -f "$PROJECT_DIR/l" ] && [ -d "$PROJECT_DIR/.agents" ]; then
+  echo -e "${YELLOW}ai-checkpoint is already installed.${NC}"
+  read -r -p "Update system files and preserve project data? [y/N] " REPLY
+  if [[ ! "$REPLY" =~ ^[Yy]$ ]]; then
+    echo "Cancelled."
+    exit 0
+  fi
+fi
+
 echo ""
 echo -e "${BOLD}${CYAN}┌──────────────────────────────────────────────────────┐${NC}"
 echo -e "${BOLD}${CYAN}│   🧠 ai-checkpoint — Setup                           │${NC}"
