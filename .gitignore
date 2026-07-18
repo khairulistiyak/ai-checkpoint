@@ -1,3 +1,19 @@
-node_modules/
+# macOS
 .DS_Store
+._*
+
+# Node
+node_modules/
+npm-debug.log
+
+# Test artifacts
+/tmp/
 *.log
+
+# User data (don't commit their work)
+data/
+*.bak
+
+# Keep structure
+!.agents/.gitkeep
+!plan/.gitkeep
