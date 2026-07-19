@@ -186,10 +186,15 @@ router.get('/projects', (req, res) => {
   const enriched = settings.projects.map(p => {
     const isInstalled = fs.existsSync(path.join(p.path, '.agents', 'PROGRESS.md'));
     let progress = null;
+    let hasPlanFiles = false;
     if (isInstalled) {
       progress = parseProgress(p.path);
+      const planDir = path.join(p.path, 'plan');
+      if (fs.existsSync(planDir)) {
+        hasPlanFiles = fs.readdirSync(planDir).some(f => f.endsWith('.md') && !f.startsWith('.') && fs.statSync(path.join(planDir, f)).isFile());
+      }
     }
-    return { ...p, isInstalled, progress };
+    return { ...p, isInstalled, progress, hasPlanFiles };
   });
   res.json(enriched);
 });
@@ -201,9 +206,16 @@ router.get('/projects/:id', (req, res) => {
   
   const isInstalled = fs.existsSync(path.join(project.path, '.agents', 'PROGRESS.md'));
   let progress = null;
-  if (isInstalled) progress = parseProgress(project.path);
+  let hasPlanFiles = false;
+  if (isInstalled) {
+    progress = parseProgress(project.path);
+    const planDir = path.join(project.path, 'plan');
+    if (fs.existsSync(planDir)) {
+      hasPlanFiles = fs.readdirSync(planDir).some(f => f.endsWith('.md') && !f.startsWith('.') && fs.statSync(path.join(planDir, f)).isFile());
+    }
+  }
   
-  res.json({ ...project, isInstalled, progress });
+  res.json({ ...project, isInstalled, progress, hasPlanFiles });
 });
 
 router.post('/projects/:id/install', (req, res) => {
@@ -329,7 +341,16 @@ router.post('/projects/:id/command', (req, res) => {
     }
     res.json({ success: true });
   } catch (e) {
-    res.status(500).json({ error: e.message || 'Command failed' });
+    let errorMessage = 'Command execution failed';
+    if (e.stdout && e.stdout.toString().trim()) {
+      const lines = e.stdout.toString().trim().split('\n');
+      errorMessage = lines[lines.length - 1].replace(/\x1b\[[0-9;]*m/g, '').trim(); // Strip ANSI codes
+    } else if (e.stderr && e.stderr.toString().trim()) {
+      errorMessage = e.stderr.toString().trim();
+    } else if (e.message) {
+      errorMessage = e.message;
+    }
+    res.status(500).json({ error: errorMessage });
   }
 });
 

@@ -64,7 +64,14 @@ export async function executeCommand(id, command, step, message) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ command, step, message })
   });
-  if (!res.ok) throw new Error('Command execution failed');
+  if (!res.ok) {
+    let errorMsg = 'Command execution failed';
+    try {
+      const data = await res.json();
+      if (data.error) errorMsg = data.error;
+    } catch (e) {}
+    throw new Error(errorMsg);
+  }
   return res.json();
 }
 

@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 import { useToast } from './ToastProvider';
 import * as api from '../utils/api';
 
-export default function StepItem({ step, index, projectId, onRefresh }) {
+export default function StepItem({ step, index, projectId, hasPlanFiles, onRefresh }) {
   const { showToast } = useToast();
   const [executing, setExecuting] = useState(false);
   let Icon = Circle;
@@ -84,20 +84,20 @@ export default function StepItem({ step, index, projectId, onRefresh }) {
       <div className="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
         {step.status !== 'running' && step.status !== 'done' && (
           <button 
-            disabled={executing}
+            disabled={executing || hasPlanFiles === false}
             onClick={() => handleCommand('start')}
-            className="p-2 bg-primary-500/20 text-primary-300 rounded-lg hover:bg-primary-500 hover:text-white transition-colors border border-primary-500/30"
-            title="Start Step"
+            className={`p-2 rounded-lg transition-colors border ${hasPlanFiles === false ? 'bg-slate-800 text-slate-500 border-slate-700 cursor-not-allowed' : 'bg-primary-500/20 text-primary-300 hover:bg-primary-500 hover:text-white border-primary-500/30'}`}
+            title={hasPlanFiles === false ? "Generate a plan using the ai-checkpoint CLI first" : "Start Step"}
           >
             <Play className="w-4 h-4" />
           </button>
         )}
         {step.status === 'running' && (
           <button 
-            disabled={executing}
+            disabled={executing || hasPlanFiles === false}
             onClick={() => handleCommand('complete')}
-            className="p-2 bg-emerald-500/20 text-emerald-300 rounded-lg hover:bg-emerald-500 hover:text-white transition-colors border border-emerald-500/30"
-            title="Complete Step"
+            className={`p-2 rounded-lg transition-colors border ${hasPlanFiles === false ? 'bg-slate-800 text-slate-500 border-slate-700 cursor-not-allowed' : 'bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500 hover:text-white border-emerald-500/30'}`}
+            title={hasPlanFiles === false ? "Generate a plan using the ai-checkpoint CLI first" : "Complete Step"}
           >
             <Check className="w-4 h-4" />
           </button>

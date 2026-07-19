@@ -47,15 +47,15 @@ export default function GitVisualizer({ projectId, onRefresh }) {
 
   if (checkpoints.length === 0) {
     return (
-      <div className="glass-card p-8 text-center text-slate-400 border-dashed border-slate-700 h-full flex items-center justify-center">
+      <div className="h-full flex items-center justify-center p-8 text-center text-slate-400 italic">
         No checkpoints found. Ensure you are using `aicp/` or `checkpoint:` tags.
       </div>
     );
   }
 
   return (
-    <div className="glass-card p-6 relative min-h-full">
-      <div className="absolute left-10 top-8 bottom-8 w-px bg-slate-700/50"></div>
+    <div className="relative min-h-full py-2">
+      <div className="absolute left-4 top-2 bottom-2 w-px bg-slate-700/50"></div>
       <div className="space-y-6">
           {checkpoints.map((cp, idx) => (
             <motion.div 
@@ -65,19 +65,19 @@ export default function GitVisualizer({ projectId, onRefresh }) {
               key={cp.hash} 
               className="flex items-start gap-4 group relative z-10"
             >
-              <div className="w-8 h-8 rounded-full bg-slate-900 border border-primary-500/50 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(139,92,246,0.2)] mt-1 group-hover:border-accent-400 transition-colors">
+              <div className="w-8 h-8 rounded-full bg-slate-900 border border-primary-500/50 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(139,92,246,0.2)] mt-1 group-hover:border-accent-400 transition-colors z-10">
                 <div className="w-2 h-2 rounded-full bg-primary-400 group-hover:bg-accent-400 transition-colors"></div>
               </div>
-              <div className="flex-1 bg-slate-900/50 border border-slate-800 rounded-xl p-4 group-hover:border-slate-600 transition-colors flex justify-between items-center gap-4">
-                <div>
-                  <div className="flex items-center gap-3 mb-1">
-                    <span className="font-mono text-sm text-accent-300 bg-accent-500/10 px-2 py-0.5 rounded border border-accent-500/20">{cp.hash}</span>
-                    <span className="text-xs text-slate-400 flex items-center gap-1">
+              <div className="flex-1 bg-slate-900/40 border border-slate-800 rounded-xl p-4 group-hover:border-slate-600 transition-colors flex justify-between items-center gap-4">
+                <div className="min-w-0">
+                  <div className="flex items-center gap-3 mb-1 flex-wrap">
+                    <span className="font-mono text-xs text-accent-300 bg-accent-500/10 px-2 py-0.5 rounded border border-accent-500/20 shrink-0">{cp.hash}</span>
+                    <span className="text-xs text-slate-400 flex items-center gap-1 shrink-0">
                       <Clock className="w-3 h-3" /> {cp.timeAgo}
                     </span>
-                    <span className="text-xs text-slate-500">{cp.author}</span>
+                    <span className="text-xs text-slate-500 truncate">{cp.author}</span>
                   </div>
-                  <div className="text-slate-200 text-sm">{cp.message.replace(/^(?:aicp\/[^\s]+|checkpoint:)\s*/i, '')}</div>
+                  <div className="text-slate-200 text-sm truncate pr-2">{cp.message.replace(/^(?:aicp\/[^\s]+|checkpoint:)\s*/i, '')}</div>
                 </div>
                 
                 <button

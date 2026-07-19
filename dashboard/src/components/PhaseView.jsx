@@ -3,7 +3,7 @@ import { ChevronDown, ChevronRight, CheckCircle2, Zap } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import StepItem from './StepItem';
 
-export default function PhaseView({ phase, isActive, index, projectId, onRefresh }) {
+export default function PhaseView({ phase, isActive, index, projectId, hasPlanFiles, onRefresh }) {
   const [expanded, setExpanded] = useState(isActive || phase.percentage < 100);
   const isDone = phase.percentage === 100;
 
@@ -89,6 +89,7 @@ export default function PhaseView({ phase, isActive, index, projectId, onRefresh
                     step={step} 
                     index={idx} 
                     projectId={projectId} 
+                    hasPlanFiles={hasPlanFiles}
                     onRefresh={onRefresh} 
                   />
                 ))

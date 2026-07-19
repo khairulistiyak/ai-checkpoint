@@ -48,6 +48,7 @@ export default function PlanModal({ project, onClose, onRefresh }) {
                       isActive={isActive} 
                       index={idx} 
                       projectId={project.id}
+                      hasPlanFiles={project.hasPlanFiles}
                       onRefresh={onRefresh}
                     />
                   );

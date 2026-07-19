@@ -23,7 +23,7 @@ export function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-3">
+      <div className="fixed bottom-6 right-6 z-[60] flex flex-col gap-3">
         <AnimatePresence>
           {toasts.map((toast) => (
             <Toast key={toast.id} toast={toast} onRemove={() => removeToast(toast.id)} />
