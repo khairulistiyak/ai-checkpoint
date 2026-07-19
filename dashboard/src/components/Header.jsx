@@ -2,7 +2,7 @@ import React from 'react';
 import { Brain, Settings, Search } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function Header({ onOpenSettings }) {
+export default function Header({ onOpenSettings, onOpenCommandPalette }) {
   return (
     <motion.header 
       initial={{ y: -50, opacity: 0 }}
@@ -11,26 +11,27 @@ export default function Header({ onOpenSettings }) {
       className="m-6 rounded-2xl border border-slate-700/50 bg-slate-900/60 backdrop-blur-xl flex items-center justify-between px-6 py-3 sticky top-6 z-20 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
     >
       <div className="flex items-center gap-4">
-        <div className="bg-gradient-to-br from-violet-600 to-fuchsia-600 p-2.5 rounded-xl shadow-lg shadow-violet-500/30">
+        <div className="bg-gradient-to-br from-primary-600 to-accent-600 p-2.5 rounded-xl shadow-lg shadow-primary-500/30">
           <Brain className="w-6 h-6 text-white" />
         </div>
         <div className="flex flex-col">
           <h1 className="text-xl font-black tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
             AI-CHECKPOINT
           </h1>
-          <span className="text-[10px] uppercase font-bold tracking-widest text-fuchsia-400 text-glow">
+          <span className="text-[10px] uppercase font-bold tracking-widest text-accent-400 text-glow">
             Pro Dashboard
           </span>
         </div>
       </div>
 
       <div className="flex items-center gap-6">
-        <div className="relative group hidden md:block">
-          <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-fuchsia-400 transition-colors" />
+        <div className="relative group hidden md:block" onClick={onOpenCommandPalette}>
+          <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-accent-400 transition-colors pointer-events-none" />
           <input 
             type="text" 
-            placeholder="Search projects..." 
-            className="bg-slate-950/50 border border-slate-700/80 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-fuchsia-500/50 focus:ring-1 focus:ring-fuchsia-500/50 transition-all w-72 placeholder-slate-500"
+            placeholder="Search projects... (⌘K)" 
+            readOnly
+            className="cursor-pointer bg-slate-950/50 border border-slate-700/80 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-accent-500/50 focus:ring-1 focus:ring-accent-500/50 transition-all w-72 placeholder-slate-500"
           />
         </div>
         

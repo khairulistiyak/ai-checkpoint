@@ -1,6 +1,7 @@
 import React from 'react';
 import ProgressRing from './ProgressRing';
-import { Terminal, FolderOpen, Settings, Zap } from 'lucide-react';
+import ExportButton from './ExportButton';
+import { Terminal, FolderOpen, Settings, Zap, Trash2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function ProjectCard({ project, onRemove, onOpenConfig }) {
@@ -9,9 +10,9 @@ export default function ProjectCard({ project, onRemove, onOpenConfig }) {
   const isDone = overall.percentage === 100;
   
   return (
-    <div className="glass-card p-8 flex flex-col md:flex-row gap-10 items-center md:items-start group border-t-2 border-t-fuchsia-500/30">
+    <div className="glass-card p-8 flex flex-col md:flex-row gap-10 items-center md:items-start group border-t-2 border-t-accent-500/30">
       <div className="flex-shrink-0 relative">
-        <div className="absolute inset-0 bg-fuchsia-500/20 blur-2xl rounded-full scale-110 group-hover:bg-fuchsia-500/30 transition-colors"></div>
+        <div className="absolute inset-0 bg-accent-500/20 blur-2xl rounded-full scale-110 group-hover:bg-accent-500/30 transition-colors"></div>
         <div className="relative">
           <ProgressRing 
             percentage={overall.percentage} 
@@ -39,16 +40,20 @@ export default function ProjectCard({ project, onRemove, onOpenConfig }) {
               {isDone && <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 px-2 py-0.5 rounded-full text-xs font-bold uppercase">Complete</span>}
             </div>
             <p className="text-sm text-slate-400 flex items-center gap-2 mt-2 group-hover:text-slate-300 transition-colors">
-              <FolderOpen className="w-4 h-4 text-fuchsia-400" />
+              <FolderOpen className="w-4 h-4 text-accent-400" />
               <span className="font-mono text-xs bg-slate-900/50 px-2 py-1 rounded-md border border-slate-700/50">{project.path}</span>
             </p>
           </div>
           <div className="flex gap-3">
+            <ExportButton project={project} />
             <button className="p-2.5 bg-slate-800/80 hover:bg-slate-700 rounded-xl text-slate-300 transition-all hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] border border-slate-600" title="Open in Terminal">
               <Terminal className="w-5 h-5" />
             </button>
-            <button onClick={onOpenConfig} className="p-2.5 bg-violet-600/20 hover:bg-violet-600/40 rounded-xl text-violet-300 transition-all border border-violet-500/30 hover:border-violet-500/60" title="Edit Config">
+            <button onClick={onOpenConfig} className="p-2.5 bg-primary-600/20 hover:bg-primary-600/40 rounded-xl text-primary-300 transition-all border border-primary-500/30 hover:border-primary-500/60" title="Edit Config">
               <Settings className="w-5 h-5" />
+            </button>
+            <button onClick={onRemove} className="p-2.5 bg-red-500/10 hover:bg-red-500/20 rounded-xl text-red-400 transition-all border border-red-500/20 hover:border-red-500/50" title="Remove Project">
+              <Trash2 className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -67,8 +72,8 @@ export default function ProjectCard({ project, onRemove, onOpenConfig }) {
             <div className="text-3xl font-black text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.3)]">{overall.total - overall.completed}</div>
           </motion.div>
           <motion.div whileHover={{ y: -2 }} className="bg-slate-900/60 backdrop-blur-sm p-4 rounded-2xl border border-slate-700/50 shadow-inner group/stat">
-            <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 group-hover/stat:text-fuchsia-400 transition-colors">Phases</div>
-            <div className="text-3xl font-black text-fuchsia-400 drop-shadow-[0_0_8px_rgba(217,70,239,0.5)]">{progress?.phases?.length || 0}</div>
+            <div className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 group-hover/stat:text-accent-400 transition-colors">Phases</div>
+            <div className="text-3xl font-black text-accent-400 drop-shadow-[0_0_8px_rgba(217,70,239,0.5)]">{progress?.phases?.length || 0}</div>
           </motion.div>
         </div>
       </div>

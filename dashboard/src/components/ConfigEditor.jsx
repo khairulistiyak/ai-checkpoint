@@ -52,13 +52,13 @@ export default function ConfigEditor({ projectId, onClose }) {
           <div className="flex gap-4">
             <button
               onClick={() => setActiveTab('rules')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${activeTab === 'rules' ? 'bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/30' : 'text-slate-400 hover:text-slate-200'}`}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${activeTab === 'rules' ? 'bg-accent-500/20 text-accent-400 border border-accent-500/30' : 'text-slate-400 hover:text-slate-200'}`}
             >
               <FileText className="w-4 h-4" /> RULES.md
             </button>
             <button
               onClick={() => setActiveTab('agents')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${activeTab === 'agents' ? 'bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/30' : 'text-slate-400 hover:text-slate-200'}`}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 ${activeTab === 'agents' ? 'bg-accent-500/20 text-accent-400 border border-accent-500/30' : 'text-slate-400 hover:text-slate-200'}`}
             >
               <Code2 className="w-4 h-4" /> AGENTS.md
             </button>

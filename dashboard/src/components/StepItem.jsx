@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { CheckCircle2, Circle, Loader2, AlertTriangle, FileCode2, Play, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useToast } from './ToastProvider';
 import * as api from '../utils/api';
 
 export default function StepItem({ step, index, projectId, onRefresh }) {
+  const { showToast } = useToast();
   const [executing, setExecuting] = useState(false);
   let Icon = Circle;
   let color = 'text-slate-500';
@@ -17,9 +19,9 @@ export default function StepItem({ step, index, projectId, onRefresh }) {
     border = 'border-emerald-500/20';
   } else if (step.status === 'running') {
     Icon = Loader2;
-    color = 'text-fuchsia-400 drop-shadow-[0_0_8px_rgba(217,70,239,0.5)]';
-    bg = 'bg-fuchsia-950/20 hover:bg-fuchsia-950/30';
-    border = 'border-fuchsia-500/40 shadow-[0_0_15px_rgba(217,70,239,0.1)]';
+    color = 'text-accent-400 drop-shadow-[0_0_8px_rgba(217,70,239,0.5)]';
+    bg = 'bg-accent-950/20 hover:bg-accent-950/30';
+    border = 'border-accent-500/40 shadow-[0_0_15px_rgba(217,70,239,0.1)]';
   } else if (step.status === 'blocked') {
     Icon = AlertTriangle;
     color = 'text-amber-400 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]';
@@ -32,8 +34,9 @@ export default function StepItem({ step, index, projectId, onRefresh }) {
       setExecuting(true);
       await api.executeCommand(projectId, command, step.number, command === 'complete' ? 'Completed from Dashboard' : '');
       if (onRefresh) await onRefresh();
+      showToast(`Step ${command === 'start' ? 'started' : 'completed'} successfully`, 'success');
     } catch (err) {
-      alert(`Command failed: ${err.message}`);
+      showToast(`Command failed: ${err.message}`, 'error');
     } finally {
       setExecuting(false);
     }
@@ -69,7 +72,7 @@ export default function StepItem({ step, index, projectId, onRefresh }) {
           {filePath && (
             <div className="mt-2 flex items-center">
               <span className="flex items-center gap-1.5 text-xs font-mono bg-black/40 text-slate-300 px-3 py-1 rounded-lg border border-slate-700/50 shadow-inner">
-                <FileCode2 className="w-3.5 h-3.5 text-violet-400" />
+                <FileCode2 className="w-3.5 h-3.5 text-primary-400" />
                 {filePath}
               </span>
             </div>
@@ -83,7 +86,7 @@ export default function StepItem({ step, index, projectId, onRefresh }) {
           <button 
             disabled={executing}
             onClick={() => handleCommand('start')}
-            className="p-2 bg-violet-500/20 text-violet-300 rounded-lg hover:bg-violet-500 hover:text-white transition-colors border border-violet-500/30"
+            className="p-2 bg-primary-500/20 text-primary-300 rounded-lg hover:bg-primary-500 hover:text-white transition-colors border border-primary-500/30"
             title="Start Step"
           >
             <Play className="w-4 h-4" />

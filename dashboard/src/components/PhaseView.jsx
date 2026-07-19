@@ -12,7 +12,7 @@ export default function PhaseView({ phase, isActive, index, projectId, onRefresh
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1 }}
-      className={`glass-card mb-4 relative z-10 ${isActive ? 'border-fuchsia-500/50 shadow-[0_0_20px_rgba(217,70,239,0.15)]' : ''}`}
+      className={`glass-card mb-4 relative z-10 ${isActive ? 'border-accent-500/50 shadow-[0_0_20px_rgba(217,70,239,0.15)]' : ''}`}
     >
       <button 
         onClick={() => setExpanded(!expanded)}
@@ -23,11 +23,11 @@ export default function PhaseView({ phase, isActive, index, projectId, onRefresh
             isDone 
               ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]' 
               : isActive 
-                ? 'bg-fuchsia-500/10 border-fuchsia-500 text-fuchsia-400 shadow-[0_0_20px_rgba(217,70,239,0.3)] scale-110' 
+                ? 'bg-accent-500/10 border-accent-500 text-accent-400 shadow-[0_0_20px_rgba(217,70,239,0.3)] scale-110' 
                 : 'bg-slate-900 border-slate-700 text-slate-500 group-hover:border-slate-500'
           }`}>
             {isActive && (
-              <span className="absolute inset-0 rounded-full bg-fuchsia-500/20 animate-ping"></span>
+              <span className="absolute inset-0 rounded-full bg-accent-500/20 animate-ping"></span>
             )}
             {isDone ? (
               <CheckCircle2 className="w-6 h-6" />
@@ -39,7 +39,7 @@ export default function PhaseView({ phase, isActive, index, projectId, onRefresh
           </div>
           <div className="text-left">
             <h3 className={`text-lg font-bold tracking-tight transition-colors ${
-              isActive ? 'text-fuchsia-400 text-glow' : 'text-slate-200 group-hover:text-white'
+              isActive ? 'text-accent-400 text-glow' : 'text-slate-200 group-hover:text-white'
             }`}>
               Phase {phase.number}: {phase.name}
             </h3>
@@ -50,12 +50,12 @@ export default function PhaseView({ phase, isActive, index, projectId, onRefresh
         <div className="flex items-center gap-6">
           <div className="hidden sm:flex items-center gap-4">
             <div className="flex flex-col items-end gap-1">
-              <span className={`text-sm font-black font-mono ${isDone ? 'text-emerald-400' : isActive ? 'text-fuchsia-400' : 'text-slate-500'}`}>
+              <span className={`text-sm font-black font-mono ${isDone ? 'text-emerald-400' : isActive ? 'text-accent-400' : 'text-slate-500'}`}>
                 {phase.percentage}%
               </span>
               <div className="w-40 h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-700/50">
                 <motion.div 
-                  className={`h-full ${isDone ? 'bg-emerald-500' : 'bg-gradient-to-r from-violet-500 to-fuchsia-500'}`}
+                  className={`h-full ${isDone ? 'bg-emerald-500' : 'bg-gradient-to-r from-primary-500 to-accent-500'}`}
                   initial={{ width: 0 }}
                   animate={{ width: `${phase.percentage}%` }}
                   transition={{ duration: 0.8, ease: "easeOut" }}

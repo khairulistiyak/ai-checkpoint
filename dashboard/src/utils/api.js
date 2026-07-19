@@ -48,6 +48,16 @@ export async function removeProject(id) {
   return res.json();
 }
 
+export async function reorderProjects(projectIds) {
+  const res = await fetch(`${BASE_URL}/settings/projects/reorder`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ projectIds })
+  });
+  if (!res.ok) throw new Error('Failed to reorder projects');
+  return res.json();
+}
+
 export async function executeCommand(id, command, step, message) {
   const res = await fetch(`${BASE_URL}/projects/${id}/command`, {
     method: 'POST',
@@ -81,5 +91,13 @@ export async function rollbackCheckpoint(id, hash) {
     body: JSON.stringify({ hash })
   });
   if (!res.ok) throw new Error('Rollback failed');
+  return res.json();
+}
+
+export async function installProject(id) {
+  const res = await fetch(`${BASE_URL}/projects/${id}/install`, {
+    method: 'POST'
+  });
+  if (!res.ok) throw new Error('Installation failed');
   return res.json();
 }

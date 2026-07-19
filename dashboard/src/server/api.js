@@ -153,6 +153,34 @@ router.delete('/settings/projects/:id', (req, res) => {
   res.json({ success: true });
 });
 
+router.put('/settings/projects/reorder', (req, res) => {
+  const { projectIds } = req.body;
+  const settings = getSettings();
+  
+  if (!Array.isArray(projectIds)) {
+    return res.status(400).json({ error: 'projectIds must be an array' });
+  }
+
+  // Create a map for quick lookup
+  const projectMap = new Map(settings.projects.map(p => [p.id, p]));
+  
+  // Reorder based on provided IDs
+  const reorderedProjects = projectIds
+    .map(id => projectMap.get(id))
+    .filter(Boolean); // Filter out any missing projects
+    
+  // Append any projects that weren't in the provided array
+  settings.projects.forEach(p => {
+    if (!projectIds.includes(p.id)) {
+      reorderedProjects.push(p);
+    }
+  });
+
+  settings.projects = reorderedProjects;
+  saveSettings(settings);
+  res.json({ success: true });
+});
+
 router.get('/projects', (req, res) => {
   const settings = getSettings();
   const enriched = settings.projects.map(p => {
@@ -176,6 +204,55 @@ router.get('/projects/:id', (req, res) => {
   if (isInstalled) progress = parseProgress(project.path);
   
   res.json({ ...project, isInstalled, progress });
+});
+
+router.post('/projects/:id/install', (req, res) => {
+  const settings = getSettings();
+  const project = settings.projects.find(p => p.id === req.params.id);
+  if (!project) return res.status(404).json({ error: 'Not found' });
+
+  // Root of the ai-checkpoint tool (parent of dashboard/)
+  const aiCheckpointRoot = path.resolve(process.cwd(), '..');
+  const templatesDir = path.join(aiCheckpointRoot, 'templates');
+  const scriptsDir = path.join(aiCheckpointRoot, 'scripts');
+  const projectDir = project.path;
+
+  try {
+    // 1. Create directories
+    fs.mkdirSync(path.join(projectDir, '.agents', 'scripts'), { recursive: true });
+    fs.mkdirSync(path.join(projectDir, 'plan', 'drafts'), { recursive: true });
+
+    // 2. Copy ledger CLI script
+    const ledgerSrc = path.join(scriptsDir, 'ledger.cjs');
+    if (fs.existsSync(ledgerSrc)) {
+      fs.copyFileSync(ledgerSrc, path.join(projectDir, '.agents', 'scripts', 'ledger.cjs'));
+    }
+
+    // 3. Create ./l shortcut
+    const lScript = '#!/bin/bash\nnode .agents/scripts/ledger.cjs "$@"\n';
+    fs.writeFileSync(path.join(projectDir, 'l'), lScript, { mode: 0o755 });
+
+    // 4. Copy template files (only if they don't already exist)
+    const filesToCopy = [
+      { src: 'AGENTS.md',       dest: path.join('.agents', 'AGENTS.md') },
+      { src: 'PROGRESS.md',     dest: path.join('.agents', 'PROGRESS.md') },
+      { src: 'RULES.md',        dest: path.join('.agents', 'RULES.md') },
+      { src: 'SYSTEM_GUIDE.md', dest: path.join('.agents', 'SYSTEM_GUIDE.md') },
+      { src: 'drafts-README.md', dest: path.join('plan', 'drafts', 'README.md') },
+    ];
+
+    for (const f of filesToCopy) {
+      const destPath = path.join(projectDir, f.dest);
+      const srcPath = path.join(templatesDir, f.src);
+      if (!fs.existsSync(destPath) && fs.existsSync(srcPath)) {
+        fs.copyFileSync(srcPath, destPath);
+      }
+    }
+
+    res.json({ success: true });
+  } catch (e) {
+    res.status(500).json({ error: e.message || 'Failed to install' });
+  }
 });
 
 router.get('/projects/:id/health', (req, res) => {
@@ -203,7 +280,7 @@ router.get('/projects/:id/checkpoints', (req, res) => {
   
   try {
     // Get full git log with a specific format
-    const out = execSync('git log --pretty=format:"%h|%s|%ar|%an" | grep "aicp/" || true', { cwd: project.path, stdio: 'pipe' }).toString();
+    const out = execSync('git log --pretty=format:"%h|%s|%ar|%an" | grep -iE "aicp/|checkpoint:" || true', { cwd: project.path, stdio: 'pipe' }).toString();
     if (!out.trim()) return res.json([]);
     
     const checkpoints = out.trim().split('\n').map(line => {

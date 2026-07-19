@@ -3,8 +3,47 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --primary-400: #a78bfa;
+    --primary-500: #8b5cf6;
+    --primary-600: #7c3aed;
+    --primary-900: #4c1d95;
+    
+    --accent-300: #f0abfc;
+    --accent-400: #e879f9;
+    --accent-500: #d946ef;
+    --accent-600: #c026d3;
+    --accent-950: #4a044e;
+  }
+
+  .theme-emerald {
+    --primary-400: #34d399;
+    --primary-500: #10b981;
+    --primary-600: #059669;
+    --primary-900: #064e3b;
+    
+    --accent-300: #6ee7b7;
+    --accent-400: #34d399;
+    --accent-500: #10b981;
+    --accent-600: #059669;
+    --accent-950: #022c22;
+  }
+
+  .theme-blue {
+    --primary-400: #60a5fa;
+    --primary-500: #3b82f6;
+    --primary-600: #2563eb;
+    --primary-900: #1e3a8a;
+    
+    --accent-300: #93c5fd;
+    --accent-400: #60a5fa;
+    --accent-500: #3b82f6;
+    --accent-600: #2563eb;
+    --accent-950: #172554;
+  }
+
   body {
-    @apply bg-slate-950 text-slate-200 antialiased font-sans overflow-x-hidden;
+    @apply bg-slate-950 text-slate-200 antialiased font-sans m-0 p-0 h-screen w-screen overflow-hidden;
     /* Create a gorgeous mesh gradient background */
     background-image: 
       radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
@@ -33,7 +72,16 @@
   }
   
   .btn-primary {
-    @apply relative overflow-hidden bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-500 hover:to-fuchsia-500 text-white font-medium py-2 px-5 rounded-xl transition-all duration-300 shadow-[0_0_15px_rgba(139,92,246,0.5)] hover:shadow-[0_0_25px_rgba(139,92,246,0.7)] focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-slate-900;
+    @apply relative overflow-hidden text-white font-medium py-2 px-5 rounded-xl transition-all duration-300 shadow-[0_0_15px_rgba(139,92,246,0.5)] hover:shadow-[0_0_25px_rgba(139,92,246,0.7)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900;
+    background: linear-gradient(to right, var(--primary-600), var(--accent-600));
+  }
+  
+  .btn-primary:hover {
+    background: linear-gradient(to right, var(--primary-500), var(--accent-500));
+  }
+  
+  .btn-primary:focus {
+    --tw-ring-color: var(--accent-500);
   }
   
   .btn-secondary {
