@@ -15,14 +15,14 @@ export default function SettingsModal({ isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-4">
       <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={onClose}></div>
       
       <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.95 }}
-        className="glass-card w-full max-w-md bg-slate-900/95 border-slate-700/80 shadow-2xl relative z-10"
+        initial={{ scale: 0.95, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 20 }}
+        className="glass-card flex flex-col shadow-2xl w-full max-w-md h-full md:h-auto md:max-h-[80vh] relative z-10 border-0 md:border md:border-slate-600/50 rounded-none md:rounded-2xl overflow-hidden"
       >
         <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700/50">
           <div className="flex items-center gap-2">

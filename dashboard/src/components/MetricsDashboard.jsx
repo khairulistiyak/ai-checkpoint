@@ -62,7 +62,7 @@ export default function MetricsDashboard({ progress }) {
   ];
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
       {metrics.map((m, idx) => {
         const Icon = m.icon;
         return (

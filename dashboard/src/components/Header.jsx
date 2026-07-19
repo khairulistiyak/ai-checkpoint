@@ -1,17 +1,23 @@
 import React from 'react';
-import { Brain, Settings, Search } from 'lucide-react';
+import { Brain, Settings, Search, Menu } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function Header({ onOpenSettings, onOpenCommandPalette }) {
+export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleMenu }) {
   return (
     <motion.header 
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.5, type: 'spring' }}
-      className="m-6 rounded-2xl border border-slate-700/50 bg-slate-900/60 backdrop-blur-xl flex items-center justify-between px-6 py-3 sticky top-6 z-20 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+      className="m-4 md:m-6 rounded-2xl border border-slate-700/50 bg-slate-900/60 backdrop-blur-xl flex items-center justify-between px-4 md:px-6 py-3 sticky top-4 md:top-6 z-20 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
     >
-      <div className="flex items-center gap-4">
-        <div className="bg-gradient-to-br from-primary-600 to-accent-600 p-2.5 rounded-xl shadow-lg shadow-primary-500/30">
+      <div className="flex items-center gap-3 md:gap-4">
+        <button 
+          onClick={onToggleMenu}
+          className="md:hidden p-2 -ml-2 text-slate-400 hover:text-white rounded-lg"
+        >
+          <Menu className="w-6 h-6" />
+        </button>
+        <div className="bg-gradient-to-br from-primary-600 to-accent-600 p-2 md:p-2.5 rounded-xl shadow-lg shadow-primary-500/30 hidden sm:block">
           <Brain className="w-6 h-6 text-white" />
         </div>
         <div className="flex flex-col">
@@ -34,6 +40,14 @@ export default function Header({ onOpenSettings, onOpenCommandPalette }) {
             className="cursor-pointer bg-slate-950/50 border border-slate-700/80 rounded-xl py-2 pl-10 pr-4 text-sm focus:outline-none focus:border-accent-500/50 focus:ring-1 focus:ring-accent-500/50 transition-all w-72 placeholder-slate-500"
           />
         </div>
+        
+        <button 
+          onClick={onOpenCommandPalette}
+          className="md:hidden p-2.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition-all"
+          title="Search"
+        >
+          <Search className="w-5 h-5" />
+        </button>
         
         <button 
           onClick={onOpenSettings}

@@ -18,7 +18,7 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
         onClick={() => setExpanded(!expanded)}
         className="w-full px-6 py-5 flex items-center justify-between hover:bg-white/[0.02] transition-colors focus:outline-none group"
       >
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-4 sm:gap-5 flex-1 min-w-0 pr-4">
           <div className={`relative flex items-center justify-center w-12 h-12 rounded-full border-2 shadow-lg transition-colors ${
             isDone 
               ? 'bg-emerald-500/10 border-emerald-500/50 text-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.2)]' 
@@ -37,8 +37,8 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
               <span className="text-lg font-black">{phase.number}</span>
             )}
           </div>
-          <div className="text-left">
-            <h3 className={`text-lg font-bold tracking-tight transition-colors ${
+          <div className="text-left flex-1 min-w-0">
+            <h3 className={`text-lg font-bold tracking-tight transition-colors break-words whitespace-normal ${
               isActive ? 'text-accent-400 text-glow' : 'text-slate-200 group-hover:text-white'
             }`}>
               Phase {phase.number}: {phase.name}

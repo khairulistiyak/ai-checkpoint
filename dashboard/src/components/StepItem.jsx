@@ -53,27 +53,27 @@ export default function StepItem({ step, index, projectId, hasPlanFiles, onRefre
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: index * 0.05 }}
       whileHover={{ scale: 1.01, x: 5 }}
-      className={`p-4 rounded-xl border ${border} ${bg} flex items-center justify-between gap-4 transition-all duration-300 group`}
+      className={`p-4 rounded-xl border ${border} ${bg} flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-300 group`}
     >
-      <div className="flex items-start gap-4">
-        <div className="mt-0.5">
+      <div className="flex items-start gap-4 w-full sm:w-auto">
+        <div className="mt-0.5 shrink-0">
           <Icon className={`w-6 h-6 ${color} ${(step.status === 'running' || executing) ? 'animate-spin' : ''}`} />
         </div>
-        <div className="flex-1">
-          <div className="flex items-center gap-3">
-            <span className={`text-sm font-black tracking-wider ${step.status === 'done' ? 'text-slate-500' : 'text-slate-300'}`}>
+        <div className="flex-1 overflow-hidden">
+          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+            <span className={`text-sm font-black tracking-wider shrink-0 ${step.status === 'done' ? 'text-slate-500' : 'text-slate-300'}`}>
               STEP {step.number}
             </span>
-            <div className={`w-1 h-1 rounded-full ${step.status === 'done' ? 'bg-slate-700' : 'bg-slate-500'}`}></div>
-            <span className={`text-base font-medium ${step.status === 'done' ? 'text-slate-400 line-through decoration-slate-600' : 'text-slate-100 group-hover:text-white transition-colors'}`}>
+            <div className={`w-1 h-1 rounded-full shrink-0 ${step.status === 'done' ? 'bg-slate-700' : 'bg-slate-500'}`}></div>
+            <span className={`text-sm sm:text-base font-medium break-all ${step.status === 'done' ? 'text-slate-400 line-through decoration-slate-600' : 'text-slate-100 group-hover:text-white transition-colors'}`}>
               {cleanTitle}
             </span>
           </div>
           {filePath && (
             <div className="mt-2 flex items-center">
-              <span className="flex items-center gap-1.5 text-xs font-mono bg-black/40 text-slate-300 px-3 py-1 rounded-lg border border-slate-700/50 shadow-inner">
-                <FileCode2 className="w-3.5 h-3.5 text-primary-400" />
-                {filePath}
+              <span className="flex items-center gap-1.5 text-xs font-mono bg-black/40 text-slate-300 px-3 py-1 rounded-lg border border-slate-700/50 shadow-inner break-all">
+                <FileCode2 className="w-3.5 h-3.5 text-primary-400 shrink-0" />
+                <span className="truncate">{filePath}</span>
               </span>
             </div>
           )}
@@ -81,12 +81,12 @@ export default function StepItem({ step, index, projectId, hasPlanFiles, onRefre
       </div>
       
       {/* Interactive Controls */}
-      <div className="opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+      <div className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex gap-2 self-end sm:self-auto shrink-0 mt-2 sm:mt-0">
         {step.status !== 'running' && step.status !== 'done' && (
           <button 
             disabled={executing || hasPlanFiles === false}
             onClick={() => handleCommand('start')}
-            className={`p-2 rounded-lg transition-colors border ${hasPlanFiles === false ? 'bg-slate-800 text-slate-500 border-slate-700 cursor-not-allowed' : 'bg-primary-500/20 text-primary-300 hover:bg-primary-500 hover:text-white border-primary-500/30'}`}
+            className={`p-2 rounded-lg transition-colors border flex items-center justify-center ${hasPlanFiles === false ? 'bg-slate-800 text-slate-500 border-slate-700 cursor-not-allowed' : 'bg-primary-500/20 text-primary-300 hover:bg-primary-500 hover:text-white border-primary-500/30'}`}
             title={hasPlanFiles === false ? "Generate a plan using the ai-checkpoint CLI first" : "Start Step"}
           >
             <Play className="w-4 h-4" />
@@ -96,7 +96,7 @@ export default function StepItem({ step, index, projectId, hasPlanFiles, onRefre
           <button 
             disabled={executing || hasPlanFiles === false}
             onClick={() => handleCommand('complete')}
-            className={`p-2 rounded-lg transition-colors border ${hasPlanFiles === false ? 'bg-slate-800 text-slate-500 border-slate-700 cursor-not-allowed' : 'bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500 hover:text-white border-emerald-500/30'}`}
+            className={`p-2 rounded-lg transition-colors border flex items-center justify-center ${hasPlanFiles === false ? 'bg-slate-800 text-slate-500 border-slate-700 cursor-not-allowed' : 'bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500 hover:text-white border-emerald-500/30'}`}
             title={hasPlanFiles === false ? "Generate a plan using the ai-checkpoint CLI first" : "Complete Step"}
           >
             <Check className="w-4 h-4" />

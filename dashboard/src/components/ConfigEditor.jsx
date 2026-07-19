@@ -45,9 +45,10 @@ export default function ConfigEditor({ projectId, onClose }) {
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-8"
     >
-      <div className="glass-card w-full max-w-5xl h-[80vh] flex flex-col shadow-2xl border-slate-600/50">
+      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={onClose}></div>
+      <div className="glass-card w-full max-w-5xl h-full md:h-[80vh] flex flex-col shadow-2xl border-0 md:border md:border-slate-600/50 rounded-none md:rounded-2xl z-10 relative overflow-hidden">
         <div className="flex items-center justify-between p-4 border-b border-slate-700/50 bg-slate-900/50">
           <div className="flex gap-4">
             <button

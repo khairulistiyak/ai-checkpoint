@@ -6,7 +6,7 @@ export default function LogPanel({ logs }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={`fixed bottom-0 left-0 right-0 z-40 transition-all duration-300 ease-in-out ${isOpen ? 'h-64' : 'h-10'}`}>
+    <div className={`fixed bottom-0 left-0 right-0 z-40 transition-all duration-300 ease-in-out ${isOpen ? 'h-[50vh] md:h-64' : 'h-10'}`}>
       <div className="absolute inset-x-0 bottom-0 top-0 bg-slate-950/90 backdrop-blur-2xl border-t border-slate-700/80 shadow-[0_-10px_40px_rgba(0,0,0,0.5)] flex flex-col">
         {/* Header Bar */}
         <button 

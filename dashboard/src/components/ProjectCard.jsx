@@ -33,18 +33,18 @@ export default function ProjectCard({ project, onRemove, onOpenConfig }) {
       </div>
       
       <div className="flex-1 space-y-6 w-full">
-        <div className="flex justify-between items-start">
+        <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4">
           <div>
-            <div className="flex items-center gap-3">
-              <h2 className="text-3xl font-black text-white tracking-tight">{project.name}</h2>
-              {isDone && <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 px-2 py-0.5 rounded-full text-xs font-bold uppercase">Complete</span>}
+            <div className="flex items-center gap-3 flex-wrap">
+              <h2 className="text-2xl md:text-3xl font-black text-white tracking-tight break-all">{project.name}</h2>
+              {isDone && <span className="bg-emerald-500/20 text-emerald-400 border border-emerald-500/50 px-2 py-0.5 rounded-full text-xs font-bold uppercase shrink-0">Complete</span>}
             </div>
-            <p className="text-sm text-slate-400 flex items-center gap-2 mt-2 group-hover:text-slate-300 transition-colors">
-              <FolderOpen className="w-4 h-4 text-accent-400" />
+            <p className="text-sm text-slate-400 flex items-center gap-2 mt-2 group-hover:text-slate-300 transition-colors break-all">
+              <FolderOpen className="w-4 h-4 text-accent-400 shrink-0" />
               <span className="font-mono text-xs bg-slate-900/50 px-2 py-1 rounded-md border border-slate-700/50">{project.path}</span>
             </p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-2 sm:gap-3 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
             <ExportButton project={project} />
             <button className="p-2.5 bg-slate-800/80 hover:bg-slate-700 rounded-xl text-slate-300 transition-all hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] border border-slate-600" title="Open in Terminal">
               <Terminal className="w-5 h-5" />

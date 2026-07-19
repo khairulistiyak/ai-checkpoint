@@ -68,7 +68,7 @@ export default function GitVisualizer({ projectId, onRefresh }) {
               <div className="w-8 h-8 rounded-full bg-slate-900 border border-primary-500/50 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(139,92,246,0.2)] mt-1 group-hover:border-accent-400 transition-colors z-10">
                 <div className="w-2 h-2 rounded-full bg-primary-400 group-hover:bg-accent-400 transition-colors"></div>
               </div>
-              <div className="flex-1 bg-slate-900/40 border border-slate-800 rounded-xl p-4 group-hover:border-slate-600 transition-colors flex justify-between items-center gap-4">
+              <div className="flex-1 bg-slate-900/40 border border-slate-800 rounded-xl p-4 group-hover:border-slate-600 transition-colors flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                 <div className="min-w-0">
                   <div className="flex items-center gap-3 mb-1 flex-wrap">
                     <span className="font-mono text-xs text-accent-300 bg-accent-500/10 px-2 py-0.5 rounded border border-accent-500/20 shrink-0">{cp.hash}</span>
@@ -77,16 +77,16 @@ export default function GitVisualizer({ projectId, onRefresh }) {
                     </span>
                     <span className="text-xs text-slate-500 truncate">{cp.author}</span>
                   </div>
-                  <div className="text-slate-200 text-sm truncate pr-2">{cp.message.replace(/^(?:aicp\/[^\s]+|checkpoint:)\s*/i, '')}</div>
+                  <div className="text-slate-200 text-sm truncate pr-2" title={cp.message}>{cp.message.replace(/^(?:aicp\/[^\s]+|checkpoint:)\s*/i, '')}</div>
                 </div>
                 
-                <button
+                <button 
                   onClick={() => handleRollback(cp.hash)}
                   disabled={rollingBack}
-                  className="opacity-0 group-hover:opacity-100 transition-opacity p-2 bg-red-500/10 text-red-400 rounded-lg hover:bg-red-500 hover:text-white border border-red-500/20"
-                  title="Rollback to this checkpoint"
+                  className="px-3 py-1.5 bg-slate-800 hover:bg-red-500/20 text-slate-300 hover:text-red-400 rounded-lg text-xs font-medium transition-colors border border-transparent hover:border-red-500/30 flex items-center justify-center gap-2 shrink-0 self-end sm:self-auto w-full sm:w-auto mt-2 sm:mt-0"
                 >
-                  <RotateCcw className={`w-4 h-4 ${rollingBack ? 'animate-spin' : ''}`} />
+                  {rollingBack ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RotateCcw className="w-3.5 h-3.5" />}
+                  Rollback
                 </button>
               </div>
             </motion.div>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Folder, Plus, Activity, GripVertical } from 'lucide-react';
-import { motion, Reorder } from 'framer-motion';
+import { motion, Reorder, AnimatePresence } from 'framer-motion';
 
-export default function Sidebar({ projects, selectedId, onSelect, onAddProject, onReorder }) {
+export default function Sidebar({ projects, selectedId, onSelect, onAddProject, onReorder, isMobileMenuOpen, setIsMobileMenuOpen }) {
   const [items, setItems] = useState(projects);
 
   // Sync internal state when external projects prop changes (e.g. initial load or new project)
@@ -17,7 +17,25 @@ export default function Sidebar({ projects, selectedId, onSelect, onAddProject, 
     }
   };
   return (
-    <aside className="w-72 glass-panel rounded-2xl flex flex-col h-[calc(100vh-8rem)] relative overflow-hidden">
+    <>
+      {/* Mobile Backdrop */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="md:hidden fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm"
+          />
+        )}
+      </AnimatePresence>
+
+      <aside className={`w-72 glass-panel flex flex-col h-[calc(100vh-8rem)] overflow-hidden transition-transform duration-300 z-50 md:z-auto ${
+        isMobileMenuOpen 
+          ? 'translate-x-0 fixed left-0 top-20 bottom-6 rounded-r-2xl border-l-0' 
+          : '-translate-x-full fixed left-0 top-20 bottom-6 md:translate-x-0 md:relative md:rounded-2xl'
+      }`}>
       <div className="absolute inset-0 bg-gradient-to-b from-slate-800/20 to-transparent pointer-events-none"></div>
       
       <div className="p-6 border-b border-slate-700/50 flex items-center justify-between relative z-10">
@@ -99,5 +117,6 @@ export default function Sidebar({ projects, selectedId, onSelect, onAddProject, 
         </div>
       </div>
     </aside>
+    </>
   );
 }

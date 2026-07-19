@@ -7,14 +7,14 @@ export default function PlanModal({ project, onClose, onRefresh }) {
   if (!project) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-8">
       <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={onClose}></div>
       
       <motion.div 
         initial={{ scale: 0.95, opacity: 0, y: 20 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 20 }}
-        className="glass-card flex flex-col shadow-2xl w-full max-w-5xl h-full max-h-[90vh] relative z-10 border-slate-600/50 overflow-hidden"
+        className="glass-card flex flex-col shadow-2xl w-full max-w-5xl h-full md:max-h-[90vh] relative z-10 border-0 md:border md:border-slate-600/50 rounded-none md:rounded-2xl overflow-hidden"
       >
         <div className="flex items-center justify-between p-6 md:p-8 border-b border-slate-700/50 bg-slate-900/60 flex-shrink-0">
           <div>

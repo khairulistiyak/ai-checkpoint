@@ -66,7 +66,7 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh]">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-0 md:pt-[15vh]">
       <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={onClose}></div>
       
       <motion.div 
@@ -74,7 +74,7 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: -20 }}
         transition={{ duration: 0.2 }}
-        className="glass-card w-full max-w-2xl bg-slate-900/95 border-slate-700/80 shadow-2xl relative z-10 overflow-hidden flex flex-col max-h-[70vh]"
+        className="glass-card w-full max-w-2xl h-full md:h-auto bg-slate-900/95 border-0 md:border md:border-slate-700/80 shadow-2xl relative z-10 overflow-hidden flex flex-col md:max-h-[70vh] rounded-none md:rounded-2xl"
       >
         <div className="flex items-center px-4 py-3 border-b border-slate-700/50">
           <Search className="w-5 h-5 text-slate-400 mr-3" />

@@ -28,6 +28,7 @@ function App() {
   const [installing, setInstalling] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Keyboard shortcuts
   React.useEffect(() => {
@@ -88,13 +89,19 @@ function App() {
       <Header 
         onOpenSettings={() => setIsSettingsOpen(true)} 
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
+        onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       />
       
-      <div className="flex flex-1 overflow-hidden px-6 pb-12 gap-6">
+      <div className="flex flex-1 overflow-hidden px-4 md:px-6 pb-14 md:pb-12 gap-6 relative">
         <Sidebar 
           projects={projects} 
           selectedId={selectedId} 
-          onSelect={setSelectedId} 
+          onSelect={(id) => {
+            setSelectedId(id);
+            setIsMobileMenuOpen(false);
+          }}
+          isMobileMenuOpen={isMobileMenuOpen}
+          setIsMobileMenuOpen={setIsMobileMenuOpen}
           onAddProject={() => setIsAddModalOpen(true)}
           onReorder={async (newOrderIds) => {
             try {
@@ -106,8 +113,8 @@ function App() {
           }}
         />
         
-        <main className="flex-1 overflow-hidden glass-panel rounded-2xl p-6 md:p-8 relative flex flex-col">
-          <div className="max-w-5xl mx-auto w-full h-full flex flex-col">
+        <main className="flex-1 overflow-y-auto md:overflow-hidden glass-panel rounded-2xl p-4 md:p-8 relative flex flex-col custom-scrollbar">
+          <div className="max-w-5xl mx-auto w-full h-full flex flex-col min-h-max md:min-h-0">
             <AnimatePresence mode="wait">
               {selectedProject ? (
                 <motion.div 
@@ -116,7 +123,7 @@ function App() {
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.98, y: -20 }}
                   transition={{ duration: 0.4, type: 'spring' }}
-                  className="h-full flex flex-col overflow-hidden"
+                  className="h-auto md:h-full flex flex-col overflow-visible md:overflow-hidden"
                 >
                   <div className="flex-shrink-0">
                   <ProjectCard 
@@ -127,12 +134,12 @@ function App() {
                   </div>
                   
                   {selectedProject.isInstalled ? (
-                    <div className="mt-6 flex-1 flex flex-col overflow-hidden space-y-6 pb-2">
+                    <div className="mt-6 flex-1 flex flex-col overflow-visible md:overflow-hidden space-y-6 pb-2">
                       <div className="flex-shrink-0">
                         <MetricsDashboard progress={selectedProject.progress} />
                       </div>
                       
-                      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 min-h-0 pb-6">
+                      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[500px] md:min-h-0 pb-16 md:pb-6">
                         {/* Plan Summary Card */}
                         <motion.div 
                           whileHover={{ scale: 1.01 }}
