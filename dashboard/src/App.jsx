@@ -86,16 +86,16 @@ function App() {
 
   return (
     <div className="h-screen w-screen overflow-hidden flex flex-col font-sans relative">
-      <Header 
-        onOpenSettings={() => setIsSettingsOpen(true)} 
+      <Header
+        onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
       />
-      
+
       <div className="flex flex-1 overflow-hidden px-4 md:px-6 pb-14 md:pb-12 gap-6 relative">
-        <Sidebar 
-          projects={projects} 
-          selectedId={selectedId} 
+        <Sidebar
+          projects={projects}
+          selectedId={selectedId}
           onSelect={(id) => {
             setSelectedId(id);
             setIsMobileMenuOpen(false);
@@ -112,12 +112,12 @@ function App() {
             }
           }}
         />
-        
+
         <main className="flex-1 overflow-y-auto md:overflow-hidden glass-panel rounded-2xl p-4 md:p-8 relative flex flex-col custom-scrollbar">
           <div className="max-w-5xl mx-auto w-full h-full flex flex-col min-h-max md:min-h-0">
             <AnimatePresence mode="wait">
               {selectedProject ? (
-                <motion.div 
+                <motion.div
                   key={selectedProject.id}
                   initial={{ opacity: 0, scale: 0.98, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -126,62 +126,89 @@ function App() {
                   className="h-auto md:h-full flex flex-col overflow-visible md:overflow-hidden"
                 >
                   <div className="flex-shrink-0">
-                  <ProjectCard 
-                    project={selectedProject} 
-                    onRemove={handleRemoveProject} 
-                    onOpenConfig={() => setConfigProject(selectedProject.id)}
-                  />
+                    <ProjectCard
+                      project={selectedProject}
+                      onRemove={handleRemoveProject}
+                      onOpenConfig={() => setConfigProject(selectedProject.id)}
+                    />
                   </div>
-                  
+
                   {selectedProject.isInstalled ? (
                     <div className="mt-6 flex-1 flex flex-col overflow-visible md:overflow-hidden space-y-6 pb-2">
                       <div className="flex-shrink-0">
                         <MetricsDashboard progress={selectedProject.progress} />
                       </div>
-                      
+
                       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 min-h-[500px] md:min-h-0 pb-16 md:pb-6">
                         {/* Plan Summary Card */}
                         <motion.div 
-                          whileHover={{ scale: 1.01 }}
+                          whileHover={{ scale: 1.02, y: -4 }}
+                          whileTap={{ scale: 0.98 }}
+                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
                           onClick={() => setIsPlanModalOpen(true)}
-                          className="bg-slate-900/40 border border-slate-700/50 hover:border-accent-500/50 rounded-2xl p-6 relative cursor-pointer group flex flex-col transition-colors shadow-lg"
+                          className="bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/[0.05] hover:border-purple-500/50 rounded-xl p-6 relative cursor-pointer group flex flex-col shadow-lg overflow-hidden"
                         >
-                          <div className="absolute inset-0 bg-gradient-to-br from-accent-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"></div>
+                          <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"></div>
+                          <motion.div 
+                            className="absolute -right-10 -top-10 w-40 h-40 bg-purple-500/20 blur-[50px] rounded-full group-hover:bg-purple-500/30 transition-colors"
+                          />
                           <div className="flex items-center justify-between mb-4 relative z-10">
                             <h2 className="text-xl font-bold text-white flex items-center gap-3">
-                              <FileText className="w-6 h-6 text-accent-400 group-hover:text-accent-300 transition-colors" />
+                              <motion.div
+                                animate={{ rotate: [0, 5, -5, 0] }}
+                                transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                              >
+                                <FileText className="w-5 h-5 text-purple-400 group-hover:text-purple-300 transition-colors drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]" />
+                              </motion.div>
                               Implementation Plan
                             </h2>
-                            <ChevronRight className="w-5 h-5 text-slate-500 group-hover:text-white transition-colors translate-x-0 group-hover:translate-x-1" />
+                            <ChevronRight className="w-5 h-5 text-slate-500 group-hover:text-white transition-all group-hover:translate-x-2" />
                           </div>
                           
-                          <p className="text-slate-400 mb-6 flex-1 relative z-10 leading-relaxed">
+                          <p className="text-sm text-slate-400 mb-6 flex-1 relative z-10 leading-relaxed group-hover:text-slate-300 transition-colors">
                             View the detailed step-by-step implementation plan, track current phase progress, and mark tasks as complete.
                           </p>
                           
-                          <div className="flex items-center justify-between mt-auto relative z-10 pt-4 border-t border-slate-700/50">
-                            <span className="text-sm font-medium text-slate-300">
+                          <div className="flex items-center justify-between mt-auto relative z-10 pt-4 border-t border-white/[0.05] group-hover:border-purple-500/30 transition-colors">
+                            <span className="text-xs font-mono text-slate-500 group-hover:text-purple-400/70 transition-colors">
                               {selectedProject.progress?.phases?.length || 0} Phases
                             </span>
-                            <button className="text-sm font-bold text-accent-400 group-hover:text-accent-300 uppercase tracking-wider">
-                              Open Plan
-                            </button>
+                            <motion.button 
+                              whileHover={{ x: 2 }}
+                              className="text-[11px] font-bold text-purple-400 group-hover:text-purple-300 uppercase tracking-wider font-mono flex items-center gap-1"
+                            >
+                              Open Plan <span className="text-[14px]">→</span>
+                            </motion.button>
                           </div>
                         </motion.div>
 
-                        <div className="bg-slate-900/40 border border-slate-700/50 rounded-2xl p-6 relative flex flex-col">
-                           <h2 className="text-xl font-bold text-white flex items-center gap-3 mb-4">
-                              <Rocket className="w-5 h-5 text-primary-400" />
+                        <motion.div 
+                          initial={{ opacity: 0, y: 20 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: 0.1, type: "spring" }}
+                          whileHover={{ scale: 1.01, boxShadow: "0 10px 40px -10px rgba(99, 102, 241, 0.2)" }}
+                          className="bg-[#0a0f1c]/80 backdrop-blur-xl border border-white/[0.05] rounded-xl p-6 relative flex flex-col group overflow-hidden"
+                        >
+                           <motion.div 
+                             className="absolute -left-10 -bottom-10 w-40 h-40 bg-indigo-500/10 blur-[50px] rounded-full group-hover:bg-indigo-500/20 transition-colors"
+                           />
+                           <h2 className="text-xl font-bold text-white flex items-center gap-3 mb-4 relative z-10">
+                              <motion.div
+                                animate={{ y: [0, -3, 0] }}
+                                transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                              >
+                                <Rocket className="w-5 h-5 text-indigo-400 drop-shadow-[0_0_8px_rgba(99,102,241,0.5)]" />
+                              </motion.div>
                               Git History
                            </h2>
-                           <div className="flex-1 overflow-y-auto custom-scrollbar -mr-2 pr-2">
+                           <div className="flex-1 overflow-y-auto custom-scrollbar -mr-2 pr-2 relative z-10">
                              <GitVisualizer projectId={selectedProject.id} onRefresh={refresh} />
                            </div>
-                        </div>
+                        </motion.div>
                       </div>
-                      </div>
+                    </div>
                   ) : (
-                    <motion.div 
+                    <motion.div
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       className="mt-12 p-16 text-center glass-card border-dashed border-slate-600"
@@ -191,11 +218,11 @@ function App() {
                       </div>
                       <h2 className="text-2xl font-bold text-slate-200 mb-3 text-glow">Project Not Initialized</h2>
                       <p className="text-slate-400 max-w-md mx-auto leading-relaxed mb-8">
-                        This directory doesn't have an initialized ai-checkpoint structure. 
+                        This directory doesn't have an initialized ai-checkpoint structure.
                         You can initialize it right here to start tracking progress.
                       </p>
                       <div className="flex items-center justify-center gap-4">
-                        <button 
+                        <button
                           onClick={async () => {
                             setInstalling(true);
                             try {
@@ -214,7 +241,7 @@ function App() {
                           {installing ? <Loader2 className="w-4 h-4 animate-spin" /> : <PlaySquare className="w-4 h-4" />}
                           Initialize Project Here
                         </button>
-                        <button 
+                        <button
                           onClick={handleRemoveProject}
                           className="flex items-center gap-2 text-red-400 hover:text-red-300 hover:bg-red-950/30 px-4 py-2 rounded-xl transition-colors text-sm font-medium"
                         >
@@ -225,7 +252,7 @@ function App() {
                   )}
                 </motion.div>
               ) : (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   className="flex flex-col items-center justify-center h-[70vh] text-center"
@@ -240,7 +267,7 @@ function App() {
                   <p className="text-slate-400 max-w-md text-lg leading-relaxed mb-10">
                     Select a project from the sidebar to view its gorgeous progress tracking, or add a new one.
                   </p>
-                  <button 
+                  <button
                     onClick={() => setIsAddModalOpen(true)}
                     className="btn-primary flex items-center gap-2 text-lg px-8 py-3"
                   >
@@ -256,7 +283,7 @@ function App() {
 
       <AnimatePresence>
         {isPlanModalOpen && selectedProject && (
-          <PlanModal 
+          <PlanModal
             project={selectedProject}
             onClose={() => setIsPlanModalOpen(false)}
             onRefresh={refresh}
@@ -266,9 +293,9 @@ function App() {
 
       <AnimatePresence>
         {configProject && (
-          <ConfigEditor 
-            projectId={configProject} 
-            onClose={() => setConfigProject(null)} 
+          <ConfigEditor
+            projectId={configProject}
+            onClose={() => setConfigProject(null)}
           />
         )}
       </AnimatePresence>
@@ -276,7 +303,7 @@ function App() {
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={() => setIsAddModalOpen(false)}></div>
-          <motion.div 
+          <motion.div
             initial={{ scale: 0.9, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             className="glass-card p-8 rounded-3xl shadow-2xl w-full max-w-md relative z-10 border-slate-600/50"
@@ -297,14 +324,14 @@ function App() {
                 />
               </div>
               <div className="flex justify-end gap-4 mt-8">
-                <button 
-                  type="button" 
+                <button
+                  type="button"
                   onClick={() => setIsAddModalOpen(false)}
                   className="px-5 py-2.5 text-sm font-medium text-slate-400 hover:text-white transition-colors"
                 >
                   Cancel
                 </button>
-                <button 
+                <button
                   type="submit"
                   className="btn-primary"
                 >
