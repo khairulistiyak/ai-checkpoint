@@ -4,110 +4,50 @@
 
 @layer base {
   :root {
-    --primary-400: #a78bfa;
-    --primary-500: #8b5cf6;
-    --primary-600: #7c3aed;
-    --primary-900: #4c1d95;
+    --primary-400: #e2e8f0;
+    --primary-500: #94a3b8;
+    --primary-600: #64748b;
+    --primary-900: #1e293b;
 
-    --accent-300: #f0abfc;
-    --accent-400: #e879f9;
-    --accent-500: #d946ef;
-    --accent-600: #c026d3;
-    --accent-950: #4a044e;
-  }
-
-  .theme-emerald {
-    --primary-400: #34d399;
-    --primary-500: #10b981;
-    --primary-600: #059669;
-    --primary-900: #064e3b;
-
-    --accent-300: #6ee7b7;
-    --accent-400: #34d399;
-    --accent-500: #10b981;
-    --accent-600: #059669;
-    --accent-950: #022c22;
-  }
-
-  .theme-blue {
-    --primary-400: #60a5fa;
-    --primary-500: #3b82f6;
-    --primary-600: #2563eb;
-    --primary-900: #1e3a8a;
-
-    --accent-300: #93c5fd;
-    --accent-400: #60a5fa;
-    --accent-500: #3b82f6;
-    --accent-600: #2563eb;
-    --accent-950: #172554;
+    --accent-300: #cbd5e1;
+    --accent-400: #94a3b8;
+    --accent-500: #64748b;
+    --accent-600: #475569;
+    --accent-950: #0f172a;
   }
 
   body {
     @apply text-slate-300 antialiased font-sans m-0 p-0 h-screen w-screen overflow-hidden;
-    background-color: #030712; /* Very deep space black */
-    background-image: 
-      radial-gradient(circle at 15% 50%, rgba(99, 102, 241, 0.04), transparent 30%),
-      radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.03), transparent 30%);
-    background-attachment: fixed;
+    background-color: #000000; /* Pure black minimalist background */
   }
-}
-
-@keyframes float {
-  0% { transform: translateY(0px) translateX(0px); }
-  50% { transform: translateY(-20px) translateX(10px); }
-  100% { transform: translateY(0px) translateX(0px); }
-}
-
-@keyframes pulse-glow {
-  0% { box-shadow: 0 0 10px rgba(168, 85, 247, 0.2); }
-  50% { box-shadow: 0 0 30px rgba(168, 85, 247, 0.6); }
-  100% { box-shadow: 0 0 10px rgba(168, 85, 247, 0.2); }
 }
 
 @layer components {
   .glass-panel {
-    @apply bg-[#0a0f1c]/70 backdrop-blur-xl border border-white/[0.05] shadow-[0_8px_32px_rgba(0,0,0,0.5)];
+    @apply bg-[#0A0A0A] border-b border-white/[0.08];
   }
 
   .glass-card {
-    @apply bg-[#0a0f1c]/50 backdrop-blur-lg border border-white/[0.04] shadow-lg rounded-xl relative overflow-hidden transition-all duration-300;
-  }
-
-  .glass-card::before {
-    content: '';
-    @apply absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 transition-opacity duration-300 pointer-events-none;
-  }
-
-  .glass-card:hover::before {
-    @apply opacity-100;
+    @apply bg-[#0A0A0A] border border-white/[0.08] rounded-xl relative overflow-hidden transition-all duration-300;
   }
 
   .btn-primary {
-    @apply relative overflow-hidden text-white font-medium py-2 px-5 rounded-xl transition-all duration-300 shadow-[0_0_15px_rgba(139,92,246,0.5)] hover:shadow-[0_0_25px_rgba(139,92,246,0.7)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900;
-    background: linear-gradient(to right, var(--primary-600), var(--accent-600));
-  }
-
-  .btn-primary:hover {
-    background: linear-gradient(to right, var(--primary-500), var(--accent-500));
-  }
-
-  .btn-primary:focus {
-    --tw-ring-color: var(--accent-500);
+    @apply relative text-black bg-white font-medium py-2 px-5 rounded-xl transition-all duration-300 hover:bg-slate-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-white;
   }
 
   .btn-secondary {
-    @apply bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-medium py-2 px-4 rounded-xl transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-slate-900;
+    @apply bg-transparent hover:bg-white/[0.05] border border-white/[0.1] text-slate-300 font-medium py-2 px-4 rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2 focus:ring-offset-black;
   }
 
   .text-glow {
-    text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
+    /* Removed heavy glowing effect, keeping it standard */
   }
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - Minimal */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 4px;
+  height: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -115,7 +55,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-700/80 rounded-full;
+  @apply bg-slate-800 rounded-full;
 }
 
 ::-webkit-scrollbar-thumb:hover {
