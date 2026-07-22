@@ -33,7 +33,7 @@ export default function ProgressRing({ percentage, size = 120, strokeWidth = 10,
         />
       </svg>
       <div className="absolute flex flex-col items-center justify-center">
-        <span className="text-2xl font-bold">{percentage}%</span>
+        <span className="font-bold" style={{ fontSize: Math.max(size * 0.22, 10) }}>{percentage}%</span>
       </div>
     </div>
   );

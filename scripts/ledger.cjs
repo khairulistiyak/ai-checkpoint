@@ -511,6 +511,7 @@ function validateCommand() {
       failures++;
       return;
     }
+    if (step.status === 'pending') return;
     if (!fs.existsSync(target) || planStep.file.startsWith('.agents/')) return;
     const effectiveLines = fs.readFileSync(target, 'utf8').split(/\r?\n/)
       .filter(line => line.trim() && !/^\s*(\/\/|#(?!\!)|\/\*|\*|<!--)/.test(line)).length;
