@@ -25,6 +25,16 @@ if (process.env.NODE_ENV === 'production' || fs.existsSync(path.join(__dirname, 
   });
 }
 
+// Global Express Error Handler
+app.use((err, req, res, next) => {
+  console.error('⚠️ Dashboard Backend Error:', err);
+  res.status(err.status || 500).json({ error: err.message || 'Internal Server Error' });
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('⚠️ Unhandled Rejection in Server:', reason);
+});
+
 app.listen(PORT, () => {
   console.log(`🤖 AI-Checkpoint Dashboard backend running on http://localhost:${PORT}`);
 });

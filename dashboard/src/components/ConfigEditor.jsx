@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Save, FileText, Code2, Loader2, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as api from '../utils/api';
+import { useToast } from './ToastProvider';
 
 export default function ConfigEditor({ projectId, onClose }) {
+  const { showToast } = useToast();
   const [config, setConfig] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -31,8 +33,9 @@ export default function ConfigEditor({ projectId, onClose }) {
     setSaving(true);
     try {
       await api.updateConfig(projectId, { rules: rulesContent, agents: agentsContent });
+      showToast('Config saved successfully!', 'success');
     } catch (err) {
-      alert(`Failed to save: ${err.message}`);
+      showToast(`Failed to save: ${err.message}`, 'error');
     } finally {
       setSaving(false);
     }

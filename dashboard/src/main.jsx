@@ -4,13 +4,16 @@ import App from './App.jsx'
 import './index.css'
 import { ToastProvider } from './components/ToastProvider.jsx'
 import { ThemeProvider } from './components/ThemeProvider.jsx'
+import ErrorBoundary from './components/ErrorBoundary.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ThemeProvider>
-      <ToastProvider>
-        <App />
-      </ToastProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <ToastProvider>
+          <App />
+        </ToastProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   </React.StrictMode>,
 )

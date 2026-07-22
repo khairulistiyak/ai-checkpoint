@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import ProgressRing from './ProgressRing';
 import ExportButton from './ExportButton';
-import { Terminal, FolderOpen, Settings, Zap, Trash2 } from 'lucide-react';
+import { Terminal, FolderOpen, Settings, Zap, Trash2, ShieldCheck, ShieldX } from 'lucide-react';
 import { motion } from 'framer-motion';
+import * as api from '../utils/api';
 
 export default function ProjectCard({ project, onRemove, onOpenConfig }) {
   const { progress } = project;
+  const [health, setHealth] = useState(null);
+
+  useEffect(() => {
+    if (project.isInstalled) {
+      api.fetchProjectHealth(project.id).then(setHealth).catch(() => {});
+    }
+  }, [project.id, project.isInstalled]);
   const overall = progress?.overall || { percentage: 0, completed: 0, total: 0 };
   const isDone = overall.percentage === 100;
 
   return (
-    <motion.div 
-      className="bg-[#0A0A0A] border border-white/[0.08] rounded-3xl p-6 flex flex-col md:flex-row gap-6 items-start"
+    <motion.div
+      className="glass-card p-6 flex flex-col md:flex-row gap-6 items-start"
     >
       <div className="w-16 h-16 rounded-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center shrink-0">
         <ProgressRing
@@ -27,7 +35,7 @@ export default function ProjectCard({ project, onRemove, onOpenConfig }) {
           <div>
             <div className="flex items-center gap-3 flex-wrap">
               <h2 className="text-xl font-semibold text-white tracking-tight">{project.name}</h2>
-              {isDone && <span className="bg-white/10 text-white border border-white/20 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider">Done</span>}
+              {isDone && <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider shadow-[0_0_10px_rgba(16,185,129,0.2)]">Done</span>}
             </div>
             <p className="text-sm text-slate-500 flex items-center gap-2 mt-1.5">
               <FolderOpen className="w-3.5 h-3.5" />
@@ -36,7 +44,7 @@ export default function ProjectCard({ project, onRemove, onOpenConfig }) {
           </div>
           <div className="flex gap-2 sm:gap-3 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
             <ExportButton project={project} />
-            <button className="p-2.5 bg-white/[0.05] hover:bg-white/[0.1] rounded-xl text-slate-300 transition-all border border-white/[0.05]" title="Open in Terminal">
+            <button onClick={() => { navigator.clipboard.writeText(`cd ${project.path}`); }} className="p-2.5 bg-white/[0.05] hover:bg-white/[0.1] rounded-xl text-slate-300 transition-all border border-white/[0.05]" title="Copy cd command">
               <Terminal className="w-4 h-4" />
             </button>
             <button onClick={onOpenConfig} className="p-2.5 bg-white/[0.05] hover:bg-white/[0.1] rounded-xl text-slate-300 transition-all border border-white/[0.05]" title="Edit Config">
@@ -48,24 +56,20 @@ export default function ProjectCard({ project, onRemove, onOpenConfig }) {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4">
-          <div className="bg-white/[0.02] p-4 rounded-xl border border-white/[0.05]">
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Total Steps</div>
-            <div className="text-2xl font-black text-white">{overall.total}</div>
+        {health && (
+          <div className="flex items-center gap-2 flex-wrap">
+            {health.checks.map(c => (
+              <span key={c.name} className={`text-[10px] font-mono px-2 py-0.5 rounded-md border flex items-center gap-1 ${c.passed
+                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                : 'bg-red-500/10 text-red-400 border-red-500/20'
+              }`}>
+                {c.passed ? <ShieldCheck className="w-3 h-3" /> : <ShieldX className="w-3 h-3" />}
+                {c.name}
+              </span>
+            ))}
           </div>
-          <div className="bg-white/[0.02] p-4 rounded-xl border border-white/[0.05]">
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Completed</div>
-            <div className="text-2xl font-black text-white">{overall.completed}</div>
-          </div>
-          <div className="bg-white/[0.02] p-4 rounded-xl border border-white/[0.05]">
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Pending</div>
-            <div className="text-2xl font-black text-white">{overall.total - overall.completed}</div>
-          </div>
-          <div className="bg-white/[0.02] p-4 rounded-xl border border-white/[0.05]">
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Phases</div>
-            <div className="text-2xl font-black text-white">{progress?.phases?.length || 0}</div>
-          </div>
-        </div>
+        )}
+
       </div>
     </motion.div>
   );
