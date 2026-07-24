@@ -35,6 +35,11 @@ ${colors.bright}Plan File Naming:${colors.reset}
 `);
 }
 
+const { watchCommand } = require('./cmd-watch.js');
+const { blockCommand } = require('./cmd-block.js');
+const { projectsCommand } = require('./cmd-projects.js');
+const { lintPlanCommand } = require('./cmd-lint-plan.js');
+
 function run() {
   const args = process.argv.slice(2);
   const cmd = args[0] ? args[0].toLowerCase() : 'status';
@@ -42,8 +47,12 @@ function run() {
   switch (cmd) {
     case 'help': case '--help': case '-h': case 'h': showHelp(); break;
     case 'status': case 's': statusCommand(); break;
+    case 'projects': case 'p': projectsCommand(); break;
+    case 'lint-plan': case 'lp': lintPlanCommand(); break;
+    case 'watch': case 'w': watchCommand(); break;
     case 'start': startCommand(args[1]); break;
     case 'complete': case 'c': completeCommand(args[1], args[2]); break;
+    case 'block': case 'b': blockCommand(args[1], args[2]); break;
     case 'validate': case 'v': validateCommand(); break;
     case 'doctor': doctorCommand(); break;
     case 'new-plan': case 'np': newPlanCommand(args[1]); break;

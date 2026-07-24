@@ -1,15 +1,17 @@
 import React from 'react';
 import { PlusCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
+import GlobalOverview from './GlobalOverview';
 
-export default function EmptySelectionView({ onAddProject }) {
+export default function EmptySelectionView({ onAddProject, projects }) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex flex-col items-center justify-center h-[70vh] text-center"
+      className="flex flex-col items-center justify-center h-full min-h-[70vh] text-center w-full"
     >
-      <div className="relative">
+      {projects && projects.length > 0 && <GlobalOverview projects={projects} />}
+      <div className="relative mt-4">
         <div className="absolute inset-0 bg-primary-500 blur-[80px] opacity-20 rounded-full"></div>
         <div className="w-32 h-32 bg-slate-800/40 backdrop-blur-md border border-white/[0.05] rounded-full flex items-center justify-center mb-8 relative z-10 shadow-2xl">
           <PlusCircle className="w-12 h-12 text-slate-400" />

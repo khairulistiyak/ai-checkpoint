@@ -5,7 +5,16 @@ const { getProgressBar } = require('./cmd-complete.js');
 
 function statusCommand() {
   checkFiles();
-  const { phases } = parseProgress();
+  const progress = parseProgress();
+  const { phases, overall } = progress;
+  
+  if (process.argv.includes('--json')) {
+    let nextStep = null;
+    for (const p of phases) { const s = p.steps.find(st => st.status !== 'done'); if (s) { nextStep = s; break; } }
+    console.log(JSON.stringify({ phases, overall, nextStep }, null, 2));
+    process.exit(0);
+  }
+
   let totalSteps = 0, doneSteps = 0;
   
   console.log(`\n${colors.bright}┌────────────────────────────────────────────────────────┐${colors.reset}`);

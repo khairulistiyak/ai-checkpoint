@@ -41,9 +41,6 @@ function App() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  React.useEffect(() => {
-    if (projects.length > 0 && !selectedId) setSelectedId(projects[0].id);
-  }, [projects, selectedId]);
 
   const selectedProject = projects.find(p => p.id === selectedId);
 
@@ -107,7 +104,7 @@ function App() {
                   />
                 </motion.div>
               ) : (
-                <EmptySelectionView onAddProject={() => setIsAddModalOpen(true)} />
+                <EmptySelectionView onAddProject={() => setIsAddModalOpen(true)} projects={projects} />
               )}
             </AnimatePresence>
           </div>

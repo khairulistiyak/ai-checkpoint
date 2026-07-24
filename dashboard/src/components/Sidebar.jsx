@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { LayoutDashboard, Plus, Activity, GripVertical } from 'lucide-react';
 import { useSidebarReorder } from '../hooks/use-sidebar-reorder.js';
 import { motion, Reorder, AnimatePresence } from 'framer-motion';
@@ -18,6 +18,11 @@ const itemVariants = {
 
 export default function Sidebar({ projects, selectedId, onSelect, onAddProject, onReorder, isMobileMenuOpen, setIsMobileMenuOpen }) {
   const { items, handleReorder } = useSidebarReorder(projects, onReorder);
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const displayedItems = useMemo(() => {
+    return items.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()));
+  }, [items, searchQuery]);
   return (
     <>
       {/* Mobile Backdrop */}
@@ -61,16 +66,25 @@ export default function Sidebar({ projects, selectedId, onSelect, onAddProject, 
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 relative z-10 custom-scrollbar">
-          {items.length === 0 ? (
+          <div className="mb-4">
+            <input 
+              type="text" 
+              placeholder="Search projects..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-[#020617]/50 border border-white/[0.05] rounded-xl py-2 px-3 text-sm focus:outline-none focus:border-violet-500 text-white placeholder-slate-500"
+            />
+          </div>
+          {displayedItems.length === 0 ? (
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }}
               className="text-center p-6 text-slate-500 text-sm italic"
             >
-              No projects added yet.
+              No projects found.
             </motion.div>
           ) : (
-            <Reorder.Group as="ul" variants={containerVariants} initial="hidden" animate="show" axis="y" values={items} onReorder={handleReorder} className="space-y-2">
-              {items.map(p => {
+            <Reorder.Group as="ul" variants={containerVariants} initial="hidden" animate="show" axis="y" values={displayedItems} onReorder={handleReorder} className="space-y-2">
+              {displayedItems.map(p => {
                 const isSelected = selectedId === p.id;
                 const progress = p.progress?.overall?.percentage || 0;
 

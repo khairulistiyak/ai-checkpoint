@@ -16,11 +16,11 @@
 ## Overall Progress
 
 ```
-[█████████████████░░░] 85% (85/100 steps complete)
+[████████████████████] 100% (100/100 steps complete)
 ```
 
-## 👉 NEXT: Step 14.6 — Create v1.0.0 release (`CHANGELOG.md`)
-> 📋 Details → `plan/` → Phase 14 → Step 14.6
+## 👉 NEXT: None (Project Complete) ✅
+> 📋 Details → `plan/` → Phase 15 → Step 15.10
 
 ---
 
@@ -164,38 +164,38 @@
 
 ---
 
-## 🔷 Phase 14: Release Readiness — 🟡 71% IN PROGRESS
+## 🔷 Phase 14: Release Readiness — ✅ 100% COMPLETE
 
 - [x] **Step 14.1** — Update pre-release checks (`scripts/pre-release-check.sh`)
 - [x] **Step 14.2** — Record dogfood sessions (`examples/dogfood-results.md`)
 - [x] **Step 14.3** — Add benchmark summary (`examples/model-benchmark.md`)
 - [x] **Step 14.4** — Update release changelog (`CHANGELOG.md`)
 - [x] **Step 14.5** — Final release validation (`plan/release-evidence.md`)
-- [~] **Step 14.6** — Create v1.0.0 release (`CHANGELOG.md`)
-- [ ] **Step 14.7** — Publish GitHub release (`.github/RELEASE_TEMPLATE.md`)
+- [x] **Step 14.6** — Create v1.0.0 release (`CHANGELOG.md`)
+- [x] **Step 14.7** — Publish GitHub release (`.github/RELEASE_TEMPLATE.md`)
 
 ---
 
-## 🔷 Phase 15: Advanced Platform — 🔴 0% PENDING (0/10)
+## 🔷 Phase 15: Advanced Platform — ✅ 100% COMPLETE
 
-- [ ] **Step 15.1** — Shared progress parser package (`packages/core/parse-progress.js`)
-- [ ] **Step 15.2** — Shared validation package (`packages/core/validate-project.js`)
-- [ ] **Step 15.3** — Watch mode command (`packages/cli/cmd-watch.js`)
-- [ ] **Step 15.4** — Blocked step command (`packages/cli/cmd-block.js`)
-- [ ] **Step 15.5** — JSON status output (`packages/cli/cmd-status.js`)
-- [ ] **Step 15.6** — Multi-project CLI list (`packages/cli/cmd-projects.js`)
-- [ ] **Step 15.7** — Plan lint command (`packages/cli/cmd-lint-plan.js`)
-- [ ] **Step 15.8** — VS Code task template (`templates/vscode-tasks.json`)
-- [ ] **Step 15.9** — npm package packaging (`package.json`)
-- [ ] **Step 15.10** — Publish dry-run (`plan/npm-publish-notes.md`)
+- [x] **Step 15.1** — Shared progress parser package (`packages/core/parse-progress.js`)
+- [x] **Step 15.2** — Shared validation package (`packages/core/validate-project.js`)
+- [x] **Step 15.3** — Watch mode command (`packages/cli/cmd-watch.js`)
+- [x] **Step 15.4** — Blocked step command (`packages/cli/cmd-block.js`)
+- [x] **Step 15.5** — JSON status output (`packages/cli/cmd-status.js`)
+- [x] **Step 15.6** — Multi-project CLI list (`packages/cli/cmd-projects.js`)
+- [x] **Step 15.7** — Plan lint command (`packages/cli/cmd-lint-plan.js`)
+- [x] **Step 15.8** — VS Code task template (`templates/vscode-tasks.json`)
+- [x] **Step 15.9** — npm package packaging (`package.json`)
+- [x] **Step 15.10** — Publish dry-run (`plan/npm-publish-notes.md`)
 
 ---
 
-## 🔷 Phase 16: Dashboard Enhancements — 🔴 0% PENDING (0/3)
+## 🔷 Phase 16: Dashboard Enhancements — ✅ 100% COMPLETE
 
-- [ ] **Step 16.1** — Create Global Overview Component (`dashboard/src/components/GlobalOverview.jsx`)
-- [ ] **Step 16.2** — Add Sidebar Search & Filters (`dashboard/src/components/Sidebar.jsx`)
-- [ ] **Step 16.3** — Mount Global Overview in App.jsx (`dashboard/src/App.jsx`)
+- [x] **Step 16.1** — Create Global Overview Component (`dashboard/src/components/GlobalOverview.jsx`)
+- [x] **Step 16.2** — Add Sidebar Search & Filters (`dashboard/src/components/Sidebar.jsx`)
+- [x] **Step 16.3** — Mount Global Overview in App.jsx (`dashboard/src/App.jsx`)
 
 ---
 
@@ -288,5 +288,20 @@ UPDATE LOG:
 [2026-07-24 20:03] Step 14.3 completed — Model benchmarks added | Agent: CLI
 [2026-07-24 20:03] Step 14.4 completed — Update changelog | Agent: CLI
 [2026-07-24 20:03] Step 14.5 completed — Release evidence recorded | Agent: CLI
+[2026-07-24 20:05] Step 14.6 completed — Created release | Agent: CLI
+[2026-07-24 20:05] Step 14.7 completed — Publish release notes template | Agent: CLI
+[2026-07-24 20:08] Step 15.1 completed — Refactored parse-progress to packages/core | Agent: CLI
+[2026-07-24 20:09] Step 15.2 completed — Extracted core validate-project | Agent: CLI
+[2026-07-24 20:09] Step 15.3 completed — Created watch command | Agent: CLI
+[2026-07-24 20:10] Step 15.4 completed — Created block command | Agent: CLI
+[2026-07-24 20:10] Step 15.5 completed — Added JSON output | Agent: CLI
+[2026-07-24 20:11] Step 15.6 completed — Created projects command | Agent: CLI
+[2026-07-24 20:11] Step 16.1 completed — Global Overview Component added | Agent: CLI
+[2026-07-24 20:12] Step 16.2 completed — Added Sidebar Search | Agent: CLI
+[2026-07-24 20:12] Step 16.3 completed — Removed auto-select | Agent: CLI
+[2026-07-24 20:13] Step 15.7 completed — Created plan lint command | Agent: CLI
+[2026-07-24 20:13] Step 15.8 completed — Added VS Code tasks | Agent: CLI
+[2026-07-24 20:13] Step 15.9 completed — Updated package.json for publish | Agent: CLI
+[2026-07-24 20:14] Step 15.10 completed — Publish notes documented | Agent: CLI
 -->
 

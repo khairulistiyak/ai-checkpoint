@@ -1,0 +1,53 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "AI Ledger: Status",
+      "type": "shell",
+      "command": "./l status",
+      "problemMatcher": []
+    },
+    {
+      "label": "AI Ledger: Start Step",
+      "type": "shell",
+      "command": "./l start ${input:stepNumber}",
+      "problemMatcher": []
+    },
+    {
+      "label": "AI Ledger: Complete Step",
+      "type": "shell",
+      "command": "./l complete ${input:stepNumber} \"${input:comment}\"",
+      "problemMatcher": []
+    },
+    {
+      "label": "AI Ledger: Validate",
+      "type": "shell",
+      "command": "./l validate",
+      "problemMatcher": []
+    },
+    {
+      "label": "AI Ledger: Checkpoint Save",
+      "type": "shell",
+      "command": "./l cp save \"${input:comment}\"",
+      "problemMatcher": []
+    },
+    {
+      "label": "AI Ledger: Doctor",
+      "type": "shell",
+      "command": "./l doctor",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "stepNumber",
+      "type": "promptString",
+      "description": "Step number (e.g., 1.1)"
+    },
+    {
+      "id": "comment",
+      "type": "promptString",
+      "description": "Completion/Save comment"
+    }
+  ]
+}
