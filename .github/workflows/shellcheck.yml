@@ -6,17 +6,30 @@ on:
   pull_request:
 
 jobs:
-  shellcheck:
+  test:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - name: Install ShellCheck on macOS
         if: runner.os == 'macOS'
         run: brew install shellcheck
+      - name: Install BATS
+        run: npm install -g bats
       - name: Check shell scripts
         run: shellcheck setup.sh install.sh l
       - name: Check CLI syntax
-        run: node -c scripts/ledger.cjs
+        run: node -c packages/cli/index.js
+      - name: Run BATS tests
+        run: bats tests
+      - name: Build Dashboard
+        run: |
+          cd dashboard
+          npm ci
+          npm run build

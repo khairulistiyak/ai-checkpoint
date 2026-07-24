@@ -16,10 +16,17 @@ This project follows Keep a Changelog and Semantic Versioning.
 - Strict two-attempt agent workflow.
 - One-command installer and idempotent setup.
 - Atomic examples, walkthrough, and macOS/Linux CI.
+- Full BATS test coverage for CLI commands.
+- Vue 3 + Vite visual dashboard on port 20226.
 
 ### Changed
+- CLI micro-file refactor: Refactored single-file `ledger.cjs` into modular `packages/cli/*`.
 - Step completion now requires validation.
 - Setup preserves existing project-managed templates.
+
+### Known Limitations
+- The dashboard `npm run dev` and Express backend currently run in the same process, lacking a daemonizer.
+- Strict 150-line file limits are enforced, which may require artificial splitting of complex logic.
 
 ## [0.1.0] - 2026-07-11
 

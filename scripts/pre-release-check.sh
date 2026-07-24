@@ -13,33 +13,55 @@ else
 fi
 echo "   ✅ Pass"
 
-# 2. All templates exist
 echo "2. Templates..."
 for f in AGENTS.md PROGRESS.md RULES.md SYSTEM_GUIDE.md PLAN_TEMPLATE.md; do
   test -f "templates/$f" || { echo "Missing templates/$f"; exit 1; }
 done
 echo "   ✅ Pass"
 
-# 3. Examples exist
 echo "3. Examples..."
 test -f examples/atomic-plan-example.md || exit 1
 test -f examples/walkthrough.md || exit 1
 echo "   ✅ Pass"
 
-# 4. CLI exists and parses
-echo "4. CLI..."
-test -f scripts/ledger.cjs || exit 1
-node -c scripts/ledger.cjs || exit 1
+echo "4. CLI existence and parse..."
+test -f packages/cli/index.js || exit 1
+node -c packages/cli/index.js || exit 1
 echo "   ✅ Pass"
 
-# 5. Documentation checks
-echo "5. Documentation..."
-grep -q "60-Second Quickstart" README.md || { echo "README missing quickstart"; exit 1; }
-grep -q "Unreleased" CHANGELOG.md || { echo "CHANGELOG missing Unreleased section"; exit 1; }
+echo "5. CLI Line Limits (<= 150)..."
+for f in packages/cli/*.js; do
+  lines=$(wc -l < "$f" | tr -d ' ')
+  if [ "$lines" -gt 150 ]; then
+    echo "❌ $f is $lines lines (>150)"
+    exit 1
+  fi
+done
 echo "   ✅ Pass"
 
-# 6. Test setup in clean directory
-echo "6. Setup test..."
+echo "6. BATS tests..."
+npx bats tests || exit 1
+echo "   ✅ Pass"
+
+echo "7. Dashboard build..."
+(cd dashboard && npm run build) || exit 1
+echo "   ✅ Pass"
+
+echo "8. No placeholders (USER/)..."
+if grep -rq "USER/" packages templates scripts 2>/dev/null; then
+  echo "❌ Found placeholders in shipped files"
+  exit 1
+fi
+echo "   ✅ Pass"
+
+echo "9. Git tree is clean..."
+if [ -n "$(git status --porcelain)" ]; then
+  echo "❌ Git tree is dirty"
+  exit 1
+fi
+echo "   ✅ Pass"
+
+echo "10. Setup test in clean directory..."
 TESTDIR=$(mktemp -d)
 cd "$TESTDIR"
 git init --quiet

@@ -52,6 +52,16 @@ Every plan step declares exactly one File, Action, Content, Done-check, and Depe
 
 ---
 
+## Visual Dashboard
+
+ai-checkpoint includes a beautiful Vue 3 + Vite dashboard to visualize your project progress in real-time.
+
+![Dashboard Screenshot](dashboard/screenshot.png)
+
+See the [Dashboard Documentation](dashboard/README.md) for details on architecture, commands, and API integration.
+
+---
+
 ## Why?
 
 AI coding assistants lose context between sessions. On multi-step projects, they:

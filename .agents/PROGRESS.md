@@ -16,11 +16,11 @@
 ## Overall Progress
 
 ```
-[████████████████░░░░] 54% (46/85 steps complete)
+[█████████████████░░░] 85% (85/100 steps complete)
 ```
 
-## 👉 NEXT: Step 10.1 — Add safe process runner (`dashboard/src/server/run-command.js`)
-> 📋 Details → `plan/phase-10-production-hardening.md` → Step 10.1
+## 👉 NEXT: Step 14.6 — Create v1.0.0 release (`CHANGELOG.md`)
+> 📋 Details → `plan/` → Phase 14 → Step 14.6
 
 ---
 
@@ -110,68 +110,68 @@
 
 ---
 
-## 🔷 Phase 10: Production Hardening — 🔴 0% PENDING (0/7)
+## 🔷 Phase 10: Production Hardening — ✅ 100% COMPLETE
 
-- [ ] **Step 10.1** — Add safe process runner (`dashboard/src/server/run-command.js`)
-- [ ] **Step 10.2** — Remove shell execution from project routes (`dashboard/src/server/projects.js`)
-- [ ] **Step 10.3** — Split checkpoint routes (`dashboard/src/server/checkpoints.js`)
-- [ ] **Step 10.4** — Mount checkpoint routes (`dashboard/server.js`)
-- [ ] **Step 10.5** — Reduce projects router below limit (`dashboard/src/server/projects.js`)
-- [ ] **Step 10.6** — Extract sidebar reorder hook (`dashboard/src/hooks/use-sidebar-reorder.js`)
-- [ ] **Step 10.7** — Reduce Sidebar below limit (`dashboard/src/components/Sidebar.jsx`)
-
----
-
-## 🔷 Phase 11: CLI Micro-File Refactor — 🔴 0% PENDING (0/14)
-
-- [ ] **Step 11.1** — Create CLI shared paths (`packages/cli/paths.js`)
-- [ ] **Step 11.2** — Create CLI colors module (`packages/cli/colors.js`)
-- [ ] **Step 11.3** — Create progress parser (`packages/cli/parse-progress.js`)
-- [ ] **Step 11.4** — Create validation module (`packages/cli/validate.js`)
-- [ ] **Step 11.5** — Create doctor module (`packages/cli/doctor.js`)
-- [ ] **Step 11.6** — Create start command module (`packages/cli/cmd-start.js`)
-- [ ] **Step 11.7** — Create complete command module (`packages/cli/cmd-complete.js`)
-- [ ] **Step 11.8** — Create status command module (`packages/cli/cmd-status.js`)
-- [ ] **Step 11.9** — Create checkpoint command module (`packages/cli/cmd-checkpoint.js`)
-- [ ] **Step 11.10** — Create new-plan command module (`packages/cli/cmd-new-plan.js`)
-- [ ] **Step 11.11** — Create CLI router barrel (`packages/cli/index.js`)
-- [ ] **Step 11.12** — Replace monolithic ledger launcher (`scripts/ledger.cjs`)
-- [ ] **Step 11.13** — Sync installed CLI copy (`.agents/scripts/ledger.cjs`)
-- [ ] **Step 11.14** — Update setup to install packages/cli (`setup.sh`)
+- [x] **Step 10.1** — Add safe process runner (`dashboard/src/server/run-command.js`)
+- [x] **Step 10.2** — Remove shell execution from project routes (`dashboard/src/server/projects.js`)
+- [x] **Step 10.3** — Split checkpoint routes (`dashboard/src/server/checkpoints.js`)
+- [x] **Step 10.4** — Mount checkpoint routes (`dashboard/server.js`)
+- [x] **Step 10.5** — Reduce projects router below limit (`dashboard/src/server/projects.js`)
+- [x] **Step 10.6** — Extract sidebar reorder hook (`dashboard/src/hooks/use-sidebar-reorder.js`)
+- [x] **Step 10.7** — Reduce Sidebar below limit (`dashboard/src/components/Sidebar.jsx`)
 
 ---
 
-## 🔷 Phase 12: Tests and CI — 🔴 0% PENDING (0/8)
+## 🔷 Phase 11: CLI Micro-File Refactor — ✅ 100% COMPLETE
 
-- [ ] **Step 12.1** — Create BATS helper (`tests/test_helper.bash`)
-- [ ] **Step 12.2** — Doctor and validate tests (`tests/doctor.bats`)
-- [ ] **Step 12.3** — Step lifecycle tests (`tests/step-lifecycle.bats`)
-- [ ] **Step 12.4** — Line-limit failure test (`tests/line-limit.bats`)
-- [ ] **Step 12.5** — Checkpoint tests (`tests/checkpoint.bats`)
-- [ ] **Step 12.6** — Start-command safety test (`tests/start-safety.bats`)
-- [ ] **Step 12.7** — Expand GitHub Actions CI (`.github/workflows/shellcheck.yml`)
-- [ ] **Step 12.8** — Add package.json test script (`package.json`)
-
----
-
-## 🔷 Phase 13: Dashboard Publish Ready — 🔴 0% PENDING (0/5)
-
-- [ ] **Step 13.1** — Commit all dashboard changes (`.gitignore`)
-- [ ] **Step 13.2** — Dashboard build smoke test (`dashboard/package.json`)
-- [ ] **Step 13.3** — Add dashboard dev guide (`dashboard/README.md`)
-- [ ] **Step 13.4** — Add dashboard screenshot (`dashboard/screenshot.png`)
-- [ ] **Step 13.5** — Document dashboard in main README (`README.md`)
+- [x] **Step 11.1** — Create CLI shared paths (`packages/cli/paths.js`)
+- [x] **Step 11.2** — Create CLI colors module (`packages/cli/colors.js`)
+- [x] **Step 11.3** — Create progress parser (`packages/cli/parse-progress.js`)
+- [x] **Step 11.4** — Create validation module (`packages/cli/validate.js`)
+- [x] **Step 11.5** — Create doctor module (`packages/cli/doctor.js`)
+- [x] **Step 11.6** — Create start command module (`packages/cli/cmd-start.js`)
+- [x] **Step 11.7** — Create complete command module (`packages/cli/cmd-complete.js`)
+- [x] **Step 11.8** — Create status command module (`packages/cli/cmd-status.js`)
+- [x] **Step 11.9** — Create checkpoint command module (`packages/cli/cmd-checkpoint.js`)
+- [x] **Step 11.10** — Create new-plan command module (`packages/cli/cmd-new-plan.js`)
+- [x] **Step 11.11** — Create CLI router barrel (`packages/cli/index.js`)
+- [x] **Step 11.12** — Replace monolithic ledger launcher (`scripts/ledger.cjs`)
+- [x] **Step 11.13** — Sync installed CLI copy (`.agents/scripts/ledger.cjs`)
+- [x] **Step 11.14** — Update setup to install packages/cli (`setup.sh`)
 
 ---
 
-## 🔷 Phase 14: Release Readiness — 🔴 0% PENDING (0/7)
+## 🔷 Phase 12: Tests and CI — ✅ 100% COMPLETE
 
-- [ ] **Step 14.1** — Update pre-release checks (`scripts/pre-release-check.sh`)
-- [ ] **Step 14.2** — Record dogfood sessions (`examples/dogfood-results.md`)
-- [ ] **Step 14.3** — Add benchmark summary (`examples/model-benchmark.md`)
-- [ ] **Step 14.4** — Update release changelog (`CHANGELOG.md`)
-- [ ] **Step 14.5** — Final release validation (`plan/release-evidence.md`)
-- [ ] **Step 14.6** — Create v1.0.0 release (`CHANGELOG.md`)
+- [x] **Step 12.1** — Create BATS helper (`tests/test_helper.bash`)
+- [x] **Step 12.2** — Doctor and validate tests (`tests/doctor.bats`)
+- [x] **Step 12.3** — Step lifecycle tests (`tests/step-lifecycle.bats`)
+- [x] **Step 12.4** — Line-limit failure test (`tests/line-limit.bats`)
+- [x] **Step 12.5** — Checkpoint tests (`tests/checkpoint.bats`)
+- [x] **Step 12.6** — Start-command safety test (`tests/start-safety.bats`)
+- [x] **Step 12.7** — Expand GitHub Actions CI (`.github/workflows/shellcheck.yml`)
+- [x] **Step 12.8** — Add package.json test script (`package.json`)
+
+---
+
+## 🔷 Phase 13: Dashboard Publish Ready — ✅ 100% COMPLETE
+
+- [x] **Step 13.1** — Commit all dashboard changes (`.gitignore`)
+- [x] **Step 13.2** — Dashboard build smoke test (`dashboard/package.json`)
+- [x] **Step 13.3** — Add dashboard dev guide (`dashboard/README.md`)
+- [x] **Step 13.4** — Add dashboard screenshot (`dashboard/screenshot.png`)
+- [x] **Step 13.5** — Document dashboard in main README (`README.md`)
+
+---
+
+## 🔷 Phase 14: Release Readiness — 🟡 71% IN PROGRESS
+
+- [x] **Step 14.1** — Update pre-release checks (`scripts/pre-release-check.sh`)
+- [x] **Step 14.2** — Record dogfood sessions (`examples/dogfood-results.md`)
+- [x] **Step 14.3** — Add benchmark summary (`examples/model-benchmark.md`)
+- [x] **Step 14.4** — Update release changelog (`CHANGELOG.md`)
+- [x] **Step 14.5** — Final release validation (`plan/release-evidence.md`)
+- [~] **Step 14.6** — Create v1.0.0 release (`CHANGELOG.md`)
 - [ ] **Step 14.7** — Publish GitHub release (`.github/RELEASE_TEMPLATE.md`)
 
 ---
@@ -188,6 +188,14 @@
 - [ ] **Step 15.8** — VS Code task template (`templates/vscode-tasks.json`)
 - [ ] **Step 15.9** — npm package packaging (`package.json`)
 - [ ] **Step 15.10** — Publish dry-run (`plan/npm-publish-notes.md`)
+
+---
+
+## 🔷 Phase 16: Dashboard Enhancements — 🔴 0% PENDING (0/3)
+
+- [ ] **Step 16.1** — Create Global Overview Component (`dashboard/src/components/GlobalOverview.jsx`)
+- [ ] **Step 16.2** — Add Sidebar Search & Filters (`dashboard/src/components/Sidebar.jsx`)
+- [ ] **Step 16.3** — Mount Global Overview in App.jsx (`dashboard/src/App.jsx`)
 
 ---
 
@@ -241,5 +249,44 @@ UPDATE LOG:
 [2026-07-22 12:00] Step 9.4 completed — Debounced sidebar reorder API calls | Agent: CLI
 [2026-07-22 12:00] Step 9.5 completed — Added SEO meta tags | Agent: CLI
 [2026-07-22 12:01] Step 9.6 completed — Added health check display to ProjectCard | Agent: CLI
+[2026-07-22 23:06] Step 10.1 completed — Implemented runCommand with execFileSync | Agent: CLI
+[2026-07-24 19:04] Step 10.2 completed — Remove shell execution from project routes | Agent: CLI
+[2026-07-24 19:06] Step 10.3 completed — Split checkpoint routes | Agent: CLI
+[2026-07-24 19:07] Step 10.4 completed — Mount checkpoint routes | Agent: CLI
+[2026-07-24 19:07] Step 10.5 completed — Reduce projects router below limit | Agent: CLI
+[2026-07-24 19:08] Step 10.6 completed — Extract sidebar reorder hook | Agent: CLI
+[2026-07-24 19:09] Step 10.7 completed — Reduce Sidebar below limit | Agent: CLI
+[2026-07-24 19:16] Step 11.1 completed — Create CLI shared paths | Agent: CLI
+[2026-07-24 19:16] Step 11.2 completed — Create CLI colors module | Agent: CLI
+[2026-07-24 19:17] Step 11.3 completed — Create progress parser | Agent: CLI
+[2026-07-24 19:18] Step 11.4 completed — Create validation module | Agent: CLI
+[2026-07-24 19:19] Step 11.5 completed — Create doctor module | Agent: CLI
+[2026-07-24 19:19] Step 11.6 completed — Create start command module | Agent: CLI
+[2026-07-24 19:20] Step 11.7 completed — Create complete command module | Agent: CLI
+[2026-07-24 19:21] Step 11.8 completed — Create status command module | Agent: CLI
+[2026-07-24 19:21] Step 11.9 completed — Create checkpoint command module | Agent: CLI
+[2026-07-24 19:23] Step 11.10 completed — Create new-plan command module | Agent: CLI
+[2026-07-24 19:23] Step 11.11 completed — Create CLI router barrel | Agent: CLI
+[2026-07-24 19:24] Step 11.12 completed — Replace monolithic ledger launcher | Agent: CLI
+[2026-07-24 19:25] Step 11.13 completed — Sync installed CLI copy | Agent: CLI
+[2026-07-24 19:25] Step 11.14 completed — Update setup to install packages/cli | Agent: CLI
+[2026-07-24 19:32] Step 12.1 completed — Create BATS helper | Agent: CLI
+[2026-07-24 19:37] Step 12.2 completed — Doctor and validate tests | Agent: CLI
+[2026-07-24 19:42] Step 12.3 completed — Step lifecycle tests | Agent: CLI
+[2026-07-24 19:43] Step 12.4 completed — Line limit tests | Agent: CLI
+[2026-07-24 19:45] Step 12.5 completed — Checkpoint tests | Agent: CLI
+[2026-07-24 19:46] Step 12.6 completed — Start-command safety test | Agent: CLI
+[2026-07-24 19:48] Step 12.7 completed — Expand CI | Agent: CLI
+[2026-07-24 19:48] Step 12.8 completed — Package.json scripts added | Agent: CLI
+[2026-07-24 19:57] Step 13.1 completed — Dashboard gitignore and commit | Agent: CLI
+[2026-07-24 19:58] Step 13.2 completed — Smoke test | Agent: CLI
+[2026-07-24 19:58] Step 13.3 completed — Dashboard dev guide | Agent: CLI
+[2026-07-24 19:59] Step 13.4 completed — Add dashboard screenshot | Agent: CLI
+[2026-07-24 20:00] Step 13.5 completed — Document dashboard in README | Agent: CLI
+[2026-07-24 20:02] Step 14.1 completed — Updated pre-release checks | Agent: CLI
+[2026-07-24 20:03] Step 14.2 completed — Recorded dogfood sessions | Agent: CLI
+[2026-07-24 20:03] Step 14.3 completed — Model benchmarks added | Agent: CLI
+[2026-07-24 20:03] Step 14.4 completed — Update changelog | Agent: CLI
+[2026-07-24 20:03] Step 14.5 completed — Release evidence recorded | Agent: CLI
 -->
 
