@@ -6,6 +6,8 @@ This project follows Keep a Changelog and Semantic Versioning.
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-07-24
+
 ### Added
 - `doctor` project health checks.
 - Validation gates for completed files, plan sync, and 150-line limits.
