@@ -17,3 +17,7 @@ data/
 # Keep structure
 !.agents/.gitkeep
 !plan/.gitkeep
+
+# Dashboard
+dashboard/node_modules/
+dashboard/dist/

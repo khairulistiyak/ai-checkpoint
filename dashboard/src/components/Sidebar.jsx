@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import { LayoutDashboard, Plus, Activity, GripVertical } from 'lucide-react';
+import { useSidebarReorder } from '../hooks/use-sidebar-reorder.js';
 import { motion, Reorder, AnimatePresence } from 'framer-motion';
 
 const containerVariants = {
@@ -16,24 +17,7 @@ const itemVariants = {
 };
 
 export default function Sidebar({ projects, selectedId, onSelect, onAddProject, onReorder, isMobileMenuOpen, setIsMobileMenuOpen }) {
-  const [items, setItems] = useState(projects);
-
-  // Sync internal state when external projects prop changes (e.g. initial load or new project)
-  useEffect(() => {
-    setItems(projects);
-  }, [projects]);
-
-  const reorderTimer = useRef(null);
-
-  const handleReorder = (newItems) => {
-    setItems(newItems);
-    if (onReorder) {
-      clearTimeout(reorderTimer.current);
-      reorderTimer.current = setTimeout(() => {
-        onReorder(newItems.map(p => p.id));
-      }, 500);
-    }
-  };
+  const { items, handleReorder } = useSidebarReorder(projects, onReorder);
   return (
     <>
       {/* Mobile Backdrop */}

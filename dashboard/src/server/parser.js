@@ -16,7 +16,7 @@ export function parseProgress(projectPath) {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
 
-      const overallMatch = line.match(/\[(█+|░+)\]\s+(\d+)%\s+\((\d+)\/(\d+)/);
+      const overallMatch = line.match(/\[([█░]+)\]\s+(\d+)%\s+\((\d+)\/(\d+)/);
       if (overallMatch) {
         overall = {
           percentage: parseInt(overallMatch[2]) || 0,

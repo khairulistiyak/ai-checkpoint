@@ -1,9 +1,9 @@
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
-import { execSync } from 'child_process';
 import { getSettings } from './settings.js';
 import { parseProgress } from './parser.js';
+import { runCommand } from './run-command.js';
 
 const router = express.Router();
 
@@ -115,41 +115,7 @@ router.get('/:id/health', (req, res) => {
   }
 });
 
-router.get('/:id/checkpoints', (req, res) => {
-  try {
-    const settings = getSettings();
-    const project = settings.projects.find(p => p.id === req.params.id);
-    if (!project) return res.status(404).json({ error: 'Not found' });
 
-    const out = execSync('git log --pretty=format:"%h|%s|%ar|%an" | grep -iE "aicp/|checkpoint:" || true', { cwd: project.path, stdio: 'pipe' }).toString();
-    if (!out.trim()) return res.json([]);
-
-    const checkpoints = out.trim().split('\n').map(line => {
-      const [hash, message, timeAgo, author] = line.trim().split('|');
-      return { hash, message, timeAgo, author };
-    });
-    res.json(checkpoints);
-  } catch (e) {
-    res.json([]);
-  }
-});
-
-router.post('/:id/rollback', (req, res) => {
-  const settings = getSettings();
-  const project = settings.projects.find(p => p.id === req.params.id);
-  if (!project) return res.status(404).json({ error: 'Not found' });
-
-  const { hash } = req.body;
-  if (!hash) return res.status(400).json({ error: 'Hash required' });
-  if (!/^[a-f0-9]{4,40}$/i.test(hash)) return res.status(400).json({ error: 'Invalid hash format' });
-
-  try {
-    execSync(`git reset --hard ${hash}`, { cwd: project.path });
-    res.json({ success: true });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
 
 router.post('/:id/command', (req, res) => {
   const settings = getSettings();
@@ -163,9 +129,9 @@ router.post('/:id/command', (req, res) => {
     if (!/^\d+\.\d+$/.test(step)) return res.status(400).json({ error: 'Invalid step format. Use X.Y' });
     const safeMessage = (message || 'Completed via Dashboard').replace(/["`$\\]/g, '');
     if (command === 'start') {
-      execSync(`./l start ${step}`, { cwd });
+      runCommand('./l', ['start', step], cwd);
     } else if (command === 'complete') {
-      execSync(`./l c ${step} "${safeMessage}"`, { cwd });
+      runCommand('./l', ['c', step, safeMessage], cwd);
     } else {
       return res.status(400).json({ error: 'Invalid command' });
     }
