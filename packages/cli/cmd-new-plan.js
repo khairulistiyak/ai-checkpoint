@@ -8,11 +8,24 @@ function newPlanCommand(name) {
     log.error('Plan name must use 1-50 letters, numbers, or dashes');
     process.exit(1);
   }
-  const templatePath = path.join(process.cwd(), 'templates', 'PLAN_TEMPLATE.md');
+
+  // Try multiple locations for the template
+  const candidates = [
+    path.join(process.cwd(), 'templates', 'PLAN_TEMPLATE.md'),
+    path.resolve(__dirname, '..', '..', 'templates', 'PLAN_TEMPLATE.md'),
+    path.resolve(__dirname, '..', '..', '..', 'templates', 'PLAN_TEMPLATE.md'),
+  ];
+  const templatePath = candidates.find(p => fs.existsSync(p));
+
   const targetPath = path.join(PLAN_DIR, `${name}.md`);
-  if (!fs.existsSync(templatePath)) {
-    log.error('Missing templates/PLAN_TEMPLATE.md');
-    process.exit(1);
+
+  if (!templatePath) {
+    // Fallback: create a minimal template inline
+    fs.mkdirSync(PLAN_DIR, { recursive: true });
+    const fallback = `# ${name}\n\n> Plan description here.\n\n---\n\n## Step 1.1 — First step\n- **File:** \`path/to/file\`\n- **Action:** CREATE\n- **Done-check:** \`test -f path/to/file\` → exit 0\n- **Depends:** None\n\n**Description:** What to do in this step.\n`;
+    fs.writeFileSync(targetPath, fallback, 'utf8');
+    log.success(`Created plan/${name}.md (using built-in template)`);
+    return;
   }
   if (fs.existsSync(targetPath)) {
     log.error(`plan/${name}.md already exists`);

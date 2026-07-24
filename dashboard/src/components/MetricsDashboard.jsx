@@ -37,15 +37,7 @@ export default function MetricsDashboard({ progress }) {
             <div className="text-3xl font-black text-white mt-2 relative z-10">{m.value}</div>
             <div className="text-xs font-medium uppercase tracking-wider text-slate-400 relative z-10">{m.label}</div>
 
-            {/* Progress bar instead of fake sparkline */}
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/[0.03]">
-              <motion.div
-                className={`h-full ${m.color.replace('text-', 'bg-')}`}
-                initial={{ width: 0 }}
-                animate={{ width: `${percentage}%` }}
-                transition={{ duration: 1, ease: 'easeOut' }}
-              />
-            </div>
+
           </motion.div>
         );
       })}

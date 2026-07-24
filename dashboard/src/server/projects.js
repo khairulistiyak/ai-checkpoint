@@ -1,33 +1,16 @@
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 import { getSettings } from './settings.js';
-import { parseProgress } from './parser.js';
+import { enrichProject } from './parser.js';
 import { runCommand } from './run-command.js';
+import checkpointsRouter from './checkpoints.js';
 
 const router = express.Router();
-
-function enrichProject(p) {
-  try {
-    if (!p || !p.path || !fs.existsSync(p.path)) {
-      return { ...p, isInstalled: false, progress: null, hasPlanFiles: false };
-    }
-    const isInstalled = fs.existsSync(path.join(p.path, '.agents', 'PROGRESS.md'));
-    let progress = null;
-    let hasPlanFiles = false;
-    if (isInstalled) {
-      progress = parseProgress(p.path);
-      const planDir = path.join(p.path, 'plan');
-      if (fs.existsSync(planDir)) {
-        hasPlanFiles = fs.readdirSync(planDir).some(f => f.endsWith('.md') && !f.startsWith('.') && fs.statSync(path.join(planDir, f)).isFile());
-      }
-    }
-    return { ...p, isInstalled, progress, hasPlanFiles };
-  } catch (e) {
-    console.error(`⚠️ Error enriching project ${p?.path}:`, e.message);
-    return { ...p, isInstalled: false, progress: null, hasPlanFiles: false };
-  }
-}
 
 router.get('/', (req, res) => {
   try {
@@ -56,18 +39,33 @@ router.post('/:id/install', (req, res) => {
   const project = settings.projects.find(p => p.id === req.params.id);
   if (!project) return res.status(404).json({ error: 'Not found' });
 
-  const aiCheckpointRoot = path.resolve(process.cwd(), '..');
+  const aiCheckpointRoot = path.resolve(__dirname, '..', '..', '..');
   const templatesDir = path.join(aiCheckpointRoot, 'templates');
   const scriptsDir = path.join(aiCheckpointRoot, 'scripts');
   const projectDir = project.path;
 
   try {
     fs.mkdirSync(path.join(projectDir, '.agents', 'scripts'), { recursive: true });
+    fs.mkdirSync(path.join(projectDir, '.agents', 'packages', 'cli'), { recursive: true });
+    fs.mkdirSync(path.join(projectDir, '.agents', 'packages', 'core'), { recursive: true });
     fs.mkdirSync(path.join(projectDir, 'plan', 'drafts'), { recursive: true });
 
     const ledgerSrc = path.join(scriptsDir, 'ledger.cjs');
     if (fs.existsSync(ledgerSrc)) {
       fs.copyFileSync(ledgerSrc, path.join(projectDir, '.agents', 'scripts', 'ledger.cjs'));
+    }
+
+    // Copy CLI and Core packages
+    const cliSrcDir = path.join(aiCheckpointRoot, 'packages', 'cli');
+    const coreSrcDir = path.join(aiCheckpointRoot, 'packages', 'core');
+    for (const srcDir of [cliSrcDir, coreSrcDir]) {
+      if (fs.existsSync(srcDir)) {
+        const destDir = path.join(projectDir, '.agents', 'packages', path.basename(srcDir));
+        const files = fs.readdirSync(srcDir).filter(f => f.endsWith('.js'));
+        for (const f of files) {
+          fs.copyFileSync(path.join(srcDir, f), path.join(destDir, f));
+        }
+      }
     }
 
     const lScript = '#!/bin/bash\nnode .agents/scripts/ledger.cjs "$@"\n';
@@ -115,8 +113,6 @@ router.get('/:id/health', (req, res) => {
   }
 });
 
-
-
 router.post('/:id/command', (req, res) => {
   const settings = getSettings();
   const project = settings.projects.find(p => p.id === req.params.id);
@@ -150,5 +146,7 @@ router.post('/:id/command', (req, res) => {
     res.status(400).json({ error: errorMessage });
   }
 });
+
+router.use('/', checkpointsRouter);
 
 export default router;

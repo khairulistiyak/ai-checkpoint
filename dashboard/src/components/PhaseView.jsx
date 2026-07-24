@@ -88,13 +88,14 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
                   className="space-y-3"
                 >
                   {phase.steps.map((step, idx) => (
-                    <StepItem 
-                      key={step.id || idx} 
-                      step={step} 
-                      projectId={projectId} 
-                      hasPlanFiles={hasPlanFiles} 
-                      onRefresh={onRefresh} 
-                    />
+                      <StepItem 
+                        key={step.id || idx} 
+                        step={step}
+                        index={idx} 
+                        projectId={projectId} 
+                        hasPlanFiles={hasPlanFiles} 
+                        onRefresh={onRefresh} 
+                      />
                   ))}
                 </motion.div>
               )}

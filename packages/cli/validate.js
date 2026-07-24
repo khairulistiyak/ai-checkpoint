@@ -3,7 +3,7 @@ const path = require('path');
 const { PROGRESS_PATH, PLAN_DIR } = require('./paths.js');
 const { log } = require('./colors.js');
 const { parseProgress, getPlanFiles } = require('./parse-progress.js');
-const { verifyTargetFileCore, validateProject, findFileRecursively } = require('../core/validate-project.js');
+const { verifyTargetFileCore, validateProject } = require('../core/validate-project.js');
 
 function checkFiles() {
   if (!fs.existsSync(PROGRESS_PATH)) {
@@ -45,7 +45,6 @@ function validateCommand() {
 
 module.exports = {
   checkFiles,
-  findFileRecursively,
   verifyTargetFile,
   validateCommand
 };

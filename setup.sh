@@ -47,7 +47,9 @@ mkdir -p "$PROJECT_DIR/plan/drafts"
 echo -e "${YELLOW}Installing CLI...${NC}"
 cp "$SCRIPT_DIR/scripts/ledger.cjs" "$PROJECT_DIR/.agents/scripts/ledger.cjs"
 mkdir -p "$PROJECT_DIR/.agents/packages/cli"
+mkdir -p "$PROJECT_DIR/.agents/packages/core"
 cp -r "$SCRIPT_DIR/packages/cli/"* "$PROJECT_DIR/.agents/packages/cli/"
+cp -r "$SCRIPT_DIR/packages/core/"* "$PROJECT_DIR/.agents/packages/core/"
 
 # 3. Create ./l shortcut
 cat > "$PROJECT_DIR/l" << 'EOF'

@@ -1,7 +1,6 @@
-const { colors } = require('./colors.js');
 const { parseProgress } = require('./parse-progress.js');
 const { checkFiles } = require('./validate.js');
-const { getProgressBar } = require('./cmd-complete.js');
+const { log, colors, getProgressBar } = require('./colors.js');
 
 function statusCommand() {
   checkFiles();

@@ -16,11 +16,11 @@
 ## Overall Progress
 
 ```
-[████████████████████] 100% (100/100 steps complete)
+[████████████████████] 100% (126/126 steps complete)
 ```
 
 ## 👉 NEXT: None (Project Complete) ✅
-> 📋 Details → `plan/` → Phase 15 → Step 15.10
+> 📋 Details → `plan/` → Phase 19 → Step 19.8
 
 ---
 
@@ -199,6 +199,48 @@
 
 ---
 
+
+---
+
+## 🔴 Phase 17: Bug Fixes — ✅ 100% COMPLETE
+
+- [x] **Step 17.1** — Fix ledger.cjs portable path (`scripts/ledger.cjs`)
+- [x] **Step 17.2** — Fix Express route collision (`dashboard/server.js`)
+- [x] **Step 17.3** — Pass index prop to StepItem (`dashboard/src/components/PhaseView.jsx`)
+- [x] **Step 17.4** — Fix MetricsDashboard progress bars (`dashboard/src/components/MetricsDashboard.jsx`)
+- [x] **Step 17.5** — Fix command injection in checkpoint (`packages/cli/cmd-checkpoint.js`)
+- [x] **Step 17.6** — Extract getProgressBar to colors.js (`packages/cli/colors.js`)
+- [x] **Step 17.7** — Disable reorder during sidebar search (`dashboard/src/components/Sidebar.jsx`)
+- [x] **Step 17.8** — Remove dead re-export in validate.js (`packages/cli/validate.js`)
+- [x] **Step 17.9** — Update PROGRESS.md with Phase 17 (`.agents/PROGRESS.md`)
+
+---
+
+## 🔴 Phase 18: Bug Fixes Round 2 — ✅ 100% COMPLETE
+
+- [x] **Step 18.1** — Fix setup.sh missing packages/core copy (`setup.sh`)
+- [x] **Step 18.2** — Fix dashboard install route missing packages/core (`dashboard/src/server/projects.js`)
+- [x] **Step 18.3** — Fix remaining shell injection in cmd-checkpoint.js (`packages/cli/cmd-checkpoint.js`)
+- [x] **Step 18.4** — Fix cmd-new-plan.js hardcoded templates path (`packages/cli/cmd-new-plan.js`)
+- [x] **Step 18.5** — Fix index.js split imports (`packages/cli/index.js`)
+- [x] **Step 18.6** — Fix CommandPalette stale closure and performance (`dashboard/src/components/CommandPalette.jsx`)
+- [x] **Step 18.7** — Fix install route hardcoded relative path (`dashboard/src/server/projects.js`)
+- [x] **Step 18.8** — Fix cmd-block.js missing phase header update (`packages/cli/cmd-block.js`)
+- [x] **Step 18.9** — Update PROGRESS.md with Phase 18 (`.agents/PROGRESS.md`)
+
+---
+
+## 🔴 Phase 19: Bug Fixes Round 3 — ✅ 100% COMPLETE
+
+- [x] **Step 19.1** — Remove dead execSync import in cmd-checkpoint.js (`packages/cli/cmd-checkpoint.js`)
+- [x] **Step 19.2** — Fix addProject missing path validation in api.js (`dashboard/src/server/api.js`)
+- [x] **Step 19.3** — Fix Sidebar.jsx exceeds 150 lines (`dashboard/src/components/Sidebar.jsx`)
+- [x] **Step 19.4** — Fix block command overwrites overall progress bar (`packages/cli/cmd-block.js`)
+- [x] **Step 19.5** — Fix findStepInPlanFiles loose matching (`packages/cli/parse-progress.js`)
+- [x] **Step 19.6** — Fix projects.js blank lines and unused parseProgress import (`dashboard/src/server/projects.js`)
+- [x] **Step 19.7** — Fix config.js missing path validation (`dashboard/src/server/config.js`)
+- [x] **Step 19.8** — Update PROGRESS.md with Phase 19 (`.agents/PROGRESS.md`)
+
 <!--
 UPDATE LOG:
 2026-07-18: Initial setup - all 5 phases planned with 27 atomic steps
@@ -303,5 +345,31 @@ UPDATE LOG:
 [2026-07-24 20:13] Step 15.8 completed — Added VS Code tasks | Agent: CLI
 [2026-07-24 20:13] Step 15.9 completed — Updated package.json for publish | Agent: CLI
 [2026-07-24 20:14] Step 15.10 completed — Publish notes documented | Agent: CLI
+[2026-07-24 20:34] Step 17.1 completed — Fixed portable paths with dynamic fallback | Agent: CLI
+[2026-07-24 20:34] Step 17.2 completed — Fixed Express route collision | Agent: CLI
+[2026-07-24 20:35] Step 17.3 completed — Passed index prop to StepItem | Agent: CLI
+[2026-07-24 20:35] Step 17.4 completed — Removed misleading progress bars | Agent: CLI
+[2026-07-24 20:35] Step 17.5 completed — Fixed command injection vulnerability | Agent: CLI
+[2026-07-24 20:36] Step 17.6 completed — Extracted getProgressBar to colors.js | Agent: CLI
+[2026-07-24 20:37] Step 17.7 completed — Disabled reorder during sidebar search | Agent: CLI
+[2026-07-24 20:37] Step 17.8 completed — Removed dead re-export | Agent: CLI
+[2026-07-24 20:38] Step 17.9 completed — Already updated in previous step | Agent: CLI
+[2026-07-24 20:49] Step 18.1 completed — Fixed packages/core missing in setup.sh | Agent: CLI
+[2026-07-24 20:50] Step 18.2 completed — Fixed dashboard install route | Agent: CLI
+[2026-07-24 20:50] Step 18.3 completed — Fixed shell injection in cmd-checkpoint.js | Agent: CLI
+[2026-07-24 20:50] Step 18.4 completed — Fixed cmd-new-plan.js hardcoded template path | Agent: CLI
+[2026-07-24 20:51] Step 18.5 completed — Fixed index.js split imports | Agent: CLI
+[2026-07-24 20:51] Step 18.6 completed — Fixed CommandPalette stale closure | Agent: CLI
+[2026-07-24 20:52] Step 18.7 completed — Fixed install route hardcoded relative path | Agent: CLI
+[2026-07-24 20:52] Step 18.8 completed — Fixed cmd-block.js phase header update | Agent: CLI
+[2026-07-24 20:52] Step 18.9 completed — Updated PROGRESS.md with Phase 18 | Agent: CLI
+[2026-07-24 21:02] Step 19.1 completed — Removed unused execSync import | Agent: CLI
+[2026-07-24 21:02] Step 19.2 completed — Added path validation to addProject in api.js | Agent: CLI
+[2026-07-24 21:03] Step 19.3 completed — Extracted SidebarItem to reduce lines | Agent: CLI
+[2026-07-24 21:03] Step 19.4 completed — Fixed block command | Agent: CLI
+[2026-07-24 21:04] Step 19.5 completed — Fixed findStepInPlanFiles regex | Agent: CLI
+[2026-07-24 21:04] Step 19.6 completed — Cleaned projects.js imports and lines | Agent: CLI
+[2026-07-24 21:05] Step 19.7 completed — Fixed config.js missing path validation | Agent: CLI
+[2026-07-24 21:05] Step 19.8 completed — Phase 19 completed | Agent: CLI
 -->
 

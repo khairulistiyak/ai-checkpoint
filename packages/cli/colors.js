@@ -26,7 +26,13 @@ const log = {
   }
 };
 
+function getProgressBar(pct, size = 15) {
+  const filled = Math.round((pct / 100) * size);
+  return `[${colors.green}${"█".repeat(filled)}${colors.reset}${"░".repeat(size - filled)}]`;
+}
+
 module.exports = {
   colors,
-  log
+  log,
+  getProgressBar
 };

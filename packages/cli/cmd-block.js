@@ -17,7 +17,20 @@ function blockCommand(stepNum, reason) {
 
   lines[targetStep.lineIndex] = lines[targetStep.lineIndex].replace(/-\s*\[([ x!/~])\]/, '- [!]');
   targetStep.status = 'blocked';
-  
+
+  // Update phase header
+  const pDone = targetPhase.steps.filter(s => s.status === 'done').length;
+  const pTotal = targetPhase.steps.length;
+  const pPct = Math.round((pDone / pTotal) * 100);
+  lines[targetPhase.headerIndex] = lines[targetPhase.headerIndex].split('—')[0] + '— ' + (pPct === 100 ? "✅ 100% COMPLETE" : `🟡 ${pPct}% IN PROGRESS`);
+
+  // Update NEXT pointer
+  let nextStr = "None (Project Complete) ✅", foundNext = false;
+  for (const p of phases) { const s = p.steps.find(st => st.status !== 'done' && st.status !== 'blocked'); if (s) { nextStr = `Step ${s.number} — ${s.title}`; foundNext = true; break; } }
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].startsWith('## 👉 NEXT:')) lines[i] = `## 👉 NEXT: ${nextStr}`;
+  }
+
   const now = new Date();
   const ts = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
   const logEntry = `[${ts}] Step ${stepNum} blocked — ${reason} | Agent: ${process.env.GEMINI_MODEL || 'CLI'}`;

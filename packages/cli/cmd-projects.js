@@ -1,9 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { log, colors } = require('./colors.js');
+const { log, colors, getProgressBar } = require('./colors.js');
 const { parseProgressText } = require('../core/parse-progress.js');
-const { getProgressBar } = require('./cmd-complete.js');
 
 function projectsCommand() {
   const settingsFile = path.join(os.homedir(), '.ai-checkpoint-dashboard', 'settings.json');

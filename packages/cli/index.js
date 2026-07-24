@@ -6,6 +6,10 @@ const { validateCommand } = require('./validate.js');
 const { doctorCommand } = require('./doctor.js');
 const { newPlanCommand } = require('./cmd-new-plan.js');
 const { checkpointSave, checkpointList, checkpointBack } = require('./cmd-checkpoint.js');
+const { watchCommand } = require('./cmd-watch.js');
+const { blockCommand } = require('./cmd-block.js');
+const { projectsCommand } = require('./cmd-projects.js');
+const { lintPlanCommand } = require('./cmd-lint-plan.js');
 
 function showHelp() {
   console.log(`
@@ -35,10 +39,6 @@ ${colors.bright}Plan File Naming:${colors.reset}
 `);
 }
 
-const { watchCommand } = require('./cmd-watch.js');
-const { blockCommand } = require('./cmd-block.js');
-const { projectsCommand } = require('./cmd-projects.js');
-const { lintPlanCommand } = require('./cmd-lint-plan.js');
 
 function run() {
   const args = process.argv.slice(2);

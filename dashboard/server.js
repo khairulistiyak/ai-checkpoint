@@ -4,7 +4,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import apiRouter from './src/server/api.js';
-import checkpointsRouter from './src/server/checkpoints.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,7 +16,6 @@ app.use(express.json());
 
 // API Routes
 app.use('/api', apiRouter);
-app.use('/api/projects', checkpointsRouter);
 
 // Serve static React files in production
 if (process.env.NODE_ENV === 'production' || fs.existsSync(path.join(__dirname, 'dist'))) {

@@ -1,14 +1,9 @@
 const fs = require('fs');
 const path = require('path');
 const { PROGRESS_PATH } = require('./paths.js');
-const { log, colors } = require('./colors.js');
+const { log, colors, getProgressBar } = require('./colors.js');
 const { parseProgress } = require('./parse-progress.js');
 const { checkFiles, validateCommand, verifyTargetFile } = require('./validate.js');
-
-function getProgressBar(pct, size = 15) {
-  const filled = Math.round((pct / 100) * size);
-  return `[${colors.green}${"█".repeat(filled)}${colors.reset}${"░".repeat(size - filled)}]`;
-}
 
 function completeCommand(stepNum, comment) {
   checkFiles();
@@ -84,6 +79,5 @@ function completeCommand(stepNum, comment) {
 }
 
 module.exports = {
-  completeCommand,
-  getProgressBar
+  completeCommand
 };

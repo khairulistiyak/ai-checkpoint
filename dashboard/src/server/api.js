@@ -1,4 +1,6 @@
 import express from 'express';
+import fs from 'fs';
+import path from 'path';
 import { getSettings, saveSettings } from './settings.js';
 import projectsRouter from './projects.js';
 import configRouter from './config.js';
@@ -11,6 +13,15 @@ router.get('/settings', (req, res) => {
 
 router.post('/settings/projects', (req, res) => {
   const { path: dirPath, name } = req.body;
+  if (!dirPath || typeof dirPath !== 'string') {
+    return res.status(400).json({ error: 'Path is required' });
+  }
+  if (!path.isAbsolute(dirPath)) {
+    return res.status(400).json({ error: 'Path must be absolute' });
+  }
+  if (!fs.existsSync(dirPath) || !fs.statSync(dirPath).isDirectory()) {
+    return res.status(400).json({ error: 'Path must be an existing directory' });
+  }
   const settings = getSettings();
 
   if (settings.projects.find(p => p.path === dirPath)) {

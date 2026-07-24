@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Folder, Zap, Settings, Command } from 'lucide-react';
 
@@ -7,17 +7,16 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef(null);
 
-  // Filter items
-  const filteredProjects = projects.filter(p => p.name.toLowerCase().includes(query.toLowerCase()));
-  
-  const staticActions = [
-    { id: 'settings', name: 'Preferences & Theme', icon: Settings, action: onOpenSettings },
-  ].filter(a => a.name.toLowerCase().includes(query.toLowerCase()));
-
-  const allItems = [
-    ...filteredProjects.map(p => ({ ...p, type: 'project' })),
-    ...staticActions.map(a => ({ ...a, type: 'action' }))
-  ];
+  const allItems = useMemo(() => {
+    const filteredProjects = projects.filter(p => p.name.toLowerCase().includes(query.toLowerCase()));
+    const staticActions = [
+      { id: 'settings', name: 'Preferences & Theme', icon: Settings, action: onOpenSettings },
+    ].filter(a => a.name.toLowerCase().includes(query.toLowerCase()));
+    return [
+      ...filteredProjects.map(p => ({ ...p, type: 'project' })),
+      ...staticActions.map(a => ({ ...a, type: 'action' }))
+    ];
+  }, [projects, query, onOpenSettings]);
 
   // Handle keyboard navigation
   useEffect(() => {
