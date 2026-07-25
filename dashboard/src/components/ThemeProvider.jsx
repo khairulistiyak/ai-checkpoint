@@ -9,7 +9,8 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     localStorage.setItem('dashboard-theme', theme);
-    document.body.className = document.body.className.replace(/theme-\w+/g, '').trim();
+    const themeClasses = Array.from(document.body.classList).filter(c => c.startsWith('theme-'));
+    themeClasses.forEach(c => document.body.classList.remove(c));
     if (theme !== 'default') {
       document.body.classList.add(`theme-${theme}`);
     }

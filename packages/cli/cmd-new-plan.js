@@ -21,6 +21,10 @@ function newPlanCommand(name) {
 
   if (!templatePath) {
     // Fallback: create a minimal template inline
+    if (fs.existsSync(targetPath)) {
+      log.error(`plan/${name}.md already exists`);
+      process.exit(1);
+    }
     fs.mkdirSync(PLAN_DIR, { recursive: true });
     const fallback = `# ${name}\n\n> Plan description here.\n\n---\n\n## Step 1.1 — First step\n- **File:** \`path/to/file\`\n- **Action:** CREATE\n- **Done-check:** \`test -f path/to/file\` → exit 0\n- **Depends:** None\n\n**Description:** What to do in this step.\n`;
     fs.writeFileSync(targetPath, fallback, 'utf8');

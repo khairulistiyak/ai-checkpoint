@@ -33,7 +33,7 @@ export default function ExportButton({ project }) {
     <button 
       onClick={handleExport}
       disabled={downloading}
-      className="p-2 rounded-xl border border-slate-700/50 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 focus:ring-offset-slate-900 group relative"
+      className="p-2 rounded-xl border border-white/[0.05] text-slate-400 hover:text-white hover:bg-slate-800 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 focus:ring-offset-slate-900 group relative"
       title="Export Project Data"
     >
       {downloading ? (

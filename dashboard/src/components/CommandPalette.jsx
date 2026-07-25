@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Folder, Zap, Settings, Command } from 'lucide-react';
 
@@ -17,6 +17,15 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
       ...staticActions.map(a => ({ ...a, type: 'action' }))
     ];
   }, [projects, query, onOpenSettings]);
+
+  const executeItem = useCallback((item) => {
+    if (item.type === 'project') {
+      onSelectProject(item.id);
+    } else if (item.type === 'action') {
+      item.action();
+    }
+    onClose();
+  }, [onSelectProject, onClose]);
 
   // Handle keyboard navigation
   useEffect(() => {
@@ -42,7 +51,7 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isOpen, allItems, selectedIndex]);
+  }, [isOpen, allItems, selectedIndex, executeItem, onClose]);
 
   // Reset state when opened
   useEffect(() => {
@@ -53,14 +62,6 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
     }
   }, [isOpen]);
 
-  const executeItem = (item) => {
-    if (item.type === 'project') {
-      onSelectProject(item.id);
-    } else if (item.type === 'action') {
-      item.action();
-    }
-    onClose();
-  };
 
   if (!isOpen) return null;
 

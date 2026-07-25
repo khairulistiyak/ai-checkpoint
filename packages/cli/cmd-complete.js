@@ -43,16 +43,13 @@ function completeCommand(stepNum, comment) {
   
   for (let i = 0; i < lines.length; i++) {
     if (lines[i].includes('Overall Progress:')) lines[i] = `## 📊 Overall Progress: ${oPct}% (${doneS}/${totalS} steps complete)`;
-    if (lines[i].startsWith('[') && (lines[i].endsWith('steps complete)') || lines[i].includes('% ('))) lines[i] = `[${bar}] ${oPct}% (${doneS}/${totalS} steps complete)`;
+    if (/^\[[█░]+\]/.test(lines[i])) lines[i] = `[${bar}] ${oPct}% (${doneS}/${totalS} steps complete)`;
   }
   
-  const ptr = new RegExp(`\\|\\s*Phase\\s+${targetPhase.number}\\s*\\|`);
-  for (let i = 0; i < lines.length; i++) {
-    if (ptr.test(lines[i])) { const p = lines[i].split('|'); p[3] = ` ${pDone}/${pTotal} `; p[4] = ` ${pPct === 100 ? "✅ COMPLETE" : "🟡 IN PROGRESS"} `; lines[i] = p.join('|'); break; }
-  }
+
   
   let nextStr = "None (Project Complete) ✅", foundNext = false;
-  for (const p of phases) { const s = p.steps.find(st => st.status !== 'done'); if (s) { nextStr = `Step ${s.number} — ${s.title}`; foundNext = true; break; } }
+  for (const p of phases) { const s = p.steps.find(st => st.status !== 'done' && st.status !== 'blocked'); if (s) { nextStr = `Step ${s.number} — ${s.title}`; foundNext = true; break; } }
   for (let i = 0; i < lines.length; i++) {
     if (lines[i].startsWith('## 👉 NEXT:')) lines[i] = `## 👉 NEXT: ${nextStr}`;
     if (foundNext && lines[i].startsWith('> 📋 Details →')) { const m = nextStr.match(/Step (\d+)\.(\d+)/); if (m) lines[i] = `> 📋 Details → \`plan/\` → Phase ${m[1]} → Step ${m[1]}.${m[2]}`; }

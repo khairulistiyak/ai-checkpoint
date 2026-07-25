@@ -22,7 +22,7 @@ function findStepInPlanFiles(stepNum) {
     const pfPath = path.join(PLAN_DIR, pf);
     const pfContent = fs.readFileSync(pfPath, 'utf8');
     const pfLines = pfContent.split(/\r?\n/);
-    const stepRegex = new RegExp(`^#{2,3}\\s+Step\\s+${stepNum.replace(/\\./g, '\\\\.')}\\b`);
+    const stepRegex = new RegExp(`^#{2,3}\\s+Step\\s+${stepNum.replace(/\./g, '\\.')}\\b`);
     const hasStep = pfLines.some(line => stepRegex.test(line));
     if (hasStep) return { planLines: pfLines, foundFile: pf };
   }

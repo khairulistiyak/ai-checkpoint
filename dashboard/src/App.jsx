@@ -31,15 +31,18 @@ function App() {
 
   React.useEffect(() => {
     const handleKeyDown = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setIsCommandPaletteOpen(true); }
-      if (e.key === 'Escape') {
-        setIsAddModalOpen(false); setIsSettingsOpen(false);
-        setIsPlanModalOpen(false); setConfigProject(null);
+      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault(); setIsCommandPaletteOpen(true);
+      } else if (e.key === 'Escape') {
+        if (isAddModalOpen) setIsAddModalOpen(false);
+        else if (isSettingsOpen) setIsSettingsOpen(false);
+        else if (isPlanModalOpen) setIsPlanModalOpen(false);
+        else if (configProject) setConfigProject(null);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
+  }, [isAddModalOpen, isSettingsOpen, isPlanModalOpen, configProject]);
 
 
   const selectedProject = projects.find(p => p.id === selectedId);
@@ -52,8 +55,15 @@ function App() {
   };
 
   const doRemoveProject = async () => {
-    await removeProject(selectedId); setSelectedId(null);
-    setConfirmRemove(false); showToast('Project removed', 'info');
+    try {
+      await removeProject(selectedId);
+      setSelectedId(null);
+      showToast('Project removed', 'info');
+    } catch (err) {
+      showToast(err.message || 'Failed to remove project', 'error');
+    } finally {
+      setConfirmRemove(false);
+    }
   };
 
   const handleInstallProject = async () => {

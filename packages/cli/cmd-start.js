@@ -23,7 +23,7 @@ function startCommand(stepNum) {
 
   let fileLine = "", actionLine = "", insideStep = false;
   for (const line of planLines) {
-    if (/^#{2,3}\s+Step\s+/.test(line) && line.includes(stepNum)) { insideStep = true; continue; }
+    if (new RegExp('^#{2,3}\\s+Step\\s+' + stepNum.replace(/\\./g, '\\\\.') + '\\\\b').test(line)) { insideStep = true; continue; }
     if (insideStep && /^#{2,3}\s+Step\s+/.test(line)) break;
     if (insideStep) {
       if (/^\s*-\s*\*\*File:?\*\*:?\s+/.test(line)) fileLine = line;
@@ -65,8 +65,6 @@ function startCommand(stepNum) {
   }
 
   lines[targetStep.lineIndex] = lines[targetStep.lineIndex].replace(/-\s*\[([ x!/~])\]/, '- [~]');
-  const ptr = new RegExp(`\\|\\s*Phase\\s+${targetPhase.number}\\s*\\|`);
-  for (let i = 0; i < lines.length; i++) { if (ptr.test(lines[i]) && lines[i].includes('🔴 PENDING')) { lines[i] = lines[i].replace('🔴 PENDING', '🟡 IN PROGRESS'); break; } }
   if (lines[targetPhase.headerIndex].includes('🔴 0% PENDING')) lines[targetPhase.headerIndex] = lines[targetPhase.headerIndex].replace('🔴 0% PENDING', '🟡 0% IN PROGRESS');
 
   fs.writeFileSync(PROGRESS_PATH, lines.join('\n'), 'utf8');

@@ -24,6 +24,16 @@ function blockCommand(stepNum, reason) {
   const pPct = Math.round((pDone / pTotal) * 100);
   lines[targetPhase.headerIndex] = lines[targetPhase.headerIndex].split('—')[0] + '— ' + (pPct === 100 ? "✅ 100% COMPLETE" : `🟡 ${pPct}% IN PROGRESS`);
 
+  // Update overall progress bar
+  let totalS = 0, doneS = 0;
+  phases.forEach(p => { totalS += p.steps.length; doneS += p.steps.filter(s => s.status === 'done').length; });
+  const oPct = Math.round((doneS / totalS) * 100);
+  const bar = "█".repeat(Math.round((oPct / 100) * 20)) + "░".repeat(20 - Math.round((oPct / 100) * 20));
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i].includes('Overall Progress:')) lines[i] = `## 📊 Overall Progress: ${oPct}% (${doneS}/${totalS} steps complete)`;
+    if (/^\[█░]+\]/.test(lines[i])) lines[i] = `[${bar}] ${oPct}% (${doneS}/${totalS} steps complete)`;
+  }
+
   // Update NEXT pointer
   let nextStr = "None (Project Complete) ✅", foundNext = false;
   for (const p of phases) { const s = p.steps.find(st => st.status !== 'done' && st.status !== 'blocked'); if (s) { nextStr = `Step ${s.number} — ${s.title}`; foundNext = true; break; } }

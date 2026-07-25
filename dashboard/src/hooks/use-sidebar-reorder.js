@@ -8,6 +8,12 @@ export function useSidebarReorder(projects, onReorder) {
     setItems(projects);
   }, [projects]);
 
+  useEffect(() => {
+    return () => {
+      clearTimeout(reorderTimer.current);
+    };
+  }, []);
+
   const handleReorder = (newItems) => {
     setItems(newItems);
     if (onReorder) {

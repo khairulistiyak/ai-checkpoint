@@ -16,11 +16,11 @@
 ## Overall Progress
 
 ```
-[████████████████████] 100% (126/126 steps complete)
+[████████████████████] 100% (152/152 steps complete)
 ```
 
 ## 👉 NEXT: None (Project Complete) ✅
-> 📋 Details → `plan/` → Phase 19 → Step 19.8
+> 📋 Details → `plan/` → Phase 21 → Step 21.11
 
 ---
 
@@ -241,6 +241,40 @@
 - [x] **Step 19.7** — Fix config.js missing path validation (`dashboard/src/server/config.js`)
 - [x] **Step 19.8** — Update PROGRESS.md with Phase 19 (`.agents/PROGRESS.md`)
 
+---
+
+## 🔴 Phase 20: Bug Fixes Round 4 — ✅ 100% COMPLETE
+
+- [x] **Step 20.1** — Fix findStepInPlanFiles regex never matching (`packages/cli/parse-progress.js`)
+- [x] **Step 20.2** — Fix CommandPalette stale executeItem closure (`dashboard/src/components/CommandPalette.jsx`)
+- [x] **Step 20.3** — Fix use-sidebar-reorder timer leak on unmount (`dashboard/src/hooks/use-sidebar-reorder.js`)
+- [x] **Step 20.4** — Fix ThemeProvider stripping body classes (`dashboard/src/components/ThemeProvider.jsx`)
+- [x] **Step 20.5** — Fix doRemoveProject missing error handling (`dashboard/src/App.jsx`)
+- [x] **Step 20.6** — Fix cmd-complete.js fragile progress bar regex (`packages/cli/cmd-complete.js`)
+- [x] **Step 20.7** — Fix checkpoint git log delimiter splitting (`dashboard/src/server/checkpoints.js`)
+- [x] **Step 20.8** — Fix Escape key closing all modals at once (`dashboard/src/App.jsx`)
+- [x] **Step 20.9** — Fix AddProjectModal path not resetting on reopen (`dashboard/src/components/AddProjectModal.jsx`)
+- [x] **Step 20.10** — Fix ConfirmModal keyboard support and LogPanel click blocking (`dashboard/src/components/ConfirmModal.jsx`)
+- [x] **Step 20.11** — Fix StepItem hasPlanFiles strict equality check (`dashboard/src/components/StepItem.jsx`)
+- [x] **Step 20.12** — Fix frontend api.js not propagating server error messages (`dashboard/src/utils/api.js`)
+- [x] **Step 20.13** — Fix ExportButton styling, unused vite import, dead Sidebar itemVariants (`dashboard/src/components/ExportButton.jsx`)
+- [x] **Step 20.14** — Fix Firefox scrollbar and settings.js fallback missing language (`dashboard/src/index.css`)
+- [x] **Step 20.15** — Remove dead phase table code from cmd-start.js and cmd-complete.js (`packages/cli/cmd-start.js`)
+
+## 🔴 Phase 21: Bug Fixes Round 5 (Full Audit) — ✅ 100% COMPLETE
+
+- [x] **Step 21.1** — Fix CommandPalette executeItem TDZ crash (`dashboard/src/components/CommandPalette.jsx`)
+- [x] **Step 21.2** — Fix cmd-new-plan.js fallback overwrites existing file (`packages/cli/cmd-new-plan.js`)
+- [x] **Step 21.3** — Fix checkpoints.js delimiter in commit messages (`dashboard/src/server/checkpoints.js`)
+- [x] **Step 21.4** — Fix cmd-block.js missing overall progress bar update (`packages/cli/cmd-block.js`)
+- [x] **Step 21.5** — Fix cmd-start.js loose stepNum matching (`packages/cli/cmd-start.js`)
+- [x] **Step 21.6** — Fix NEXT pointer including blocked steps (`packages/cli/cmd-complete.js`)
+- [x] **Step 21.7** — Fix NEXT pointer in cmd-status.js also skipping blocked (`packages/cli/cmd-status.js`)
+- [x] **Step 21.8** — Fix ConfirmModal Enter key event propagation (`dashboard/src/components/ConfirmModal.jsx`)
+- [x] **Step 21.9** — Fix ToastProvider setTimeout memory leak (`dashboard/src/components/ToastProvider.jsx`)
+- [x] **Step 21.10** — Clean unused imports and dead blank lines (`dashboard/src/components/Sidebar.jsx`)
+- [x] **Step 21.11** — Fix projects.js safeMessage stripping legitimate characters (`dashboard/src/server/projects.js`)
+
 <!--
 UPDATE LOG:
 2026-07-18: Initial setup - all 5 phases planned with 27 atomic steps
@@ -371,5 +405,31 @@ UPDATE LOG:
 [2026-07-24 21:04] Step 19.6 completed — Cleaned projects.js imports and lines | Agent: CLI
 [2026-07-24 21:05] Step 19.7 completed — Fixed config.js missing path validation | Agent: CLI
 [2026-07-24 21:05] Step 19.8 completed — Phase 19 completed | Agent: CLI
+[2026-07-26 01:46] Step 20.1 completed — Fix regex pattern replacement for findStepInPlanFiles | Agent: CLI
+[2026-07-26 02:00] Step 20.2 completed — Fix CommandPalette stale executeItem closure | Agent: CLI
+[2026-07-26 02:00] Step 20.3 completed — Fix use-sidebar-reorder timer leak on unmount | Agent: CLI
+[2026-07-26 03:35] Step 20.4 completed — Fix ThemeProvider stripping body classes by using classList instead of replacing className string directly | Agent: CLI
+[2026-07-26 03:35] Step 20.5 completed — Fix doRemoveProject missing error handling by wrapping in try/catch | Agent: CLI
+[2026-07-26 03:36] Step 20.6 completed — Fix cmd-complete.js fragile progress bar regex | Agent: CLI
+[2026-07-26 03:40] Step 20.7 completed — Fix checkpoint git log delimiter splitting by limiting split to 5 fields | Agent: CLI
+[2026-07-26 03:41] Step 20.8 completed — Fix Escape key closing all modals at once | Agent: CLI
+[2026-07-26 03:41] Step 20.9 completed — Fix AddProjectModal path not resetting on reopen | Agent: CLI
+[2026-07-26 03:42] Step 20.10 completed — Fix ConfirmModal keyboard support and LogPanel click blocking | Agent: CLI
+[2026-07-26 03:43] Step 20.11 completed — Fix StepItem hasPlanFiles strict equality check | Agent: CLI
+[2026-07-26 03:43] Step 20.12 completed — Fix frontend api.js not propagating server error messages | Agent: CLI
+[2026-07-26 03:44] Step 20.13 completed — Fix ExportButton styling, unused vite import, dead Sidebar itemVariants | Agent: CLI
+[2026-07-26 03:45] Step 20.14 completed — Fix Firefox scrollbar and settings.js fallback | Agent: CLI
+[2026-07-26 03:46] Step 20.15 completed — Remove dead phase table code from cmd-start.js and cmd-complete.js | Agent: CLI
+[2026-07-26 04:12] Step 21.1 completed — Fix CommandPalette executeItem TDZ crash | Agent: CLI
+[2026-07-26 04:12] Step 21.2 completed — Fix cmd-new-plan.js fallback overwrites existing file | Agent: CLI
+[2026-07-26 04:13] Step 21.3 completed — Fix checkpoints.js delimiter truncation | Agent: CLI
+[2026-07-26 04:13] Step 21.4 completed — Fix cmd-block.js missing overall progress bar update | Agent: CLI
+[2026-07-26 04:13] Step 21.5 completed — Fix cmd-start.js loose stepNum matching | Agent: CLI
+[2026-07-26 04:14] Step 21.6 completed — Fix cmd-complete.js NEXT pointer ignoring blocked steps | Agent: CLI
+[2026-07-26 04:14] Step 21.7 completed — Fix cmd-status.js NEXT pointer ignoring blocked steps | Agent: CLI
+[2026-07-26 04:15] Step 21.8 completed — Fix ConfirmModal Enter key event propagation | Agent: CLI
+[2026-07-26 04:15] Step 21.9 completed — Fix ToastProvider setTimeout memory leak | Agent: CLI
+[2026-07-26 04:16] Step 21.10 completed — Clean unused imports and blank lines in Sidebar.jsx | Agent: CLI
+[2026-07-26 04:17] Step 21.11 completed — Fix projects.js safeMessage stripping legitimate characters | Agent: CLI
 -->
 

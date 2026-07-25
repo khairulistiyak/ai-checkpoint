@@ -22,7 +22,7 @@ export function getSettings() {
     return JSON.parse(fs.readFileSync(SETTINGS_FILE, 'utf8'));
   } catch (e) {
     console.error('⚠️ Error reading settings.json:', e.message);
-    return { version: 1, projects: [], preferences: { theme: 'dark', refreshInterval: 5000 } };
+    return { version: 1, projects: [], preferences: { theme: 'dark', refreshInterval: 5000, language: 'en' } };
   }
 }
 

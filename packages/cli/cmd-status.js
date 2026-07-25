@@ -9,7 +9,7 @@ function statusCommand() {
   
   if (process.argv.includes('--json')) {
     let nextStep = null;
-    for (const p of phases) { const s = p.steps.find(st => st.status !== 'done'); if (s) { nextStep = s; break; } }
+    for (const p of phases) { const s = p.steps.find(st => st.status !== 'done' && st.status !== 'blocked'); if (s) { nextStep = s; break; } }
     console.log(JSON.stringify({ phases, overall, nextStep }, null, 2));
     process.exit(0);
   }
@@ -45,7 +45,7 @@ function statusCommand() {
   console.log(`${colors.bright}OVERALL PROGRESS: ${colors.green}${oPct}%${colors.reset} ${getProgressBar(oPct, 30)} (${doneSteps}/${totalSteps})\n`);
 
   let nextStep = null;
-  for (const p of phases) { const s = p.steps.find(st => st.status !== 'done'); if (s) { nextStep = s; break; } }
+  for (const p of phases) { const s = p.steps.find(st => st.status !== 'done' && st.status !== 'blocked'); if (s) { nextStep = s; break; } }
   
   if (nextStep) {
     console.log(`👉 ${colors.cyan}NEXT ACTIVE STEP:${colors.reset}`);

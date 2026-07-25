@@ -123,7 +123,7 @@ router.post('/:id/command', (req, res) => {
 
   try {
     if (!/^\d+\.\d+$/.test(step)) return res.status(400).json({ error: 'Invalid step format. Use X.Y' });
-    const safeMessage = (message || 'Completed via Dashboard').replace(/["`$\\]/g, '');
+    const safeMessage = (message || 'Completed via Dashboard').replace(/[\x00-\x1f]/g, '').slice(0, 200);
     if (command === 'start') {
       runCommand('./l', ['start', step], cwd);
     } else if (command === 'complete') {

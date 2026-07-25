@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { LayoutDashboard, Plus, Activity, GripVertical } from 'lucide-react';
+import { LayoutDashboard, Plus, X } from 'lucide-react';
 import { useSidebarReorder } from '../hooks/use-sidebar-reorder.js';
 import { motion, Reorder, AnimatePresence } from 'framer-motion';
 import SidebarItem from './SidebarItem';
@@ -10,11 +10,6 @@ const containerVariants = {
     opacity: 1,
     transition: { staggerChildren: 0.1 }
   }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, x: -20 },
-  show: { opacity: 1, x: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
 };
 
 export default function Sidebar({ projects, selectedId, onSelect, onAddProject, onReorder, isMobileMenuOpen, setIsMobileMenuOpen }) {
@@ -44,10 +39,9 @@ export default function Sidebar({ projects, selectedId, onSelect, onAddProject, 
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
-        className={`w-72 bg-[#0f172a]/60 backdrop-blur-2xl border-r border-white/[0.05] flex flex-col overflow-hidden transition-transform duration-300 z-50 md:z-auto md:relative md:top-0 md:left-0 md:h-full md:translate-x-0 md:rounded-2xl md:border md:shadow-2xl ${isMobileMenuOpen
-          ? 'translate-x-0 fixed left-0 top-16 bottom-6 rounded-r-2xl'
-          : '-translate-x-full fixed left-0 top-16 bottom-6'
-          }`}
+        className={`bg-[#0f172a]/90 md:bg-[#0f172a]/60 backdrop-blur-2xl border-r border-white/[0.05] flex flex-col overflow-hidden transition-transform duration-300 z-50 fixed inset-y-0 left-0 h-full w-72 max-w-[85vw] shrink-0 md:z-auto md:relative md:inset-auto md:h-full md:w-64 lg:w-72 md:max-w-none md:translate-x-0 md:rounded-2xl md:border md:shadow-2xl ${
+          isMobileMenuOpen ? 'translate-x-0 shadow-[0_0_50px_rgba(0,0,0,0.8)]' : '-translate-x-full'
+        }`}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-primary-500/10 to-transparent pointer-events-none"></div>
 
@@ -56,15 +50,24 @@ export default function Sidebar({ projects, selectedId, onSelect, onAddProject, 
             <LayoutDashboard className="w-4 h-4 text-primary-400" />
             Projects
           </h2>
-          <motion.button
-            whileHover={{ scale: 1.1, rotate: 90 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={onAddProject}
-            className="p-1.5 hover:bg-white/10 rounded-lg text-slate-300 hover:text-white transition-colors"
-            title="Add Project"
-          >
-            <Plus className="w-5 h-5" />
-          </motion.button>
+          <div className="flex items-center gap-1">
+            <motion.button
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={onAddProject}
+              className="p-1.5 hover:bg-white/10 rounded-lg text-slate-300 hover:text-white transition-colors"
+              title="Add Project"
+            >
+              <Plus className="w-5 h-5" />
+            </motion.button>
+            <button
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="md:hidden p-1.5 hover:bg-white/10 rounded-lg text-slate-400 hover:text-white transition-colors"
+              title="Close Sidebar"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto p-4 relative z-10 custom-scrollbar">

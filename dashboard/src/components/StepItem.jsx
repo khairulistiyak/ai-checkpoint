@@ -88,10 +88,10 @@ export default function StepItem({ step, index, projectId, hasPlanFiles, onRefre
       <div className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex gap-2 self-end sm:self-auto shrink-0 mt-2 sm:mt-0">
         {step.status !== 'running' && step.status !== 'done' && (
           <button
-            disabled={executing || hasPlanFiles === false}
+            disabled={executing || !hasPlanFiles}
             onClick={() => handleCommand('start')}
-            className={`p-2 rounded-lg transition-colors border flex items-center justify-center ${hasPlanFiles === false ? 'bg-white/[0.02] text-slate-500 border-white/[0.05] cursor-not-allowed' : 'bg-white/10 text-white hover:bg-white hover:text-black border-white/20'}`}
-            title={hasPlanFiles === false ? "Generate a plan using the ai-checkpoint CLI first" : "Start Step"}
+            className={`p-2 rounded-lg transition-colors border flex items-center justify-center ${!hasPlanFiles ? 'bg-white/[0.02] text-slate-500 border-white/[0.05] cursor-not-allowed' : 'bg-white/10 text-white hover:bg-white hover:text-black border-white/20'}`}
+            title={!hasPlanFiles ? "Generate a plan using the ai-checkpoint CLI first" : "Start Step"}
           >
             <Play className="w-4 h-4" />
           </button>

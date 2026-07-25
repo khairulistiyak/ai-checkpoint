@@ -11,7 +11,7 @@ router.get('/:id/checkpoints', (req, res) => {
 
     let out = '';
     try {
-      out = runCommand('git', ['log', '--pretty=format:%h|%D|%s|%ar|%an'], project.path);
+      out = runCommand('git', ['log', '--pretty=format:%h<SEP>%D<SEP>%s<SEP>%ar<SEP>%an'], project.path);
     } catch (e) {
       out = '';
     }
@@ -19,7 +19,7 @@ router.get('/:id/checkpoints', (req, res) => {
 
     const checkpoints = out.trim().split('\n')
       .map(line => {
-        const [hash, refs, message, timeAgo, author] = line.trim().split('|');
+        const [hash, refs, message, timeAgo, author] = line.trim().split('<SEP>', 5);
         const tagMatch = refs ? refs.match(/tag: (aicp\/[0-9]+\.[0-9]+-[0-9]+)/) : null;
         if (tagMatch) {
           return { hash: tagMatch[1], message, timeAgo, author };

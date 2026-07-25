@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback } from 'react';
+import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, AlertTriangle, Info, X } from 'lucide-react';
 
@@ -6,14 +6,24 @@ const ToastContext = createContext(null);
 
 export function ToastProvider({ children }) {
   const [toasts, setToasts] = useState([]);
+  const timerMap = useRef(new Map());
+
+  useEffect(() => {
+    return () => {
+      timerMap.current.forEach(t => clearTimeout(t));
+      timerMap.current.clear();
+    };
+  }, []);
 
   const showToast = useCallback((message, type = 'info') => {
     const id = Date.now().toString();
     setToasts((prev) => [...prev, { id, message, type }]);
     
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
+      timerMap.current.delete(id);
     }, 3000);
+    timerMap.current.set(id, timer);
   }, []);
 
   const removeToast = (id) => {

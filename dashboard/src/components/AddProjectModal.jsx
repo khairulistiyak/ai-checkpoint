@@ -1,8 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 export default function AddProjectModal({ isOpen, onClose, onAdd }) {
   const [path, setPath] = useState('');
+
+  useEffect(() => {
+    if (isOpen) {
+      setPath('');
+    }
+  }, [isOpen]);
 
   if (!isOpen) return null;
 

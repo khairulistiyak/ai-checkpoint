@@ -36,7 +36,14 @@ export async function addProject(path, name) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ path, name })
   });
-  if (!res.ok) throw new Error('Failed to add project');
+  if (!res.ok) {
+    let errorMsg = 'Failed to add project';
+    try {
+      const data = await res.json();
+      if (data.error) errorMsg = data.error;
+    } catch (e) {}
+    throw new Error(errorMsg);
+  }
   return res.json();
 }
 

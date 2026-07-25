@@ -79,6 +79,10 @@ body.theme-blue {
 }
 
 /* Custom Scrollbar - Modern */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(51, 65, 85, 0.5) transparent;
+}
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
