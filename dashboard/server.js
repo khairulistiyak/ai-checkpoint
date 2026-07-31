@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import apiRouter from './src/server/api.js';
+import aiTierRouter from './src/server/ai-tier.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,11 +12,21 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 20226;
 
-app.use(cors());
+// CORS: permissive in dev, same-origin in production
+const corsOptions = process.env.NODE_ENV === 'production'
+  ? { origin: false }
+  : { origin: true };
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // API Routes
 app.use('/api', apiRouter);
+app.use('/api', aiTierRouter);
+
+// API 404 — unknown API paths return JSON, not HTML
+app.all('/api/*', (req, res) => {
+  res.status(404).json({ error: 'API endpoint not found' });
+});
 
 // Serve static React files in production
 if (process.env.NODE_ENV === 'production' || fs.existsSync(path.join(__dirname, 'dist'))) {

@@ -104,6 +104,7 @@ router.get('/:id/health', (req, res) => {
       { name: 'PROGRESS.md', passed: fs.existsSync(path.join(cwd, '.agents', 'PROGRESS.md')) },
       { name: 'RULES.md', passed: fs.existsSync(path.join(cwd, '.agents', 'RULES.md')) },
       { name: 'AGENTS.md', passed: fs.existsSync(path.join(cwd, '.agents', 'AGENTS.md')) },
+      { name: 'CLI scripts', passed: fs.existsSync(path.join(cwd, '.agents', 'scripts', 'ledger.cjs')) },
       { name: 'plan directory', passed: fs.existsSync(path.join(cwd, 'plan')) },
       { name: 'git repository', passed: fs.existsSync(path.join(cwd, '.git')) }
     ];

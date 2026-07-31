@@ -17,8 +17,8 @@ export default function GlobalOverview({ projects }) {
   const percent = totalSteps === 0 ? 0 : Math.round((doneSteps / totalSteps) * 100);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full max-w-4xl mx-auto mb-10">
-      <div className="bg-slate-800/40 backdrop-blur border border-white/[0.05] p-6 rounded-2xl flex items-center gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 w-full max-w-5xl mx-auto mb-6 sm:mb-10">
+      <div className="bg-slate-800/40 backdrop-blur border border-white/[0.05] p-4 sm:p-6 rounded-2xl flex items-center gap-4">
         <div className="p-3 bg-blue-500/20 text-blue-400 rounded-xl">
           <Folder className="w-6 h-6" />
         </div>
@@ -27,7 +27,7 @@ export default function GlobalOverview({ projects }) {
           <div className="text-2xl font-bold text-white text-left">{total}</div>
         </div>
       </div>
-      <div className="bg-slate-800/40 backdrop-blur border border-white/[0.05] p-6 rounded-2xl flex items-center gap-4">
+      <div className="bg-slate-800/40 backdrop-blur border border-white/[0.05] p-4 sm:p-6 rounded-2xl flex items-center gap-4">
         <div className="p-3 bg-green-500/20 text-green-400 rounded-xl">
           <CheckCircle className="w-6 h-6" />
         </div>
@@ -36,7 +36,7 @@ export default function GlobalOverview({ projects }) {
           <div className="text-2xl font-bold text-white text-left">{installed}</div>
         </div>
       </div>
-      <div className="bg-slate-800/40 backdrop-blur border border-white/[0.05] p-6 rounded-2xl flex items-center gap-4">
+      <div className="bg-slate-800/40 backdrop-blur border border-white/[0.05] p-4 sm:p-6 rounded-2xl flex items-center gap-4">
         <div className="p-3 bg-purple-500/20 text-purple-400 rounded-xl">
           <Activity className="w-6 h-6" />
         </div>

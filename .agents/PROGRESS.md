@@ -13,14 +13,14 @@
 
 ---
 
-## Overall Progress
+## 📊 Overall Progress: 100% (224/224 steps complete)
 
 ```
-[████████████████████] 100% (152/152 steps complete)
+[████████████████████] 100% (224/224 steps complete)
 ```
 
 ## 👉 NEXT: None (Project Complete) ✅
-> 📋 Details → `plan/` → Phase 21 → Step 21.11
+> 📋 Details → `plan/` → Phase 27 → Step 27.9
 
 ---
 
@@ -275,6 +275,107 @@
 - [x] **Step 21.10** — Clean unused imports and dead blank lines (`dashboard/src/components/Sidebar.jsx`)
 - [x] **Step 21.11** — Fix projects.js safeMessage stripping legitimate characters (`dashboard/src/server/projects.js`)
 
+---
+
+## 🔷 Phase 22: Full Dashboard Responsive Overhaul — ✅ 100% COMPLETE
+
+- [x] **Step 22.1** — Make Header scaling and touch targets responsive (`dashboard/src/components/Header.jsx`)
+- [x] **Step 22.2** — Add tablet/laptop responsive grid breakpoints to ProjectGrid (`dashboard/src/components/ProjectGrid.jsx`)
+- [x] **Step 22.3** — Fix ProjectCard text overflow and action button wrapping on mobile (`dashboard/src/components/ProjectCard.jsx`)
+- [x] **Step 22.4** — Adapt MetricsDashboard grid across 3 breakpoints (`dashboard/src/components/MetricsDashboard.jsx`)
+- [x] **Step 22.5** — Make GlobalOverview cards adaptive on tablet and mobile (`dashboard/src/components/GlobalOverview.jsx`)
+- [x] **Step 22.6** — Optimize PlanModal window dimensions and scrolling on mobile (`dashboard/src/components/PlanModal.jsx`)
+- [x] **Step 22.7** — Make ConfigEditor mobile-friendly with standard touch targets (`dashboard/src/components/ConfigEditor.jsx`)
+- [x] **Step 22.8** — Add horizontal scrolling protection and responsive height to LogPanel (`dashboard/src/components/LogPanel.jsx`)
+---
+
+## 🔴 Phase 23: Bug Fixes Round 6 — ✅ 100% COMPLETE
+
+- [x] **Step 23.1** — Fix cmd-start.js broken regex (`packages/cli/cmd-start.js`)
+- [x] **Step 23.2** — Fix cmd-block.js progress bar regex (`packages/cli/cmd-block.js`)
+- [x] **Step 23.3** — Fix cmd-block.js add Details pointer update (`packages/cli/cmd-block.js`)
+- [x] **Step 23.4** — Fix cmd-complete.js fragile Overall_Progress scan (`packages/cli/cmd-complete.js`)
+- [x] **Step 23.5** — Fix cmd-block.js fragile Overall_Progress scan (`packages/cli/cmd-block.js`)
+- [x] **Step 23.6** — Fix cmd-watch.js add graceful exit (`packages/cli/cmd-watch.js`)
+- [x] **Step 23.7** — Fix ExportButton.jsx timer memory leak (`dashboard/src/components/ExportButton.jsx`)
+- [x] **Step 23.8** — Fix ConfirmModal.jsx Enter key safety (`dashboard/src/components/ConfirmModal.jsx`)
+- [x] **Step 23.9** — Fix LogPanel.jsx time display (`dashboard/src/components/LogPanel.jsx`)
+- [x] **Step 23.10** — Fix server.js API 404 handler (`dashboard/server.js`)
+- [x] **Step 23.11** — Fix server.js CORS restriction (`dashboard/server.js`)
+- [x] **Step 23.12** — Fix config.js type validation (`dashboard/src/server/config.js`)
+- [x] **Step 23.13** — Fix projects.js health check add CLI check (`dashboard/src/server/projects.js`)
+- [x] **Step 23.14** — Fix setup.sh filter macOS ._ files (`setup.sh`)
+- [x] **Step 23.15** — Fix SidebarItem.jsx grip click prevention (`dashboard/src/components/SidebarItem.jsx`)
+- [x] **Step 23.16** — Update PROGRESS.md with Phase 23 (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 24: Full Audit Fixes — ✅ 100% COMPLETE
+
+- [x] **Step 24.1** — Fix duplicate header (`PROGRESS.md`)
+- [x] **Step 24.2** — Add git add . to checkpoint save (`packages/cli/cmd-checkpoint.js`)
+- [x] **Step 24.3** — Fix progress bar update loop in complete (`packages/cli/cmd-complete.js`)
+- [x] **Step 24.4** — Fix progress bar update loop in block (`packages/cli/cmd-block.js`)
+- [x] **Step 24.5** — Dynamic BASE_URL detection (`dashboard/src/utils/api.js`)
+- [x] **Step 24.6** — Dynamic CORS configuration (`dashboard/server.js`)
+- [x] **Step 24.7** — Fix parser regexes (`packages/core/parse-progress.js`)
+- [x] **Step 24.8** — Support markdown code fence progress bar (`packages/core/parse-progress.js`)
+- [x] **Step 24.9** — Global module fallback in CLI (`scripts/ledger.cjs`)
+- [x] **Step 24.10** — Harden findFileRecursively (`packages/core/validate-project.js`)
+- [x] **Step 24.11** — Create progress-updater utility (`packages/cli/progress-updater.js`)
+- [x] **Step 24.12** — Refactor cmd-complete to use utility (`packages/cli/cmd-complete.js`)
+- [x] **Step 24.13** — Refactor cmd-block to use utility (`packages/cli/cmd-block.js`)
+- [x] **Step 24.14** — Enter key ready guard (`dashboard/src/components/ConfirmModal.jsx`)
+- [x] **Step 24.15** — Unsaved changes dirty tracking (`dashboard/src/components/ConfigEditor.jsx`)
+- [x] **Step 24.16** — Sanitize export fields (`dashboard/src/components/ExportButton.jsx`)
+- [x] **Step 24.17** — LogPanel virtual slice & stagger (`dashboard/src/components/LogPanel.jsx`)
+- [x] **Step 24.18** — Hide drag grip when searching (`dashboard/src/components/SidebarItem.jsx`)
+- [x] **Step 24.19** — RULES.md placeholders cleanup (`templates/RULES.md`)
+- [x] **Step 24.20** — Add --json flag to doctor (`packages/cli/doctor.js`)
+- [x] **Step 24.21** — Use fs.watch in watch command (`packages/cli/cmd-watch.js`)
+- [x] **Step 24.22** — Clean macOS ._* files (`setup.sh`)
+- [x] **Step 24.23** — Add main and exports fields (`package.json`)
+- [x] **Step 24.24** — Step format validation in start (`packages/cli/cmd-start.js`)
+- [x] **Step 24.25** — Prevent double fetch in StrictMode (`dashboard/src/hooks/useProjects.js`)
+- [x] **Step 24.26** — Add loading skeleton (`dashboard/src/components/ProjectGrid.jsx`)
+- [x] **Step 24.27** — Add keyboard shortcuts help (`dashboard/src/components/CommandPalette.jsx`)
+- [x] **Step 24.28** — Verify README.md (`README.md`)
+
+---
+
+## 🔷 Phase 25: Dashboard Plan Count Fix — ✅ 100% COMPLETE
+
+- [x] **Step 25.1** — Add plan file parser to server (`dashboard/src/server/parser.js`)
+- [x] **Step 25.2** — Include plan stats in enrichProject (`dashboard/src/server/parser.js`)
+- [x] **Step 25.3** — Show plan file count in PlanCard (`dashboard/src/components/PlanCard.jsx`)
+- [x] **Step 25.4** — Add plan steps count to MetricsDashboard (`dashboard/src/components/MetricsDashboard.jsx`)
+- [x] **Step 25.5** — Show plan files list in PlanModal (`dashboard/src/components/PlanModal.jsx`)
+
+---
+
+## 🔷 Phase 26: Date/Time Tracking — ✅ 100% COMPLETE
+
+- [x] **Step 26.1** — Parse plan file creation dates in server (`dashboard/src/server/parser.js`)
+- [x] **Step 26.2** — Parse step completion timestamps from PROGRESS.md log (`packages/core/parse-progress.js`)
+- [x] **Step 26.3** — Show plan creation date in PlanCard (`dashboard/src/components/PlanCard.jsx`)
+- [x] **Step 26.4** — Show file dates in PlanModal header (`dashboard/src/components/PlanModal.jsx`)
+- [x] **Step 26.5** — Show step completion time in StepItem (`dashboard/src/components/StepItem.jsx`)
+- [x] **Step 26.6** — Show phase completion summary in PhaseView (`dashboard/src/components/PhaseView.jsx`)
+
+---
+
+## 🔷 Phase 27: AI Model Tier-Based Plan Generation — ✅ 100% COMPLETE
+
+- [x] **Step 27.1** — Create dynamic plan template generator (`dashboard/src/server/plan-templates.js`)
+- [x] **Step 27.2** — Create AI tier API routes (`dashboard/src/server/ai-tier.js`)
+- [x] **Step 27.3** — Mount AI tier routes in server (`dashboard/server.js`)
+- [x] **Step 27.4** — Add frontend API functions (`dashboard/src/utils/api.js`)
+- [x] **Step 27.5** — Create AiTierSelector component (`dashboard/src/components/AiTierSelector.jsx`)
+- [x] **Step 27.6** — Create GeneratePlanModal component (`dashboard/src/components/GeneratePlanModal.jsx`)
+- [x] **Step 27.7** — Add Generate Plan button to ProjectGrid (`dashboard/src/components/ProjectGrid.jsx`)
+- [x] **Step 27.8** — Integrate GeneratePlanModal in App.jsx (`dashboard/src/App.jsx`)
+- [x] **Step 27.9** — Add --tier flag to CLI new-plan command (`packages/cli/cmd-new-plan.js`)
+
 <!--
 UPDATE LOG:
 2026-07-18: Initial setup - all 5 phases planned with 27 atomic steps
@@ -431,5 +532,49 @@ UPDATE LOG:
 [2026-07-26 04:15] Step 21.9 completed — Fix ToastProvider setTimeout memory leak | Agent: CLI
 [2026-07-26 04:16] Step 21.10 completed — Clean unused imports and blank lines in Sidebar.jsx | Agent: CLI
 [2026-07-26 04:17] Step 21.11 completed — Fix projects.js safeMessage stripping legitimate characters | Agent: CLI
+[2026-07-26 04:42] Step 22.1 completed — Make Header scaling and touch targets responsive | Agent: CLI
+[2026-07-26 04:43] Step 22.2 completed — Added tablet/laptop responsive grid breakpoints to ProjectGrid | Agent: CLI
+[2026-07-26 04:45] Step 22.3 completed — Fixed ProjectCard text overflow and action button wrapping on mobile | Agent: CLI
+[2026-07-26 04:46] Step 22.4 completed — Adapted MetricsDashboard grid across 3 breakpoints | Agent: CLI
+[2026-07-26 04:55] Step 22.5 completed — Made GlobalOverview cards adaptive on tablet and mobile | Agent: CLI
+[2026-07-26 04:59] Step 22.6 completed — Optimized PlanModal window dimensions and scrolling on mobile | Agent: CLI
+[2026-07-26 05:00] Step 22.7 completed — Made ConfigEditor mobile-friendly with standard touch targets | Agent: CLI
+[2026-07-26 05:01] Step 22.8 completed — Added horizontal scrolling protection and responsive height to LogPanel | Agent: CLI
+[2026-07-29 03:14] Step 23.1 completed — Fixed cmd-start.js broken regex | Agent: CLI
+[2026-07-29 03:17] Step 23.2 completed — Fixed cmd-block.js progress bar regex | Agent: CLI
+[2026-07-29 03:17] Step 23.3 completed — Fixed cmd-block.js add Details pointer update | Agent: CLI
+## 📊 Overall Progress: 100% (176/176 steps complete)
+## 📊 Overall Progress: 100% (176/176 steps complete)
+[2026-07-29 03:20] Step 23.6 completed — Fixed cmd-watch.js add graceful exit | Agent: CLI
+[2026-07-29 03:21] Step 23.7 completed — Fixed ExportButton.jsx timer memory leak | Agent: CLI
+[2026-07-29 03:21] Step 23.8 completed — Fixed ConfirmModal.jsx Enter key safety | Agent: CLI
+[2026-07-29 03:21] Step 23.9 completed — Fixed LogPanel.jsx time display | Agent: CLI
+[2026-07-29 03:22] Step 23.10 completed — Fixed server.js API 404 handler | Agent: CLI
+[2026-07-29 03:22] Step 23.11 completed — Fixed server.js CORS restriction | Agent: CLI
+[2026-07-29 03:22] Step 23.12 completed — Fixed config.js type validation | Agent: CLI
+[2026-07-29 03:22] Step 23.13 completed — Fixed projects.js health check add CLI check | Agent: CLI
+[2026-07-29 03:23] Step 23.14 completed — Fixed setup.sh filter macOS ._ files | Agent: CLI
+[2026-07-29 03:23] Step 23.15 completed — Fixed SidebarItem.jsx grip click prevention | Agent: CLI
+[2026-07-29 03:23] Step 23.16 completed — Updated PROGRESS.md with Phase 23 | Agent: CLI
+[2026-07-31 09:58] Step 25.1 completed — Added parsePlanFiles to parser.js | Agent: CLI
+[2026-07-31 09:58] Step 25.2 completed — Included planStats in enrichProject | Agent: CLI
+[2026-07-31 09:58] Step 25.3 completed — Showed plan and steps count in PlanCard | Agent: CLI
+[2026-07-31 09:59] Step 25.4 completed — Added Planned Steps card to MetricsDashboard | Agent: CLI
+[2026-07-31 09:59] Step 25.5 completed — Showed plan files list in PlanModal | Agent: CLI
+[2026-07-31 10:00] Step 26.1 completed — Parsed plan file creation dates in server | Agent: CLI
+[2026-07-31 10:00] Step 26.2 completed — Parsed step completion timestamps from PROGRESS.md log | Agent: CLI
+[2026-07-31 10:01] Step 26.3 completed — Showed plan creation date in PlanCard | Agent: CLI
+[2026-07-31 10:01] Step 26.4 completed — Showed file dates in PlanModal header | Agent: CLI
+[2026-07-31 10:02] Step 26.5 completed — Showed step completion time in StepItem | Agent: CLI
+[2026-07-31 10:02] Step 26.6 completed — Show phase completion summary in PhaseView | Agent: CLI
+[2026-07-31 10:05] Step 27.1 completed — Created dynamic plan template generator | Agent: CLI
+[2026-07-31 10:05] Step 27.2 completed — Created AI tier API routes | Agent: CLI
+[2026-07-31 10:05] Step 27.3 completed — Mounted AI tier routes in server | Agent: CLI
+[2026-07-31 10:05] Step 27.4 completed — Added frontend API functions | Agent: CLI
+[2026-07-31 10:06] Step 27.5 completed — Created AiTierSelector component | Agent: CLI
+[2026-07-31 10:06] Step 27.6 completed — Created GeneratePlanModal component | Agent: CLI
+[2026-07-31 10:07] Step 27.7 completed — Added Generate Plan button to ProjectGrid | Agent: CLI
+[2026-07-31 10:07] Step 27.8 completed — Integrate GeneratePlanModal in App.jsx | Agent: CLI
+[2026-07-31 10:08] Step 27.9 completed — Added --tier flag to CLI new-plan command | Agent: CLI
 -->
 

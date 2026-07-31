@@ -27,7 +27,10 @@ function checkpointSave(message) {
   const tag = `${prefix}${count + 1}`;
   try {
     const dirty = execFileSync('git', ['status', '--porcelain'], { stdio: 'pipe', encoding: 'utf8' }).trim();
-    if (dirty) execFileSync('git', ['commit', '-am', `checkpoint: ${message}`], { stdio: 'inherit' });
+    if (dirty) {
+      execFileSync('git', ['add', '.'], { stdio: 'inherit' });
+      execFileSync('git', ['commit', '-m', `checkpoint: ${message}`], { stdio: 'inherit' });
+    }
   } catch (e) { log.error('Commit failed'); process.exit(1); }
   try {
     execFileSync('git', ['tag', '-a', tag, '-m', message], { stdio: 'inherit' });

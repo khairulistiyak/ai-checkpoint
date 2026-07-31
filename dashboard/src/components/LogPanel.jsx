@@ -10,7 +10,7 @@ export default function LogPanel({ logs }) {
       initial={false}
       animate={{ height: isOpen ? '16rem' : '2.5rem' }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-      className="fixed bottom-0 left-0 right-0 z-30 bg-[#000000] border-t border-white/[0.08] flex flex-col overflow-hidden"
+      className="fixed bottom-0 left-0 right-0 z-30 bg-[#000000] border-t border-white/[0.08] flex flex-col overflow-hidden max-h-48 sm:max-h-64"
     >
       {/* Header Bar */}
       <button
@@ -50,7 +50,7 @@ export default function LogPanel({ logs }) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.05 }}
-            className="flex-1 overflow-y-auto p-4 font-mono text-xs custom-scrollbar bg-[#0A0A0A]"
+            className="flex-1 overflow-y-auto overflow-x-auto max-w-full p-4 font-mono text-[11px] sm:text-xs custom-scrollbar bg-[#0A0A0A]"
           >
             {!logs || logs.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-slate-500">
@@ -63,13 +63,15 @@ export default function LogPanel({ logs }) {
                 initial="hidden" animate="show"
                 className="space-y-1.5 pb-4"
               >
-                {logs.map((log, idx) => (
+                {logs.slice(-100).map((log, idx, arr) => {
+                  const isRecent = idx >= arr.length - 5;
+                  return (
                   <motion.div 
                     variants={{ hidden: { opacity: 0, x: -5 }, show: { opacity: 1, x: 0 } }}
                     key={idx} className="flex gap-4 group"
                   >
                     <div className="w-20 shrink-0 text-slate-600 select-none">
-                      {log.time ? `[${log.time.split(' ')[1] || log.time}]` : '>'}
+                      {log.time ? `[${(log.time.includes(' ') ? log.time.split(' ')[1] : log.time)}]` : '>'}
                     </div>
                     <div className="text-slate-300 group-hover:text-white transition-colors">
                       <span className={log.message.includes('Error') || log.message.includes('failed') ? 'text-red-400' :
@@ -78,7 +80,8 @@ export default function LogPanel({ logs }) {
                       </span>
                     </div>
                   </motion.div>
-                ))}
+                  );
+                })}
                 {/* Blinking cursor */}
                 <div className="flex gap-4 mt-1.5">
                   <div className="w-20 shrink-0 text-slate-600 select-none">{'>'}</div>

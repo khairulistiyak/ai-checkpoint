@@ -11,7 +11,8 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
     const filteredProjects = projects.filter(p => p.name.toLowerCase().includes(query.toLowerCase()));
     const staticActions = [
       { id: 'settings', name: 'Preferences & Theme', icon: Settings, action: onOpenSettings },
-    ].filter(a => a.name.toLowerCase().includes(query.toLowerCase()));
+      { id: 'shortcuts', name: 'Keyboard Shortcuts (?)', icon: Command, action: () => alert('⌨️ KEYBOARD SHORTCUTS\n\nCmd/Ctrl + K : Open Command Palette\nEnter : Select / Confirm\nEsc : Close / Cancel\n? : Show Keyboard Shortcuts') },
+    ].filter(a => a.name.toLowerCase().includes(query.toLowerCase()) || query === '?');
     return [
       ...filteredProjects.map(p => ({ ...p, type: 'project' })),
       ...staticActions.map(a => ({ ...a, type: 'action' }))

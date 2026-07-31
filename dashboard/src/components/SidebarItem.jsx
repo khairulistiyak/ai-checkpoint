@@ -23,7 +23,7 @@ export default function SidebarItem({ p, selectedId, onSelect, isSearching }) {
       variants={itemVariants} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}
       dragListener={!isSearching}
     >
-      <div className={`w-full text-left px-4 py-3.5 rounded-xl flex items-center justify-between transition-all duration-300 relative overflow-hidden group cursor-pointer ${isSelected
+      <div className={`w-full text-left px-3 sm:px-3.5 lg:px-4 py-3 sm:py-3.5 rounded-xl sm:rounded-2xl flex items-center justify-between transition-all duration-300 relative overflow-hidden group cursor-pointer select-none min-h-[48px] sm:min-h-[44px] ${isSelected
         ? 'bg-gradient-to-r from-primary-500/20 to-accent-500/10 border border-primary-500/30 text-white shadow-[0_0_20px_rgba(99,102,241,0.15)]'
         : 'hover:bg-white/[0.04] text-slate-400 border border-transparent hover:border-white/[0.05] hover:translate-x-1'
         }`}
@@ -31,17 +31,19 @@ export default function SidebarItem({ p, selectedId, onSelect, isSearching }) {
         {isSelected && (
           <div className="absolute left-0 top-1/2 -translate-y-1/2 h-2/3 w-1 bg-gradient-to-b from-primary-400 to-accent-400 shadow-[0_0_12px_rgba(217,70,239,0.8)] rounded-r-full" />
         )}
-        <div className="flex items-center gap-3 overflow-hidden flex-1" onClick={() => onSelect(p.id)}>
-          <div className="cursor-grab active:cursor-grabbing text-slate-600 hover:text-slate-400 p-1 -ml-2 rounded" onPointerDown={(e) => e.stopPropagation()}>
-            <GripVertical className="w-4 h-4" />
-          </div>
+        <div className="flex items-center gap-2 sm:gap-3 overflow-hidden flex-1 py-0.5" onClick={() => onSelect(p.id)}>
+          {!isSearching && (
+            <div className="cursor-grab active:cursor-grabbing text-slate-600 hover:text-slate-400 p-1 sm:-ml-1.5 rounded shrink-0" onPointerDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+              <GripVertical className="w-4 h-4" />
+            </div>
+          )}
           <div className={`w-2.5 h-2.5 rounded-full ${statusColor} shrink-0 shadow-[0_0_8px_currentColor] opacity-80 group-hover:opacity-100 transition-opacity`} />
-          <span className={`truncate font-medium text-[13px] tracking-wide group-hover:text-white transition-colors ${isSelected ? 'font-bold' : ''}`}>
+          <span className={`truncate font-medium text-sm md:text-[13px] lg:text-sm tracking-wide group-hover:text-white transition-colors ${isSelected ? 'font-bold' : ''}`}>
             {p.name}
           </span>
         </div>
         {p.isInstalled && (
-          <span className={`text-[10px] font-mono px-2 py-1 rounded-md transition-all border ${isSelected ? 'bg-primary-500/30 border-primary-500/40 text-primary-200 shadow-inner' : 'bg-white/[0.03] border-white/5 text-slate-500 group-hover:bg-white/[0.08] group-hover:text-slate-300'}`}>
+          <span className={`text-[10px] sm:text-xs font-mono px-2 py-0.5 sm:py-1 rounded-md shrink-0 ml-2 transition-all border ${isSelected ? 'bg-primary-500/30 border-primary-500/40 text-primary-200 shadow-inner' : 'bg-white/[0.03] border-white/5 text-slate-500 group-hover:bg-white/[0.08] group-hover:text-slate-300'}`}>
             {progress}%
           </span>
         )}

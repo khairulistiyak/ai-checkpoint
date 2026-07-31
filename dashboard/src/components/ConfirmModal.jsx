@@ -3,11 +3,22 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, X } from 'lucide-react';
 
 export default function ConfirmModal({ isOpen, title, message, confirmText, cancelText, onConfirm, onCancel, danger }) {
+  const readyRef = React.useRef(false);
+  React.useEffect(() => {
+    readyRef.current = false;
+    const timer = setTimeout(() => { readyRef.current = true; }, 200);
+    return () => clearTimeout(timer);
+  }, [isOpen]);
+
   React.useEffect(() => {
     const handleKeyDown = (e) => {
       if (!isOpen) return;
       if (e.key === 'Escape') onCancel();
-      if (e.key === 'Enter') { e.stopPropagation(); onConfirm(); }
+      if (e.key === 'Enter' && readyRef.current) {
+        e.stopPropagation();
+        e.preventDefault();
+        onConfirm();
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);

@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import * as api from '../utils/api';
 
 export function useProjects(refreshInterval = 5000) {
@@ -23,8 +23,13 @@ export function useProjects(refreshInterval = 5000) {
     }
   }, []);
 
+  const didMountRef = useRef(false);
+
   useEffect(() => {
-    fetchData();
+    if (!didMountRef.current) {
+      didMountRef.current = true;
+      fetchData();
+    }
     if (refreshInterval > 0) {
       const interval = setInterval(fetchData, refreshInterval);
       return () => clearInterval(interval);

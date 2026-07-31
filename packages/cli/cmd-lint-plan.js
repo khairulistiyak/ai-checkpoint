@@ -10,10 +10,10 @@ function lintPlanCommand() {
 
   planFiles.forEach(pf => {
     const content = fs.readFileSync(path.join(PLAN_DIR, pf), 'utf8');
-    const steps = content.split(/^(?=#{2,3}\s+Step)/m);
+    const steps = content.split(/^(?=#{2,3}\s+(?:Step\s+)?\d+\.\d+)/m);
     
     steps.forEach(stepBlock => {
-      const titleMatch = stepBlock.match(/^#{2,3}\s+Step\s+(\d+\.\d+)/);
+      const titleMatch = stepBlock.match(/^#{2,3}\s+(?:Step\s+)?(\d+\.\d+)/);
       if (!titleMatch) return;
       const stepNum = titleMatch[1];
       

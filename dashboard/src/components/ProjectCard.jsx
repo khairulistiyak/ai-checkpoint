@@ -38,11 +38,11 @@ export default function ProjectCard({ project, onRemove, onOpenConfig }) {
               {isDone && <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/50 px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider shadow-[0_0_10px_rgba(16,185,129,0.2)]">Done</span>}
             </div>
             <p className="text-sm text-slate-500 flex items-center gap-2 mt-1.5">
-              <FolderOpen className="w-3.5 h-3.5" />
-              <span className="font-mono text-xs">{project.path}</span>
+              <FolderOpen className="w-3.5 h-3.5 shrink-0" />
+              <span className="font-mono text-xs break-all sm:break-normal truncate block max-w-[200px] sm:max-w-md md:max-w-lg lg:max-w-xl">{project.path}</span>
             </p>
           </div>
-          <div className="flex gap-2 sm:gap-3 w-full md:w-auto overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full md:w-auto pt-2 md:pt-0">
             <ExportButton project={project} />
             <button onClick={() => { navigator.clipboard.writeText(`cd ${project.path}`); }} className="p-2.5 bg-white/[0.05] hover:bg-white/[0.1] rounded-xl text-slate-300 transition-all border border-white/[0.05]" title="Copy cd command">
               <Terminal className="w-4 h-4" />

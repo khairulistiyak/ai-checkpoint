@@ -20,6 +20,11 @@ function doctorCommand() {
     const progress = fs.readFileSync(PROGRESS_PATH, 'utf8');
     if (!/^#\s+.+/m.test(progress) || !/^##\s+Project/m.test(progress)) errors.push('❌ Invalid .agents/PROGRESS.md');
   }
+  const isJson = process.argv.includes('--json');
+  if (isJson) {
+    console.log(JSON.stringify({ ok: errors.length === 0, errors }, null, 2));
+    process.exit(errors.length ? 1 : 0);
+  }
   if (errors.length) {
     errors.forEach(error => console.error(error));
     process.exit(1);

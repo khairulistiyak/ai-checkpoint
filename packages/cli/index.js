@@ -55,7 +55,7 @@ function run() {
     case 'block': case 'b': blockCommand(args[1], args[2]); break;
     case 'validate': case 'v': validateCommand(); break;
     case 'doctor': doctorCommand(); break;
-    case 'new-plan': case 'np': newPlanCommand(args[1]); break;
+    case 'new-plan': case 'np': newPlanCommand(args[1], args.slice(2)); break;
     case 'checkpoint': case 'cp': {
       const sub = args[1];
       if (sub === 'save') checkpointSave(args[2]);

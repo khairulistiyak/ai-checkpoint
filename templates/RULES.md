@@ -72,9 +72,9 @@ Do not use: "appropriately", "as needed", "properly", "etc.", "and so on", "refa
 
 | Key | Value |
 |-----|-------|
-| Language | _TypeScript / JavaScript / Python_ |
-| Framework | _React / Next.js / Vue_ |
-| Styling | _Tailwind / CSS Modules / Vanilla_ |
+| Language | [YOUR_LANGUAGE] |
+| Framework | [YOUR_FRAMEWORK] |
+| Styling | [YOUR_STYLING] |
 
 ## Import Order
 
@@ -99,4 +99,4 @@ Do not use: "appropriately", "as needed", "properly", "etc.", "and so on", "refa
 | Command | Purpose |
 |---------|---------|
 | `./l v` | Plan, file, and size validation |
-| _project command_ | Build, lint, typecheck, or test |
+| [YOUR_TEST_COMMAND] | Build, lint, typecheck, or test |

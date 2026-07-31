@@ -5,6 +5,12 @@
   "bin": {
     "ai-checkpoint": "./scripts/ledger.cjs"
   },
+  "main": "packages/core/parse-progress.js",
+  "exports": {
+    ".": "./packages/core/parse-progress.js",
+    "./cli": "./packages/cli/index.js",
+    "./core": "./packages/core/index.js"
+  },
   "files": [
     "packages",
     "templates",

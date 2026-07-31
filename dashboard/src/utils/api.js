@@ -1,4 +1,6 @@
-const BASE_URL = 'http://localhost:20226/api';
+const BASE_URL = (window.location.port === '5173'
+  ? 'http://localhost:20226'
+  : window.location.origin) + '/api';
 
 export async function fetchProjects() {
   const res = await fetch(`${BASE_URL}/projects`);
@@ -113,5 +115,38 @@ export async function installProject(id) {
     method: 'POST'
   });
   if (!res.ok) throw new Error('Installation failed');
+  return res.json();
+}
+
+export async function fetchAiTier(id) {
+  const res = await fetch(`${BASE_URL}/projects/${id}/ai-tier`);
+  if (!res.ok) throw new Error('Failed to fetch AI tier settings');
+  return res.json();
+}
+
+export async function updateAiTier(id, tier) {
+  const res = await fetch(`${BASE_URL}/projects/${id}/ai-tier`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ tier })
+  });
+  if (!res.ok) throw new Error('Failed to update AI tier settings');
+  return res.json();
+}
+
+export async function generatePlan(id, { name, tier, description }) {
+  const res = await fetch(`${BASE_URL}/projects/${id}/generate-plan`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name, tier, description })
+  });
+  if (!res.ok) {
+    let errorMsg = 'Failed to generate plan';
+    try {
+      const data = await res.json();
+      if (data.error) errorMsg = data.error;
+    } catch (e) {}
+    throw new Error(errorMsg);
+  }
   return res.json();
 }

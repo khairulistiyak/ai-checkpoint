@@ -1,14 +1,18 @@
 const fs = require('fs');
 const path = require('path');
 
-function findFileRecursively(dir, fileName) {
-  const files = fs.readdirSync(dir);
+function findFileRecursively(dir, fileName, depth = 0) {
+  if (depth > 10) return null; // Prevent infinite recursion
+  let files;
+  try { files = fs.readdirSync(dir); } catch { return null; }
   for (const file of files) {
     const fullPath = path.join(dir, file);
-    const stat = fs.statSync(fullPath);
+    let stat;
+    try { stat = fs.lstatSync(fullPath); } catch { continue; }
+    if (stat.isSymbolicLink()) continue; // Skip symlinks
     if (stat.isDirectory()) {
       if (['node_modules', 'dist', '.git', '.agents', 'plan'].includes(file)) continue;
-      const found = findFileRecursively(fullPath, fileName);
+      const found = findFileRecursively(fullPath, fileName, depth + 1);
       if (found) return found;
     } else if (file === fileName) return fullPath;
   }
@@ -47,7 +51,7 @@ function validateProject(phases, planFilesContents, cwd) {
     const lines = content.split(/\r?\n/);
     let currentStep = null;
     lines.forEach(line => {
-      const heading = line.match(/^#{2,3}\s+Step\s+(\d+\.\d+)\s+—\s+(.+)$/);
+      const heading = line.match(/^#{2,3}\s+(?:Step\s+)?(\d+\.\d+)\s+—\s+(.+)$/);
       if (heading) {
         currentStep = { number: heading[1], title: heading[2], file: null, planFile };
         if (planSteps.has(currentStep.number)) {

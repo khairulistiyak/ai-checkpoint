@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Download, Check } from 'lucide-react';
 import { useToast } from './ToastProvider';
 
@@ -6,10 +6,28 @@ export default function ExportButton({ project }) {
   const [downloading, setDownloading] = useState(false);
   const { showToast } = useToast();
 
+  const timeoutRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, []);
+
   const handleExport = () => {
     try {
       setDownloading(true);
-      const data = JSON.stringify(project, null, 2);
+      const exportData = {
+        name: project.name,
+        path: project.path,
+        progress: project.progress?.overall || null,
+        phases: project.progress?.phases?.map(p => ({
+          number: p.number, name: p.name, percentage: p.percentage,
+          steps: p.steps.map(s => ({ number: s.number, title: s.title, status: s.status }))
+        })) || [],
+        exportedAt: new Date().toISOString()
+      };
+      const data = JSON.stringify(exportData, null, 2);
       const blob = new Blob([data], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       
@@ -25,7 +43,7 @@ export default function ExportButton({ project }) {
     } catch (e) {
       showToast('Failed to export data', 'error');
     } finally {
-      setTimeout(() => setDownloading(false), 1000);
+      timeoutRef.current = setTimeout(() => setDownloading(false), 1000);
     }
   };
 

@@ -47,6 +47,29 @@ export default function StepItem({ step, index, projectId, hasPlanFiles, onRefre
   const filePath = fileMatch ? fileMatch[1] : null;
   const cleanTitle = fileMatch ? step.title.replace(fileMatch[0], '').trim() : step.title;
 
+  const getFormattedCompletedAt = () => {
+    if (!step.completedAt) return '';
+    try {
+      const parts = step.completedAt.split(' ');
+      if (parts.length < 2) return step.completedAt;
+      const dateParts = parts[0].split('-');
+      const timeParts = parts[1].split(':');
+      if (dateParts.length < 3 || timeParts.length < 2) return step.completedAt;
+      
+      const year = parseInt(dateParts[0]);
+      const month = parseInt(dateParts[1]) - 1;
+      const day = parseInt(dateParts[2]);
+      const hour = parseInt(timeParts[0]);
+      const minute = parseInt(timeParts[1]);
+      
+      const date = new Date(year, month, day, hour, minute);
+      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ', ' +
+             date.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    } catch (e) {
+      return step.completedAt;
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, x: -10 }}
@@ -68,6 +91,11 @@ export default function StepItem({ step, index, projectId, hasPlanFiles, onRefre
             <span className={`text-xs font-bold tracking-wider shrink-0 ${step.status === 'done' ? 'text-slate-500' : 'text-slate-400'}`}>
               STEP {step.number}
             </span>
+            {step.status === 'done' && step.completedAt && (
+              <span className="text-[10px] font-mono text-emerald-400/80 bg-emerald-500/5 px-2 py-0.5 rounded-full border border-emerald-500/10 shrink-0">
+                ✅ {getFormattedCompletedAt()}
+              </span>
+            )}
             <div className={`w-1 h-1 rounded-full shrink-0 ${step.status === 'done' ? 'bg-slate-700' : 'bg-slate-500'}`}></div>
             <span className={`text-sm font-medium break-all ${step.status === 'done' ? 'text-slate-500 line-through decoration-slate-600' : 'text-slate-200'}`}>
               {cleanTitle}

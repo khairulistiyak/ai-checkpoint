@@ -8,7 +8,7 @@ function parseProgressText(content) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     
-    const overallMatch = line.match(/\[([█░]+)\]\s+(\d+)%\s+\((\d+)\/(\d+)/);
+    const overallMatch = line.match(/\[([█░]*)\]\s+(\d+)%\s+\((\d+)\/(\d+)/);
     if (overallMatch) {
       overall = {
         percentage: parseInt(overallMatch[2]) || 0,
@@ -17,7 +17,7 @@ function parseProgressText(content) {
       };
     }
     
-    const phaseMatch = line.match(/^## (?:.*?)\s*Phase (\d+):\s*(.*?)\s*—\s*(.*)$/);
+    const phaseMatch = line.match(/^##\s+(?:.*?)Phase (\d+):\s*(.*?)\s*—\s*(.*)$/);
     if (phaseMatch) {
       if (currentPhase) phases.push(currentPhase);
       currentPhase = {
@@ -48,6 +48,21 @@ function parseProgressText(content) {
     const done = p.steps.filter(s => s.status === 'done').length;
     p.percentage = p.steps.length > 0 ? Math.round((done / p.steps.length) * 100) : 0;
   });
+
+  let calculatedTotal = 0;
+  let calculatedDone = 0;
+  phases.forEach(p => {
+    calculatedTotal += p.steps.length;
+    calculatedDone += p.steps.filter(s => s.status === 'done').length;
+  });
+
+  if (calculatedTotal > 0) {
+    overall = {
+      percentage: Math.round((calculatedDone / calculatedTotal) * 100),
+      completed: calculatedDone,
+      total: calculatedTotal
+    };
+  }
   
   const timeline = [];
   let inLog = false;
@@ -65,7 +80,21 @@ function parseProgressText(content) {
       if (line && !line.startsWith('UPDATE LOG:')) {
         const logMatch = line.match(/^\[(.*?)\]\s+(.*)$/);
         if (logMatch) {
-          timeline.push({ time: logMatch[1], message: logMatch[2] });
+          const timestamp = logMatch[1].trim();
+          const message = logMatch[2].trim();
+          timeline.push({ time: timestamp, message });
+          
+          const stepCompletedMatch = message.match(/^Step\s+(\d+\.\d+)\s+completed/i);
+          if (stepCompletedMatch) {
+            const stepNum = stepCompletedMatch[1];
+            for (const phase of phases) {
+              const step = phase.steps.find(s => s.number === stepNum);
+              if (step) {
+                step.completedAt = timestamp;
+                break;
+              }
+            }
+          }
         } else {
           timeline.push({ time: '', message: line });
         }

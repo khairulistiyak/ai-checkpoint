@@ -8,6 +8,7 @@ const { checkFiles } = require('./validate.js');
 function startCommand(stepNum) {
   checkFiles();
   if (!stepNum) { log.error("Step number দাও (e.g., 2.2)"); process.exit(1); }
+  if (!/^\d+\.\d+$/.test(stepNum)) { log.error(`Invalid step format: "${stepNum}". Expected X.Y format (e.g., 2.2)`); process.exit(1); }
 
   const { lines, phases } = parseProgress();
   let targetStep = null, targetPhase = null;
@@ -23,8 +24,8 @@ function startCommand(stepNum) {
 
   let fileLine = "", actionLine = "", insideStep = false;
   for (const line of planLines) {
-    if (new RegExp('^#{2,3}\\s+Step\\s+' + stepNum.replace(/\\./g, '\\\\.') + '\\\\b').test(line)) { insideStep = true; continue; }
-    if (insideStep && /^#{2,3}\s+Step\s+/.test(line)) break;
+    if (new RegExp('^#{2,3}\\s+(?:Step\\s+)?' + stepNum.replace(/\./g, '\\.') + '\\b').test(line)) { insideStep = true; continue; }
+    if (insideStep && /^#{2,3}\s+(?:Step\s+)?/.test(line)) break;
     if (insideStep) {
       if (/^\s*-\s*\*\*File:?\*\*:?\s+/.test(line)) fileLine = line;
       if (/^\s*-\s*\*\*Action:?\*\*:?\s+/.test(line)) actionLine = line;

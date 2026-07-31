@@ -6,20 +6,19 @@ function watchCommand() {
   console.clear();
   statusCommand();
   
-  let lastMtime = fs.statSync(PROGRESS_PATH).mtimeMs;
-  
-  setInterval(() => {
-    try {
-      const currentMtime = fs.statSync(PROGRESS_PATH).mtimeMs;
-      if (currentMtime !== lastMtime) {
-        lastMtime = currentMtime;
-        console.clear();
-        statusCommand();
-      }
-    } catch (e) {
-      // ignore
-    }
-  }, 2000);
+  let debounceTimer = null;
+  const watcher = fs.watch(PROGRESS_PATH, () => {
+    if (debounceTimer) clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      console.clear();
+      statusCommand();
+    }, 100);
+  });
+
+  process.on('SIGINT', () => {
+    watcher.close();
+    process.exit(0);
+  });
 }
 
 module.exports = { watchCommand };

@@ -3,6 +3,15 @@ import { FileText, ChevronRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function PlanCard({ project, onOpenPlan }) {
+  const getCreatedDateStr = () => {
+    const files = project.planStats?.files;
+    if (!files || files.length === 0) return '';
+    const dates = files.map(f => f.createdAt ? new Date(f.createdAt).getTime() : Infinity).filter(t => t !== Infinity);
+    if (dates.length === 0) return '';
+    const earliest = new Date(Math.min(...dates));
+    return 'Created: ' + earliest.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
+
   return (
     <motion.div
       whileHover={{ scale: 1.02, y: -2 }}
@@ -33,9 +42,16 @@ export default function PlanCard({ project, onOpenPlan }) {
       </p>
 
       <div className="flex items-center justify-between mt-auto relative z-10 pt-4 border-t border-white/[0.05] group-hover:border-accent-500/30 transition-colors">
-        <span className="text-xs font-mono text-slate-500 group-hover:text-accent-400/70 transition-colors">
-          {project.progress?.phases?.length || 0} Phases
-        </span>
+        <div className="flex flex-col gap-0.5">
+          <span className="text-xs font-mono text-slate-500 group-hover:text-accent-400/70 transition-colors">
+            {project.planStats?.totalFiles || 0} Plans · {project.planStats?.totalSteps || 0} Steps
+          </span>
+          {getCreatedDateStr() && (
+            <span className="text-[10px] text-slate-500/80 font-mono">
+              {getCreatedDateStr()}
+            </span>
+          )}
+        </div>
         <motion.button
           whileHover={{ x: 2 }}
           className="text-[10px] font-bold text-accent-400 group-hover:text-accent-300 uppercase tracking-wider font-mono flex items-center gap-1"

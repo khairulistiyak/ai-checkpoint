@@ -7,6 +7,21 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
   const [expanded, setExpanded] = useState(isActive || phase.percentage < 100);
   const isDone = phase.percentage === 100;
 
+  const getPhaseActivityStr = () => {
+    if (!phase.steps || phase.steps.length === 0) return '';
+    const dates = phase.steps
+      .map(s => s.completedAt ? new Date(s.completedAt).getTime() : 0)
+      .filter(t => t > 0);
+    if (dates.length === 0) return '';
+    const maxDate = new Date(Math.max(...dates));
+    const formatted = maxDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    if (isDone) {
+      return `Completed: ${formatted}`;
+    } else {
+      return `Last activity: ${formatted}`;
+    }
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -37,7 +52,17 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
             <h3 className={`text-base font-semibold tracking-tight transition-colors break-words whitespace-normal ${isActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`}>
               Phase {phase.number}: {phase.name}
             </h3>
-            <p className="text-sm text-slate-500 mt-0.5">{phase.statusText}</p>
+            <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+              <p className="text-sm text-slate-500">{phase.statusText}</p>
+              {getPhaseActivityStr() && (
+                <>
+                  <span className="w-1 h-1 rounded-full bg-slate-700"></span>
+                  <p className="text-xs text-slate-400 font-mono bg-white/[0.03] px-2 py-0.5 rounded border border-white/[0.05]">
+                    {getPhaseActivityStr()}
+                  </p>
+                </>
+              )}
+            </div>
           </div>
         </div>
 

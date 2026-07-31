@@ -26,8 +26,8 @@ router.post('/projects/:id/config', (req, res) => {
 
   const { rules, agents } = req.body;
   const MAX_SIZE = 50 * 1024;
-  if (rules !== undefined && rules.length > MAX_SIZE) return res.status(400).json({ error: 'Rules content too large (max 50KB)' });
-  if (agents !== undefined && agents.length > MAX_SIZE) return res.status(400).json({ error: 'Agents content too large (max 50KB)' });
+  if (rules !== undefined && (typeof rules !== 'string' || rules.length > MAX_SIZE)) return res.status(400).json({ error: 'Rules must be a string under 50KB' });
+  if (agents !== undefined && (typeof agents !== 'string' || agents.length > MAX_SIZE)) return res.status(400).json({ error: 'Agents must be a string under 50KB' });
 
   const agentsDir = path.join(project.path, '.agents');
   if (!fs.existsSync(agentsDir)) return res.status(400).json({ error: '.agents directory not found' });

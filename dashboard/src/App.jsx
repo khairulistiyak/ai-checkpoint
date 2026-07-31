@@ -11,6 +11,8 @@ import LogPanel from './components/LogPanel';
 import SettingsModal from './components/SettingsModal';
 import PlanModal from './components/PlanModal';
 import ConfirmModal from './components/ConfirmModal';
+import GeneratePlanModal from './components/GeneratePlanModal';
+
 import { useProjects } from './hooks/useProjects';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from './components/ToastProvider';
@@ -23,7 +25,9 @@ function App() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [configProject, setConfigProject] = useState(null);
   const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
+  const [isGeneratePlanOpen, setIsGeneratePlanOpen] = useState(false);
   const [installing, setInstalling] = useState(false);
+
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -37,8 +41,10 @@ function App() {
         if (isAddModalOpen) setIsAddModalOpen(false);
         else if (isSettingsOpen) setIsSettingsOpen(false);
         else if (isPlanModalOpen) setIsPlanModalOpen(false);
+        else if (isGeneratePlanOpen) setIsGeneratePlanOpen(false);
         else if (configProject) setConfigProject(null);
       }
+
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -111,7 +117,9 @@ function App() {
                     selectedProject={selectedProject} installing={installing}
                     onRemove={() => setConfirmRemove(true)} onOpenConfig={() => setConfigProject(selectedProject.id)}
                     onOpenPlan={() => setIsPlanModalOpen(true)} onInstall={handleInstallProject} refresh={refresh}
+                    onGeneratePlan={() => setIsGeneratePlanOpen(true)}
                   />
+
                 </motion.div>
               ) : (
                 <EmptySelectionView onAddProject={() => setIsAddModalOpen(true)} projects={projects} />
@@ -121,7 +129,9 @@ function App() {
         </main>
       </div>
       <AnimatePresence>{isPlanModalOpen && selectedProject && <PlanModal project={selectedProject} onClose={() => setIsPlanModalOpen(false)} onRefresh={refresh} />}</AnimatePresence>
+      <AnimatePresence>{isGeneratePlanOpen && selectedProject && <GeneratePlanModal isOpen={isGeneratePlanOpen} project={selectedProject} onClose={() => setIsGeneratePlanOpen(false)} onSuccess={refresh} />}</AnimatePresence>
       <AnimatePresence>{configProject && <ConfigEditor projectId={configProject} onClose={() => setConfigProject(null)} />}</AnimatePresence>
+
       <AddProjectModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} onAdd={handleAddProject} />
       {selectedProject && selectedProject.isInstalled && <LogPanel logs={selectedProject.progress?.timeline} />}
       <AnimatePresence>{isCommandPaletteOpen && <CommandPalette isOpen={isCommandPaletteOpen} onClose={() => setIsCommandPaletteOpen(false)} projects={projects} onSelectProject={(id) => { setSelectedId(id); setIsCommandPaletteOpen(false); }} onOpenSettings={() => { setIsCommandPaletteOpen(false); setIsSettingsOpen(true); }} />}</AnimatePresence>

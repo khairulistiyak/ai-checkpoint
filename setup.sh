@@ -48,8 +48,9 @@ echo -e "${YELLOW}Installing CLI...${NC}"
 cp "$SCRIPT_DIR/scripts/ledger.cjs" "$PROJECT_DIR/.agents/scripts/ledger.cjs"
 mkdir -p "$PROJECT_DIR/.agents/packages/cli"
 mkdir -p "$PROJECT_DIR/.agents/packages/core"
-cp -r "$SCRIPT_DIR/packages/cli/"* "$PROJECT_DIR/.agents/packages/cli/"
-cp -r "$SCRIPT_DIR/packages/core/"* "$PROJECT_DIR/.agents/packages/core/"
+find "$SCRIPT_DIR/packages/cli" -maxdepth 1 -name '*.js' -not -name '._*' -exec cp {} "$PROJECT_DIR/.agents/packages/cli/" \;
+find "$SCRIPT_DIR/packages/core" -maxdepth 1 -name '*.js' -not -name '._*' -exec cp {} "$PROJECT_DIR/.agents/packages/core/" \;
+find "$PROJECT_DIR/.agents" -name '._*' -delete 2>/dev/null || true
 
 # 3. Create ./l shortcut
 cat > "$PROJECT_DIR/l" << 'EOF'
