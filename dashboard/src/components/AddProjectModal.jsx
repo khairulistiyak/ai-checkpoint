@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { GlassButton } from './ui/GlassButton';
+import { InputField } from './ui/InputField';
 
 export default function AddProjectModal({ isOpen, onClose, onAdd }) {
   const [path, setPath] = useState('');
@@ -30,29 +32,25 @@ export default function AddProjectModal({ isOpen, onClose, onAdd }) {
         <h2 className="text-2xl font-bold mb-6 text-white tracking-tight">Track New Project</h2>
         <form onSubmit={handleSubmit}>
           <div className="mb-6">
-            <label className="block text-sm font-semibold text-slate-300 mb-2 uppercase tracking-wide">
-              Absolute Directory Path
-            </label>
-            <input
-              type="text"
+            <InputField
+              label="Absolute Directory Path"
               value={path}
               onChange={e => setPath(e.target.value)}
               placeholder="/path/to/your/project"
-              className="w-full bg-[#020617]/50 border border-white/[0.05] rounded-xl py-3 px-4 text-sm focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 shadow-inner text-white transition-all"
               required
             />
           </div>
           <div className="flex justify-end gap-4 mt-8">
-            <button
+            <GlassButton
               type="button"
               onClick={onClose}
-              className="px-5 py-2.5 text-sm font-medium text-slate-400 hover:text-white transition-colors"
+              variant="ghost"
             >
               Cancel
-            </button>
-            <button type="submit" className="btn-primary">
+            </GlassButton>
+            <GlassButton type="submit" variant="primary">
               Add Project
-            </button>
+            </GlassButton>
           </div>
         </form>
       </motion.div>

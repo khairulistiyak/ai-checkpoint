@@ -9,20 +9,19 @@ export default {
     extend: {
       fontFamily: {
         sans: ['Inter', 'sans-serif'],
+        outfit: ["Outfit", "Inter", "sans-serif"],
       },
       colors: {
-        primary: {
-          400: 'var(--primary-400)',
-          500: 'var(--primary-500)',
-          600: 'var(--primary-600)',
-          900: 'var(--primary-900)',
-        },
-        accent: {
-          300: 'var(--accent-300)',
-          400: 'var(--accent-400)',
-          500: 'var(--accent-500)',
-          600: 'var(--accent-600)',
-          950: 'var(--accent-950)',
+        cyber: {
+          dark: "#08090a",
+          card: "#0d0e12",
+          "card-border": "#ffffff0d", // 5% white
+          primary: "#ffffff",
+          secondary: "#a1a1aa",
+          accent: "#00f0ff", // Neon Cyan
+          "text-primary": "#f3f4f6",
+          "text-secondary": "#a1a1aa",
+          "text-muted": "#52525b",
         }
       }
     },

@@ -68,17 +68,17 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-0 md:pt-[15vh]">
-      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={onClose}></div>
+      <div className="absolute inset-0 bg-cyber-dark/80 backdrop-blur-md" onClick={onClose}></div>
       
       <motion.div 
         initial={{ opacity: 0, scale: 0.95, y: -20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: -20 }}
         transition={{ duration: 0.2 }}
-        className="glass-card w-full max-w-2xl h-full md:h-auto bg-slate-900/95 border-0 md:border md:border-slate-700/80 shadow-2xl relative z-10 overflow-hidden flex flex-col md:max-h-[70vh] rounded-none md:rounded-2xl"
+        className="glass-card w-full max-w-2xl h-full md:h-auto bg-cyber-card/95 border-0 md:border md:border-cyber-card-border shadow-2xl relative z-10 overflow-hidden flex flex-col md:max-h-[70vh] rounded-none md:rounded-2xl"
       >
-        <div className="flex items-center px-4 py-3 border-b border-slate-700/50">
-          <Search className="w-5 h-5 text-slate-400 mr-3" />
+        <div className="flex items-center px-4 py-3 border-b border-cyber-card-border">
+          <Search className="w-5 h-5 text-cyber-text-secondary mr-3" />
           <input
             ref={inputRef}
             type="text"
@@ -88,16 +88,16 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
               setSelectedIndex(0);
             }}
             placeholder="Search projects, actions..."
-            className="flex-1 bg-transparent border-none text-white focus:outline-none focus:ring-0 text-lg placeholder-slate-500"
+            className="flex-1 bg-transparent border-none text-cyber-text-primary focus:outline-none focus:ring-0 text-lg placeholder-cyber-text-muted"
           />
-          <div className="flex items-center gap-1 text-xs text-slate-500 font-mono bg-slate-800 px-2 py-1 rounded">
+          <div className="flex items-center gap-1 text-xs text-cyber-text-secondary font-mono bg-cyber-dark/50 px-2 py-1 rounded border border-cyber-card-border">
             <Command className="w-3 h-3" /> K
           </div>
         </div>
 
         <div className="overflow-y-auto p-2">
           {allItems.length === 0 ? (
-            <div className="p-8 text-center text-slate-500">
+            <div className="p-8 text-center text-cyber-text-muted">
               No results found for "{query}"
             </div>
           ) : (
@@ -113,13 +113,13 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
                     onClick={() => executeItem(item)}
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-colors ${
                       isSelected 
-                        ? 'bg-accent-600/20 text-white border border-accent-500/30' 
-                        : 'text-slate-400 hover:bg-slate-800 border border-transparent'
+                        ? 'bg-cyber-accent/10 text-cyber-text-primary border border-cyber-accent' 
+                        : 'text-cyber-text-secondary hover:bg-cyber-dark/50 border border-transparent hover:border-cyber-card-border'
                     }`}
                   >
-                    <Icon className={`w-5 h-5 ${isSelected ? 'text-accent-400' : 'text-slate-500'}`} />
+                    <Icon className={`w-5 h-5 ${isSelected ? 'text-cyber-text-primary' : 'text-cyber-text-muted'}`} />
                     <div className="flex-1">
-                      <div className={`font-medium ${isSelected ? 'text-white' : 'text-slate-300'}`}>
+                      <div className={`font-medium ${isSelected ? 'text-cyber-text-primary' : 'text-cyber-text-secondary'}`}>
                         {item.name}
                       </div>
                       {item.type === 'project' && (
@@ -131,8 +131,8 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
                     {item.type === 'project' && (
                       <div className={`text-xs px-2 py-1 rounded-md ${
                         item.isInstalled 
-                          ? 'bg-emerald-500/20 text-emerald-400' 
-                          : 'bg-slate-800 text-slate-500'
+                          ? 'bg-cyber-accent/20 text-cyber-text-primary border border-cyber-accent/50' 
+                          : 'bg-cyber-dark text-cyber-text-muted border border-cyber-card-border'
                       }`}>
                         {item.isInstalled ? `${item.progress?.overall?.percentage || 0}%` : 'Setup'}
                       </div>

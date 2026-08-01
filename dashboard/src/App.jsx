@@ -12,6 +12,7 @@ import SettingsModal from './components/SettingsModal';
 import PlanModal from './components/PlanModal';
 import ConfirmModal from './components/ConfirmModal';
 import GeneratePlanModal from './components/GeneratePlanModal';
+import { ComponentLibrary } from './components/library/ComponentLibrary';
 
 import { useProjects } from './hooks/useProjects';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -27,24 +28,34 @@ function App() {
   const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
   const [isGeneratePlanOpen, setIsGeneratePlanOpen] = useState(false);
   const [installing, setInstalling] = useState(false);
-
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [confirmRemove, setConfirmRemove] = useState(false);
 
   React.useEffect(() => {
-    const handleKeyDown = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-        e.preventDefault(); setIsCommandPaletteOpen(true);
-      } else if (e.key === 'Escape') {
-        if (isAddModalOpen) setIsAddModalOpen(false);
-        else if (isSettingsOpen) setIsSettingsOpen(false);
-        else if (isPlanModalOpen) setIsPlanModalOpen(false);
-        else if (isGeneratePlanOpen) setIsGeneratePlanOpen(false);
-        else if (configProject) setConfigProject(null);
-      }
+    if (window.location.hash === '#library') {
+      setSelectedId('library');
+    }
+    
+    const handleHashChange = () => {
+      if (window.location.hash === '#library') setSelectedId('library');
+      else setSelectedId(null);
+    };
+    
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
 
+  React.useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'l') { e.preventDefault(); setSelectedId(prev => prev === 'library' ? null : 'library'); }
+      else if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setIsCommandPaletteOpen(true); }
+      else if (e.key === 'Escape') {
+        if (isAddModalOpen) setIsAddModalOpen(false); else if (isSettingsOpen) setIsSettingsOpen(false);
+        else if (isPlanModalOpen) setIsPlanModalOpen(false); else if (isGeneratePlanOpen) setIsGeneratePlanOpen(false);
+        else if (selectedId === 'library') setSelectedId(null); else if (configProject) setConfigProject(null);
+      }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
@@ -54,37 +65,23 @@ function App() {
   const selectedProject = projects.find(p => p.id === selectedId);
 
   const handleAddProject = async (path) => {
-    try {
-      await addProject(path); setIsAddModalOpen(false);
-      showToast('Project added successfully!', 'success');
-    } catch (err) { showToast(err.message, 'error'); }
+    try { await addProject(path); setIsAddModalOpen(false); showToast('Added!', 'success'); }
+    catch (err) { showToast(err.message, 'error'); }
   };
-
   const doRemoveProject = async () => {
-    try {
-      await removeProject(selectedId);
-      setSelectedId(null);
-      showToast('Project removed', 'info');
-    } catch (err) {
-      showToast(err.message || 'Failed to remove project', 'error');
-    } finally {
-      setConfirmRemove(false);
-    }
+    try { await removeProject(selectedId); setSelectedId(null); showToast('Removed', 'info'); }
+    catch (err) { showToast(err.message, 'error'); } finally { setConfirmRemove(false); }
   };
-
   const handleInstallProject = async () => {
     setInstalling(true);
-    try {
-      await api.installProject(selectedProject.id); refresh();
-      showToast('Project initialized successfully!', 'success');
-    } catch (e) { showToast(e.message, 'error'); }
-    finally { setInstalling(false); }
+    try { await api.installProject(selectedProject.id); refresh(); showToast('Success', 'success'); }
+    catch (e) { showToast(e.message, 'error'); } finally { setInstalling(false); }
   };
 
   if (loading && projects.length === 0) return <InitializingView />;
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex flex-col font-sans relative">
+    <div className="h-screen w-screen overflow-hidden flex flex-col font-outfit bg-cyber-dark text-cyber-text-primary relative">
       {error && (
         <div className="mx-4 md:mx-6 mt-2 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-xl flex items-center gap-3 text-sm text-red-300">
           <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0"></span>
@@ -95,6 +92,7 @@ function App() {
         onOpenSettings={() => setIsSettingsOpen(true)}
         onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
         onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        onOpenLibrary={() => setSelectedId('library')}
       />
       <div className="flex flex-1 overflow-hidden px-4 md:px-6 pb-14 md:pb-12 gap-6 relative">
         <Sidebar
@@ -107,7 +105,15 @@ function App() {
         <main className="flex-1 overflow-y-auto md:overflow-hidden glass-panel rounded-2xl p-4 md:p-8 relative flex flex-col custom-scrollbar">
           <div className="max-w-5xl mx-auto w-full h-full flex flex-col min-h-max md:min-h-0">
             <AnimatePresence mode="wait">
-              {selectedProject ? (
+              {selectedId === 'library' ? (
+                <motion.div
+                  key="library" initial={{ opacity: 0, scale: 0.98, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.98, y: -20 }}
+                  transition={{ duration: 0.4, type: 'spring' }} className="h-full w-full"
+                >
+                  <ComponentLibrary asPage={true} />
+                </motion.div>
+              ) : selectedProject ? (
                 <motion.div
                   key={selectedProject.id} initial={{ opacity: 0, scale: 0.98, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.98, y: -20 }}

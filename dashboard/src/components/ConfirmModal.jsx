@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, X } from 'lucide-react';
+import { GlassButton } from './ui/GlassButton';
 
 export default function ConfirmModal({ isOpen, title, message, confirmText, cancelText, onConfirm, onCancel, danger }) {
   const readyRef = React.useRef(false);
@@ -45,21 +46,18 @@ export default function ConfirmModal({ isOpen, title, message, confirmText, canc
           </div>
         </div>
         <div className="flex justify-end gap-3">
-          <button
+          <GlassButton
             onClick={onCancel}
-            className="px-4 py-2 text-sm font-medium text-slate-400 hover:text-white transition-colors"
+            variant="ghost"
           >
             {cancelText || 'Cancel'}
-          </button>
-          <button
+          </GlassButton>
+          <GlassButton
             onClick={onConfirm}
-            className={`px-4 py-2 text-sm font-bold rounded-xl transition-all ${danger
-              ? 'bg-red-500/20 text-red-400 hover:bg-red-500/30 border border-red-500/30'
-              : 'btn-primary'
-            }`}
+            variant={danger ? 'danger' : 'primary'}
           >
             {confirmText || 'Confirm'}
-          </button>
+          </GlassButton>
         </div>
       </motion.div>
     </div>

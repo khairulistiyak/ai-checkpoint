@@ -27,18 +27,18 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.1, type: "spring", stiffness: 300, damping: 20 }}
-      className={`bg-[#0A0A0A] border rounded-xl mb-4 relative z-10 overflow-hidden ${isActive ? 'border-white/[0.2]' : 'border-white/[0.08] hover:border-white/[0.1] transition-colors'}`}
+      className={`bg-cyber-dark border rounded-xl mb-4 relative z-10 overflow-hidden ${isActive ? 'border-cyber-accent' : 'border-cyber-card-border hover:border-cyber-card-border/80 transition-colors'}`}
     >
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full px-6 py-5 flex items-center justify-between hover:bg-white/[0.02] transition-colors focus:outline-none group relative z-10"
+        className="w-full px-6 py-5 flex items-center justify-between hover:bg-cyber-card-border/10 transition-colors focus:outline-none group relative z-10"
       >
         <div className="flex items-center gap-4 sm:gap-5 flex-1 min-w-0 pr-4">
           <div className={`relative flex items-center justify-center w-10 h-10 rounded-full border transition-all duration-300 ${isDone
-              ? 'bg-white/10 border-white/20 text-white'
+              ? 'bg-cyber-accent/20 border-cyber-accent/30 text-cyber-text-primary'
               : isActive
-                ? 'bg-white text-black border-white'
-                : 'bg-transparent border-white/[0.1] text-slate-500 group-hover:border-slate-500'
+                ? 'bg-cyber-accent text-cyber-dark border-cyber-accent'
+                : 'bg-transparent border-cyber-card-border text-cyber-text-muted group-hover:border-cyber-text-muted'
             }`}>
             {isDone ? (
               <CheckCircle2 className="w-5 h-5" />
@@ -49,15 +49,15 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
             )}
           </div>
           <div className="text-left flex-1 min-w-0">
-            <h3 className={`text-base font-semibold tracking-tight transition-colors break-words whitespace-normal ${isActive ? 'text-white' : 'text-slate-300 group-hover:text-white'}`}>
+            <h3 className={`text-base font-semibold tracking-tight transition-colors break-words whitespace-normal ${isActive ? 'text-cyber-text-primary' : 'text-cyber-text-secondary group-hover:text-cyber-text-primary'}`}>
               Phase {phase.number}: {phase.name}
             </h3>
             <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-              <p className="text-sm text-slate-500">{phase.statusText}</p>
+              <p className="text-sm text-cyber-text-secondary">{phase.statusText}</p>
               {getPhaseActivityStr() && (
                 <>
-                  <span className="w-1 h-1 rounded-full bg-slate-700"></span>
-                  <p className="text-xs text-slate-400 font-mono bg-white/[0.03] px-2 py-0.5 rounded border border-white/[0.05]">
+                  <span className="w-1 h-1 rounded-full bg-cyber-card-border"></span>
+                  <p className="text-xs text-cyber-text-secondary font-mono bg-cyber-dark px-2 py-0.5 rounded border border-cyber-card-border">
                     {getPhaseActivityStr()}
                   </p>
                 </>
@@ -69,12 +69,12 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
         <div className="flex items-center gap-6">
           <div className="hidden sm:flex items-center gap-4">
             <div className="flex flex-col items-end gap-1.5">
-              <span className={`text-xs font-bold font-mono ${isDone ? 'text-white' : isActive ? 'text-white' : 'text-slate-500'}`}>
+              <span className={`text-xs font-bold font-mono ${isDone ? 'text-cyber-text-primary' : isActive ? 'text-cyber-text-primary' : 'text-cyber-text-muted'}`}>
                 {phase.percentage}%
               </span>
-              <div className="w-32 h-1 bg-white/[0.05] rounded-full overflow-hidden">
+              <div className="w-32 h-1 bg-cyber-card-border/50 rounded-full overflow-hidden">
                 <motion.div
-                  className={`h-full ${isDone ? 'bg-white' : isActive ? 'bg-slate-300' : 'bg-slate-600'}`}
+                  className={`h-full ${isDone ? 'bg-cyber-accent' : isActive ? 'bg-cyber-accent/80' : 'bg-cyber-card-border'}`}
                   initial={{ width: 0 }}
                   animate={{ width: `${phase.percentage}%` }}
                   transition={{ duration: 1, type: "spring" }}
@@ -84,9 +84,9 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
           </div>
           <motion.div 
             animate={{ rotate: expanded ? 180 : 0 }}
-            className="w-8 h-8 rounded-full bg-white/[0.05] flex items-center justify-center border border-white/[0.05] group-hover:bg-white/[0.1] transition-colors"
+            className="w-8 h-8 rounded-full bg-cyber-card-border/30 flex items-center justify-center border border-cyber-card-border group-hover:bg-cyber-card-border/50 transition-colors"
           >
-            <ChevronDown className="w-4 h-4 text-slate-300" />
+            <ChevronDown className="w-4 h-4 text-cyber-text-secondary" />
           </motion.div>
         </div>
       </button>
@@ -98,11 +98,11 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="border-t border-white/[0.05] bg-[#0A0A0A] overflow-hidden"
+            className="border-t border-cyber-card-border bg-cyber-dark overflow-hidden"
           >
             <div className="p-6 space-y-3">
               {phase.steps.length === 0 ? (
-                <div className="text-center p-6 text-slate-500 text-sm bg-white/[0.02] rounded-xl border border-white/[0.05] border-dashed">
+                <div className="text-center p-6 text-cyber-text-muted text-sm bg-cyber-card/30 rounded-xl border border-cyber-card-border border-dashed">
                   No steps recorded in this phase yet.
                 </div>
               ) : (

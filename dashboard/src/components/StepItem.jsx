@@ -8,25 +8,25 @@ export default function StepItem({ step, index, projectId, hasPlanFiles, onRefre
   const { showToast } = useToast();
   const [executing, setExecuting] = useState(false);
   let Icon = Circle;
-  let color = 'text-slate-500';
-  let bg = 'bg-[#0A0A0A] hover:bg-white/[0.02]';
-  let border = 'border-white/[0.05]';
+  let color = 'text-cyber-text-muted';
+  let bg = 'bg-cyber-dark hover:bg-cyber-card-border/10';
+  let border = 'border-cyber-card-border';
 
   if (step.status === 'done') {
     Icon = CheckCircle2;
-    color = 'text-white';
-    bg = 'bg-white/[0.05] hover:bg-white/[0.08]';
-    border = 'border-white/[0.1]';
+    color = 'text-cyber-text-primary';
+    bg = 'bg-cyber-accent/10 hover:bg-cyber-accent/20';
+    border = 'border-cyber-accent/30';
   } else if (step.status === 'running') {
     Icon = Loader2;
-    color = 'text-white';
-    bg = 'bg-white/[0.02] hover:bg-white/[0.05]';
-    border = 'border-white/[0.2]';
+    color = 'text-cyber-text-primary';
+    bg = 'bg-cyber-card/30 hover:bg-cyber-card/50';
+    border = 'border-cyber-accent';
   } else if (step.status === 'blocked') {
     Icon = AlertTriangle;
-    color = 'text-slate-400';
-    bg = 'bg-[#0A0A0A] hover:bg-white/[0.02]';
-    border = 'border-white/[0.05] border-dashed';
+    color = 'text-cyber-text-secondary';
+    bg = 'bg-cyber-dark hover:bg-cyber-card-border/10';
+    border = 'border-cyber-card-border border-dashed';
   }
 
   const handleCommand = async (command) => {
@@ -88,23 +88,23 @@ export default function StepItem({ step, index, projectId, hasPlanFiles, onRefre
         </div>
         <div className="flex-1 overflow-hidden">
           <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-            <span className={`text-xs font-bold tracking-wider shrink-0 ${step.status === 'done' ? 'text-slate-500' : 'text-slate-400'}`}>
+            <span className={`text-xs font-bold tracking-wider shrink-0 ${step.status === 'done' ? 'text-cyber-text-muted' : 'text-cyber-text-secondary'}`}>
               STEP {step.number}
             </span>
             {step.status === 'done' && step.completedAt && (
-              <span className="text-[10px] font-mono text-emerald-400/80 bg-emerald-500/5 px-2 py-0.5 rounded-full border border-emerald-500/10 shrink-0">
+              <span className="text-[10px] font-mono text-cyber-text-primary bg-cyber-accent/10 px-2 py-0.5 rounded-full border border-cyber-accent/30 shrink-0">
                 ✅ {getFormattedCompletedAt()}
               </span>
             )}
-            <div className={`w-1 h-1 rounded-full shrink-0 ${step.status === 'done' ? 'bg-slate-700' : 'bg-slate-500'}`}></div>
-            <span className={`text-sm font-medium break-all ${step.status === 'done' ? 'text-slate-500 line-through decoration-slate-600' : 'text-slate-200'}`}>
+            <div className={`w-1 h-1 rounded-full shrink-0 ${step.status === 'done' ? 'bg-cyber-card-border' : 'bg-cyber-text-muted'}`}></div>
+            <span className={`text-sm font-medium break-all ${step.status === 'done' ? 'text-cyber-text-muted line-through decoration-cyber-card-border' : 'text-cyber-text-primary'}`}>
               {cleanTitle}
             </span>
           </div>
           {filePath && (
             <div className="mt-2 flex items-center">
-              <span className="flex items-center gap-1.5 text-xs font-mono bg-white/[0.03] text-slate-400 px-2 py-1 rounded-md border border-white/[0.05] break-all">
-                <FileCode2 className="w-3 h-3 text-slate-400 shrink-0" />
+              <span className="flex items-center gap-1.5 text-xs font-mono bg-cyber-dark text-cyber-text-secondary px-2 py-1 rounded-md border border-cyber-card-border break-all">
+                <FileCode2 className="w-3 h-3 text-cyber-text-muted shrink-0" />
                 <span className="truncate">{filePath}</span>
               </span>
             </div>
@@ -118,7 +118,7 @@ export default function StepItem({ step, index, projectId, hasPlanFiles, onRefre
           <button
             disabled={executing || !hasPlanFiles}
             onClick={() => handleCommand('start')}
-            className={`p-2 rounded-lg transition-colors border flex items-center justify-center ${!hasPlanFiles ? 'bg-white/[0.02] text-slate-500 border-white/[0.05] cursor-not-allowed' : 'bg-white/10 text-white hover:bg-white hover:text-black border-white/20'}`}
+            className={`p-2 rounded-lg transition-colors border flex items-center justify-center ${!hasPlanFiles ? 'bg-cyber-card/30 text-cyber-text-muted border-cyber-card-border cursor-not-allowed' : 'bg-cyber-accent/20 text-cyber-text-primary hover:bg-cyber-accent hover:text-cyber-dark border-cyber-accent/50'}`}
             title={!hasPlanFiles ? "Generate a plan using the ai-checkpoint CLI first" : "Start Step"}
           >
             <Play className="w-4 h-4" />
@@ -128,7 +128,7 @@ export default function StepItem({ step, index, projectId, hasPlanFiles, onRefre
           <button
             disabled={executing}
             onClick={() => handleCommand('complete')}
-            className="p-2 rounded-lg transition-colors border flex items-center justify-center bg-white/10 text-white hover:bg-white hover:text-black border-white/20"
+            className="p-2 rounded-lg transition-colors border flex items-center justify-center bg-cyber-accent/20 text-cyber-text-primary hover:bg-cyber-accent hover:text-cyber-dark border-cyber-accent/50"
             title="Mark as Complete"
           >
             <Check className="w-4 h-4" />

@@ -13,11 +13,11 @@ export default function MetricsDashboard({ progress, project }) {
   const plannedSteps = Math.max(0, totalPlanSteps - total);
 
   const metrics = [
-    { label: 'Completion', value: `${percentage}%`, icon: Target, color: 'text-emerald-400', bg: 'bg-emerald-500/10', glow: 'bg-emerald-500/20' },
-    { label: 'Steps Done', value: completed, icon: Activity, color: 'text-primary-400', bg: 'bg-primary-500/10', glow: 'bg-primary-500/20' },
-    { label: 'Remaining', value: remaining, icon: Zap, color: 'text-amber-400', bg: 'bg-amber-500/10', glow: 'bg-amber-500/20' },
-    { label: 'Active Phases', value: activePhases, icon: Layers, color: 'text-accent-400', bg: 'bg-accent-500/10', glow: 'bg-accent-500/20' },
-    { label: 'Planned Steps', value: plannedSteps, icon: FileText, color: 'text-indigo-400', bg: 'bg-indigo-500/10', glow: 'bg-indigo-500/20' },
+    { label: 'Completion', value: `${percentage}%`, icon: Target, color: 'text-cyber-text-primary', bg: 'bg-cyber-accent/20', glow: 'bg-cyber-accent/10' },
+    { label: 'Steps Done', value: completed, icon: Activity, color: 'text-cyber-text-secondary', bg: 'bg-white/5', glow: 'bg-white/5' },
+    { label: 'Remaining', value: remaining, icon: Zap, color: 'text-cyber-text-secondary', bg: 'bg-white/5', glow: 'bg-white/5' },
+    { label: 'Active Phases', value: activePhases, icon: Layers, color: 'text-cyber-text-secondary', bg: 'bg-white/5', glow: 'bg-white/5' },
+    { label: 'Planned Steps', value: plannedSteps, icon: FileText, color: 'text-cyber-text-secondary', bg: 'bg-white/5', glow: 'bg-white/5' },
   ];
 
   return (
@@ -38,8 +38,8 @@ export default function MetricsDashboard({ progress, project }) {
                 <Icon className={`w-4 h-4 ${m.color}`} />
               </div>
             </div>
-            <div className="text-3xl font-black text-white mt-2 relative z-10">{m.value}</div>
-            <div className="text-xs font-medium uppercase tracking-wider text-slate-400 relative z-10">{m.label}</div>
+            <div className="text-3xl font-black text-cyber-text-primary mt-2 relative z-10">{m.value}</div>
+            <div className="text-xs font-medium uppercase tracking-wider text-cyber-text-secondary relative z-10">{m.label}</div>
           </motion.div>
         );
       })}

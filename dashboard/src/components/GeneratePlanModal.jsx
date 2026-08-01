@@ -4,6 +4,8 @@ import { X, Sparkles, FileText } from 'lucide-react';
 import AiTierSelector from './AiTierSelector';
 import { useToast } from './ToastProvider';
 import * as api from '../utils/api';
+import { GlassButton } from './ui/GlassButton';
+import { InputField } from './ui/InputField';
 
 export default function GeneratePlanModal({ isOpen, project, onClose, onSuccess }) {
   const { showToast } = useToast();
@@ -61,16 +63,17 @@ export default function GeneratePlanModal({ isOpen, project, onClose, onSuccess 
             <Sparkles className="w-5 h-5 text-accent-400" />
             <h2 className="text-lg font-bold text-white">Generate New AI-Aware Plan</h2>
           </div>
-          <button onClick={onClose} className="p-1 rounded-md text-slate-400 hover:text-white hover:bg-white/10 transition-colors"><X className="w-5 h-5" /></button>
+          <GlassButton variant="ghost" onClick={onClose} className="!p-1 rounded-md text-slate-400 hover:text-white">
+            <X className="w-5 h-5" />
+          </GlassButton>
         </div>
         <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-6 space-y-6 flex flex-col custom-scrollbar">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-400">Plan Name</label>
-              <input
-                type="text" value={name} onChange={(e) => setName(e.target.value.replace(/[^a-zA-Z0-9-]/g, ''))}
+              <InputField
+                label="Plan Name"
+                value={name} onChange={(e) => setName(e.target.value.replace(/[^a-zA-Z0-9-]/g, ''))}
                 placeholder="e.g. add-auth-system" required
-                className="w-full bg-slate-900/60 border border-slate-700/50 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-accent-500 transition-colors"
               />
             </div>
             <div className="flex flex-col gap-2">
@@ -93,10 +96,10 @@ export default function GeneratePlanModal({ isOpen, project, onClose, onSuccess 
             <pre className="flex-1 bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 text-xs font-mono text-slate-300 overflow-auto custom-scrollbar select-none">{previewContent}</pre>
           </div>
           <div className="flex justify-end gap-3 pt-4 border-t border-slate-800/50 mt-auto">
-            <button type="button" onClick={onClose} className="px-5 py-2.5 rounded-xl border border-slate-700 text-slate-300 hover:text-white hover:bg-white/5 transition-colors text-sm font-medium">Cancel</button>
-            <button type="submit" disabled={loading || !name} className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-primary-500 to-accent-500 hover:from-primary-600 hover:to-accent-600 text-white font-semibold text-sm shadow-lg transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+            <GlassButton type="button" onClick={onClose} variant="ghost">Cancel</GlassButton>
+            <GlassButton type="submit" disabled={loading || !name} variant="primary" className="flex items-center gap-2 font-semibold">
               {loading ? <>Generating...</> : <><Sparkles className="w-4 h-4" />Generate Plan</>}
-            </button>
+            </GlassButton>
           </div>
         </form>
       </motion.div>
