@@ -120,7 +120,7 @@ ${config.agentsRules}
 <!-- AI-TIER-END -->`;
 }
 
-module.exports = {
+export {
   TIER_CONFIG,
   generatePlanTemplate,
   getAgentsTierBlock

@@ -1,5 +1,5 @@
 import React from 'react';
-import { FileText, ChevronRight } from 'lucide-react';
+import { FileText, ChevronRight, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function PlanCard({ project, onOpenPlan }) {
@@ -9,55 +9,61 @@ export default function PlanCard({ project, onOpenPlan }) {
     const dates = files.map(f => f.createdAt ? new Date(f.createdAt).getTime() : Infinity).filter(t => t !== Infinity);
     if (dates.length === 0) return '';
     const earliest = new Date(Math.min(...dates));
-    return 'Created: ' + earliest.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return earliest.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
   };
 
   return (
     <motion.div
-      whileHover={{ scale: 1.02, y: -2 }}
-      whileTap={{ scale: 0.98 }}
-      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.99 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
       onClick={onOpenPlan}
-      className="glass-card p-6 cursor-pointer group flex flex-col shadow-lg overflow-hidden border-white/[0.05] hover:border-accent-500/50 h-full flex-1"
+      className="relative p-6 cursor-pointer group flex flex-col justify-between rounded-2xl border border-white/[0.05] bg-slate-900/20 backdrop-blur-xl hover:border-white/[0.12] transition-all duration-300 overflow-hidden h-full flex-1"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-accent-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"></div>
-      <motion.div
-        className="absolute -right-10 -top-10 w-32 h-32 bg-accent-500/20 blur-[40px] rounded-full group-hover:bg-accent-500/30 transition-colors"
-      />
-      <div className="flex items-center justify-between mb-4 relative z-10">
-        <h2 className="text-lg font-bold text-white flex items-center gap-3">
-          <motion.div
-            animate={{ rotate: [0, 5, -5, 0] }}
-            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-          >
-            <FileText className="w-4 h-4 text-accent-400 group-hover:text-accent-300 transition-colors drop-shadow-[0_0_8px_rgba(217,70,239,0.5)]" />
-          </motion.div>
-          Implementation Plan
-        </h2>
-        <ChevronRight className="w-4 h-4 text-slate-500 group-hover:text-white transition-all group-hover:translate-x-2" />
-      </div>
+      {/* Subtle Background Glows (very low opacity) */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
+      
+      <div className="absolute -right-6 -top-6 w-32 h-32 bg-white/[0.02] rounded-full blur-[40px] pointer-events-none" />
 
-      <p className="text-xs text-slate-400 mb-6 flex-1 relative z-10 leading-relaxed group-hover:text-slate-300 transition-colors">
-        View the detailed step-by-step implementation plan, track current phase progress, and mark tasks as complete.
-      </p>
-
-      <div className="flex items-center justify-between mt-auto relative z-10 pt-4 border-t border-white/[0.05] group-hover:border-accent-500/30 transition-colors">
-        <div className="flex flex-col gap-0.5">
-          <span className="text-xs font-mono text-slate-500 group-hover:text-accent-400/70 transition-colors">
-            {project.planStats?.totalFiles || 0} Plans · {project.planStats?.totalSteps || 0} Steps
-          </span>
-          {getCreatedDateStr() && (
-            <span className="text-[10px] text-slate-500/80 font-mono">
-              {getCreatedDateStr()}
+      {/* Content */}
+      <div className="relative z-10 flex-1 flex flex-col">
+        {/* Top Header */}
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-sm font-bold flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-white/[0.03] flex items-center justify-center border border-white/[0.08] group-hover:bg-white/[0.06] group-hover:border-white/[0.15] transition-colors">
+              <FileText className="w-4 h-4 text-slate-400 group-hover:text-slate-200 transition-colors" />
+            </div>
+            <span className="text-slate-200 group-hover:text-white transition-colors duration-350">
+              Implementation Plan
             </span>
-          )}
+          </h2>
+          <div className="w-7 h-7 rounded-full bg-white/[0.02] border border-white/[0.05] flex items-center justify-center group-hover:bg-white/[0.06] group-hover:border-white/[0.12] transition-all duration-350 group-hover:translate-x-1">
+            <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-300 transition-colors" />
+          </div>
         </div>
-        <motion.button
-          whileHover={{ x: 2 }}
-          className="text-[10px] font-bold text-accent-400 group-hover:text-accent-300 uppercase tracking-wider font-mono flex items-center gap-1"
-        >
-          Open Plan <span className="text-[14px]">→</span>
-        </motion.button>
+
+        {/* Description */}
+        <p className="text-xs text-slate-400 leading-relaxed mb-6 group-hover:text-slate-300 transition-colors duration-350">
+          View the detailed step-by-step implementation plan, track current phase progress, and mark tasks as complete.
+        </p>
+
+        {/* Info & Footer */}
+        <div className="mt-auto pt-4 border-t border-white/[0.05] flex items-center justify-between">
+          <div className="flex flex-col gap-1">
+            <div className="inline-flex items-center px-2 py-0.5 rounded bg-white/[0.03] border border-white/[0.06] text-[10px] font-mono text-slate-400 select-none">
+              {project.planStats?.totalFiles || 0} Plans · {project.planStats?.totalSteps || 0} Steps
+            </div>
+            {getCreatedDateStr() && (
+              <div className="flex items-center gap-1.5 text-[10px] text-slate-500 font-mono">
+                <Calendar className="w-3 h-3 text-slate-500" />
+                <span>Created: {getCreatedDateStr()}</span>
+              </div>
+            )}
+          </div>
+          <button className="px-3.5 py-1.5 rounded-lg bg-accent-500/10 border border-accent-500/20 group-hover:bg-accent-500/20 group-hover:border-accent-500/40 text-[10px] font-bold text-accent-300 group-hover:text-white uppercase tracking-wider font-mono flex items-center gap-1 transition-all duration-300 pointer-events-none">
+            Open Plan <span className="text-[11px] transition-transform duration-300 group-hover:translate-x-0.5">→</span>
+          </button>
+        </div>
       </div>
     </motion.div>
   );

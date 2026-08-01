@@ -22,27 +22,6 @@ export default function PlanModal({ project, onClose, onRefresh }) {
               Implementation Plan
             </h2>
             <p className="text-slate-400 text-xs sm:text-sm mt-1">Detailed steps and progress for {project.name}</p>
-            {project.planStats?.files?.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-3">
-                {project.planStats.files.map(f => {
-                  const dateStr = f.createdAt 
-                    ? new Date(f.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                    : '';
-                  return (
-                    <span 
-                      key={f.name} 
-                      className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-medium font-mono bg-slate-800/80 border border-slate-700/50 text-slate-300 gap-1.5"
-                    >
-                      <span>{f.name}</span>
-                      {dateStr && <span className="text-slate-500">•</span>}
-                      {dateStr && <span className="text-slate-400">{dateStr}</span>}
-                      <span className="text-slate-500">•</span>
-                      <span className="text-accent-400/80">{f.steps} steps</span>
-                    </span>
-                  );
-                })}
-              </div>
-            )}
           </div>
           <button 
             onClick={onClose}
@@ -54,7 +33,6 @@ export default function PlanModal({ project, onClose, onRefresh }) {
         
         <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 relative scroll-smooth custom-scrollbar bg-slate-950/40">
           <div className="max-w-4xl mx-auto relative">
-            {/* Connecting Line */}
             <div className="absolute left-[39px] top-4 bottom-10 w-0.5 bg-gradient-to-b from-primary-500/50 via-accent-500/20 to-transparent z-0 hidden md:block"></div>
             
             <div className="space-y-4">
