@@ -150,3 +150,9 @@ export async function generatePlan(id, { name, tier, description }) {
   }
   return res.json();
 }
+
+export async function fetchPlanFileContent(id, filename) {
+  const res = await fetch(`${BASE_URL}/projects/${id}/plan-file/${encodeURIComponent(filename)}`);
+  if (!res.ok) throw new Error('Failed to fetch plan file');
+  return res.json();
+}

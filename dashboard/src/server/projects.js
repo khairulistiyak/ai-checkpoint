@@ -150,4 +150,23 @@ router.post('/:id/command', (req, res) => {
 
 router.use('/', checkpointsRouter);
 
+router.get('/:id/plan-file/:filename', (req, res) => {
+  const project = getSettings().projects.find(p => p.id === req.params.id);
+  if (!project) return res.status(404).json({ error: 'Project not found' });
+  const filename = req.params.filename;
+  if (!/^[a-zA-Z0-9_.-]+\.md$/.test(filename)) {
+    return res.status(400).json({ error: 'Invalid filename' });
+  }
+  const filePath = path.join(project.path, 'plan', filename);
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: 'Plan file not found' });
+  }
+  try {
+    const content = fs.readFileSync(filePath, 'utf8');
+    res.json({ content, filename });
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to read file' });
+  }
+});
+
 export default router;

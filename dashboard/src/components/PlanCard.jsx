@@ -22,7 +22,7 @@ export default function PlanCard({ project, onOpenPlan }) {
     >
       {/* Subtle Background Glows (very low opacity) */}
       <div className="absolute inset-0 bg-gradient-to-br from-white/[0.01] to-transparent pointer-events-none" />
-      
+
       <div className="absolute -right-6 -top-6 w-32 h-32 bg-white/[0.02] rounded-full blur-[40px] pointer-events-none" />
 
       {/* Content */}
@@ -60,7 +60,7 @@ export default function PlanCard({ project, onOpenPlan }) {
               </div>
             )}
           </div>
-          <button className="px-3.5 py-1.5 rounded-lg bg-accent-500/10 border border-accent-500/20 group-hover:bg-accent-500/20 group-hover:border-accent-500/40 text-[10px] font-bold text-accent-300 group-hover:text-white uppercase tracking-wider font-mono flex items-center gap-1 transition-all duration-300 pointer-events-none">
+          <button className="px-3.5 py-1.5 rounded-lg bg-cyber-accent/10 border border-cyber-accent/20 group-hover:bg-cyber-accent/20 group-hover:border-cyber-accent/40 text-[10px] font-bold text-cyber-accent group-hover:text-white uppercase tracking-wider font-mono flex items-center gap-1 transition-all duration-300 pointer-events-none">
             Open Plan <span className="text-[11px] transition-transform duration-300 group-hover:translate-x-0.5">→</span>
           </button>
         </div>

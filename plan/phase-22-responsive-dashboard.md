@@ -67,7 +67,7 @@
 ---
 
 ## Step 22.6 — Optimize PlanModal window dimensions and scrolling on mobile
-- **File:** `dashboard/src/components/PlanModal.jsx`
+- **File:** `dashboard/src/components/PlansCenter.jsx`
 - **Action:** MODIFY
 - **Content:**
   Ensure the modal dialog doesn't overflow mobile screen borders and close buttons remain reachable.

@@ -9,9 +9,8 @@ import ConfigEditor from './components/ConfigEditor';
 import CommandPalette from './components/CommandPalette';
 import LogPanel from './components/LogPanel';
 import SettingsModal from './components/SettingsModal';
-import PlanModal from './components/PlanModal';
+import PlansCenter from './components/PlansCenter';
 import ConfirmModal from './components/ConfirmModal';
-import GeneratePlanModal from './components/GeneratePlanModal';
 import { ComponentLibrary } from './components/library/ComponentLibrary';
 
 import { useProjects } from './hooks/useProjects';
@@ -25,8 +24,6 @@ function App() {
   const [selectedId, setSelectedId] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [configProject, setConfigProject] = useState(null);
-  const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
-  const [isGeneratePlanOpen, setIsGeneratePlanOpen] = useState(false);
   const [installing, setInstalling] = useState(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -52,14 +49,19 @@ function App() {
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'l') { e.preventDefault(); setSelectedId(prev => prev === 'library' ? null : 'library'); }
       else if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setIsCommandPaletteOpen(true); }
       else if (e.key === 'Escape') {
-        if (isAddModalOpen) setIsAddModalOpen(false); else if (isSettingsOpen) setIsSettingsOpen(false);
-        else if (isPlanModalOpen) setIsPlanModalOpen(false); else if (isGeneratePlanOpen) setIsGeneratePlanOpen(false);
-        else if (selectedId === 'library') setSelectedId(null); else if (configProject) setConfigProject(null);
+        if (isAddModalOpen) setIsAddModalOpen(false);
+        else if (isSettingsOpen) setIsSettingsOpen(false);
+        else if (typeof selectedId === 'string' && selectedId.startsWith('plans-')) {
+          const projId = selectedId.split('-')[1];
+          setSelectedId(projId || null);
+        }
+        else if (selectedId === 'library') setSelectedId(null);
+        else if (configProject) setConfigProject(null);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isAddModalOpen, isSettingsOpen, isPlanModalOpen, configProject]);
+  }, [isAddModalOpen, isSettingsOpen, configProject, selectedId]);
 
 
   const selectedProject = projects.find(p => p.id === selectedId);
@@ -102,10 +104,23 @@ function App() {
           onAddProject={() => setIsAddModalOpen(true)}
           onReorder={async (ids) => { try { await api.reorderProjects(ids); refresh(); } catch (e) { showToast('Failed to reorder', 'error'); } }}
         />
-        <main className="flex-1 overflow-y-auto md:overflow-hidden glass-panel rounded-2xl p-4 md:p-8 relative flex flex-col custom-scrollbar">
-          <div className="max-w-5xl mx-auto w-full h-full flex flex-col min-h-max md:min-h-0">
+        <main className={`flex-1 overflow-y-auto md:overflow-hidden relative flex flex-col custom-scrollbar ${typeof selectedId === 'string' && selectedId.startsWith('plans-') ? 'p-0' : 'glass-panel rounded-2xl p-4 md:p-8'}`}>
+          <div className={`w-full h-full flex flex-col min-h-max md:min-h-0 ${typeof selectedId === 'string' && selectedId.startsWith('plans-') ? '' : 'max-w-5xl mx-auto'}`}>
             <AnimatePresence mode="wait">
-              {selectedId === 'library' ? (
+              {typeof selectedId === 'string' && selectedId.startsWith('plans-') ? (
+                <motion.div
+                  key="plans" initial={{ opacity: 0, scale: 0.98, y: 20 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.98, y: -20 }}
+                  transition={{ duration: 0.4, type: 'spring' }} className="h-full w-full"
+                >
+                  <PlansCenter
+                    project={projects.find(p => selectedId.includes(p.id))}
+                    initialTab={selectedId.split('-').pop()}
+                    onBack={() => { const proj = projects.find(p => selectedId.includes(p.id)); setSelectedId(proj ? proj.id : null); }}
+                    onRefresh={refresh}
+                  />
+                </motion.div>
+              ) : selectedId === 'library' ? (
                 <motion.div
                   key="library" initial={{ opacity: 0, scale: 0.98, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.98, y: -20 }}
@@ -122,8 +137,8 @@ function App() {
                   <ProjectGrid
                     selectedProject={selectedProject} installing={installing}
                     onRemove={() => setConfirmRemove(true)} onOpenConfig={() => setConfigProject(selectedProject.id)}
-                    onOpenPlan={() => setIsPlanModalOpen(true)} onInstall={handleInstallProject} refresh={refresh}
-                    onGeneratePlan={() => setIsGeneratePlanOpen(true)}
+                    onInstall={handleInstallProject} refresh={refresh}
+                    onOpenPlans={(tab) => setSelectedId('plans-' + selectedProject.id + '-' + (tab || 'progress'))}
                   />
 
                 </motion.div>
@@ -134,8 +149,6 @@ function App() {
           </div>
         </main>
       </div>
-      <AnimatePresence>{isPlanModalOpen && selectedProject && <PlanModal project={selectedProject} onClose={() => setIsPlanModalOpen(false)} onRefresh={refresh} />}</AnimatePresence>
-      <AnimatePresence>{isGeneratePlanOpen && selectedProject && <GeneratePlanModal isOpen={isGeneratePlanOpen} project={selectedProject} onClose={() => setIsGeneratePlanOpen(false)} onSuccess={refresh} />}</AnimatePresence>
       <AnimatePresence>{configProject && <ConfigEditor projectId={configProject} onClose={() => setConfigProject(null)} />}</AnimatePresence>
 
       <AddProjectModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} onAdd={handleAddProject} />

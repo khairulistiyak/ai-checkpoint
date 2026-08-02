@@ -13,14 +13,14 @@
 
 ---
 
-## 📊 Overall Progress: 100% (247/247 steps complete)
+## 📊 Overall Progress: 100% (254/254 steps complete)
 
 ```
-[████████████████████] 100% (247/247 steps complete)
+[████████████████████] 100% (254/254 steps complete)
 ```
 
 ## 👉 NEXT: None (Project Complete) ✅
-> 📋 Details → `plan/` → Phase 30 → Step 30.10
+> 📋 Details → `plan/` → Phase 31 → Step 31.7
 
 ---
 
@@ -284,7 +284,7 @@
 - [x] **Step 22.3** — Fix ProjectCard text overflow and action button wrapping on mobile (`dashboard/src/components/ProjectCard.jsx`)
 - [x] **Step 22.4** — Adapt MetricsDashboard grid across 3 breakpoints (`dashboard/src/components/MetricsDashboard.jsx`)
 - [x] **Step 22.5** — Make GlobalOverview cards adaptive on tablet and mobile (`dashboard/src/components/GlobalOverview.jsx`)
-- [x] **Step 22.6** — Optimize PlanModal window dimensions and scrolling on mobile (`dashboard/src/components/PlanModal.jsx`)
+- [x] **Step 22.6** — Optimize PlansCenter window dimensions and scrolling on mobile (`dashboard/src/components/PlansCenter.jsx`)
 - [x] **Step 22.7** — Make ConfigEditor mobile-friendly with standard touch targets (`dashboard/src/components/ConfigEditor.jsx`)
 - [x] **Step 22.8** — Add horizontal scrolling protection and responsive height to LogPanel (`dashboard/src/components/LogPanel.jsx`)
 ---
@@ -349,7 +349,7 @@
 - [x] **Step 25.2** — Include plan stats in enrichProject (`dashboard/src/server/parser.js`)
 - [x] **Step 25.3** — Show plan file count in PlanCard (`dashboard/src/components/PlanCard.jsx`)
 - [x] **Step 25.4** — Add plan steps count to MetricsDashboard (`dashboard/src/components/MetricsDashboard.jsx`)
-- [x] **Step 25.5** — Show plan files list in PlanModal (`dashboard/src/components/PlanModal.jsx`)
+- [x] **Step 25.5** — Show plan files list in PlansCenter (`dashboard/src/components/PlansCenter.jsx`)
 
 ---
 
@@ -358,7 +358,7 @@
 - [x] **Step 26.1** — Parse plan file creation dates in server (`dashboard/src/server/parser.js`)
 - [x] **Step 26.2** — Parse step completion timestamps from PROGRESS.md log (`packages/core/parse-progress.js`)
 - [x] **Step 26.3** — Show plan creation date in PlanCard (`dashboard/src/components/PlanCard.jsx`)
-- [x] **Step 26.4** — Show file dates in PlanModal header (`dashboard/src/components/PlanModal.jsx`)
+- [x] **Step 26.4** — Show file dates in PlansCenter header (`dashboard/src/components/PlansCenter.jsx`)
 - [x] **Step 26.5** — Show step completion time in StepItem (`dashboard/src/components/StepItem.jsx`)
 - [x] **Step 26.6** — Show phase completion summary in PhaseView (`dashboard/src/components/PhaseView.jsx`)
 
@@ -371,7 +371,7 @@
 - [x] **Step 27.3** — Mount AI tier routes in server (`dashboard/server.js`)
 - [x] **Step 27.4** — Add frontend API functions (`dashboard/src/utils/api.js`)
 - [x] **Step 27.5** — Create AiTierSelector component (`dashboard/src/components/AiTierSelector.jsx`)
-- [x] **Step 27.6** — Create GeneratePlanModal component (`dashboard/src/components/GeneratePlanModal.jsx`)
+- [x] **Step 27.6** — Create GeneratePlanModal generator in PlansCenter (`dashboard/src/components/PlansCenter.jsx`)
 - [x] **Step 27.7** — Add Generate Plan button to ProjectGrid (`dashboard/src/components/ProjectGrid.jsx`)
 - [x] **Step 27.8** — Integrate GeneratePlanModal in App.jsx (`dashboard/src/App.jsx`)
 - [x] **Step 27.9** — Add --tier flag to CLI new-plan command (`packages/cli/cmd-new-plan.js`)
@@ -607,6 +607,13 @@ UPDATE LOG:
 [2026-08-01 10:20] Step 30.8 completed — Refactored ConfigEditor.jsx | Agent: CLI
 [2026-08-01 10:20] Step 30.9 completed — Refactored ConfirmModal.jsx | Agent: CLI
 [2026-08-01 10:22] Step 30.10 completed — Refactored GeneratePlanModal.jsx | Agent: CLI
+[2026-08-01 11:59] Step 31.1 completed — plan-file read endpoint added with filename validation | Agent: CLI
+[2026-08-01 11:59] Step 31.2 completed — fetchPlanFileContent API added | Agent: CLI
+[2026-08-01 11:59] Step 31.3 completed — PlansCenter page created with tabs | Agent: CLI
+[2026-08-01 12:00] Step 31.4 completed — PlansCenter wired into App with ESC handling | Agent: CLI
+[2026-08-01 12:00] Step 31.5 completed — ProjectGrid routes plans tabs | Agent: CLI
+[2026-08-01 12:00] Step 31.6 completed — PlanCard button color updated | Agent: CLI
+[2026-08-01 12:00] Step 31.7 completed — old modal files removed | Agent: CLI
 -->
 
 
@@ -621,7 +628,7 @@ UPDATE LOG:
 - [x] **Step 29.7** — Overhaul GlobalOverview.jsx backgrounds and rings.
 - [x] **Step 29.8** — Overhaul MetricsDashboard.jsx backgrounds and elements.
 - [x] **Step 29.9** — Overhaul CommandPalette.jsx and search bars.
-- [x] **Step 29.10** — Overhaul PlanModal.jsx and other stray modals.
+- [x] **Step 29.10** — Overhaul PlansCenter.jsx and other stray modals.
 
 
 ## 🔴 Phase 30: UI Component Integration
@@ -635,4 +642,14 @@ UPDATE LOG:
 - [x] **Step 30.7** — Refactor AddProjectModal.jsx to use UI components.
 - [x] **Step 30.8** — Refactor ConfigEditor.jsx to use UI components.
 - [x] **Step 30.9** — Refactor ConfirmModal.jsx to use UI components.
-- [x] **Step 30.10** — Refactor GeneratePlanModal.jsx to use UI components.
+- [x] **Step 30.10** — Refactor PlansCenter generator to use UI components.
+
+## 🔷 Phase 31: Plans Center Full Page — ✅ 100% COMPLETE
+
+- [x] **Step 31.1** — Add plan-file read endpoint (`dashboard/src/server/projects.js`)
+- [x] **Step 31.2** — Add fetchPlanFileContent API (`dashboard/src/utils/api.js`)
+- [x] **Step 31.3** — Create PlansCenter page (`dashboard/src/components/PlansCenter.jsx`)
+- [x] **Step 31.4** — Wire PlansCenter into App (`dashboard/src/App.jsx`)
+- [x] **Step 31.5** — Update ProjectGrid plans props (`dashboard/src/components/ProjectGrid.jsx`)
+- [x] **Step 31.6** — Update PlanCard button color (`dashboard/src/components/PlanCard.jsx`)
+- [x] **Step 31.7** — Remove old modal files (`dashboard/src/components/PlansCenter.jsx`)

@@ -34,10 +34,10 @@ const tiers = [
     label: 'High',
     emoji: '🔴',
     icon: Sparkles,
-    color: 'text-accent-400',
-    border: 'hover:border-accent-500/30',
-    glow: 'from-accent-500/10 to-transparent',
-    activeGlow: 'bg-accent-500/20 border-accent-500/50',
+    color: 'text-cyber-accent',
+    border: 'hover:border-cyber-accent/50',
+    glow: 'from-cyber-accent/10 to-transparent',
+    activeGlow: 'bg-cyber-accent/10 border-cyber-accent/50 shadow-[0_0_15px_rgba(var(--cyber-accent-rgb),0.15)]',
     maxSteps: 'Unlimited steps / phase',
     complexity: 'Full freedom & complex reasoning',
     models: 'GPT-4, o1, Gemini Ultra, Claude Opus'
@@ -76,9 +76,9 @@ export default function AiTierSelector({ selectedTier, onChange }) {
                   <motion.div 
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="w-5 h-5 rounded-full bg-accent-500 flex items-center justify-center border border-white/20 shadow-lg"
+                    className="w-5 h-5 rounded-full bg-cyber-accent flex items-center justify-center border border-white/20 shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.3)]"
                   >
-                    <Check className="w-3 h-3 text-white" />
+                    <Check className="w-3 h-3 text-cyber-dark" />
                   </motion.div>
                 )}
               </div>

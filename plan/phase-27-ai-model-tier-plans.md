@@ -67,7 +67,7 @@
 - **Check:** Component import matches standard components and has no error
 
 ### 27.6 — Create GeneratePlanModal component
-- **File:** `dashboard/src/components/GeneratePlanModal.jsx`
+- **File:** `dashboard/src/components/PlansCenter.jsx`
 - **Do:** Plan generation modal — name input + embedded AiTierSelector + live template preview + generate button
 - **How:** Modal with:
   1. Plan name input (validated: `[a-zA-Z0-9-]{1,50}`)

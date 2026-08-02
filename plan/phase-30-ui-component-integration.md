@@ -63,7 +63,7 @@
 - **Check:** Modal interactions still work.
 
 ### 30.10 — Refactor GeneratePlanModal.jsx to use UI components
-- **File:** `dashboard/src/components/GeneratePlanModal.jsx`
+- **File:** `dashboard/src/components/PlansCenter.jsx`
 - **Do:** Replace plan name input and action buttons.
 - **How:** Use `<InputField>` and `<GlassButton>`.
 - **Check:** Modal interactions still work.

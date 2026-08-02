@@ -45,5 +45,5 @@
 - **Do:** Apply dark cyber theme to command search palette.
 
 ## Step 29.10 — Overhaul PlanModal.jsx
-- **File:** `dashboard/src/components/PlanModal.jsx`
+- **File:** `dashboard/src/components/PlansCenter.jsx`
 - **Do:** Apply modal cyber theme classes and border styles.

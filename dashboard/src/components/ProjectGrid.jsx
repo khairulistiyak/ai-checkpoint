@@ -7,7 +7,7 @@ import NotInitializedView from './NotInitializedView';
 import { Rocket, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function ProjectGrid({ selectedProject, loading, installing, onRemove, onOpenConfig, onOpenPlan, onGeneratePlan, onInstall, refresh }) {
+export default function ProjectGrid({ selectedProject, loading, installing, onRemove, onOpenConfig, onOpenPlans, onInstall, refresh }) {
   if (loading || !selectedProject) {
     return (
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-5 min-h-full auto-rows-max animate-pulse">
@@ -26,14 +26,14 @@ export default function ProjectGrid({ selectedProject, loading, installing, onRe
       {selectedProject.isInstalled ? (
         <>
           <div className="lg:col-span-5 xl:col-span-4 flex flex-col gap-3 h-full">
-            <PlanCard project={selectedProject} onOpenPlan={onOpenPlan} />
+            <PlanCard project={selectedProject} onOpenPlan={() => onOpenPlans('progress')} />
             <motion.button
               whileHover={{ scale: 1.02, y: -1 }}
               whileTap={{ scale: 0.98 }}
-              onClick={onGeneratePlan}
-              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-accent-500/30 bg-accent-500/10 hover:bg-accent-500/20 text-accent-300 hover:text-white transition-all text-xs font-bold font-mono tracking-wider uppercase shadow-lg cursor-pointer"
+              onClick={() => onOpenPlans('generate')}
+              className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-cyber-accent/30 bg-cyber-accent/10 hover:bg-cyber-accent/20 text-cyber-accent hover:text-white transition-all text-xs font-bold font-mono tracking-wider uppercase shadow-lg cursor-pointer"
             >
-              <Sparkles className="w-4 h-4 text-accent-400 group-hover:text-accent-300" />
+              <Sparkles className="w-4 h-4 text-cyber-accent" />
               Generate Plan
             </motion.button>
           </div>

@@ -34,7 +34,7 @@
 - **Check:** Plan card-এ date দেখায়
 
 ### Step 26.4 — Show file dates in PlanModal header
-- **File:** `dashboard/src/components/PlanModal.jsx`
+- **File:** `dashboard/src/components/PlansCenter.jsx`
 - **Do:** Plan modal-এ প্রতিটা plan file-এর name + creation date badge দেখাও
 - **How:** `project.planStats?.files` map করে `<span>filename.md · Jul 28</span>` render করো header-এ
 - **Check:** Plan modal open করলে file names + dates দেখায়

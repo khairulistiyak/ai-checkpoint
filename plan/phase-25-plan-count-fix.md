@@ -40,7 +40,7 @@
 - **Check:** Metrics-এ "Planned" card দেখায়
 
 ### Step 25.5 — Show plan files list in PlanModal
-- **File:** `dashboard/src/components/PlanModal.jsx`
+- **File:** `dashboard/src/components/PlansCenter.jsx`
 - **Do:** Plan modal-এ plan file names list দেখাও (কোন file-এ কতগুলো step)
 - **How:** `project.planStats?.fileNames` map করে chips/badges দেখাও header-এ
 - **Check:** Plan modal open করলে file list দেখায়
