@@ -3,6 +3,7 @@ import ProjectCard from './ProjectCard';
 import GitVisualizer from './GitVisualizer';
 import NotInitializedView from './NotInitializedView';
 import { Rocket, Sparkles, Target, Activity, Zap, Layers, FileText, ArrowRight } from 'lucide-react';
+import ActivityLog from './ActivityLog';
 import { motion } from 'framer-motion';
 
 export default function ProjectGrid({
@@ -14,6 +15,7 @@ export default function ProjectGrid({
   onOpenPlans,
   onInstall,
   refresh,
+  liveActivityEntry,
 }) {
   if (loading || !selectedProject) {
     return (
@@ -119,6 +121,9 @@ export default function ProjectGrid({
               </div>
             </motion.div>
           </div>
+
+          {/* 4. Activity Log Panel */}
+          <ActivityLog projectId={selectedProject.id} liveEntry={liveActivityEntry} />
         </>
       ) : (
         <NotInitializedView installing={installing} onInstall={onInstall} onRemove={onRemove} />

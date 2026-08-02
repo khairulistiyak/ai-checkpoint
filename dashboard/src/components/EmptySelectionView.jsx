@@ -8,25 +8,26 @@ export default function EmptySelectionView({ onAddProject, projects }) {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex flex-col items-center justify-center h-full min-h-[70vh] text-center w-full"
+      className="flex flex-col items-center justify-center h-full min-h-[70vh] text-center w-full px-4"
     >
       {projects && projects.length > 0 && <GlobalOverview projects={projects} />}
-      <div className="relative mt-4">
-        <div className="absolute inset-0 bg-primary-500 blur-[80px] opacity-20 rounded-full"></div>
-        <div className="w-32 h-32 bg-slate-800/40 backdrop-blur-md border border-white/[0.05] rounded-full flex items-center justify-center mb-8 relative z-10 shadow-2xl">
-          <PlusCircle className="w-12 h-12 text-slate-400" />
+      <div className="relative mt-8">
+        <div className="w-24 h-24 bg-[#121214] border border-white/10 rounded-3xl flex items-center justify-center mb-6 relative z-10 shadow-sm">
+          <PlusCircle className="w-10 h-10 text-zinc-400" />
         </div>
       </div>
-      <h2 className="text-3xl font-black text-white mb-4 tracking-tight">No Project Selected</h2>
-      <p className="text-slate-400 max-w-md text-lg leading-relaxed mb-10">
-        Select a project from the sidebar to view its gorgeous progress tracking, or add a new one.
+      <h2 className="text-2xl font-black text-white mb-2 tracking-tight font-outfit">
+        No Project Selected
+      </h2>
+      <p className="text-zinc-400 max-w-md text-sm font-mono leading-relaxed mb-8">
+        Select a project from the sidebar to inspect its execution ledger, or initialize a new workspace.
       </p>
       <button
         onClick={onAddProject}
-        className="btn-primary flex items-center gap-2 text-lg px-8 py-3"
+        className="flex items-center gap-2 px-6 py-3 rounded-xl bg-[#ededef] hover:bg-white text-zinc-950 font-bold font-mono uppercase tracking-wider text-xs transition-all shadow-sm cursor-pointer"
       >
-        <PlusCircle className="w-5 h-5" />
-        Add Project
+        <PlusCircle className="w-4 h-4" />
+        <span>Add New Project</span>
       </button>
     </motion.div>
   );

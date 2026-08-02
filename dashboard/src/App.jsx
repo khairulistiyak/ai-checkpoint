@@ -7,6 +7,7 @@ import PageSkeleton from './components/ui/PageSkeleton';
 
 import { useProjects } from './hooks/useProjects';
 import { useHashRoute } from './hooks/useHashRoute';
+import { useFileWatcher, restoreProgress } from './hooks/useFileWatcher';
 import { AnimatePresence } from 'framer-motion';
 import { useToast } from './components/ToastProvider';
 import * as api from './utils/api';
@@ -20,7 +21,7 @@ const ComponentLibrary = lazy(() =>
 
 export default function App() {
   const { showToast } = useToast();
-  const { projects, loading, error, addProject, removeProject, refresh } = useProjects(5000);
+  const { projects, loading, error, addProject, removeProject, refresh } = useProjects(30000);
   const { route, projectId, tab, navigate } = useHashRoute();
 
   const [selectedId, setSelectedId] = useState(null);
@@ -31,6 +32,29 @@ export default function App() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [confirmRemove, setConfirmRemove] = useState(false);
+  const [progressDeleteWarning, setProgressDeleteWarning] = useState(null);
+  const [liveActivityEntry, setLiveActivityEntry] = useState(null);
+
+  // Real-time file watcher via SSE
+  useFileWatcher(selectedId && selectedId !== 'library' ? selectedId : null, {
+    onRefresh: () => refresh(),
+    onFileRestored: (data) => {
+      showToast(`🔄 ${data.file} auto-restored`, 'info');
+    },
+    onFileDeletedWarning: (data) => {
+      if (data.file === '.agents/PROGRESS.md' && data.canRestore) {
+        setProgressDeleteWarning(data);
+      } else {
+        showToast(`⚠️ ${data.message || data.file + ' deleted'}`, 'warning');
+      }
+    },
+    onPlanDeleted: (data) => {
+      showToast(`🗑️ ${data.file} deleted`, 'info');
+    },
+    onActivityLog: (entry) => {
+      setLiveActivityEntry(entry);
+    },
+  });
 
   useEffect(() => {
     if (route === 'library') setSelectedId('library');
@@ -132,6 +156,7 @@ export default function App() {
                     onRemove={() => setConfirmRemove(true)} onOpenConfig={() => setConfigProject(selectedProject.id)}
                     onInstall={handleInstallProject} refresh={refresh}
                     onOpenPlans={(t) => navigate(`#/project/${selectedProject.id}/plans/${t || 'progress'}`)}
+                    liveActivityEntry={liveActivityEntry}
                   />
                 ) : (
                   <HomePage projects={projects} onAddProject={() => setIsAddModalOpen(true)} />
@@ -151,6 +176,45 @@ export default function App() {
         setIsSettingsOpen={setIsSettingsOpen} isSettingsOpen={isSettingsOpen}
         confirmRemove={confirmRemove} doRemoveProject={doRemoveProject} setConfirmRemove={setConfirmRemove}
       />
+
+      {/* PROGRESS.md deletion confirmation */}
+      {progressDeleteWarning && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="bg-[#18181b] border border-yellow-500/30 rounded-2xl p-6 max-w-md mx-4 shadow-2xl">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="text-3xl">⚠️</span>
+              <h3 className="text-lg font-semibold text-yellow-300">PROGRESS.md Deleted</h3>
+            </div>
+            <p className="text-white/70 text-sm mb-6">
+              PROGRESS.md ফাইলটি ডিলিট হয়ে গেছে! Accept করলে template থেকে নতুন করে তৈরি হবে।
+              পুরোনো progress data হারিয়ে যাবে।
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button
+                onClick={() => setProgressDeleteWarning(null)}
+                className="px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/60 text-sm transition-colors"
+              >
+                Dismiss
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    await restoreProgress(selectedId);
+                    showToast('🔄 PROGRESS.md recreated', 'success');
+                    refresh();
+                  } catch (e) {
+                    showToast('Failed to restore PROGRESS.md', 'error');
+                  }
+                  setProgressDeleteWarning(null);
+                }}
+                className="px-4 py-2 rounded-lg bg-yellow-500/20 hover:bg-yellow-500/30 text-yellow-300 text-sm font-medium transition-colors border border-yellow-500/30"
+              >
+                Accept & Recreate
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

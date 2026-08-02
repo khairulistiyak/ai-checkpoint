@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FileCode, Sparkles, Terminal, ArrowRight, ShieldCheck } from 'lucide-react';
+import { Sparkles, ArrowRight, FileText } from 'lucide-react';
 import AiTierSelector from '../AiTierSelector';
 import { GlassButton } from '../ui/GlassButton';
 import { InputField } from '../ui/InputField';
@@ -12,20 +12,14 @@ export default function PlanGeneratorTab({ project, onRefresh, onSwitchToFiles }
   const [description, setDescription] = useState('');
   const [tier, setTier] = useState('medium');
   const [loading, setLoading] = useState(false);
-  const [previewContent, setPreviewContent] = useState('');
 
   useEffect(() => {
     if (project?.id) {
-      api.fetchAiTier(project.id).then(res => { if (res.tier) setTier(res.tier); }).catch(() => {});
+      api.fetchAiTier(project.id)
+        .then((res) => { if (res.tier) setTier(res.tier); })
+        .catch(() => {});
     }
   }, [project?.id]);
-
-  useEffect(() => {
-    const pName = name || 'feature-auth';
-    const pDesc = description || 'Implementation plan specification.';
-    const limit = tier === 'small' ? 'Max 5 Atomic Steps (Small Context)' : tier === 'high' ? 'High Capacity (Unlimited Steps)' : 'Max 10 Atomic Steps (Balanced)';
-    setPreviewContent(`# Plan: ${pName}\n\n> ${pDesc}\n> Constraints: ${limit}\n\n---\n\n## Step 1.1 — Create component spec\n- **File:** src/components/${pName}.jsx\n- **Action:** CREATE\n- **Done-check:** test -f src/components/${pName}.jsx\n- **Depends:** None\n\n## Step 1.2 — Integrate state handler\n- **File:** src/components/${pName}.jsx\n- **Action:** EDIT\n- **Done-check:** grep "useState" src/components/${pName}.jsx\n- **Depends:** 1.1`);
-  }, [name, description, tier]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,77 +41,116 @@ export default function PlanGeneratorTab({ project, onRefresh, onSwitchToFiles }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex-1 flex flex-col lg:flex-row overflow-hidden bg-cyber-dark/40">
-      {/* Left: Configuration Panel */}
-      <div className="w-full lg:w-1/2 flex flex-col p-6 overflow-y-auto custom-scrollbar border-r border-cyber-card-border/40 space-y-6">
-        <div className="flex items-center justify-between pb-3 border-b border-cyber-card-border/30">
-          <div className="flex items-center gap-2">
-            <div className="p-1.5 rounded-lg bg-cyber-accent/10 border border-cyber-accent/30 text-cyber-accent">
-              <Sparkles className="w-4 h-4" />
-            </div>
-            <h3 className="text-sm font-bold text-cyber-text-primary font-outfit uppercase tracking-wider">Plan Generator Engine</h3>
+    <div className="flex-1 overflow-y-auto custom-scrollbar p-6 md:p-10 bg-[#09090b] flex items-center justify-center">
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-2xl bg-[#121214] border border-white/[0.08] rounded-3xl p-6 md:p-8 shadow-2xl space-y-8"
+      >
+        {/* Header */}
+        <div className="flex items-center gap-3 pb-4 border-b border-white/[0.08]">
+          <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center shrink-0">
+            <Sparkles className="w-5 h-5 text-white" />
           </div>
-          <span className="text-[10px] font-mono text-cyber-text-muted bg-white/5 border border-white/10 px-2 py-0.5 rounded">RULE 1 Generator</span>
+          <div>
+            <h3 className="text-base font-bold text-white font-outfit">
+              AI Plan Builder Workflow
+            </h3>
+            <p className="text-xs text-zinc-400 font-mono">
+              Step-by-step specification generator for atomic project execution.
+            </p>
+          </div>
         </div>
 
-        <div className="space-y-5">
-          <InputField
-            label="Plan Identifier"
-            value={name}
-            onChange={(e) => setName(e.target.value.replace(/[^a-zA-Z0-9-]/g, ''))}
-            placeholder="e.g. user-auth-flow"
-            required
-          />
-
-          <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-bold font-mono uppercase tracking-wider text-cyber-text-secondary px-1">Goal & Scope Description</label>
-            <textarea
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Describe the exact requirements and expected behavior..."
-              className="w-full bg-cyber-card/40 border border-cyber-card-border/60 rounded-xl px-3.5 py-2.5 text-xs text-cyber-text-primary placeholder-cyber-text-muted focus:outline-none focus:border-cyber-accent focus:ring-1 focus:ring-cyber-accent/30 transition-all h-24 resize-none font-sans custom-scrollbar"
+        {/* Step-by-Step Workflow Container */}
+        <div className="space-y-7">
+          {/* Step 01: Identifier */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2.5">
+              <span className="w-6 h-6 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center text-[11px] font-mono font-bold text-white">
+                01
+              </span>
+              <div>
+                <h4 className="text-xs font-bold text-white uppercase font-mono tracking-wider">
+                  Plan Identifier
+                </h4>
+                <p className="text-[11px] text-zinc-400">
+                  Unique file name for your atomic plan spec
+                </p>
+              </div>
+            </div>
+            <InputField
+              value={name}
+              onChange={(e) => setName(e.target.value.replace(/[^a-zA-Z0-9-]/g, ''))}
+              placeholder="e.g. user-auth-flow"
+              required
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <label className="text-[10px] font-bold font-mono uppercase tracking-wider text-cyber-text-secondary px-1">Target AI Model Context Capacity</label>
+          {/* Step 02: Goal & Requirements */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2.5">
+              <span className="w-6 h-6 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center text-[11px] font-mono font-bold text-white">
+                02
+              </span>
+              <div>
+                <h4 className="text-xs font-bold text-white uppercase font-mono tracking-wider">
+                  Goal & Requirements
+                </h4>
+                <p className="text-[11px] text-zinc-400">
+                  Define target files, architectural changes, and expected behavior
+                </p>
+              </div>
+            </div>
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Describe exact requirements, target files, and expected behavior..."
+              className="w-full bg-[#09090b] border border-white/10 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-500 focus:outline-none focus:border-white/30 transition-all h-28 resize-none font-sans custom-scrollbar"
+            />
+          </div>
+
+          {/* Step 03: Autonomy Tier */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-2.5">
+              <span className="w-6 h-6 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center text-[11px] font-mono font-bold text-white">
+                03
+              </span>
+              <div>
+                <h4 className="text-xs font-bold text-white uppercase font-mono tracking-wider">
+                  Model Autonomy Tier
+                </h4>
+                <p className="text-[11px] text-zinc-400">
+                  Select AI reasoning depth and step limits per phase
+                </p>
+              </div>
+            </div>
             <AiTierSelector selectedTier={tier} onChange={setTier} />
           </div>
         </div>
 
-        <div className="pt-2">
-          <div className="p-3 rounded-xl bg-cyber-accent/5 border border-cyber-accent/20 flex items-start gap-2.5">
-            <ShieldCheck className="w-4 h-4 text-cyber-accent shrink-0 mt-0.5" />
-            <p className="text-[11px] text-cyber-text-secondary leading-relaxed font-sans">
-              Generated specs follow <strong className="text-cyber-text-primary font-mono">RULE 1 (Atomic Step Format)</strong> with explicit Done-check commands to eliminate AI ambiguity.
-            </p>
+        {/* Footer Actions */}
+        <div className="pt-4 border-t border-white/[0.08] flex items-center justify-between">
+          <div className="flex items-center gap-2 text-xs font-mono text-zinc-500">
+            <FileText className="w-4 h-4 text-zinc-400" />
+            <span>Writes to plan/{name || 'your-plan'}.md</span>
           </div>
-        </div>
-      </div>
 
-      {/* Right: Live Preview Panel */}
-      <div className="w-full lg:w-1/2 flex flex-col bg-[#060709] border-l border-cyber-card-border/20 relative overflow-hidden">
-        <div className="flex items-center justify-between px-5 py-3 border-b border-cyber-card-border/30 bg-black/40">
-          <div className="flex items-center gap-2">
-            <FileCode className="w-4 h-4 text-cyber-accent" />
-            <span className="text-xs font-mono font-bold text-cyber-text-primary">plan/{name || 'feature-auth'}.md</span>
-          </div>
-          <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-mono">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Live Preview
-          </span>
-        </div>
-
-        <div className="flex-1 p-5 overflow-y-auto custom-scrollbar font-mono text-[11px] leading-relaxed text-slate-300">
-          <pre className="whitespace-pre-wrap">{previewContent}</pre>
-        </div>
-
-        <div className="p-4 border-t border-cyber-card-border/30 bg-black/60 flex items-center justify-between">
-          <span className="text-[10px] font-mono text-cyber-text-muted">Ready to write to filesystem</span>
-          <GlassButton type="submit" disabled={loading || !name} variant="primary" size="md" className="px-6 flex items-center gap-2 font-bold">
-            {loading ? 'Generating...' : <><Sparkles className="w-4 h-4 text-cyber-accent" /> Generate Plan Spec <ArrowRight className="w-3.5 h-3.5" /></>}
+          <GlassButton
+            type="submit"
+            disabled={loading || !name}
+            variant="primary"
+            size="md"
+            className="px-6 flex items-center gap-2 font-bold"
+          >
+            {loading ? 'Generating Plan...' : (
+              <>
+                <span>Generate Plan Spec</span>
+                <ArrowRight className="w-4 h-4" />
+              </>
+            )}
           </GlassButton>
         </div>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 }

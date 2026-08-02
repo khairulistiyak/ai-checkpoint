@@ -9,6 +9,7 @@ import { getSettings } from './settings.js';
 import { enrichProject } from './parser.js';
 import { runCommand } from './run-command.js';
 import checkpointsRouter from './checkpoints.js';
+import { watcherManager } from './watcher.js';
 
 const router = express.Router();
 
@@ -86,6 +87,13 @@ router.post('/:id/install', (req, res) => {
         fs.copyFileSync(srcPath, destPath);
       }
     }
+
+    // Generate AI tool pointer files (CLAUDE.md, .cursorrules, etc.)
+    watcherManager.generatePointerFiles(projectDir);
+
+    // Start watching this project
+    watcherManager.getOrCreateWatcher(project.id, projectDir);
+
     res.json({ success: true });
   } catch (e) {
     res.status(500).json({ error: e.message || 'Failed to install' });
@@ -166,6 +174,90 @@ router.get('/:id/plan-file/:filename', (req, res) => {
     res.json({ content, filename });
   } catch (e) {
     res.status(500).json({ error: 'Failed to read file' });
+  }
+});
+
+// ──────────────────────────────────────────────
+// SSE: Real-time file watching endpoint
+// ──────────────────────────────────────────────
+
+router.get('/:id/watch', (req, res) => {
+  const settings = getSettings();
+  const project = settings.projects.find(p => p.id === req.params.id);
+  if (!project) return res.status(404).json({ error: 'Not found' });
+
+  // SSE headers
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive',
+    'X-Accel-Buffering': 'no',
+  });
+  res.flushHeaders();
+
+  // Send initial connection event
+  res.write(`event: connected\ndata: ${JSON.stringify({ projectId: project.id })}\n\n`);
+
+  // Ensure watcher is running and register this SSE client
+  if (fs.existsSync(project.path) && fs.existsSync(path.join(project.path, '.agents'))) {
+    watcherManager.getOrCreateWatcher(project.id, project.path);
+  }
+  watcherManager.sseManager.addClient(project.id, res);
+
+  // Heartbeat every 30s to keep connection alive
+  const heartbeat = setInterval(() => {
+    try { res.write(': heartbeat\n\n'); } catch (e) { clearInterval(heartbeat); }
+  }, 30000);
+
+  // Cleanup on disconnect
+  req.on('close', () => {
+    clearInterval(heartbeat);
+    watcherManager.sseManager.removeClient(project.id, res);
+  });
+});
+
+// ──────────────────────────────────────────────
+// Restore PROGRESS.md (user accepted warning)
+// ──────────────────────────────────────────────
+
+router.post('/:id/restore-progress', (req, res) => {
+  const settings = getSettings();
+  const project = settings.projects.find(p => p.id === req.params.id);
+  if (!project) return res.status(404).json({ error: 'Not found' });
+
+  const success = watcherManager.restoreProgressFromTemplate(project.id);
+  if (success) {
+    res.json({ success: true, message: 'PROGRESS.md restored from template' });
+  } else {
+    res.status(500).json({ error: 'Failed to restore PROGRESS.md' });
+  }
+});
+
+// ──────────────────────────────────────────────
+// Activity Log — read file change history
+// ──────────────────────────────────────────────
+
+router.get('/:id/activity-log', (req, res) => {
+  const settings = getSettings();
+  const project = settings.projects.find(p => p.id === req.params.id);
+  if (!project) return res.status(404).json({ error: 'Not found' });
+
+  const limit = Math.min(parseInt(req.query.limit) || 100, 500);
+  const offset = parseInt(req.query.offset) || 0;
+
+  try {
+    const watcher = watcherManager.watchers.get(project.id);
+    if (!watcher) {
+      return res.json({ entries: [], total: 0, hasMore: false });
+    }
+    const result = watcher.logger.read(limit, offset);
+    res.json({
+      entries: result.entries,
+      total: result.total,
+      hasMore: (offset + limit) < result.total,
+    });
+  } catch (e) {
+    res.json({ entries: [], total: 0, hasMore: false });
   }
 });
 

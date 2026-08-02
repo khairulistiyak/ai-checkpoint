@@ -44,26 +44,26 @@ export default function HomePage({ projects, onAddProject }) {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -15 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
-      className="flex flex-col items-center justify-start min-h-full w-full pb-16 space-y-8"
+      className="flex flex-col items-center justify-start min-h-full w-full pb-16 space-y-6 md:space-y-8"
     >
-      {/* 1. Vercel/Linear 4-Column Executive Metrics Bar */}
+      {/* 1. Full-Width 4-Column Executive Metrics Bar */}
       {projects && projects.length > 0 && <GlobalOverview projects={projects} />}
 
-      {/* 2. Apple Studio Command Center Header */}
+      {/* 2. Expansive Executive Studio Command Center */}
       <HomeCommandBanner onAddProject={onAddProject} />
 
-      {/* 3. Interactive Filter Pills, Search & Sort Toolbar */}
+      {/* 3. Interactive Filter Pills, Search & Sort Toolbar (Full 7xl width!) */}
       {projects && projects.length > 0 ? (
-        <div className="w-full max-w-5xl mx-auto space-y-6">
+        <div className="w-full max-w-7xl mx-auto space-y-6">
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-            {/* Filter Pills */}
+            {/* Soft Matte Filter Pills (No harsh white borders!) */}
             <div className="flex flex-wrap items-center gap-2">
               <button
                 onClick={() => setFilterType('all')}
                 className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
                   filterType === 'all'
-                    ? 'bg-white text-zinc-950 border border-white shadow-sm'
-                    : 'bg-[#121214] text-white/60 hover:text-white border border-white/10'
+                    ? 'bg-white/15 text-white border border-white/25 shadow-sm'
+                    : 'bg-white/[0.03] text-zinc-400 hover:text-white hover:bg-white/[0.06] border border-white/[0.07]'
                 }`}
               >
                 All Workspaces ({projects.length})
@@ -72,8 +72,8 @@ export default function HomePage({ projects, onAddProject }) {
                 onClick={() => setFilterType('verified')}
                 className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
                   filterType === 'verified'
-                    ? 'bg-white text-zinc-950 border border-white shadow-sm'
-                    : 'bg-[#121214] text-white/60 hover:text-white border border-white/10'
+                    ? 'bg-white/15 text-white border border-white/25 shadow-sm'
+                    : 'bg-white/[0.03] text-zinc-400 hover:text-white hover:bg-white/[0.06] border border-white/[0.07]'
                 }`}
               >
                 Verified ({verifiedCount})
@@ -82,69 +82,65 @@ export default function HomePage({ projects, onAddProject }) {
                 onClick={() => setFilterType('pending')}
                 className={`px-4 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
                   filterType === 'pending'
-                    ? 'bg-white text-zinc-950 border border-white shadow-sm'
-                    : 'bg-[#121214] text-white/60 hover:text-white border border-white/10'
+                    ? 'bg-white/15 text-white border border-white/25 shadow-sm'
+                    : 'bg-white/[0.03] text-zinc-400 hover:text-white hover:bg-white/[0.06] border border-white/[0.07]'
                 }`}
               >
                 Pending Setup ({pendingCount})
               </button>
             </div>
 
-            {/* Search & Sort Controls */}
+            {/* Soothing Search & Sort Controls */}
             <div className="flex items-center gap-3 w-full lg:w-auto">
               <div className="relative flex-1 sm:w-64">
-                <Search className="w-3.5 h-3.5 text-white/40 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
                 <input
                   type="text"
                   placeholder="Search workspaces..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 rounded-xl bg-[#121214] border border-white/10 text-xs font-mono text-white placeholder-white/40 focus:outline-none focus:border-white/30 transition-colors"
+                  className="w-full bg-white/[0.03] hover:bg-white/[0.05] focus:bg-white/[0.07] border border-white/[0.08] focus:border-white/20 rounded-xl pl-9 pr-4 py-2 text-xs font-mono text-zinc-200 placeholder-zinc-500 focus:outline-none transition-all"
                 />
               </div>
 
               <button
-                onClick={() => setSortBy(sortBy === 'name' ? 'health' : 'name')}
-                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#121214] border border-white/10 hover:border-white/20 text-white text-xs font-mono uppercase tracking-wider shrink-0 cursor-pointer"
-                title="Toggle sorting order"
+                onClick={() => setSortBy((prev) => (prev === 'name' ? 'health' : 'name'))}
+                className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/[0.03] hover:bg-white/[0.06] border border-white/[0.08] text-zinc-400 hover:text-white text-xs font-mono transition-all cursor-pointer shrink-0"
               >
-                <ArrowUpDown className="w-3.5 h-3.5 text-white" />
-                <span>Sort: {sortBy.toUpperCase()}</span>
+                <ArrowUpDown className="w-3.5 h-3.5" />
+                <span>Sort: {sortBy === 'name' ? 'Name' : 'Health'}</span>
               </button>
             </div>
           </div>
 
-          {/* Project Cards Grid */}
-          {filteredProjects.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-              {filteredProjects.map((proj) => (
-                <HomeProjectCard key={proj.id} project={proj} />
-              ))}
-            </div>
-          ) : (
-            <div className="bg-[#121214] border border-white/10 rounded-3xl p-12 text-center text-white/50 font-mono text-xs">
-              No workspaces matched your search filter.
+          {/* 4. Expansive Workspace Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {filteredProjects.map((project) => (
+              <HomeProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+
+          {filteredProjects.length === 0 && (
+            <div className="w-full bg-[#121214] border border-white/10 rounded-3xl p-12 text-center text-zinc-500 font-mono text-xs italic">
+              No matching workspaces found for the selected filter or query.
             </div>
           )}
         </div>
       ) : (
-        /* 4. Empty State */
-        <div className="w-full max-w-5xl mx-auto bg-[#121214] border border-white/10 rounded-3xl p-12 text-center flex flex-col items-center justify-center space-y-4">
-          <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/15 flex items-center justify-center">
-            <Cpu className="w-8 h-8 text-white/50" />
+        /* Empty State */
+        <div className="w-full max-w-7xl mx-auto bg-[#121214] border border-white/10 rounded-3xl p-16 text-center space-y-4">
+          <div className="w-16 h-16 bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center mx-auto">
+            <Cpu className="w-8 h-8 text-zinc-400" />
           </div>
-          <h2 className="text-xl font-bold text-white font-outfit tracking-tight">
-            No Projects Initialized
-          </h2>
-          <p className="text-xs font-mono text-white/50 max-w-md leading-relaxed">
-            Get started by adding a project workspace directory to generate architectural blueprints and execution checkpoints.
+          <h2 className="text-xl font-bold text-white font-outfit">No Active Projects</h2>
+          <p className="text-zinc-400 text-xs font-mono max-w-md mx-auto">
+            Your studio currently has no tracked repositories. Add an existing workspace path to begin tracking execution checkpoints.
           </p>
           <button
             onClick={onAddProject}
-            className="mt-2 px-6 py-3 rounded-xl bg-white text-zinc-950 hover:bg-zinc-200 border border-white transition-all text-xs font-mono uppercase tracking-wider font-bold flex items-center gap-2 cursor-pointer shadow-sm"
+            className="px-6 py-3 rounded-xl bg-white text-zinc-950 font-bold font-mono text-xs uppercase tracking-wider hover:bg-zinc-200 transition-all cursor-pointer shadow-sm"
           >
-            <PlusCircle className="w-4 h-4" />
-            <span>Add Your First Project</span>
+            + Add Workspace
           </button>
         </div>
       )}

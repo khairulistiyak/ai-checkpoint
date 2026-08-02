@@ -12,6 +12,14 @@ export default {
         outfit: ["Outfit", "Inter", "sans-serif"],
       },
       colors: {
+        workflow: {
+          success: "rgb(var(--wf-success-rgb) / <alpha-value>)",
+          running: "rgb(var(--wf-running-rgb) / <alpha-value>)",
+          warning: "rgb(var(--wf-warning-rgb) / <alpha-value>)",
+          error: "rgb(var(--wf-error-rgb) / <alpha-value>)",
+          ai: "rgb(var(--wf-ai-rgb) / <alpha-value>)",
+          pending: "rgb(var(--wf-pending-rgb) / <alpha-value>)",
+        },
         cyber: {
           dark: "#09090b",           // Apple/Linear Studio Matte Black
           card: "#121214",           // Minimalist Dark Charcoal Card

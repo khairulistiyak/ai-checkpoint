@@ -6,6 +6,16 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    /* Centralized Dynamic Workflow Colors (RGB values for effortless alpha transparency control) */
+    --wf-success-rgb: 52, 211, 153;   /* Soft Sage Green (#34d399) - Verified / Complete */
+    --wf-running-rgb: 96, 165, 250;   /* Calm Sky Blue (#60a5fa) - Active / Running */
+    --wf-warning-rgb: 251, 191, 36;   /* Gentle Warm Amber (#fbbf24) - Remaining / Warning */
+    --wf-error-rgb: 248, 113, 113;    /* Soft Rose Coral (#f87171) - Blocked / Error */
+    --wf-ai-rgb: 192, 132, 252;       /* Soft Amethyst (#c084fc) - AI Checkpoints */
+    --wf-pending-rgb: 161, 161, 170;  /* Zinc Silver (#a1a1aa) - Pending / Neutral */
+  }
+
   body {
     --cyber-accent-rgb: 255, 255, 255;
     @apply text-cyber-text-primary antialiased font-outfit m-0 p-0 h-screen w-screen overflow-hidden bg-[#09090b];

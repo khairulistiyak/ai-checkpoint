@@ -6,97 +6,87 @@ const tiers = [
   {
     id: 'small',
     label: 'Small',
-    emoji: '🟢',
     icon: Cpu,
-    color: 'text-emerald-400',
-    border: 'hover:border-emerald-500/30',
-    glow: 'from-emerald-500/10 to-transparent',
-    activeGlow: 'bg-emerald-500/20 border-emerald-500/50',
-    maxSteps: 'Max 5 steps / phase',
+    color: 'text-zinc-400',
+    activeColor: 'text-emerald-400',
+    maxSteps: '5 Steps / Phase',
     complexity: 'Simple tasks & direct instructions',
-    models: 'GPT-3.5, Gemini Flash, Claude Haiku'
   },
   {
     id: 'medium',
     label: 'Medium',
-    emoji: '🟡',
     icon: Zap,
-    color: 'text-amber-400',
-    border: 'hover:border-amber-500/30',
-    glow: 'from-amber-500/10 to-transparent',
-    activeGlow: 'bg-amber-500/20 border-amber-500/50',
-    maxSteps: 'Max 10 steps / phase',
+    color: 'text-zinc-400',
+    activeColor: 'text-amber-400',
+    maxSteps: '10 Steps / Phase',
     complexity: 'Standard tasks & linear dependencies',
-    models: 'GPT-4o, Gemini Pro, Claude Sonnet'
   },
   {
     id: 'high',
     label: 'High',
-    emoji: '🔴',
     icon: Sparkles,
-    color: 'text-cyber-accent',
-    border: 'hover:border-cyber-accent/50',
-    glow: 'from-cyber-accent/10 to-transparent',
-    activeGlow: 'bg-cyber-accent/10 border-cyber-accent/50 shadow-[0_0_15px_rgba(var(--cyber-accent-rgb),0.15)]',
-    maxSteps: 'Unlimited steps / phase',
-    complexity: 'Full freedom & complex reasoning',
-    models: 'GPT-4, o1, Gemini Ultra, Claude Opus'
-  }
+    color: 'text-zinc-400',
+    activeColor: 'text-cyber-accent',
+    maxSteps: 'Unlimited Steps',
+    complexity: 'Full autonomy & complex reasoning',
+  },
 ];
 
 export default function AiTierSelector({ selectedTier, onChange }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
       {tiers.map((t) => {
         const Icon = t.icon;
         const isActive = selectedTier === t.id;
 
         return (
-          <motion.div
+          <motion.button
             key={t.id}
-            whileHover={{ scale: 1.02, y: -2 }}
-            whileTap={{ scale: 0.98 }}
+            type="button"
+            whileHover={{ y: -1 }}
+            whileTap={{ scale: 0.99 }}
             onClick={() => onChange(t.id)}
-            className={`glass-card p-5 cursor-pointer relative overflow-hidden flex flex-col justify-between border transition-all duration-300 ${
-              isActive 
-                ? t.activeGlow
-                : `border-white/[0.05] ${t.border} bg-white/[0.02]`
+            className={`p-4 rounded-2xl border transition-all duration-200 flex flex-col justify-between text-left cursor-pointer relative overflow-hidden ${
+              isActive
+                ? 'bg-white/[0.06] border-cyber-accent shadow-[0_0_20px_rgba(var(--cyber-accent-rgb),0.1)]'
+                : 'bg-[#121214] border-white/[0.08] hover:bg-[#16171c] hover:border-white/20'
             }`}
           >
-            {/* Background Glow */}
-            <div className={`absolute inset-0 bg-gradient-to-br ${t.glow} opacity-30 pointer-events-none`} />
-            
-            <div className="relative z-10">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-2">
-                  <Icon className={`w-5 h-5 ${t.color}`} />
-                  <span className="font-bold text-white text-base">{t.label}</span>
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <div
+                  className={`w-7 h-7 rounded-lg flex items-center justify-center border transition-colors ${
+                    isActive
+                      ? 'bg-white/10 border-white/20'
+                      : 'bg-white/[0.03] border-white/10'
+                  }`}
+                >
+                  <Icon
+                    className={`w-4 h-4 transition-colors ${
+                      isActive ? t.activeColor : t.color
+                    }`}
+                  />
                 </div>
-                {isActive && (
-                  <motion.div 
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    className="w-5 h-5 rounded-full bg-cyber-accent flex items-center justify-center border border-white/20 shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.3)]"
-                  >
-                    <Check className="w-3 h-3 text-cyber-dark" />
-                  </motion.div>
-                )}
+                <span className="font-bold text-white text-sm font-outfit tracking-tight">
+                  {t.label}
+                </span>
               </div>
+              {isActive && (
+                <div className="w-5 h-5 rounded-full bg-cyber-accent text-zinc-950 flex items-center justify-center font-bold">
+                  <Check className="w-3 h-3 stroke-[3]" />
+                </div>
+              )}
+            </div>
 
-              <div className="text-[11px] font-mono text-slate-400 mb-4 font-semibold uppercase tracking-wider">
+            <div className="flex flex-col gap-1 mt-2">
+              <div className="inline-flex items-center self-start px-2 py-0.5 rounded bg-white/[0.04] border border-white/10 text-[10px] font-mono text-zinc-300 font-semibold uppercase tracking-wider">
                 {t.maxSteps}
               </div>
-
-              <p className="text-xs text-slate-300 leading-relaxed mb-4">
+              <p className="text-xs text-zinc-400 leading-relaxed mt-1">
                 {t.complexity}
               </p>
             </div>
-
-            <div className="border-t border-white/[0.05] pt-3 mt-auto relative z-10">
-              <div className="text-[10px] text-slate-500 uppercase tracking-wider font-bold mb-1">Recommended Models</div>
-              <div className="text-[11px] font-medium text-slate-300">{t.models}</div>
-            </div>
-          </motion.div>
+          </motion.button>
         );
       })}
     </div>

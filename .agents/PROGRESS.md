@@ -13,14 +13,14 @@
 
 ---
 
-## 📊 Overall Progress: 100% (264/264 steps complete)
+## 📊 Overall Progress: 100% (278/278 steps complete)
 
 ```
-[███████████████████-] 98% (254/257 steps complete)
+[████████████████████] 100% (278/278 steps complete)
 ```
 
 ## 👉 NEXT: None (Project Complete) ✅
-> 📋 Details → `plan/` → Phase 33 → Step 33.7
+> 📋 Details → `plan/` → Phase 35 → Step 35.9
 
 ---
 
@@ -624,6 +624,11 @@ UPDATE LOG:
 [2026-08-02 11:36] Step 33.5 completed — Create PlansPage module | Agent: CLI
 [2026-08-02 11:37] Step 33.6 completed — Refactor App.jsx to use lazy-loaded routes and useHashRoute | Agent: CLI
 [2026-08-02 11:38] Step 33.7 completed — Update ProjectGrid navigation to emit hash route URLs | Agent: CLI
+[2026-08-02 12:39] Step 34.1 completed — Refactored AiTierSelector to minimal studio cards without clutter | Agent: CLI
+[2026-08-02 12:40] Step 34.2 completed — Refactored PlanGeneratorTab to centered minimal studio form without mock preview clutter | Agent: CLI
+[2026-08-02 12:41] Step 34.3 completed — Updated PlansSidebar label to AI Plan Builder with minimal studio badges | Agent: CLI
+[2026-08-02 12:43] Step 34.4 completed — Refined PlanCard to studio minimal aesthetic | Agent: CLI
+[2026-08-02 12:49] Step 35.1 completed — Refactored PlanGeneratorTab into an organized 3-step numbered workflow without unnecessary badges or clutter | Agent: CLI
 -->
 
 
@@ -683,5 +688,30 @@ UPDATE LOG:
 - [x] **Step 33.5** — Create PlansPage module (`dashboard/src/pages/PlansPage.jsx`)
 - [x] **Step 33.6** — Refactor App.jsx to use lazy-loaded routes and useHashRoute (`dashboard/src/App.jsx`)
 - [x] **Step 33.7** — Update ProjectGrid navigation to emit hash route URLs (`dashboard/src/components/ProjectGrid.jsx`)
+
+---
+
+## 🔷 Phase 34: AI Page Minimal Studio Overhaul — ✅ 100% COMPLETE
+
+- [x] **Step 34.1** — Refactor AiTierSelector.jsx to minimal studio cards (`dashboard/src/components/AiTierSelector.jsx`)
+- [x] **Step 34.2** — Refactor PlanGeneratorTab.jsx to centered minimal studio form (`dashboard/src/components/plans/PlanGeneratorTab.jsx`)
+- [x] **Step 34.3** — Update PlansSidebar.jsx label to AI Plan Builder (`dashboard/src/components/plans/PlansSidebar.jsx`)
+- [x] **Step 34.4** — Refine PlanCard.jsx to studio minimal aesthetic (`dashboard/src/components/PlanCard.jsx`)
+
+---
+
+## 🔷 Phase 35: Activity Log System — ✅ 100% COMPLETE
+
+- [x] **Step 35.1** — Create activity-logger.js (`dashboard/src/server/activity-logger.js`)
+- [x] **Step 35.2** — Add ActivityLogger to watcher.js (`dashboard/src/server/watcher.js`)
+- [x] **Step 35.3** — Add activity-log API endpoint (`dashboard/src/server/projects.js`)
+- [x] **Step 35.4** — Add SSE activity-log event listener (`dashboard/src/hooks/useFileWatcher.js`)
+- [x] **Step 35.5** — Create ActivityLog component (`dashboard/src/components/ActivityLog.jsx`)
+- [x] **Step 35.6** — Add ActivityLog panel to ProjectGrid (`dashboard/src/components/ProjectGrid.jsx`)
+- [x] **Step 35.7** — Wire liveActivityEntry in App.jsx (`dashboard/src/App.jsx`)
+- [x] **Step 35.8** — Pass prop through ProjectPage (`dashboard/src/pages/ProjectPage.jsx`)
+- [x] **Step 35.9** — Add recursive project watching to watcher.js (`dashboard/src/server/watcher.js`)
+
+
 
 

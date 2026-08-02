@@ -10,7 +10,8 @@ export default function ProjectPage({
   onOpenConfig,
   onOpenPlans,
   onInstall,
-  refresh
+  refresh,
+  liveActivityEntry
 }) {
   if (!project) {
     return (
@@ -43,6 +44,7 @@ export default function ProjectPage({
         onInstall={onInstall}
         refresh={refresh}
         onOpenPlans={onOpenPlans}
+        liveActivityEntry={liveActivityEntry}
       />
     </motion.div>
   );

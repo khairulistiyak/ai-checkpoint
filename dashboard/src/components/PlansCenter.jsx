@@ -9,7 +9,7 @@ export default function PlansCenter({
   project,
   onBack,
   onRefresh,
-  initialTab
+  initialTab,
 }) {
   const [activeTab, setActiveTab] = useState(initialTab || 'progress');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -33,30 +33,31 @@ export default function PlansCenter({
   const filteredPhases = useMemo(() => {
     if (!allPhases.length) return [];
     return allPhases
-      .filter(phase => selectedPhaseNumber === 'all' || String(phase.number) === String(selectedPhaseNumber))
-      .map(phase => ({
+      .filter((phase) => selectedPhaseNumber === 'all' || String(phase.number) === String(selectedPhaseNumber))
+      .map((phase) => ({
         ...phase,
-        steps: phase.steps.filter(step => {
+        steps: phase.steps.filter((step) => {
           const matchStatus = statusFilter === 'all' || step.status === statusFilter;
-          const matchSearch = !searchQuery ||
+          const matchSearch =
+            !searchQuery ||
             step.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             String(step.number).includes(searchQuery);
           return matchStatus && matchSearch;
-        })
+        }),
       }))
-      .filter(phase => phase.steps.length > 0);
+      .filter((phase) => phase.steps.length > 0);
   }, [allPhases, selectedPhaseNumber, statusFilter, searchQuery]);
 
   if (!project) {
     return (
-      <div className="h-full w-full flex items-center justify-center bg-[#0a0e17] text-white/50 font-mono">
+      <div className="h-full w-full flex items-center justify-center bg-[#09090b] text-zinc-500 font-mono text-xs">
         No project selected.
       </div>
     );
   }
 
   return (
-    <div className="h-full w-full flex overflow-hidden bg-[#0a0e17] text-white/90">
+    <div className="h-full w-full flex overflow-hidden bg-[#09090b] text-zinc-100">
       <PlansSidebar
         project={project}
         activeTab={activeTab}
@@ -70,7 +71,7 @@ export default function PlansCenter({
         filesCount={filesCount}
       />
 
-      <main className="flex-1 flex flex-col min-w-0 bg-[#0c101a]">
+      <main className="flex-1 flex flex-col min-w-0 bg-[#09090b]">
         {activeTab === 'progress' && (
           <PlanProgressTab
             project={project}

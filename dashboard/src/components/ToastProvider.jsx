@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useCallback,
+  useRef,
+  useEffect,
+} from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, AlertTriangle, Info, X } from 'lucide-react';
 
@@ -10,7 +17,7 @@ export function ToastProvider({ children }) {
 
   useEffect(() => {
     return () => {
-      timerMap.current.forEach(t => clearTimeout(t));
+      timerMap.current.forEach((t) => clearTimeout(t));
       timerMap.current.clear();
     };
   }, []);
@@ -18,7 +25,7 @@ export function ToastProvider({ children }) {
   const showToast = useCallback((message, type = 'info') => {
     const id = Date.now().toString();
     setToasts((prev) => [...prev, { id, message, type }]);
-    
+
     const timer = setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
       timerMap.current.delete(id);
@@ -36,7 +43,11 @@ export function ToastProvider({ children }) {
       <div className="fixed bottom-6 right-6 z-[60] flex flex-col gap-3">
         <AnimatePresence>
           {toasts.map((toast) => (
-            <Toast key={toast.id} toast={toast} onRemove={() => removeToast(toast.id)} />
+            <Toast
+              key={toast.id}
+              toast={toast}
+              onRemove={() => removeToast(toast.id)}
+            />
           ))}
         </AnimatePresence>
       </div>
@@ -52,35 +63,34 @@ export const useToast = () => {
 
 function Toast({ toast, onRemove }) {
   let Icon = Info;
-  let bg = 'bg-primary-900/40 border-primary-500/50';
-  let iconColor = 'text-primary-400';
+  let bg = 'bg-[#121214] border-white/15';
+  let iconColor = 'text-white/80';
 
   if (toast.type === 'success') {
     Icon = CheckCircle2;
-    bg = 'bg-emerald-900/40 border-emerald-500/50';
-    iconColor = 'text-emerald-400';
+    bg = 'bg-[#121214] border-white/20';
+    iconColor = 'text-white';
   } else if (toast.type === 'error') {
     Icon = AlertTriangle;
-    bg = 'bg-red-900/40 border-red-500/50';
+    bg = 'bg-[#161113] border-red-500/25';
     iconColor = 'text-red-400';
   }
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50, scale: 0.9 }}
+      initial={{ opacity: 0, y: 30, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: 20, scale: 0.9 }}
+      exit={{ opacity: 0, y: 15, scale: 0.95 }}
       layout
-      className={`flex items-center gap-3 p-4 pr-12 rounded-xl border backdrop-blur-xl shadow-2xl relative overflow-hidden min-w-[300px] ${bg}`}
+      className={`flex items-center gap-3.5 p-4 pr-12 rounded-2xl border shadow-xl relative overflow-hidden min-w-[300px] ${bg}`}
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-white/5 to-transparent pointer-events-none"></div>
       <Icon className={`w-5 h-5 shrink-0 ${iconColor}`} />
-      <p className="text-sm font-medium text-slate-100 flex-1">{toast.message}</p>
-      <button 
+      <p className="text-xs font-mono text-zinc-200 flex-1">{toast.message}</p>
+      <button
         onClick={onRemove}
-        className="absolute right-3 p-1 rounded-md text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+        className="absolute right-3 p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
       >
-        <X className="w-4 h-4" />
+        <X className="w-3.5 h-3.5" />
       </button>
     </motion.div>
   );

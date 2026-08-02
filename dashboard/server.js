@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import apiRouter from './src/server/api.js';
 import aiTierRouter from './src/server/ai-tier.js';
+import { watcherManager } from './src/server/watcher.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -48,4 +49,10 @@ process.on('unhandledRejection', (reason, promise) => {
 
 app.listen(PORT, () => {
   console.log(`🤖 AI-Checkpoint Dashboard backend running on http://localhost:${PORT}`);
+  // Start file watchers for all registered projects
+  watcherManager.initializeAll();
 });
+
+// Graceful shutdown — stop all watchers
+process.on('SIGTERM', () => { watcherManager.stopAll(); process.exit(0); });
+process.on('SIGINT', () => { watcherManager.stopAll(); process.exit(0); });
