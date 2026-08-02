@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileCode, Calendar, Eye, Sparkles, Code2, ArrowRight } from 'lucide-react';
+import { 
+  FileCode, Calendar, Eye, Sparkles, Code2, ArrowRight, 
+  Layers, Cpu, ShieldCheck, Zap, Activity, FileText, ChevronRight
+} from 'lucide-react';
 import { GlassButton } from '../ui/GlassButton';
 import FilePreviewDrawer from './FilePreviewDrawer';
 
@@ -18,70 +21,165 @@ export default function PlanFilesTab({ project, onSwitchToGenerate }) {
     return (
       <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-24 text-center px-4">
         <div className="relative mb-5">
-          <div className="absolute inset-0 bg-cyber-accent/20 rounded-2xl blur-xl" />
-          <div className="w-16 h-16 rounded-2xl bg-cyber-card border border-cyber-accent/40 flex items-center justify-center relative z-10 shadow-2xl">
-            <FileCode className="w-8 h-8 text-cyber-accent" />
+          <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center relative z-10">
+            <Layers className="w-8 h-8 text-sky-400" />
           </div>
         </div>
-        <h3 className="text-base font-bold text-cyber-text-primary mb-1 font-outfit">No Plan Artifacts Detected</h3>
-        <p className="text-xs text-cyber-text-secondary max-w-sm mb-6">Create atomic task specs in your <code className="text-cyber-accent bg-cyber-accent/10 px-1.5 py-0.5 rounded font-mono">plan/</code> directory or generate one instantly.</p>
+        <h3 className="text-base font-bold text-white mb-1 font-outfit">No Architectural Blueprints Detected</h3>
+        <p className="text-xs text-white/50 max-w-sm mb-6">Create atomic task specifications in your <code className="text-sky-400 bg-white/5 px-1.5 py-0.5 rounded font-mono">plan/</code> directory or generate one instantly.</p>
         <GlassButton variant="primary" size="md" onClick={onSwitchToGenerate} className="flex items-center gap-2 font-semibold">
-          <Sparkles className="w-4 h-4 text-cyber-accent" /> Generate New Plan
+          <Sparkles className="w-4 h-4 text-sky-400" /> Generate Architectural Plan
         </GlassButton>
       </motion.div>
     );
   }
 
+  const totalStepsAcrossFiles = files.reduce((acc, f) => acc + (f.steps || 0), 0);
+
   return (
-    <div className="flex flex-col lg:flex-row flex-1 overflow-hidden">
-      <div className={`flex-1 overflow-y-auto custom-scrollbar p-6 ${selectedFile ? 'hidden lg:block' : ''}`}>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {files.map((file, idx) => {
-            const isSelected = selectedFile === file.name;
-            return (
-              <motion.div
-                key={file.name}
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.05 }}
-                whileHover={{ y: -3 }}
-                onClick={() => setSelectedFile(file.name)}
-                className={`glass-card p-5 cursor-pointer flex flex-col justify-between gap-4 relative overflow-hidden transition-all duration-300 ${
-                  isSelected ? 'border-cyber-accent bg-cyber-accent/10 shadow-[0_0_25px_rgba(var(--cyber-accent-rgb),0.15)]' : 'hover:border-cyber-accent/50'
-                }`}
-              >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className={`p-2 rounded-xl border ${isSelected ? 'bg-cyber-accent/20 border-cyber-accent text-cyber-accent' : 'bg-white/5 border-white/10 text-cyber-text-secondary'}`}>
-                      <Code2 className="w-4 h-4" />
-                    </div>
-                    <div className="flex flex-col min-w-0">
-                      <span className="text-xs font-mono font-bold text-cyber-text-primary truncate">{file.name}</span>
-                      <span className="text-[10px] font-mono text-cyber-text-muted">Markdown Specification</span>
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-mono bg-cyber-card/80 border border-cyber-card-border px-2 py-0.5 rounded-full text-cyber-accent font-semibold shrink-0">
-                    {file.steps} {file.steps === 1 ? 'step' : 'steps'}
-                  </span>
-                </div>
+    <div className="flex flex-col lg:flex-row flex-1 overflow-hidden relative">
+      {/* 1. When a file IS open: sleek compact eye-comfort sidebar */}
+      {selectedFile && (
+        <div className="hidden lg:flex w-72 xl:w-80 shrink-0 border-r border-white/10 bg-[#070a10] flex-col overflow-hidden z-20">
+          <div className="px-4 py-4 border-b border-white/10 bg-black/20 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Layers className="w-4 h-4 text-sky-400" />
+              <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">
+                Blueprints
+              </span>
+            </div>
+            <span className="text-[10px] font-mono font-medium bg-white/5 border border-white/10 text-white/70 px-2 py-0.5 rounded-full">
+              {files.length} Files
+            </span>
+          </div>
 
-                <div className="flex items-center justify-between border-t border-cyber-card-border/30 pt-3 text-[10px] font-mono text-cyber-text-muted">
-                  <span className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3 text-cyber-text-muted" />
-                    {fmtDate(file.createdAt) || 'Saved File'}
-                  </span>
-                  <div className="flex items-center gap-1 text-cyber-accent font-semibold group-hover:translate-x-1 transition-transform">
-                    <Eye className="w-3.5 h-3.5" />
-                    <span>View Spec</span>
-                    <ArrowRight className="w-3 h-3" />
+          <div className="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-1.5">
+            {files.map((file) => {
+              const isSelected = selectedFile === file.name;
+              return (
+                <div
+                  key={file.name}
+                  onClick={() => setSelectedFile(file.name)}
+                  className={`p-3 rounded-xl cursor-pointer flex items-center justify-between gap-3 border transition-all duration-150 group ${
+                    isSelected
+                      ? 'bg-white/10 border-white/20 text-white'
+                      : 'bg-transparent border-transparent text-white/60 hover:bg-white/5 hover:text-white'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className={`p-1.5 rounded-lg border ${
+                      isSelected ? 'bg-sky-500/15 border-sky-500/30 text-sky-400' : 'bg-white/5 border-white/10 text-white/40 group-hover:text-white'
+                    }`}>
+                      <Cpu className="w-3.5 h-3.5" />
+                    </div>
+                    <span className="text-xs font-mono font-medium truncate">
+                      {file.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-medium ${
+                      isSelected ? 'bg-sky-400/20 text-sky-300' : 'bg-white/5 text-white/50'
+                    }`}>
+                      {file.steps} {file.steps === 1 ? 'step' : 'steps'}
+                    </span>
+                    <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isSelected ? 'text-sky-400 translate-x-0.5' : 'text-white/20 opacity-0 group-hover:opacity-100'}`} />
                   </div>
                 </div>
-              </motion.div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
 
+      {/* 2. When NO file is open: Full 3-Column Eye-Comfort Minimal Grid */}
+      {!selectedFile && (
+        <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
+          {/* Top Repository Header (Restful dark matte) */}
+          <div className="rounded-2xl bg-[#0e121c] border border-white/10 p-5 flex flex-wrap items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-sky-400">
+                <Layers className="w-6 h-6" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono uppercase bg-white/5 text-white/70 px-2 py-0.5 rounded border border-white/10 font-bold">
+                    REPOSITORY
+                  </span>
+                  <span className="text-[11px] font-mono text-emerald-400 font-medium flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                    LIVE BLUEPRINTS
+                  </span>
+                </div>
+                <h2 className="text-base sm:text-lg font-bold text-white tracking-tight mt-0.5 font-outfit">
+                  Architectural Plan Specifications
+                </h2>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-6 text-xs font-mono">
+              <div className="flex flex-col items-end">
+                <span className="text-white/40 text-[10px] uppercase">Specifications</span>
+                <span className="text-white font-medium">{files.length} Blueprints</span>
+              </div>
+              <div className="w-px h-8 bg-white/10" />
+              <div className="flex flex-col items-end">
+                <span className="text-white/40 text-[10px] uppercase">Atomic Steps</span>
+                <span className="text-sky-400 font-medium">{totalStepsAcrossFiles} Tasks</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Blueprint Grid - Linear Matte Style */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+            {files.map((file, idx) => {
+              return (
+                <motion.div
+                  key={file.name}
+                  initial={{ opacity: 0, y: 15 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  whileHover={{ y: -3 }}
+                  onClick={() => setSelectedFile(file.name)}
+                  className="group rounded-2xl p-5 cursor-pointer flex flex-col justify-between gap-5 transition-all duration-200 bg-[#0e121c] border border-white/10 hover:border-white/20 hover:bg-[#131926]"
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-3.5 min-w-0">
+                      <div className="p-2.5 rounded-xl border bg-white/5 border-white/10 text-sky-400 group-hover:bg-white/10 transition-all">
+                        <Cpu className="w-5 h-5" />
+                      </div>
+                      <div className="flex flex-col min-w-0">
+                        <span className="text-sm font-mono font-bold text-white truncate group-hover:text-sky-300 transition-colors">
+                          {file.name}
+                        </span>
+                        <span className="text-[10px] font-mono text-white/50 uppercase tracking-wider">
+                          CAD Architectural Spec
+                        </span>
+                      </div>
+                    </div>
+                    <span className="text-[11px] font-mono bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full text-white/80 font-medium shrink-0">
+                      {file.steps} {file.steps === 1 ? 'step' : 'steps'}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between border-t border-white/10 pt-3.5 text-[11px] font-mono text-white/50">
+                    <span className="flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-white/40" />
+                      {fmtDate(file.createdAt) || 'Saved Blueprint'}
+                    </span>
+                    <div className="flex items-center gap-1 text-sky-400 font-medium group-hover:translate-x-1 transition-transform">
+                      <Eye className="w-3.5 h-3.5" />
+                      <span>View Blueprint</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* 3. Architectural Blueprint Drawer */}
       <AnimatePresence>
         {selectedFile && (
           <FilePreviewDrawer projectId={project.id} filename={selectedFile} onClose={() => setSelectedFile(null)} />

@@ -7,27 +7,6 @@ import * as api from '../utils/api';
 export default function StepItem({ step, index, projectId, hasPlanFiles, onRefresh }) {
   const { showToast } = useToast();
   const [executing, setExecuting] = useState(false);
-  let Icon = Circle;
-  let color = 'text-cyber-text-muted';
-  let bg = 'bg-cyber-dark hover:bg-cyber-card-border/10';
-  let border = 'border-cyber-card-border';
-
-  if (step.status === 'done') {
-    Icon = CheckCircle2;
-    color = 'text-cyber-text-primary';
-    bg = 'bg-cyber-accent/10 hover:bg-cyber-accent/20';
-    border = 'border-cyber-accent/30';
-  } else if (step.status === 'running') {
-    Icon = Loader2;
-    color = 'text-cyber-text-primary';
-    bg = 'bg-cyber-card/30 hover:bg-cyber-card/50';
-    border = 'border-cyber-accent';
-  } else if (step.status === 'blocked') {
-    Icon = AlertTriangle;
-    color = 'text-cyber-text-secondary';
-    bg = 'bg-cyber-dark hover:bg-cyber-card-border/10';
-    border = 'border-cyber-card-border border-dashed';
-  }
 
   const handleCommand = async (command) => {
     try {
@@ -70,68 +49,95 @@ export default function StepItem({ step, index, projectId, hasPlanFiles, onRefre
     }
   };
 
+  const isDone = step.status === 'done';
+  const isRunning = step.status === 'running';
+  const isBlocked = step.status === 'blocked';
+
   return (
     <motion.div
-      initial={{ opacity: 0, x: -10 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ delay: index * 0.05, type: "spring" }}
-      className={`p-4 rounded-xl border ${border} ${bg} flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-all duration-300 group`}
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: index * 0.02, duration: 0.15 }}
+      className={`py-3 px-4 rounded-xl transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border ${
+        isRunning 
+          ? 'bg-cyan-500/10 border-cyan-500/30' 
+          : isDone 
+            ? 'bg-white/[0.02] border-transparent hover:bg-white/[0.04]' 
+            : 'bg-black/20 border-white/5 hover:border-white/10 hover:bg-white/[0.04]'
+      }`}
     >
-      <div className="flex items-start gap-4 w-full sm:w-auto">
-        <div className="mt-0.5 shrink-0">
-          <motion.div
-            animate={step.status === 'running' || executing ? { rotate: 360 } : {}}
-            transition={{ repeat: Infinity, duration: 2, ease: "linear" }}
-          >
-            <Icon className={`w-5 h-5 ${color}`} />
-          </motion.div>
-        </div>
-        <div className="flex-1 overflow-hidden">
-          <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
-            <span className={`text-xs font-bold tracking-wider shrink-0 ${step.status === 'done' ? 'text-cyber-text-muted' : 'text-cyber-text-secondary'}`}>
-              STEP {step.number}
-            </span>
-            {step.status === 'done' && step.completedAt && (
-              <span className="text-[10px] font-mono text-cyber-text-primary bg-cyber-accent/10 px-2 py-0.5 rounded-full border border-cyber-accent/30 shrink-0">
-                ✅ {getFormattedCompletedAt()}
-              </span>
-            )}
-            <div className={`w-1 h-1 rounded-full shrink-0 ${step.status === 'done' ? 'bg-cyber-card-border' : 'bg-cyber-text-muted'}`}></div>
-            <span className={`text-sm font-medium break-all ${step.status === 'done' ? 'text-cyber-text-muted line-through decoration-cyber-card-border' : 'text-cyber-text-primary'}`}>
-              {cleanTitle}
-            </span>
-          </div>
-          {filePath && (
-            <div className="mt-2 flex items-center">
-              <span className="flex items-center gap-1.5 text-xs font-mono bg-cyber-dark text-cyber-text-secondary px-2 py-1 rounded-md border border-cyber-card-border break-all">
-                <FileCode2 className="w-3 h-3 text-cyber-text-muted shrink-0" />
-                <span className="truncate">{filePath}</span>
-              </span>
-            </div>
+      {/* Left side: status icon, step number, clean title */}
+      <div className="flex items-center gap-3 min-w-0 flex-1">
+        <div className="shrink-0">
+          {isDone ? (
+            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+          ) : isRunning || executing ? (
+            <Loader2 className="w-4 h-4 text-cyan-400 animate-spin" />
+          ) : isBlocked ? (
+            <AlertTriangle className="w-4 h-4 text-amber-400" />
+          ) : (
+            <Circle className="w-4 h-4 text-white/20" />
           )}
         </div>
+
+        <span className={`text-xs font-mono shrink-0 ${isDone ? 'text-white/30' : 'text-white/50'}`}>
+          #{step.number}
+        </span>
+
+        <span className={`text-sm tracking-tight truncate ${
+          isDone ? 'text-white/50 line-through decoration-white/20' : 'text-white/90 font-medium'
+        }`}>
+          {cleanTitle}
+        </span>
+
+        {filePath && (
+          <span className="hidden md:inline-flex items-center gap-1 text-xs font-mono text-cyan-300/80 bg-white/5 px-2 py-0.5 rounded border border-white/5 shrink-0">
+            <FileCode2 className="w-3 h-3 opacity-60" />
+            <span className="truncate max-w-[200px]">{filePath}</span>
+          </span>
+        )}
       </div>
 
-      {/* Interactive Controls */}
-      <div className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex gap-2 self-end sm:self-auto shrink-0 mt-2 sm:mt-0">
-        {step.status !== 'running' && step.status !== 'done' && (
+      {/* Right side: completion time or action buttons */}
+      <div className="flex items-center gap-3 shrink-0 self-end sm:self-auto">
+        {filePath && (
+          <span className="md:hidden inline-flex items-center gap-1 text-[11px] font-mono text-cyan-300/80 bg-white/5 px-2 py-0.5 rounded border border-white/5">
+            <FileCode2 className="w-3 h-3 opacity-60" />
+            <span className="truncate max-w-[150px]">{filePath}</span>
+          </span>
+        )}
+
+        {isDone && step.completedAt && (
+          <span className="text-[11px] font-mono text-white/40">
+            {getFormattedCompletedAt()}
+          </span>
+        )}
+
+        {!isRunning && !isDone && (
           <button
             disabled={executing || !hasPlanFiles}
             onClick={() => handleCommand('start')}
-            className={`p-2 rounded-lg transition-colors border flex items-center justify-center ${!hasPlanFiles ? 'bg-cyber-card/30 text-cyber-text-muted border-cyber-card-border cursor-not-allowed' : 'bg-cyber-accent/20 text-cyber-text-primary hover:bg-cyber-accent hover:text-cyber-dark border-cyber-accent/50'}`}
+            className={`px-3 py-1.5 rounded-lg transition-all font-mono text-xs font-medium border flex items-center gap-1.5 ${
+              !hasPlanFiles 
+                ? 'bg-white/5 text-white/20 border-white/5 cursor-not-allowed' 
+                : 'bg-white/10 text-white hover:bg-cyan-500 hover:text-black hover:border-cyan-400 border-white/10'
+            }`}
             title={!hasPlanFiles ? "Generate a plan using the ai-checkpoint CLI first" : "Start Step"}
           >
-            <Play className="w-4 h-4" />
+            <Play className="w-3 h-3 fill-current" />
+            <span>Start</span>
           </button>
         )}
-        {step.status === 'running' && (
+
+        {isRunning && (
           <button
             disabled={executing}
             onClick={() => handleCommand('complete')}
-            className="p-2 rounded-lg transition-colors border flex items-center justify-center bg-cyber-accent/20 text-cyber-text-primary hover:bg-cyber-accent hover:text-cyber-dark border-cyber-accent/50"
-            title="Mark as Complete"
+            className="px-3 py-1.5 rounded-lg transition-all font-mono text-xs font-bold border flex items-center gap-1.5 bg-emerald-500/20 text-emerald-300 hover:bg-emerald-500 hover:text-black border-emerald-500/40 shadow-sm"
+            title="Mark Step as Complete"
           >
-            <Check className="w-4 h-4" />
+            <Check className="w-3.5 h-3.5 stroke-[3]" />
+            <span>Complete</span>
           </button>
         )}
       </div>

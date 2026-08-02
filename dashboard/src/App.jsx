@@ -31,36 +31,22 @@ function App() {
   const [confirmRemove, setConfirmRemove] = useState(false);
 
   React.useEffect(() => {
-    if (window.location.hash === '#library') {
-      setSelectedId('library');
-    }
-    
-    const handleHashChange = () => {
-      if (window.location.hash === '#library') setSelectedId('library');
-      else setSelectedId(null);
-    };
-    
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
-
-  React.useEffect(() => {
-    const handleKeyDown = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'l') { e.preventDefault(); setSelectedId(prev => prev === 'library' ? null : 'library'); }
+    if (window.location.hash === '#library') setSelectedId('library');
+    const onHash = () => setSelectedId(window.location.hash === '#library' ? 'library' : null);
+    const onKey = (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'l') { e.preventDefault(); setSelectedId(p => p === 'library' ? null : 'library'); }
       else if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setIsCommandPaletteOpen(true); }
       else if (e.key === 'Escape') {
         if (isAddModalOpen) setIsAddModalOpen(false);
         else if (isSettingsOpen) setIsSettingsOpen(false);
-        else if (typeof selectedId === 'string' && selectedId.startsWith('plans-')) {
-          const projId = selectedId.split('-')[1];
-          setSelectedId(projId || null);
-        }
+        else if (typeof selectedId === 'string' && selectedId.startsWith('plans-')) setSelectedId(selectedId.split('-')[1] || null);
         else if (selectedId === 'library') setSelectedId(null);
         else if (configProject) setConfigProject(null);
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('hashchange', onHash);
+    window.addEventListener('keydown', onKey);
+    return () => { window.removeEventListener('hashchange', onHash); window.removeEventListener('keydown', onKey); };
   }, [isAddModalOpen, isSettingsOpen, configProject, selectedId]);
 
 
@@ -83,29 +69,33 @@ function App() {
   if (loading && projects.length === 0) return <InitializingView />;
 
   return (
-    <div className="h-screen w-screen overflow-hidden flex flex-col font-outfit bg-cyber-dark text-cyber-text-primary relative">
+    <div className="h-screen w-screen overflow-hidden flex flex-col font-outfit bg-[#0a0d14] text-white/90 relative">
       {error && (
         <div className="mx-4 md:mx-6 mt-2 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-xl flex items-center gap-3 text-sm text-red-300">
           <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0"></span>
           Server connection error. Auto-retrying...
         </div>
       )}
-      <Header
-        onOpenSettings={() => setIsSettingsOpen(true)}
-        onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
-        onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        onOpenLibrary={() => setSelectedId('library')}
-      />
-      <div className="flex flex-1 overflow-hidden px-4 md:px-6 pb-14 md:pb-12 gap-6 relative">
-        <Sidebar
-          projects={projects} selectedId={selectedId}
-          onSelect={(id) => { setSelectedId(id); setIsMobileMenuOpen(false); }}
-          isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen}
-          onAddProject={() => setIsAddModalOpen(true)}
-          onReorder={async (ids) => { try { await api.reorderProjects(ids); refresh(); } catch (e) { showToast('Failed to reorder', 'error'); } }}
+      {!(typeof selectedId === 'string' && selectedId.startsWith('plans-')) && (
+        <Header
+          onOpenSettings={() => setIsSettingsOpen(true)}
+          onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
+          onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          onOpenLibrary={() => setSelectedId('library')}
         />
-        <main className={`flex-1 overflow-y-auto md:overflow-hidden relative flex flex-col custom-scrollbar ${typeof selectedId === 'string' && selectedId.startsWith('plans-') ? 'p-0' : 'glass-panel rounded-2xl p-4 md:p-8'}`}>
-          <div className={`w-full h-full flex flex-col min-h-max md:min-h-0 ${typeof selectedId === 'string' && selectedId.startsWith('plans-') ? '' : 'max-w-5xl mx-auto'}`}>
+      )}
+      <div className={`flex flex-1 overflow-hidden relative ${typeof selectedId === 'string' && selectedId.startsWith('plans-') ? 'p-0 gap-0' : 'px-4 md:px-6 pb-14 md:pb-12 gap-6'}`}>
+        {!(typeof selectedId === 'string' && selectedId.startsWith('plans-')) && (
+          <Sidebar
+            projects={projects} selectedId={selectedId}
+            onSelect={(id) => { setSelectedId(id); setIsMobileMenuOpen(false); }}
+            isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen}
+            onAddProject={() => setIsAddModalOpen(true)}
+            onReorder={async (ids) => { try { await api.reorderProjects(ids); refresh(); } catch (e) { showToast('Failed to reorder', 'error'); } }}
+          />
+        )}
+        <main className={`flex-1 overflow-y-auto md:overflow-hidden relative flex flex-col custom-scrollbar ${typeof selectedId === 'string' && selectedId.startsWith('plans-') ? 'p-0 border-none rounded-none shadow-none bg-[#0a0d14]' : 'bg-[#0e121e] border border-white/10 rounded-2xl p-4 md:p-8'}`}>
+          <div className={`w-full h-full flex flex-col min-h-max md:min-h-0 ${typeof selectedId === 'string' && selectedId.startsWith('plans-') ? 'w-full max-w-none' : 'max-w-5xl mx-auto'}`}>
             <AnimatePresence mode="wait">
               {typeof selectedId === 'string' && selectedId.startsWith('plans-') ? (
                 <motion.div
@@ -118,6 +108,9 @@ function App() {
                     initialTab={selectedId.split('-').pop()}
                     onBack={() => { const proj = projects.find(p => selectedId.includes(p.id)); setSelectedId(proj ? proj.id : null); }}
                     onRefresh={refresh}
+                    onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    onOpenSettings={() => setIsSettingsOpen(true)}
+                    onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
                   />
                 </motion.div>
               ) : selectedId === 'library' ? (

@@ -13,11 +13,11 @@ export default function MetricsDashboard({ progress, project }) {
   const plannedSteps = Math.max(0, totalPlanSteps - total);
 
   const metrics = [
-    { label: 'Completion', value: `${percentage}%`, icon: Target, color: 'text-cyber-text-primary', bg: 'bg-cyber-accent/20', glow: 'bg-cyber-accent/10' },
-    { label: 'Steps Done', value: completed, icon: Activity, color: 'text-cyber-text-secondary', bg: 'bg-white/5', glow: 'bg-white/5' },
-    { label: 'Remaining', value: remaining, icon: Zap, color: 'text-cyber-text-secondary', bg: 'bg-white/5', glow: 'bg-white/5' },
-    { label: 'Active Phases', value: activePhases, icon: Layers, color: 'text-cyber-text-secondary', bg: 'bg-white/5', glow: 'bg-white/5' },
-    { label: 'Planned Steps', value: plannedSteps, icon: FileText, color: 'text-cyber-text-secondary', bg: 'bg-white/5', glow: 'bg-white/5' },
+    { label: 'Completion', value: `${percentage}%`, icon: Target, color: 'text-sky-400', bg: 'bg-sky-500/10 border border-sky-400/20' },
+    { label: 'Steps Done', value: completed, icon: Activity, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border border-emerald-500/20' },
+    { label: 'Remaining', value: remaining, icon: Zap, color: 'text-white/70', bg: 'bg-white/5 border border-white/10' },
+    { label: 'Active Phases', value: activePhases, icon: Layers, color: 'text-white/70', bg: 'bg-white/5 border border-white/10' },
+    { label: 'Planned Steps', value: plannedSteps, icon: FileText, color: 'text-white/70', bg: 'bg-white/5 border border-white/10' },
   ];
 
   return (
@@ -28,18 +28,17 @@ export default function MetricsDashboard({ progress, project }) {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: idx * 0.1 }}
+            transition={{ delay: idx * 0.08, duration: 0.3 }}
             key={m.label}
-            className="glass-card p-4 sm:p-5 flex flex-col items-start justify-center gap-1 group hover:-translate-y-1 transition-transform relative overflow-hidden"
+            className="bg-[#0c101a] border border-white/10 hover:border-white/20 rounded-2xl p-5 flex flex-col items-start justify-center gap-1 group transition-all"
           >
-            <div className={`absolute -right-10 -bottom-10 w-32 h-32 ${m.glow} blur-[40px] rounded-full group-hover:scale-150 transition-transform duration-500 z-0`} />
-            <div className="flex items-center justify-between w-full relative z-10">
-              <div className={`w-8 h-8 rounded-full ${m.bg} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+            <div className="flex items-center justify-between w-full">
+              <div className={`w-8 h-8 rounded-xl ${m.bg} flex items-center justify-center`}>
                 <Icon className={`w-4 h-4 ${m.color}`} />
               </div>
             </div>
-            <div className="text-3xl font-black text-cyber-text-primary mt-2 relative z-10">{m.value}</div>
-            <div className="text-xs font-medium uppercase tracking-wider text-cyber-text-secondary relative z-10">{m.label}</div>
+            <div className="text-2xl font-bold text-white mt-3 font-outfit">{m.value}</div>
+            <div className="text-xs font-mono uppercase tracking-wider text-white/50">{m.label}</div>
           </motion.div>
         );
       })}
