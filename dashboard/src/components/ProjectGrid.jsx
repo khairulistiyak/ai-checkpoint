@@ -7,6 +7,10 @@ import NotInitializedView from './NotInitializedView';
 import { Rocket, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+/**
+ * ProjectGrid renders the primary workspace for a selected project.
+ * Clicking PlanCard or Generate Plan calls onOpenPlans(tab), which triggers Hash Route navigation.
+ */
 export default function ProjectGrid({ selectedProject, loading, installing, onRemove, onOpenConfig, onOpenPlans, onInstall, refresh }) {
   if (loading || !selectedProject) {
     return (

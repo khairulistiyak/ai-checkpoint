@@ -13,14 +13,14 @@
 
 ---
 
-## 📊 Overall Progress: 100% (257/257 steps complete)
+## 📊 Overall Progress: 100% (264/264 steps complete)
 
 ```
 [███████████████████-] 98% (254/257 steps complete)
 ```
 
 ## 👉 NEXT: None (Project Complete) ✅
-> 📋 Details → `plan/` → Phase 32 → Step 32.3
+> 📋 Details → `plan/` → Phase 33 → Step 33.7
 
 ---
 
@@ -617,6 +617,13 @@ UPDATE LOG:
 [2026-08-02 11:28] Step 32.1 completed — Overhaul App.jsx and Header.jsx to Eye-Comfort Linear Matte Dark theme | Agent: CLI
 [2026-08-02 11:29] Step 32.2 completed — Overhaul ProjectGrid.jsx and ProjectCard.jsx with minimalist matte borders and soothing badges | Agent: CLI
 [2026-08-02 11:30] Step 32.3 completed — Overhaul GlobalOverview.jsx and MetricsDashboard.jsx to match the Linear Minimalist Dark Studio aesthetic | Agent: CLI
+[2026-08-02 11:33] Step 33.1 completed — Create lightweight hash router hook useHashRoute | Agent: CLI
+[2026-08-02 11:34] Step 33.2 completed — Create eye-comfort route loading skeleton PageSkeleton.jsx | Agent: CLI
+[2026-08-02 11:35] Step 33.3 completed — Create HomePage module | Agent: CLI
+[2026-08-02 11:35] Step 33.4 completed — Create ProjectPage module | Agent: CLI
+[2026-08-02 11:36] Step 33.5 completed — Create PlansPage module | Agent: CLI
+[2026-08-02 11:37] Step 33.6 completed — Refactor App.jsx to use lazy-loaded routes and useHashRoute | Agent: CLI
+[2026-08-02 11:38] Step 33.7 completed — Update ProjectGrid navigation to emit hash route URLs | Agent: CLI
 -->
 
 
@@ -664,4 +671,17 @@ UPDATE LOG:
 - [x] **Step 32.1** — Overhaul App.jsx and Header.jsx to Eye-Comfort Linear Matte Dark theme (`dashboard/src/App.jsx`)
 - [x] **Step 32.2** — Overhaul ProjectGrid.jsx and ProjectCard.jsx with minimalist matte borders and soothing badges (`dashboard/src/components/ProjectGrid.jsx`)
 - [x] **Step 32.3** — Overhaul GlobalOverview.jsx and MetricsDashboard.jsx to match the Linear Minimalist Dark Studio aesthetic (`dashboard/src/components/GlobalOverview.jsx`)
+
+---
+
+## 🔷 Phase 33: Lightweight SPA Routing & Lazy-Loading Architecture — ✅ 100% COMPLETE
+
+- [x] **Step 33.1** — Create lightweight hash router hook (`dashboard/src/hooks/useHashRoute.js`)
+- [x] **Step 33.2** — Create eye-comfort route loading skeleton (`dashboard/src/components/ui/PageSkeleton.jsx`)
+- [x] **Step 33.3** — Create HomePage module (`dashboard/src/pages/HomePage.jsx`)
+- [x] **Step 33.4** — Create ProjectPage module (`dashboard/src/pages/ProjectPage.jsx`)
+- [x] **Step 33.5** — Create PlansPage module (`dashboard/src/pages/PlansPage.jsx`)
+- [x] **Step 33.6** — Refactor App.jsx to use lazy-loaded routes and useHashRoute (`dashboard/src/App.jsx`)
+- [x] **Step 33.7** — Update ProjectGrid navigation to emit hash route URLs (`dashboard/src/components/ProjectGrid.jsx`)
+
 

@@ -1,26 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import ProjectGrid from './components/ProjectGrid';
-import EmptySelectionView from './components/EmptySelectionView';
 import InitializingView from './components/InitializingView';
-import AddProjectModal from './components/AddProjectModal';
-import ConfigEditor from './components/ConfigEditor';
-import CommandPalette from './components/CommandPalette';
-import LogPanel from './components/LogPanel';
-import SettingsModal from './components/SettingsModal';
-import PlansCenter from './components/PlansCenter';
-import ConfirmModal from './components/ConfirmModal';
-import { ComponentLibrary } from './components/library/ComponentLibrary';
+import AppModals from './components/AppModals';
+import PageSkeleton from './components/ui/PageSkeleton';
 
 import { useProjects } from './hooks/useProjects';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useHashRoute } from './hooks/useHashRoute';
+import { AnimatePresence } from 'framer-motion';
 import { useToast } from './components/ToastProvider';
 import * as api from './utils/api';
 
-function App() {
+const HomePage = lazy(() => import('./pages/HomePage'));
+const ProjectPage = lazy(() => import('./pages/ProjectPage'));
+const PlansPage = lazy(() => import('./pages/PlansPage'));
+const ComponentLibrary = lazy(() =>
+  import('./components/library/ComponentLibrary').then((m) => ({ default: m.ComponentLibrary }))
+);
+
+export default function App() {
   const { showToast } = useToast();
   const { projects, loading, error, addProject, removeProject, refresh } = useProjects(5000);
+  const { route, projectId, tab, navigate } = useHashRoute();
+
   const [selectedId, setSelectedId] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [configProject, setConfigProject] = useState(null);
@@ -30,36 +32,51 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [confirmRemove, setConfirmRemove] = useState(false);
 
-  React.useEffect(() => {
-    if (window.location.hash === '#library') setSelectedId('library');
-    const onHash = () => setSelectedId(window.location.hash === '#library' ? 'library' : null);
+  useEffect(() => {
+    if (route === 'library') setSelectedId('library');
+    else if (route === 'project' || route === 'plans') setSelectedId(projectId);
+    else setSelectedId(null);
+  }, [route, projectId]);
+
+  useEffect(() => {
     const onKey = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'l') { e.preventDefault(); setSelectedId(p => p === 'library' ? null : 'library'); }
-      else if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setIsCommandPaletteOpen(true); }
-      else if (e.key === 'Escape') {
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key.toLowerCase() === 'l') {
+        e.preventDefault();
+        navigate(route === 'library' ? '#/' : '#/library');
+      } else if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen(true);
+      } else if (e.key === 'Escape') {
         if (isAddModalOpen) setIsAddModalOpen(false);
         else if (isSettingsOpen) setIsSettingsOpen(false);
-        else if (typeof selectedId === 'string' && selectedId.startsWith('plans-')) setSelectedId(selectedId.split('-')[1] || null);
-        else if (selectedId === 'library') setSelectedId(null);
+        else if (route === 'plans') navigate(`#/project/${projectId}`);
+        else if (route === 'library') navigate('#/');
         else if (configProject) setConfigProject(null);
       }
     };
-    window.addEventListener('hashchange', onHash);
     window.addEventListener('keydown', onKey);
-    return () => { window.removeEventListener('hashchange', onHash); window.removeEventListener('keydown', onKey); };
-  }, [isAddModalOpen, isSettingsOpen, configProject, selectedId]);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isAddModalOpen, isSettingsOpen, configProject, route, projectId, navigate]);
 
+  const selectedProject = projects.find((p) => p.id === selectedId);
 
-  const selectedProject = projects.find(p => p.id === selectedId);
+  const handleSelectSidebar = (id) => {
+    if (id === 'library') navigate('#/library');
+    else if (id) navigate(`#/project/${id}`);
+    else navigate('#/');
+    setIsMobileMenuOpen(false);
+  };
 
   const handleAddProject = async (path) => {
     try { await addProject(path); setIsAddModalOpen(false); showToast('Added!', 'success'); }
     catch (err) { showToast(err.message, 'error'); }
   };
+
   const doRemoveProject = async () => {
-    try { await removeProject(selectedId); setSelectedId(null); showToast('Removed', 'info'); }
+    try { await removeProject(selectedId); navigate('#/'); showToast('Removed', 'info'); }
     catch (err) { showToast(err.message, 'error'); } finally { setConfirmRemove(false); }
   };
+
   const handleInstallProject = async () => {
     setInstalling(true);
     try { await api.installProject(selectedProject.id); refresh(); showToast('Success', 'success'); }
@@ -67,6 +84,7 @@ function App() {
   };
 
   if (loading && projects.length === 0) return <InitializingView />;
+  const isPlansRoute = route === 'plans';
 
   return (
     <div className="h-screen w-screen overflow-hidden flex flex-col font-outfit bg-[#0a0d14] text-white/90 relative">
@@ -76,81 +94,63 @@ function App() {
           Server connection error. Auto-retrying...
         </div>
       )}
-      {!(typeof selectedId === 'string' && selectedId.startsWith('plans-')) && (
+
+      {!isPlansRoute && (
         <Header
           onOpenSettings={() => setIsSettingsOpen(true)}
           onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
           onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          onOpenLibrary={() => setSelectedId('library')}
+          onOpenLibrary={() => navigate('#/library')}
         />
       )}
-      <div className={`flex flex-1 overflow-hidden relative ${typeof selectedId === 'string' && selectedId.startsWith('plans-') ? 'p-0 gap-0' : 'px-4 md:px-6 pb-14 md:pb-12 gap-6'}`}>
-        {!(typeof selectedId === 'string' && selectedId.startsWith('plans-')) && (
+
+      <div className={`flex flex-1 overflow-hidden relative ${isPlansRoute ? 'p-0 gap-0' : 'px-4 md:px-6 pb-14 md:pb-12 gap-6'}`}>
+        {!isPlansRoute && (
           <Sidebar
-            projects={projects} selectedId={selectedId}
-            onSelect={(id) => { setSelectedId(id); setIsMobileMenuOpen(false); }}
+            projects={projects} selectedId={selectedId} onSelect={handleSelectSidebar}
             isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen}
             onAddProject={() => setIsAddModalOpen(true)}
             onReorder={async (ids) => { try { await api.reorderProjects(ids); refresh(); } catch (e) { showToast('Failed to reorder', 'error'); } }}
           />
         )}
-        <main className={`flex-1 overflow-y-auto md:overflow-hidden relative flex flex-col custom-scrollbar ${typeof selectedId === 'string' && selectedId.startsWith('plans-') ? 'p-0 border-none rounded-none shadow-none bg-[#0a0d14]' : 'bg-[#0e121e] border border-white/10 rounded-2xl p-4 md:p-8'}`}>
-          <div className={`w-full h-full flex flex-col min-h-max md:min-h-0 ${typeof selectedId === 'string' && selectedId.startsWith('plans-') ? 'w-full max-w-none' : 'max-w-5xl mx-auto'}`}>
-            <AnimatePresence mode="wait">
-              {typeof selectedId === 'string' && selectedId.startsWith('plans-') ? (
-                <motion.div
-                  key="plans" initial={{ opacity: 0, scale: 0.98, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.98, y: -20 }}
-                  transition={{ duration: 0.4, type: 'spring' }} className="h-full w-full"
-                >
-                  <PlansCenter
-                    project={projects.find(p => selectedId.includes(p.id))}
-                    initialTab={selectedId.split('-').pop()}
-                    onBack={() => { const proj = projects.find(p => selectedId.includes(p.id)); setSelectedId(proj ? proj.id : null); }}
-                    onRefresh={refresh}
-                    onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    onOpenSettings={() => setIsSettingsOpen(true)}
-                    onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
-                  />
-                </motion.div>
-              ) : selectedId === 'library' ? (
-                <motion.div
-                  key="library" initial={{ opacity: 0, scale: 0.98, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.98, y: -20 }}
-                  transition={{ duration: 0.4, type: 'spring' }} className="h-full w-full"
-                >
+
+        <main className={`flex-1 overflow-y-auto md:overflow-hidden relative flex flex-col custom-scrollbar ${isPlansRoute ? 'p-0 border-none rounded-none shadow-none bg-[#0a0d14]' : 'bg-[#0e121e] border border-white/10 rounded-2xl p-4 md:p-8'}`}>
+          <div className={`w-full h-full flex flex-col min-h-max md:min-h-0 ${isPlansRoute ? 'w-full max-w-none' : 'max-w-5xl mx-auto'}`}>
+            <Suspense fallback={<PageSkeleton />}>
+              <AnimatePresence mode="wait">
+                {route === 'library' ? (
                   <ComponentLibrary asPage={true} />
-                </motion.div>
-              ) : selectedProject ? (
-                <motion.div
-                  key={selectedProject.id} initial={{ opacity: 0, scale: 0.98, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.98, y: -20 }}
-                  transition={{ duration: 0.4, type: 'spring' }} className="h-full overflow-y-auto overflow-x-hidden custom-scrollbar md:pr-2 pb-6"
-                >
-                  <ProjectGrid
-                    selectedProject={selectedProject} installing={installing}
+                ) : isPlansRoute ? (
+                  <PlansPage
+                    project={selectedProject} tab={tab}
+                    onBack={() => navigate(selectedProject ? `#/project/${selectedProject.id}` : '#/')}
+                    onRefresh={refresh}
+                  />
+                ) : route === 'project' ? (
+                  <ProjectPage
+                    project={selectedProject} installing={installing}
                     onRemove={() => setConfirmRemove(true)} onOpenConfig={() => setConfigProject(selectedProject.id)}
                     onInstall={handleInstallProject} refresh={refresh}
-                    onOpenPlans={(tab) => setSelectedId('plans-' + selectedProject.id + '-' + (tab || 'progress'))}
+                    onOpenPlans={(t) => navigate(`#/project/${selectedProject.id}/plans/${t || 'progress'}`)}
                   />
-
-                </motion.div>
-              ) : (
-                <EmptySelectionView onAddProject={() => setIsAddModalOpen(true)} projects={projects} />
-              )}
-            </AnimatePresence>
+                ) : (
+                  <HomePage projects={projects} onAddProject={() => setIsAddModalOpen(true)} />
+                )}
+              </AnimatePresence>
+            </Suspense>
           </div>
         </main>
       </div>
-      <AnimatePresence>{configProject && <ConfigEditor projectId={configProject} onClose={() => setConfigProject(null)} />}</AnimatePresence>
 
-      <AddProjectModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} onAdd={handleAddProject} />
-      {selectedProject && selectedProject.isInstalled && <LogPanel logs={selectedProject.progress?.timeline} />}
-      <AnimatePresence>{isCommandPaletteOpen && <CommandPalette isOpen={isCommandPaletteOpen} onClose={() => setIsCommandPaletteOpen(false)} projects={projects} onSelectProject={(id) => { setSelectedId(id); setIsCommandPaletteOpen(false); }} onOpenSettings={() => { setIsCommandPaletteOpen(false); setIsSettingsOpen(true); }} />}</AnimatePresence>
-      <AnimatePresence>{isSettingsOpen && <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />}</AnimatePresence>
-      <ConfirmModal isOpen={confirmRemove} title="Remove Project" message="Remove this project from the dashboard? The files on disk will not be deleted." confirmText="Remove" cancelText="Keep" danger={true} onConfirm={doRemoveProject} onCancel={() => setConfirmRemove(false)} />
+      <AppModals
+        configProject={configProject} setConfigProject={setConfigProject}
+        isAddModalOpen={isAddModalOpen} setIsAddModalOpen={setIsAddModalOpen}
+        handleAddProject={handleAddProject} selectedProject={selectedProject}
+        isCommandPaletteOpen={isCommandPaletteOpen} setIsCommandPaletteOpen={setIsCommandPaletteOpen}
+        projects={projects} onSelectProject={handleSelectSidebar}
+        setIsSettingsOpen={setIsSettingsOpen} isSettingsOpen={isSettingsOpen}
+        confirmRemove={confirmRemove} doRemoveProject={doRemoveProject} setConfirmRemove={setConfirmRemove}
+      />
     </div>
   );
 }
-
-export default App;
