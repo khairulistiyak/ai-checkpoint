@@ -138,8 +138,8 @@ export default function App() {
           />
         )}
 
-        <main className={`flex-1 overflow-y-auto md:overflow-hidden relative flex flex-col custom-scrollbar ${isPlansRoute ? 'p-0 border-none rounded-none shadow-none bg-[#09090b]' : 'bg-[#09090b] p-3 sm:p-5 md:p-6'}`}>
-          <div className={`w-full h-full flex flex-col min-h-max md:min-h-0 ${isPlansRoute ? 'w-full max-w-none' : 'max-w-7xl mx-auto'}`}>
+        <main className={`flex-1 overflow-y-auto md:overflow-hidden relative flex flex-col custom-scrollbar ${isPlansRoute ? 'p-0 border-none rounded-none shadow-none bg-[#09090b]' : 'bg-[#09090b] p-2.5 sm:p-3.5 md:p-4'}`}>
+          <div className="w-full h-full flex flex-col min-h-max md:min-h-0 max-w-full">
             <Suspense fallback={<PageSkeleton />}>
               <AnimatePresence mode="wait">
                 {route === 'library' ? (

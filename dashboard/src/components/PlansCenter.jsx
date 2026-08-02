@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Activity } from 'lucide-react';
 import PlanFilesTab from './plans/PlanFilesTab';
-import PlanGeneratorTab from './plans/PlanGeneratorTab';
 import PlansSidebar from './plans/PlansSidebar';
 import PlanProgressTab from './plans/PlanProgressTab';
 
@@ -89,10 +88,6 @@ export default function PlansCenter({
 
         {activeTab === 'files' && (
           <PlanFilesTab project={project} />
-        )}
-
-        {activeTab === 'generate' && (
-          <PlanGeneratorTab project={project} onRefresh={onRefresh} />
         )}
       </main>
     </div>

@@ -94,13 +94,13 @@ export default function PlanProgressTab({
 
       <AnimatePresence>
         {selectedPlanFile && (
-          <div className="absolute inset-0 z-40 flex bg-black/60 backdrop-blur-sm">
-            <FilePreviewDrawer
-              projectId={project?.id}
-              filename={selectedPlanFile}
-              onClose={() => setSelectedPlanFile(null)}
-            />
-          </div>
+          <FilePreviewDrawer
+            projectId={project?.id}
+            filename={selectedPlanFile}
+            allFiles={project?.planStats?.files || []}
+            onSelectFile={(f) => setSelectedPlanFile(f)}
+            onClose={() => setSelectedPlanFile(null)}
+          />
         )}
       </AnimatePresence>
     </div>

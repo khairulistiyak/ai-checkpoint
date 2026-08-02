@@ -156,3 +156,20 @@ export async function fetchPlanFileContent(id, filename) {
   if (!res.ok) throw new Error('Failed to fetch plan file');
   return res.json();
 }
+
+export async function savePlanFileContent(id, filename, content) {
+  const res = await fetch(`${BASE_URL}/projects/${id}/plan-file/${encodeURIComponent(filename)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ content })
+  });
+  if (!res.ok) {
+    let errorMsg = 'Failed to save plan file';
+    try {
+      const data = await res.json();
+      if (data.error) errorMsg = data.error;
+    } catch (e) {}
+    throw new Error(errorMsg);
+  }
+  return res.json();
+}

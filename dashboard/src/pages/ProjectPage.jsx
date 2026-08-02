@@ -30,11 +30,11 @@ export default function ProjectPage({
   return (
     <motion.div
       key={project.id}
-      initial={{ opacity: 0, y: 15 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -15 }}
-      transition={{ duration: 0.35, ease: 'easeOut' }}
-      className="h-full overflow-y-auto overflow-x-hidden custom-scrollbar md:pr-2 pb-6"
+      exit={{ opacity: 0, y: -10 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
+      className="h-full overflow-y-auto overflow-x-hidden custom-scrollbar pb-2"
     >
       <ProjectGrid
         selectedProject={project}

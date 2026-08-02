@@ -51,13 +51,13 @@ export default function ExportButton({ project }) {
     <button 
       onClick={handleExport}
       disabled={downloading}
-      className="p-2 rounded-xl border border-white/[0.05] text-slate-400 hover:text-white hover:bg-slate-800 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 focus:ring-offset-slate-900 group relative"
+      className="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white transition-all cursor-pointer shadow-sm disabled:opacity-50"
       title="Export Project Data"
     >
       {downloading ? (
-        <Check className="w-5 h-5 text-emerald-400" />
+        <Check className="w-3.5 h-3.5 text-emerald-400" />
       ) : (
-        <Download className="w-5 h-5 group-hover:text-accent-400 transition-colors" />
+        <Download className="w-3.5 h-3.5" />
       )}
     </button>
   );

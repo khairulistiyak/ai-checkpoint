@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { GitCommit, Clock, RotateCcw, Loader2 } from 'lucide-react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useMemo } from 'react';
+import { GitCommit, Clock, RotateCcw, Loader2, Search, Copy, Check, Shield, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import * as api from '../utils/api';
 import { useToast } from './ToastProvider';
 import ConfirmModal from './ConfirmModal';
@@ -11,15 +11,17 @@ export default function GitVisualizer({ projectId, onRefresh }) {
   const [loading, setLoading] = useState(true);
   const [rollingBack, setRollingBack] = useState(false);
   const [confirmHash, setConfirmHash] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [copiedHash, setCopiedHash] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
     async function load() {
       try {
         const data = await api.fetchProjectCheckpoints(projectId);
-        if (!cancelled) setCheckpoints(data);
+        if (!cancelled) setCheckpoints(data || []);
       } catch (err) {
-        console.error(err);
+        console.error('Failed to load git checkpoints:', err);
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -27,7 +29,10 @@ export default function GitVisualizer({ projectId, onRefresh }) {
     setLoading(true);
     load();
     const interval = setInterval(load, 30000);
-    return () => { cancelled = true; clearInterval(interval); };
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
   }, [projectId]);
 
   const handleRollback = async () => {
@@ -35,7 +40,7 @@ export default function GitVisualizer({ projectId, onRefresh }) {
     setRollingBack(true);
     try {
       await api.rollbackCheckpoint(projectId, confirmHash);
-      showToast('Rollback successful!', 'success');
+      showToast(`Rollback to ${confirmHash.slice(0, 7)} successful!`, 'success');
       if (onRefresh) onRefresh();
     } catch (err) {
       showToast(`Rollback failed: ${err.message}`, 'error');
@@ -45,74 +50,190 @@ export default function GitVisualizer({ projectId, onRefresh }) {
     }
   };
 
+  const handleCopyHash = (hash, e) => {
+    e.stopPropagation();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(hash);
+      setCopiedHash(hash);
+      showToast(`Copied commit ${hash.slice(0, 7)}`, 'info');
+      setTimeout(() => setCopiedHash(null), 2000);
+    }
+  };
+
+  const filteredCheckpoints = useMemo(() => {
+    if (!searchQuery.trim()) return checkpoints;
+    const q = searchQuery.toLowerCase();
+    return checkpoints.filter(
+      (cp) =>
+        cp.hash.toLowerCase().includes(q) ||
+        (cp.message && cp.message.toLowerCase().includes(q)) ||
+        (cp.author && cp.author.toLowerCase().includes(q))
+    );
+  }, [checkpoints, searchQuery]);
+
   if (loading) {
     return (
-      <div className="flex justify-center p-8">
-        <Loader2 className="w-8 h-8 animate-spin text-white" />
+      <div className="flex flex-col items-center justify-center p-12 text-center text-white/50">
+        <Loader2 className="w-8 h-8 animate-spin text-white mb-3" />
+        <span className="text-xs font-mono">Loading Git snapshots...</span>
       </div>
     );
   }
 
   if (checkpoints.length === 0) {
     return (
-      <div className="h-full flex items-center justify-center p-8 text-center text-white/50 italic font-mono text-xs">
-        No checkpoints found. Use `./l cp save "message"` to create one.
+      <div className="h-full min-h-[220px] flex flex-col items-center justify-center p-8 text-center text-white/60 bg-white/[0.02] border border-white/5 rounded-2xl">
+        <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-3">
+          <GitCommit className="w-6 h-6 text-white/40" />
+        </div>
+        <h4 className="text-sm font-bold text-white mb-1 font-outfit">No Checkpoints Recorded Yet</h4>
+        <p className="text-xs text-white/40 max-w-sm mb-4">
+          Save an instant recovery snapshot before making changes.
+        </p>
+        <button
+          onClick={() => {
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText('./l cp save "Initial checkpoint"');
+              showToast('Copied checkpoint command to clipboard!', 'success');
+            }
+          }}
+          className="px-3.5 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-white border border-white/20 text-xs font-mono flex items-center gap-2 cursor-pointer transition-all"
+        >
+          <Copy className="w-3.5 h-3.5" />
+          <span>./l cp save "Initial checkpoint"</span>
+        </button>
       </div>
     );
   }
 
   return (
-    <>
-      <div className="relative min-h-full py-2">
-        <div className="absolute left-4 top-2 bottom-2 w-px bg-white/15"></div>
-        <div className="space-y-4">
-          {checkpoints.map((cp, idx) => (
-            <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: idx * 0.05 }}
-              key={cp.hash}
-              className="flex items-start gap-4 group relative z-10"
-            >
-              <div className="w-8 h-8 rounded-full bg-[#09090b] border border-white/30 flex items-center justify-center shrink-0 shadow-sm mt-1 group-hover:border-white transition-colors z-10">
-                <div className="w-2 h-2 rounded-full bg-white transition-colors"></div>
-              </div>
-              <div className="flex-1 bg-white/[0.03] border border-white/10 rounded-2xl p-4 group-hover:border-white/25 group-hover:bg-white/[0.05] transition-all flex flex-col sm:flex-row justify-between sm:items-center gap-4">
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2.5 mb-1.5 flex-wrap">
-                    <span className="font-mono text-xs text-white bg-white/10 px-2.5 py-0.5 rounded-full border border-white/20 shrink-0 font-bold">{cp.hash}</span>
-                    <span className="text-xs text-white/60 flex items-center gap-1 shrink-0 font-mono">
-                      <Clock className="w-3 h-3 text-white/40" /> {cp.timeAgo}
-                    </span>
-                    <span className="text-xs text-white/50 truncate font-mono">{cp.author}</span>
-                  </div>
-                  <div className="text-white font-medium text-sm truncate pr-2 font-mono" title={cp.message}>
-                    {cp.message.replace(/^(?:aicp\/[^\s]+|checkpoint:)\s*/i, '')}
-                  </div>
-                </div>
-                <button
-                  onClick={() => setConfirmHash(cp.hash)}
-                  disabled={rollingBack}
-                  className="px-3.5 py-2 bg-white/5 hover:bg-red-500/20 text-white/70 hover:text-red-300 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all border border-white/10 hover:border-red-500/30 flex items-center justify-center gap-2 shrink-0 self-end sm:self-auto w-full sm:w-auto mt-2 sm:mt-0 cursor-pointer"
+    <div className="flex flex-col h-full">
+      {/* Search and Stats Bar */}
+      <div className="flex items-center justify-between gap-2.5 mb-2.5 pb-2 border-b border-white/5 shrink-0">
+        <div className="relative flex-1 max-w-xs">
+          <Search className="w-3.5 h-3.5 text-white/40 absolute left-2.5 top-1/2 -translate-y-1/2" />
+          <input
+            type="text"
+            placeholder="Search snapshots..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-8 pr-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-xs text-white placeholder-white/40 focus:outline-none focus:border-white/20 font-mono transition-all"
+          />
+        </div>
+
+        <div className="flex items-center gap-2 shrink-0">
+          <span className="text-[10px] font-mono text-white/50 bg-white/5 px-2 py-0.5 rounded-md border border-white/5">
+            {filteredCheckpoints.length} / {checkpoints.length} Snapshots
+          </span>
+        </div>
+      </div>
+
+      {/* Timeline Stream */}
+      <div className="relative flex-1 py-1 pr-1 overflow-y-auto custom-scrollbar max-h-[340px]">
+        <div className="absolute left-[11px] top-2 bottom-2 w-px bg-gradient-to-b from-white/20 via-white/10 to-transparent" />
+        <div className="space-y-2">
+          {filteredCheckpoints.map((cp, idx) => {
+            const isLatest = idx === 0 && !searchQuery;
+            const isCopied = copiedHash === cp.hash;
+
+            return (
+              <motion.div
+                initial={{ opacity: 0, x: -6 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: Math.min(idx * 0.02, 0.2) }}
+                key={cp.hash}
+                className="flex items-start gap-2.5 group relative z-10"
+              >
+                {/* Node Pill */}
+                <div
+                  className={`w-6 h-6 rounded-full flex items-center justify-center shrink-0 shadow-sm mt-0.5 z-10 transition-all ${
+                    isLatest
+                      ? 'bg-white text-zinc-950 border border-white shadow-[0_0_8px_rgba(255,255,255,0.3)]'
+                      : 'bg-[#09090b] border border-white/20 group-hover:border-white/50 text-white/60 group-hover:text-white'
+                  }`}
                 >
-                  {rollingBack ? <Loader2 className="w-3.5 h-3.5 animate-spin text-white" /> : <RotateCcw className="w-3.5 h-3.5" />}
-                  <span>Rollback</span>
-                </button>
-              </div>
-            </motion.div>
-          ))}
+                  <GitCommit className="w-3 h-3" />
+                </div>
+
+                {/* Card */}
+                <div className="flex-1 bg-white/[0.02] border border-white/10 rounded-xl p-2.5 group-hover:border-white/20 group-hover:bg-white/[0.04] transition-all flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      <button
+                        onClick={(e) => handleCopyHash(cp.hash, e)}
+                        title="Click to copy full commit hash"
+                        className="font-mono text-[10px] text-white bg-white/10 hover:bg-white/20 px-1.5 py-0.5 rounded border border-white/15 shrink-0 font-bold flex items-center gap-1 cursor-pointer transition-colors"
+                      >
+                        <span>{cp.hash.slice(0, 7)}</span>
+                        {isCopied ? (
+                          <Check className="w-2.5 h-2.5 text-emerald-400" />
+                        ) : (
+                          <Copy className="w-2.5 h-2.5 text-white/50" />
+                        )}
+                      </button>
+
+                      {isLatest && (
+                        <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold uppercase tracking-wider">
+                          Latest Head
+                        </span>
+                      )}
+
+                      <span className="text-[10px] text-white/50 flex items-center gap-1 shrink-0 font-mono">
+                        <Clock className="w-2.5 h-2.5 text-white/40" /> {cp.timeAgo || 'recent'}
+                      </span>
+
+                      {cp.author && (
+                        <span className="text-[10px] text-white/40 truncate font-mono hidden md:inline">
+                          by {cp.author}
+                        </span>
+                      )}
+                    </div>
+
+                    <div
+                      className="text-white text-xs font-mono break-words leading-relaxed group-hover:text-white/95"
+                      title={cp.message}
+                    >
+                      {cp.message.replace(/^(?:aicp\/[^\s]+|checkpoint:)\s*/i, '')}
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => setConfirmHash(cp.hash)}
+                    disabled={rollingBack}
+                    className="px-2.5 py-1 bg-white/5 hover:bg-red-500/20 text-white/70 hover:text-red-300 rounded-lg text-[10px] font-mono font-bold uppercase tracking-wider transition-all border border-white/10 hover:border-red-500/30 flex items-center justify-center gap-1 shrink-0 self-end sm:self-auto w-full sm:w-auto cursor-pointer"
+                  >
+                    {rollingBack ? (
+                      <Loader2 className="w-3 h-3 animate-spin text-white" />
+                    ) : (
+                      <RotateCcw className="w-3 h-3" />
+                    )}
+                    <span>Rollback</span>
+                  </button>
+                </div>
+              </motion.div>
+            );
+          })}
+
+          {filteredCheckpoints.length === 0 && (
+            <div className="p-6 text-center text-white/40 font-mono text-xs">
+              No snapshots matched "{searchQuery}"
+            </div>
+          )}
         </div>
       </div>
 
       <ConfirmModal
         isOpen={Boolean(confirmHash)}
-        title="Rollback Checkpoint"
-        message={`Are you sure you want to rollback to checkpoint ${confirmHash}? This will reset local files to that state.`}
+        title="Rollback Git Checkpoint"
+        message={`Are you sure you want to rollback to checkpoint ${confirmHash?.slice(
+          0,
+          7
+        )}? This will safely revert project files to this state.`}
         confirmText="Yes, Rollback"
         confirmStyle="danger"
         onConfirm={handleRollback}
         onCancel={() => setConfirmHash(null)}
       />
-    </>
+    </div>
   );
 }

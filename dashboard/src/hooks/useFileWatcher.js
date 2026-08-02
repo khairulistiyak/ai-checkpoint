@@ -79,6 +79,13 @@ export function useFileWatcher(projectId, callbacks = {}) {
       } catch (err) { /* ignore */ }
     });
 
+    es.addEventListener('activity-log-cleared', (e) => {
+      try {
+        const data = JSON.parse(e.data);
+        callbacksRef.current.onActivityLogCleared?.(data);
+      } catch (err) { /* ignore */ }
+    });
+
     es.onerror = () => {
       // SSE will auto-reconnect, no action needed
     };
@@ -93,6 +100,19 @@ export function useFileWatcher(projectId, callbacks = {}) {
       }
     };
   }, [connect]);
+}
+
+/**
+ * Clear activity log history by range
+ * @param {string} projectId
+ * @param {'last_hour'|'today'|'last_7d'|'last_30d'|'all'} range
+ */
+export async function clearActivityLog(projectId, range = 'all') {
+  const res = await fetch(`${BASE_URL}/projects/${projectId}/activity-log?range=${range}`, {
+    method: 'DELETE',
+  });
+  if (!res.ok) throw new Error('Failed to clear activity log');
+  return res.json();
 }
 
 /**

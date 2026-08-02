@@ -10,6 +10,7 @@ import { enrichProject } from './parser.js';
 import { runCommand } from './run-command.js';
 import checkpointsRouter from './checkpoints.js';
 import { watcherManager } from './watcher.js';
+import { ActivityLogger } from './activity-logger.js';
 
 const router = express.Router();
 
@@ -177,6 +178,29 @@ router.get('/:id/plan-file/:filename', (req, res) => {
   }
 });
 
+router.post('/:id/plan-file/:filename', (req, res) => {
+  const project = getSettings().projects.find(p => p.id === req.params.id);
+  if (!project) return res.status(404).json({ error: 'Project not found' });
+  const filename = req.params.filename;
+  if (!/^[a-zA-Z0-9_.-]+\.md$/.test(filename)) {
+    return res.status(400).json({ error: 'Invalid filename' });
+  }
+  const filePath = path.join(project.path, 'plan', filename);
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({ error: 'Plan file not found' });
+  }
+  const { content } = req.body;
+  if (typeof content !== 'string') {
+    return res.status(400).json({ error: 'Content must be a string' });
+  }
+  try {
+    fs.writeFileSync(filePath, content, 'utf8');
+    res.json({ success: true, filename });
+  } catch (e) {
+    res.status(500).json({ error: 'Failed to save plan file' });
+  }
+});
+
 // ──────────────────────────────────────────────
 // SSE: Real-time file watching endpoint
 // ──────────────────────────────────────────────
@@ -246,11 +270,14 @@ router.get('/:id/activity-log', (req, res) => {
   const offset = parseInt(req.query.offset) || 0;
 
   try {
+    let logger;
     const watcher = watcherManager.watchers.get(project.id);
-    if (!watcher) {
-      return res.json({ entries: [], total: 0, hasMore: false });
+    if (watcher && watcher.logger) {
+      logger = watcher.logger;
+    } else {
+      logger = new ActivityLogger(project.path);
     }
-    const result = watcher.logger.read(limit, offset);
+    const result = logger.read(limit, offset);
     res.json({
       entries: result.entries,
       total: result.total,
@@ -258,6 +285,43 @@ router.get('/:id/activity-log', (req, res) => {
     });
   } catch (e) {
     res.json({ entries: [], total: 0, hasMore: false });
+  }
+});
+
+router.delete('/:id/activity-log', (req, res) => {
+  const settings = getSettings();
+  const project = settings.projects.find(p => p.id === req.params.id);
+  if (!project) return res.status(404).json({ error: 'Not found' });
+
+  const range = req.query.range || req.body?.range || 'all';
+
+  try {
+    let logger;
+    const watcher = watcherManager.watchers.get(project.id);
+    if (watcher && watcher.logger) {
+      logger = watcher.logger;
+    } else {
+      logger = new ActivityLogger(project.path);
+    }
+
+    const result = logger.clear(range);
+
+    if (watcherManager.sseManager) {
+      watcherManager.sseManager.broadcast(project.id, 'activity-log-cleared', {
+        range,
+        deletedCount: result.deletedCount,
+        remainingCount: result.remainingCount,
+      });
+    }
+
+    res.json({
+      success: true,
+      range,
+      deletedCount: result.deletedCount,
+      remainingCount: result.remainingCount,
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
   }
 });
 

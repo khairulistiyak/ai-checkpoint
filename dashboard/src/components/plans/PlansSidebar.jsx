@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowLeft, Activity, ChevronRight, ShieldCheck, RefreshCw, FolderOpen, Sparkles } from 'lucide-react';
+import { ArrowLeft, Activity, ChevronRight, ShieldCheck, RefreshCw, FolderOpen } from 'lucide-react';
 
 export default function PlansSidebar({
   project, activeTab, setActiveTab, onBack, onRefresh, isRefreshing,
@@ -8,7 +8,6 @@ export default function PlansSidebar({
   const tabs = [
     { id: 'progress', label: 'Progress Tracker', subtitle: 'Phases & steps ledger', icon: Activity, badge: `${percentage}%` },
     { id: 'files', label: 'Architectural Plans', subtitle: 'Spec & plan docs', icon: FolderOpen, badge: `${filesCount}` },
-    { id: 'generate', label: 'AI Plan Builder', subtitle: 'Generate RULE 1 spec', icon: Sparkles, badge: 'AI' }
   ];
 
   return (

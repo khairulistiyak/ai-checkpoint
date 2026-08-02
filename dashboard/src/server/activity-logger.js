@@ -123,6 +123,70 @@ class ActivityLogger {
   }
 
   /**
+   * Clear log entries based on a timeframe range.
+   * @param {'last_hour'|'today'|'last_7d'|'last_30d'|'all'} range
+   * @returns {{ deletedCount: number, remainingCount: number }}
+   */
+  clear(range = 'all') {
+    try {
+      this.writeQueue = []; // Clear pending writes
+
+      if (!fs.existsSync(this.logFile)) {
+        return { deletedCount: 0, remainingCount: 0 };
+      }
+
+      if (range === 'all') {
+        let count = 0;
+        try {
+          const content = fs.readFileSync(this.logFile, 'utf8').trim();
+          if (content) count = content.split('\n').filter(Boolean).length;
+        } catch (e) {}
+        fs.writeFileSync(this.logFile, '', 'utf8');
+        return { deletedCount: count, remainingCount: 0 };
+      }
+
+      const now = Date.now();
+      let thresholdMs = 0;
+      if (range === 'last_hour') thresholdMs = 60 * 60 * 1000;
+      else if (range === 'today' || range === 'last_24h') thresholdMs = 24 * 60 * 60 * 1000;
+      else if (range === 'last_7d') thresholdMs = 7 * 24 * 60 * 60 * 1000;
+      else if (range === 'last_30d') thresholdMs = 30 * 24 * 60 * 60 * 1000;
+      else return { deletedCount: 0, remainingCount: 0 };
+
+      const cutoffTime = now - thresholdMs;
+
+      const content = fs.readFileSync(this.logFile, 'utf8').trim();
+      if (!content) return { deletedCount: 0, remainingCount: 0 };
+
+      const lines = content.split('\n');
+      const keptLines = [];
+      let deletedCount = 0;
+
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        try {
+          const entry = JSON.parse(line);
+          const entryTime = new Date(entry.ts).getTime();
+          // If entry is within the deletion window (newer than cutoff), delete it
+          if (!isNaN(entryTime) && entryTime >= cutoffTime) {
+            deletedCount++;
+          } else {
+            keptLines.push(line);
+          }
+        } catch (e) {
+          deletedCount++;
+        }
+      }
+
+      fs.writeFileSync(this.logFile, keptLines.length > 0 ? keptLines.join('\n') + '\n' : '', 'utf8');
+      return { deletedCount, remainingCount: keptLines.length };
+    } catch (e) {
+      console.error('⚠️ ActivityLogger clear error:', e.message);
+      return { deletedCount: 0, remainingCount: 0 };
+    }
+  }
+
+  /**
    * Flush the write queue to disk.
    * @private
    */

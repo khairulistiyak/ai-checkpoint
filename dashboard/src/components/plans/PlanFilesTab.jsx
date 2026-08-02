@@ -7,7 +7,7 @@ import {
 import { GlassButton } from '../ui/GlassButton';
 import FilePreviewDrawer from './FilePreviewDrawer';
 
-export default function PlanFilesTab({ project, onSwitchToGenerate }) {
+export default function PlanFilesTab({ project }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const files = project?.planStats?.files || [];
 
@@ -26,10 +26,7 @@ export default function PlanFilesTab({ project, onSwitchToGenerate }) {
           </div>
         </div>
         <h3 className="text-base font-bold text-white mb-1 font-outfit">No Architectural Blueprints Detected</h3>
-        <p className="text-xs text-white/50 max-w-sm mb-6">Create atomic task specifications in your <code className="text-white bg-white/5 px-1.5 py-0.5 rounded font-mono border border-white/10">plan/</code> directory or generate one instantly.</p>
-        <GlassButton variant="primary" size="md" onClick={onSwitchToGenerate} className="flex items-center gap-2 font-semibold">
-          <Sparkles className="w-4 h-4 text-white" /> Generate Architectural Plan
-        </GlassButton>
+        <p className="text-xs text-white/50 max-w-sm">Place atomic task specifications in your <code className="text-white bg-white/5 px-1.5 py-0.5 rounded font-mono border border-white/10">plan/</code> directory.</p>
       </motion.div>
     );
   }
@@ -182,7 +179,13 @@ export default function PlanFilesTab({ project, onSwitchToGenerate }) {
       {/* 3. Architectural Blueprint Drawer */}
       <AnimatePresence>
         {selectedFile && (
-          <FilePreviewDrawer projectId={project.id} filename={selectedFile} onClose={() => setSelectedFile(null)} />
+          <FilePreviewDrawer
+            projectId={project.id}
+            filename={selectedFile}
+            allFiles={files}
+            onSelectFile={(f) => setSelectedFile(f)}
+            onClose={() => setSelectedFile(null)}
+          />
         )}
       </AnimatePresence>
     </div>
