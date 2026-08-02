@@ -41,15 +41,15 @@ export default function Sidebar({ projects, selectedId, onSelect, onAddProject, 
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ type: "spring", stiffness: 200, damping: 20 }}
-        className={`bg-cyber-card/95 md:bg-cyber-card/60 backdrop-blur-2xl border-r border-cyber-card-border flex flex-col overflow-hidden transition-transform duration-300 z-50 fixed inset-y-0 left-0 h-full w-80 max-w-[85vw] shrink-0 md:z-auto md:relative md:inset-auto md:h-full md:w-60 lg:w-72 xl:w-80 md:max-w-none md:translate-x-0 md:rounded-2xl md:border md:shadow-2xl ${
+        className={`bg-[#09090b] border-r border-white/10 flex flex-col overflow-hidden transition-transform duration-300 z-50 fixed inset-y-0 left-0 h-full w-80 max-w-[85vw] shrink-0 md:z-auto md:relative md:inset-auto md:h-full md:w-64 lg:w-72 md:max-w-none md:translate-x-0 md:rounded-none md:border-r md:border-t-0 md:border-b-0 md:border-l-0 md:shadow-none ${
           isMobileMenuOpen ? 'translate-x-0 shadow-[0_0_50px_rgba(0,0,0,0.8)]' : '-translate-x-full'
         }`}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
 
-        <div className="p-4 sm:p-5 border-b border-cyber-card-border bg-cyber-dark/50 relative z-10 flex items-center justify-between gap-2">
-          <h2 className="text-xs sm:text-[11px] font-black text-cyber-text-primary uppercase tracking-[0.2em] flex items-center gap-2 truncate">
-            <LayoutDashboard className="w-4 h-4 text-cyber-text-primary shrink-0" />
+        <div className="p-4 sm:p-5 border-b border-white/10 bg-[#09090b] relative z-10 flex items-center justify-between gap-2">
+          <h2 className="text-xs sm:text-[11px] font-black text-white uppercase tracking-[0.2em] flex items-center gap-2 truncate">
+            <LayoutDashboard className="w-4 h-4 text-white shrink-0" />
             <span>Projects</span>
           </h2>
           <div className="flex items-center gap-1 shrink-0">
@@ -57,19 +57,19 @@ export default function Sidebar({ projects, selectedId, onSelect, onAddProject, 
               <GlassButton
                 variant="ghost"
                 onClick={onAddProject}
-                className="!p-2 sm:!p-1.5 min-h-[40px] min-w-[40px] sm:min-h-0 sm:min-w-0"
+                className="!p-2 sm:!p-1.5 min-h-[40px] min-w-[40px] sm:min-h-0 sm:min-w-0 text-white"
                 title="Add Project"
               >
-                <Plus className="w-5 h-5" />
+                <Plus className="w-5 h-5 text-white" />
               </GlassButton>
             </motion.div>
             <GlassButton
               variant="ghost"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="md:hidden !p-2 sm:!p-1.5 min-h-[40px] min-w-[40px]"
+              className="md:hidden !p-2 sm:!p-1.5 min-h-[40px] min-w-[40px] text-white"
               title="Close Sidebar"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5 text-white" />
             </GlassButton>
           </div>
         </div>
@@ -78,10 +78,10 @@ export default function Sidebar({ projects, selectedId, onSelect, onAddProject, 
           <div className="mb-3 sm:mb-4 flex flex-col gap-3">
             <button 
               onClick={() => onSelect('library')}
-              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl border transition-all duration-300 ${
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl border transition-all duration-300 cursor-pointer ${
                 selectedId === 'library' 
-                  ? 'bg-cyber-accent/10 border-cyber-accent text-cyber-text-primary' 
-                  : 'bg-white/5 border-white/5 text-cyber-text-secondary hover:bg-white/10 hover:text-cyber-text-primary hover:border-white/10'
+                  ? 'bg-white/10 border-white text-white font-bold shadow-sm' 
+                  : 'bg-white/5 border-white/5 text-white/60 hover:bg-white/10 hover:text-white hover:border-white/10'
               }`}
             >
               <Layers className="w-4 h-4 shrink-0" />

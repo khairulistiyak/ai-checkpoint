@@ -22,13 +22,13 @@ export default function PlanFilesTab({ project, onSwitchToGenerate }) {
       <motion.div initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-24 text-center px-4">
         <div className="relative mb-5">
           <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center relative z-10">
-            <Layers className="w-8 h-8 text-sky-400" />
+            <Layers className="w-8 h-8 text-white" />
           </div>
         </div>
         <h3 className="text-base font-bold text-white mb-1 font-outfit">No Architectural Blueprints Detected</h3>
-        <p className="text-xs text-white/50 max-w-sm mb-6">Create atomic task specifications in your <code className="text-sky-400 bg-white/5 px-1.5 py-0.5 rounded font-mono">plan/</code> directory or generate one instantly.</p>
+        <p className="text-xs text-white/50 max-w-sm mb-6">Create atomic task specifications in your <code className="text-white bg-white/5 px-1.5 py-0.5 rounded font-mono border border-white/10">plan/</code> directory or generate one instantly.</p>
         <GlassButton variant="primary" size="md" onClick={onSwitchToGenerate} className="flex items-center gap-2 font-semibold">
-          <Sparkles className="w-4 h-4 text-sky-400" /> Generate Architectural Plan
+          <Sparkles className="w-4 h-4 text-white" /> Generate Architectural Plan
         </GlassButton>
       </motion.div>
     );
@@ -40,10 +40,10 @@ export default function PlanFilesTab({ project, onSwitchToGenerate }) {
     <div className="flex flex-col lg:flex-row flex-1 overflow-hidden relative">
       {/* 1. When a file IS open: sleek compact eye-comfort sidebar */}
       {selectedFile && (
-        <div className="hidden lg:flex w-72 xl:w-80 shrink-0 border-r border-white/10 bg-[#070a10] flex-col overflow-hidden z-20">
+        <div className="hidden lg:flex w-72 xl:w-80 shrink-0 border-r border-white/10 bg-[#09090b] flex-col overflow-hidden z-20">
           <div className="px-4 py-4 border-b border-white/10 bg-black/20 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Layers className="w-4 h-4 text-sky-400" />
+              <Layers className="w-4 h-4 text-white" />
               <span className="text-xs font-mono font-bold text-white uppercase tracking-wider">
                 Blueprints
               </span>
@@ -68,7 +68,7 @@ export default function PlanFilesTab({ project, onSwitchToGenerate }) {
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div className={`p-1.5 rounded-lg border ${
-                      isSelected ? 'bg-sky-500/15 border-sky-500/30 text-sky-400' : 'bg-white/5 border-white/10 text-white/40 group-hover:text-white'
+                      isSelected ? 'bg-white/15 border-white/30 text-white' : 'bg-white/5 border-white/10 text-white/40 group-hover:text-white'
                     }`}>
                       <Cpu className="w-3.5 h-3.5" />
                     </div>
@@ -78,11 +78,11 @@ export default function PlanFilesTab({ project, onSwitchToGenerate }) {
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
                     <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-medium ${
-                      isSelected ? 'bg-sky-400/20 text-sky-300' : 'bg-white/5 text-white/50'
+                      isSelected ? 'bg-white/10 text-white border border-white/20' : 'bg-white/5 text-white/50'
                     }`}>
                       {file.steps} {file.steps === 1 ? 'step' : 'steps'}
                     </span>
-                    <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isSelected ? 'text-sky-400 translate-x-0.5' : 'text-white/20 opacity-0 group-hover:opacity-100'}`} />
+                    <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isSelected ? 'text-white translate-x-0.5' : 'text-white/20 opacity-0 group-hover:opacity-100'}`} />
                   </div>
                 </div>
               );
@@ -95,9 +95,9 @@ export default function PlanFilesTab({ project, onSwitchToGenerate }) {
       {!selectedFile && (
         <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
           {/* Top Repository Header (Restful dark matte) */}
-          <div className="rounded-2xl bg-[#0e121c] border border-white/10 p-5 flex flex-wrap items-center justify-between gap-4">
+          <div className="rounded-2xl bg-[#121214] border border-white/10 p-5 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-sky-400">
+              <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
                 <Layers className="w-6 h-6" />
               </div>
               <div>
@@ -105,8 +105,8 @@ export default function PlanFilesTab({ project, onSwitchToGenerate }) {
                   <span className="text-[10px] font-mono uppercase bg-white/5 text-white/70 px-2 py-0.5 rounded border border-white/10 font-bold">
                     REPOSITORY
                   </span>
-                  <span className="text-[11px] font-mono text-emerald-400 font-medium flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                  <span className="text-[11px] font-mono text-zinc-300 font-semibold flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white" />
                     LIVE BLUEPRINTS
                   </span>
                 </div>
@@ -124,7 +124,7 @@ export default function PlanFilesTab({ project, onSwitchToGenerate }) {
               <div className="w-px h-8 bg-white/10" />
               <div className="flex flex-col items-end">
                 <span className="text-white/40 text-[10px] uppercase">Atomic Steps</span>
-                <span className="text-sky-400 font-medium">{totalStepsAcrossFiles} Tasks</span>
+                <span className="text-white font-bold">{totalStepsAcrossFiles} Tasks</span>
               </div>
             </div>
           </div>
@@ -140,15 +140,15 @@ export default function PlanFilesTab({ project, onSwitchToGenerate }) {
                   transition={{ delay: idx * 0.05 }}
                   whileHover={{ y: -3 }}
                   onClick={() => setSelectedFile(file.name)}
-                  className="group rounded-2xl p-5 cursor-pointer flex flex-col justify-between gap-5 transition-all duration-200 bg-[#0e121c] border border-white/10 hover:border-white/20 hover:bg-[#131926]"
+                  className="group rounded-2xl p-5 cursor-pointer flex flex-col justify-between gap-5 transition-all duration-200 bg-[#121214] border border-white/10 hover:border-white/20 hover:bg-[#18181b]"
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-3.5 min-w-0">
-                      <div className="p-2.5 rounded-xl border bg-white/5 border-white/10 text-sky-400 group-hover:bg-white/10 transition-all">
+                      <div className="p-2.5 rounded-xl border bg-white/5 border-white/10 text-white group-hover:bg-white/10 transition-all">
                         <Cpu className="w-5 h-5" />
                       </div>
                       <div className="flex flex-col min-w-0">
-                        <span className="text-sm font-mono font-bold text-white truncate group-hover:text-sky-300 transition-colors">
+                        <span className="text-sm font-mono font-bold text-white truncate group-hover:text-white transition-colors">
                           {file.name}
                         </span>
                         <span className="text-[10px] font-mono text-white/50 uppercase tracking-wider">
@@ -166,7 +166,7 @@ export default function PlanFilesTab({ project, onSwitchToGenerate }) {
                       <Calendar className="w-3.5 h-3.5 text-white/40" />
                       {fmtDate(file.createdAt) || 'Saved Blueprint'}
                     </span>
-                    <div className="flex items-center gap-1 text-sky-400 font-medium group-hover:translate-x-1 transition-transform">
+                    <div className="flex items-center gap-1 text-white font-medium group-hover:translate-x-1 transition-transform">
                       <Eye className="w-3.5 h-3.5" />
                       <span>View Blueprint</span>
                       <ArrowRight className="w-3.5 h-3.5" />

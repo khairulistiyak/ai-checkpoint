@@ -1,8 +1,6 @@
 import React from 'react';
 import { Brain, Settings, Search, Menu, Command } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { GlassButton } from './ui/GlassButton';
-import { InputField } from './ui/InputField';
 
 export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleMenu, onOpenLibrary }) {
   return (
@@ -10,17 +8,17 @@ export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleM
       initial={{ y: -30, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
-      className="mt-4 mx-4 mb-3 md:mt-6 md:mx-6 md:mb-4 rounded-2xl border border-white/10 bg-[#0c101a] flex items-center justify-between px-4 md:px-6 py-3 sticky top-4 md:top-6 z-20"
+      className="mt-4 mx-4 mb-3 md:mt-6 md:mx-6 md:mb-4 rounded-2xl border border-white/10 bg-[#121214] flex items-center justify-between px-4 md:px-6 py-3 sticky top-4 md:top-6 z-20"
     >
       <div className="flex items-center gap-3 md:gap-4">
         <button
           onClick={onToggleMenu}
-          className="md:hidden p-2 -ml-2 text-white/50 hover:text-white rounded-lg transition-colors"
+          className="md:hidden p-2 -ml-2 text-white/50 hover:text-white rounded-lg transition-colors cursor-pointer"
         >
           <Menu className="w-5 h-5" />
         </button>
         <div
-          className="bg-white/5 border border-white/15 p-2 rounded-xl hidden sm:flex items-center justify-center text-sky-400"
+          className="bg-white/5 border border-white/15 p-2 rounded-xl hidden sm:flex items-center justify-center text-white"
         >
           <Brain className="w-5 h-5" />
         </div>
@@ -29,13 +27,13 @@ export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleM
             <span className="text-sm sm:text-base font-bold tracking-tight text-white font-outfit">
               AI-CHECKPOINT
             </span>
-            <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[9px] font-mono text-white/60 uppercase">
+            <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[9px] font-mono text-white/70 uppercase font-semibold">
               PRO v2.0
             </span>
           </div>
           <span 
             onClick={onOpenLibrary}
-            className="text-[10px] font-mono text-white/40 cursor-pointer hover:text-white/80 transition-colors"
+            className="text-[10px] font-mono text-zinc-400 cursor-pointer hover:text-white transition-colors"
             title="Open Component Library"
           >
             Developer Control Studio
@@ -53,13 +51,13 @@ export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleM
               <Search className="w-3.5 h-3.5 text-white/40" />
               <span>Search commands...</span>
             </span>
-            <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[10px] text-white/60 font-mono">⌘K</span>
+            <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[10px] text-white/70 font-mono">⌘K</span>
           </div>
         </div>
 
         <button
           onClick={onOpenCommandPalette}
-          className="md:hidden p-2 text-white/50 hover:text-white rounded-xl bg-white/5 border border-white/10 transition-colors"
+          className="md:hidden p-2 text-white/50 hover:text-white rounded-xl bg-white/5 border border-white/10 transition-colors cursor-pointer"
           title="Search"
         >
           <Search className="w-4 h-4" />
@@ -67,7 +65,7 @@ export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleM
 
         <button
           onClick={onOpenSettings}
-          className="p-2 text-white/50 hover:text-white rounded-xl bg-white/5 border border-white/10 hover:border-white/20 transition-colors"
+          className="p-2 text-white/50 hover:text-white rounded-xl bg-white/5 border border-white/10 hover:border-white/20 transition-colors cursor-pointer"
           title="Settings"
         >
           <Settings className="w-4 h-4" />

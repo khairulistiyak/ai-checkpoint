@@ -13,8 +13,8 @@ export default function MetricsDashboard({ progress, project }) {
   const plannedSteps = Math.max(0, totalPlanSteps - total);
 
   const metrics = [
-    { label: 'Completion', value: `${percentage}%`, icon: Target, color: 'text-sky-400', bg: 'bg-sky-500/10 border border-sky-400/20' },
-    { label: 'Steps Done', value: completed, icon: Activity, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border border-emerald-500/20' },
+    { label: 'Completion', value: `${percentage}%`, icon: Target, color: 'text-white', bg: 'bg-white/10 border border-white/20' },
+    { label: 'Steps Done', value: completed, icon: Activity, color: 'text-white', bg: 'bg-white/10 border border-white/20' },
     { label: 'Remaining', value: remaining, icon: Zap, color: 'text-white/70', bg: 'bg-white/5 border border-white/10' },
     { label: 'Active Phases', value: activePhases, icon: Layers, color: 'text-white/70', bg: 'bg-white/5 border border-white/10' },
     { label: 'Planned Steps', value: plannedSteps, icon: FileText, color: 'text-white/70', bg: 'bg-white/5 border border-white/10' },
@@ -30,7 +30,7 @@ export default function MetricsDashboard({ progress, project }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.08, duration: 0.3 }}
             key={m.label}
-            className="bg-[#0c101a] border border-white/10 hover:border-white/20 rounded-2xl p-5 flex flex-col items-start justify-center gap-1 group transition-all"
+            className="bg-[#121214] border border-white/10 hover:border-white/20 rounded-3xl p-5 flex flex-col items-start justify-center gap-1 group transition-all shadow-sm"
           >
             <div className="flex items-center justify-between w-full">
               <div className={`w-8 h-8 rounded-xl ${m.bg} flex items-center justify-center`}>

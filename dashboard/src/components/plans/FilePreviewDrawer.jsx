@@ -33,12 +33,12 @@ export default function FilePreviewDrawer({ projectId, filename, onClose }) {
       animate={{ x: 0, opacity: 1 }}
       exit={{ x: '100%', opacity: 0 }}
       transition={{ type: 'spring', stiffness: 350, damping: 32 }}
-      className="flex-1 w-full border-l border-white/10 bg-[#05070c]/98 backdrop-blur-3xl flex flex-col overflow-hidden shadow-2xl z-30"
+      className="flex-1 w-full border-l border-white/10 bg-[#09090b]/98 backdrop-blur-3xl flex flex-col overflow-hidden shadow-2xl z-30"
     >
       {/* Drawer Header with Architectural Mode Toggle */}
       <div className="flex flex-wrap items-center justify-between gap-3 px-6 py-4 border-b border-white/10 bg-black/60">
         <div className="flex items-center gap-3 min-w-0">
-          <div className="p-2 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan-400">
+          <div className="p-2 rounded-xl bg-white/10 border border-white/20 text-white">
             <FileCode className="w-4 h-4" />
           </div>
           <div className="flex flex-col min-w-0">
@@ -52,9 +52,9 @@ export default function FilePreviewDrawer({ projectId, filename, onClose }) {
           <div className="flex items-center p-1 rounded-xl bg-white/5 border border-white/10 text-xs font-mono">
             <button
               onClick={() => setViewMode('architect')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all cursor-pointer ${
                 viewMode === 'architect' 
-                  ? 'bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/30 shadow-sm' 
+                  ? 'bg-white/15 text-white font-bold border border-white/30 shadow-sm' 
                   : 'text-white/50 hover:text-white'
               }`}
             >
@@ -63,9 +63,9 @@ export default function FilePreviewDrawer({ projectId, filename, onClose }) {
             </button>
             <button
               onClick={() => setViewMode('raw')}
-              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all cursor-pointer ${
                 viewMode === 'raw' 
-                  ? 'bg-white/10 text-white font-bold border border-white/15 shadow-sm' 
+                  ? 'bg-white/15 text-white font-bold border border-white/30 shadow-sm' 
                   : 'text-white/50 hover:text-white'
               }`}
             >
@@ -76,16 +76,16 @@ export default function FilePreviewDrawer({ projectId, filename, onClose }) {
 
           <button
             onClick={copyContent}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white/70 hover:text-white text-xs font-mono transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white/70 hover:text-white text-xs font-mono transition-all cursor-pointer"
             title="Copy entire markdown content"
           >
-            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? <Check className="w-3.5 h-3.5 text-white" /> : <Copy className="w-3.5 h-3.5" />}
             {copied ? 'Copied' : 'Copy'}
           </button>
 
           <button 
             onClick={onClose} 
-            className="p-1.5 rounded-xl bg-white/5 border border-white/10 text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+            className="p-1.5 rounded-xl bg-white/5 border border-white/10 text-white/50 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
           >
             <X className="w-4 h-4" />
           </button>
@@ -96,7 +96,7 @@ export default function FilePreviewDrawer({ projectId, filename, onClose }) {
       <div className="flex-1 p-6 sm:p-8 overflow-y-auto custom-scrollbar bg-cyber-dark">
         {loading ? (
           <div className="flex flex-col items-center justify-center h-full gap-3 text-white/50">
-            <Loader2 className="w-6 h-6 animate-spin text-cyan-400" />
+            <Loader2 className="w-6 h-6 animate-spin text-white" />
             <span className="text-xs font-mono">Loading architectural specification...</span>
           </div>
         ) : viewMode === 'architect' ? (
@@ -110,7 +110,7 @@ export default function FilePreviewDrawer({ projectId, filename, onClose }) {
             <div className="select-none text-white/20 text-right font-mono text-xs space-y-0.5 min-w-[2rem]">
               {content.split('\n').map((_, i) => <div key={i}>{i + 1}</div>)}
             </div>
-            <pre className="text-slate-200 whitespace-pre-wrap flex-1 text-xs space-y-0.5 overflow-x-auto">
+            <pre className="text-zinc-200 whitespace-pre-wrap flex-1 text-xs space-y-0.5 overflow-x-auto">
               {content}
             </pre>
           </div>

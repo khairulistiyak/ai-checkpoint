@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Search, Layers, Activity, Rocket } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 import PhaseView from '../PhaseView';
+import FilePreviewDrawer from './FilePreviewDrawer';
 
 export default function PlanProgressTab({
   project,
@@ -14,8 +16,10 @@ export default function PlanProgressTab({
   setSelectedPhaseNumber,
   onRefresh
 }) {
+  const [selectedPlanFile, setSelectedPlanFile] = useState(null);
+
   return (
-    <div className="flex-1 flex flex-col min-h-0 bg-[#0c101a]">
+    <div className="flex-1 flex flex-col min-h-0 bg-[#09090b] relative overflow-hidden">
       <div className="p-4 md:px-6 border-b border-white/10 flex flex-wrap items-center justify-between gap-4 bg-black/20 shrink-0">
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -38,7 +42,7 @@ export default function PlanProgressTab({
                   key={status}
                   onClick={() => setStatusFilter(status)}
                   className={`px-2.5 py-1 rounded-lg text-xs font-mono transition-all cursor-pointer ${
-                    active ? 'bg-sky-500/20 text-sky-300 border border-sky-400/30' : 'text-white/60 hover:text-white'
+                    active ? 'bg-white/10 text-white border border-white/25 font-bold' : 'text-white/60 hover:text-white'
                   }`}
                 >
                   {labels[status]}
@@ -55,9 +59,9 @@ export default function PlanProgressTab({
             onChange={(e) => setSelectedPhaseNumber(e.target.value)}
             className="bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white font-mono focus:outline-none focus:border-white/20"
           >
-            <option value="all" className="bg-[#0e121e]">All Phases</option>
+            <option value="all" className="bg-[#121214]">All Phases</option>
             {allPhases.map((phase) => (
-              <option key={phase.number} value={phase.number} className="bg-[#0e121e]">
+              <option key={phase.number} value={phase.number} className="bg-[#121214]">
                 Phase {phase.number}: {phase.title}
               </option>
             ))}
@@ -80,11 +84,25 @@ export default function PlanProgressTab({
               key={phase.number}
               phase={phase}
               projectId={project?.id}
+              planFiles={project?.planStats?.files || []}
+              onOpenArchitect={(filename) => setSelectedPlanFile(filename)}
               onRefresh={onRefresh}
             />
           ))
         )}
       </div>
+
+      <AnimatePresence>
+        {selectedPlanFile && (
+          <div className="absolute inset-0 z-40 flex bg-black/60 backdrop-blur-sm">
+            <FilePreviewDrawer
+              projectId={project?.id}
+              filename={selectedPlanFile}
+              onClose={() => setSelectedPlanFile(null)}
+            />
+          </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

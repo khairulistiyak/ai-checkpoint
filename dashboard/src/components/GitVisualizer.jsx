@@ -48,14 +48,14 @@ export default function GitVisualizer({ projectId, onRefresh }) {
   if (loading) {
     return (
       <div className="flex justify-center p-8">
-        <Loader2 className="w-8 h-8 animate-spin text-accent-400" />
+        <Loader2 className="w-8 h-8 animate-spin text-white" />
       </div>
     );
   }
 
   if (checkpoints.length === 0) {
     return (
-      <div className="h-full flex items-center justify-center p-8 text-center text-slate-400 italic">
+      <div className="h-full flex items-center justify-center p-8 text-center text-white/50 italic font-mono text-xs">
         No checkpoints found. Use `./l cp save "message"` to create one.
       </div>
     );
@@ -64,50 +64,52 @@ export default function GitVisualizer({ projectId, onRefresh }) {
   return (
     <>
       <div className="relative min-h-full py-2">
-        <div className="absolute left-4 top-2 bottom-2 w-px bg-slate-700/50"></div>
-        <div className="space-y-6">
+        <div className="absolute left-4 top-2 bottom-2 w-px bg-white/15"></div>
+        <div className="space-y-4">
           {checkpoints.map((cp, idx) => (
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: idx * 0.1 }}
+              transition={{ delay: idx * 0.05 }}
               key={cp.hash}
               className="flex items-start gap-4 group relative z-10"
             >
-              <div className="w-8 h-8 rounded-full bg-slate-900 border border-primary-500/50 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(139,92,246,0.2)] mt-1 group-hover:border-accent-400 transition-colors z-10">
-                <div className="w-2 h-2 rounded-full bg-primary-400 group-hover:bg-accent-400 transition-colors"></div>
+              <div className="w-8 h-8 rounded-full bg-[#09090b] border border-white/30 flex items-center justify-center shrink-0 shadow-sm mt-1 group-hover:border-white transition-colors z-10">
+                <div className="w-2 h-2 rounded-full bg-white transition-colors"></div>
               </div>
-              <div className="flex-1 bg-slate-900/40 border border-slate-800 rounded-xl p-4 group-hover:border-slate-600 transition-colors flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+              <div className="flex-1 bg-white/[0.03] border border-white/10 rounded-2xl p-4 group-hover:border-white/25 group-hover:bg-white/[0.05] transition-all flex flex-col sm:flex-row justify-between sm:items-center gap-4">
                 <div className="min-w-0">
-                  <div className="flex items-center gap-3 mb-1 flex-wrap">
-                    <span className="font-mono text-xs text-accent-300 bg-accent-500/10 px-2 py-0.5 rounded border border-accent-500/20 shrink-0">{cp.hash}</span>
-                    <span className="text-xs text-slate-400 flex items-center gap-1 shrink-0">
-                      <Clock className="w-3 h-3" /> {cp.timeAgo}
+                  <div className="flex items-center gap-2.5 mb-1.5 flex-wrap">
+                    <span className="font-mono text-xs text-white bg-white/10 px-2.5 py-0.5 rounded-full border border-white/20 shrink-0 font-bold">{cp.hash}</span>
+                    <span className="text-xs text-white/60 flex items-center gap-1 shrink-0 font-mono">
+                      <Clock className="w-3 h-3 text-white/40" /> {cp.timeAgo}
                     </span>
-                    <span className="text-xs text-slate-500 truncate">{cp.author}</span>
+                    <span className="text-xs text-white/50 truncate font-mono">{cp.author}</span>
                   </div>
-                  <div className="text-slate-200 text-sm truncate pr-2" title={cp.message}>{cp.message.replace(/^(?:aicp\/[^\s]+|checkpoint:)\s*/i, '')}</div>
+                  <div className="text-white font-medium text-sm truncate pr-2 font-mono" title={cp.message}>
+                    {cp.message.replace(/^(?:aicp\/[^\s]+|checkpoint:)\s*/i, '')}
+                  </div>
                 </div>
                 <button
                   onClick={() => setConfirmHash(cp.hash)}
                   disabled={rollingBack}
-                  className="px-3 py-1.5 bg-slate-800 hover:bg-red-500/20 text-slate-300 hover:text-red-400 rounded-lg text-xs font-medium transition-colors border border-transparent hover:border-red-500/30 flex items-center justify-center gap-2 shrink-0 self-end sm:self-auto w-full sm:w-auto mt-2 sm:mt-0"
+                  className="px-3.5 py-2 bg-white/5 hover:bg-red-500/20 text-white/70 hover:text-red-300 rounded-xl text-xs font-mono font-bold uppercase tracking-wider transition-all border border-white/10 hover:border-red-500/30 flex items-center justify-center gap-2 shrink-0 self-end sm:self-auto w-full sm:w-auto mt-2 sm:mt-0 cursor-pointer"
                 >
-                  {rollingBack ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <RotateCcw className="w-3.5 h-3.5" />}
-                  Rollback
+                  {rollingBack ? <Loader2 className="w-3.5 h-3.5 animate-spin text-white" /> : <RotateCcw className="w-3.5 h-3.5" />}
+                  <span>Rollback</span>
                 </button>
               </div>
             </motion.div>
           ))}
         </div>
       </div>
+
       <ConfirmModal
-        isOpen={!!confirmHash}
+        isOpen={Boolean(confirmHash)}
         title="Rollback Checkpoint"
-        message={`This will reset the project to checkpoint ${confirmHash}. All unsaved changes will be lost.`}
+        message={`Are you sure you want to rollback to checkpoint ${confirmHash}? This will reset local files to that state.`}
         confirmText="Yes, Rollback"
-        cancelText="Cancel"
-        danger={true}
+        confirmStyle="danger"
         onConfirm={handleRollback}
         onCancel={() => setConfirmHash(null)}
       />

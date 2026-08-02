@@ -245,7 +245,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
   return (
     <div className="space-y-8 pb-16 font-outfit text-white/90 relative">
       {/* 1. RESTFUL LINEAR DARK ARCHITECTURAL HEADER */}
-      <div className="relative overflow-hidden rounded-3xl bg-[#0e121e] border border-white/10 p-6 sm:p-8">
+      <div className="relative overflow-hidden rounded-3xl bg-[#121214] border border-white/10 p-6 sm:p-8">
         {/* Soft Subtle CAD Pattern */}
         <div 
           className="absolute inset-0 opacity-[0.06] pointer-events-none" 
@@ -259,12 +259,12 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
         <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-3.5 max-w-2xl">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-white/5 border border-white/15 text-sky-400 font-mono text-[11px] font-bold uppercase tracking-widest flex items-center gap-1.5">
-                <Cpu className="w-3.5 h-3.5 text-sky-400" />
+              <span className="px-3 py-1 rounded-full bg-white/5 border border-white/15 text-white font-mono text-[11px] font-bold uppercase tracking-widest flex items-center gap-1.5">
+                <Cpu className="w-3.5 h-3.5 text-white" />
                 SYSTEM ARCHITECTURE BLUEPRINT
               </span>
-              <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-[11px] font-medium flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span className="px-3 py-1 rounded-full bg-white/10 border border-white/20 text-white font-mono text-[11px] font-bold flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-white" />
                 INTEGRITY VERIFIED • v1.0
               </span>
             </div>
@@ -280,20 +280,20 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
           <div className="flex flex-wrap lg:flex-col items-start lg:items-end gap-3 shrink-0">
             <button
               onClick={copyFullSpecAsPrompt}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-xs font-bold transition-all duration-200 border ${
+              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl font-mono text-xs font-bold transition-all duration-200 border cursor-pointer ${
                 copiedSpec 
-                  ? 'bg-emerald-500/20 border-emerald-500 text-emerald-300' 
+                  ? 'bg-white/20 border-white text-white' 
                   : 'bg-white/10 border-white/20 hover:bg-white/15 text-white'
               }`}
             >
               {copiedSpec ? (
                 <>
-                  <Check className="w-4 h-4 text-emerald-400" />
+                  <Check className="w-4 h-4 text-white" />
                   <span>COPIED AGENT PROMPT!</span>
                 </>
               ) : (
                 <>
-                  <Zap className="w-4 h-4 text-sky-400" />
+                  <Zap className="w-4 h-4 text-white" />
                   <span>COPY AI AGENT PROMPT</span>
                 </>
               )}
@@ -304,7 +304,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
               <div className="flex flex-col items-end">
                 <span className="text-[10px] font-mono text-white/50 uppercase tracking-wider">Health Index</span>
                 <div className="flex items-center gap-1.5 mt-0.5">
-                  <Award className="w-4 h-4 text-cyan-400" />
+                  <Award className="w-4 h-4 text-white" />
                   <span className="text-2xl font-black text-white font-mono">{percentage}%</span>
                 </div>
               </div>
@@ -313,7 +313,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
 
               <div className="flex flex-col items-end">
                 <span className="text-[10px] font-mono text-white/50 uppercase tracking-wider">Tasks</span>
-                <span className="text-sm font-bold text-emerald-400 font-mono mt-0.5">
+                <span className="text-sm font-bold text-white font-mono mt-0.5">
                   {stats.completedTasks}/{stats.totalTasks} DONE
                 </span>
               </div>
@@ -356,13 +356,13 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                   <React.Fragment key={idx}>
                     <button
                       onClick={() => scrollToModule(idx)}
-                      className={`flex items-center gap-3 px-4 py-2.5 rounded-2xl border text-left shrink-0 transition-all group ${
+                      className={`flex items-center gap-3 px-4 py-2.5 rounded-2xl border text-left shrink-0 transition-all group cursor-pointer ${
                         isSelected
-                          ? 'bg-gradient-to-r from-cyan-500/25 to-cyan-500/10 border-cyan-400 text-white shadow-[0_0_20px_rgba(6,182,212,0.3)] scale-105'
-                          : 'bg-white/5 border-white/10 hover:border-cyan-500/40 text-white/80 hover:text-white'
+                          ? 'bg-white/10 border-white/30 text-white shadow-sm scale-105'
+                          : 'bg-white/5 border-white/10 hover:border-white/20 text-white/80 hover:text-white'
                       }`}
                     >
-                      <span className="w-7 h-7 rounded-xl bg-cyan-500/20 text-cyan-300 font-mono text-xs font-black flex items-center justify-center border border-cyan-500/40 group-hover:scale-105 transition-transform">
+                      <span className="w-7 h-7 rounded-xl bg-white/10 text-white font-mono text-xs font-black flex items-center justify-center border border-white/20 group-hover:scale-105 transition-transform">
                         {mod.number}
                       </span>
                       <div className="flex flex-col">
@@ -373,7 +373,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                       </div>
                     </button>
                     {idx < modules.length - 1 && (
-                      <ArrowRight className="w-4 h-4 text-cyan-500/40 shrink-0" />
+                      <ArrowRight className="w-4 h-4 text-white/30 shrink-0" />
                     )}
                   </React.Fragment>
                 );
@@ -388,9 +388,9 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setFilterType('all')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer ${
               filterType === 'all'
-                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
+                ? 'bg-white/10 text-white border border-white/30 shadow-sm'
                 : 'text-white/50 hover:text-white hover:bg-white/5'
             }`}
           >
@@ -398,9 +398,9 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
           </button>
           <button
             onClick={() => setFilterType('tasks')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
               filterType === 'tasks'
-                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm'
+                ? 'bg-white/10 text-white border border-white/30 shadow-sm'
                 : 'text-white/50 hover:text-white hover:bg-white/5'
             }`}
           >
@@ -409,9 +409,9 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
           </button>
           <button
             onClick={() => setFilterType('code')}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all flex items-center gap-1.5 ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-mono font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
               filterType === 'code'
-                ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40 shadow-sm'
+                ? 'bg-white/10 text-white border border-white/30 shadow-sm'
                 : 'text-white/50 hover:text-white hover:bg-white/5'
             }`}
           >
@@ -428,7 +428,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
             placeholder="Filter spec content..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-9 pr-4 py-1.5 rounded-xl bg-black/60 border border-white/10 text-xs font-mono text-white placeholder-white/40 focus:outline-none focus:border-cyan-500/50"
+            className="w-full pl-9 pr-4 py-1.5 rounded-xl bg-black/60 border border-white/10 text-xs font-mono text-white placeholder-white/40 focus:outline-none focus:border-white/40"
           />
         </div>
       </div>
@@ -453,15 +453,15 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                 className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-black/80 via-black/50 to-black/40 border border-white/10 hover:border-cyan-500/30 transition-all shadow-2xl"
               >
                 {/* Left Holographic Status Bar */}
-                <div className="absolute top-0 bottom-0 left-0 w-1.5 bg-gradient-to-b from-cyan-400 via-emerald-400 to-cyan-500" />
+                <div className="absolute top-0 bottom-0 left-0 w-1 bg-white/30" />
 
                 {/* Collapsible Module Header Bar */}
                 <button
                   onClick={() => toggleCollapse(modIdx)}
-                  className="w-full px-6 py-5 bg-white/[0.02] border-b border-white/10 flex flex-wrap items-center justify-between gap-4 hover:bg-white/[0.04] transition-colors text-left"
+                  className="w-full px-6 py-5 bg-white/[0.02] border-b border-white/10 flex flex-wrap items-center justify-between gap-4 hover:bg-white/[0.04] transition-colors text-left cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="px-3 py-1 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 font-mono text-xs font-black shadow-sm">
+                    <span className="px-3 py-1 rounded-xl bg-white/10 border border-white/20 text-white font-mono text-xs font-bold shadow-sm">
                       LAYER {mod.number}
                     </span>
                     <h2 className="text-base sm:text-xl font-bold text-white tracking-tight">
@@ -473,11 +473,11 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                     {mod.tasksTotal > 0 && (
                       <div className="flex items-center gap-3 font-mono text-xs">
                         <span className="text-white/60">
-                          Verified: <strong className="text-emerald-400">{mod.tasksDone}/{mod.tasksTotal}</strong>
+                          Verified: <strong className="text-white">{mod.tasksDone}/{mod.tasksTotal}</strong>
                         </span>
                         <div className="w-24 h-2 rounded-full bg-white/10 overflow-hidden">
                           <div
-                            className="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 transition-all duration-500"
+                            className="h-full bg-white transition-all duration-500"
                             style={{ width: `${modPercent}%` }}
                           />
                         </div>
@@ -504,8 +504,8 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                         if (block.type === 'h3') {
                           return (
                             <div key={idx} className="flex items-center gap-2 pt-3 pb-1 border-b border-white/5">
-                              <div className="w-2 h-2 rounded-full bg-cyan-400" />
-                              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-cyan-400 font-mono">
+                              <div className="w-2 h-2 rounded-full bg-white" />
+                              <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white font-mono">
                                 {block.text}
                               </h3>
                             </div>
@@ -517,10 +517,10 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                             <div key={idx} className="bg-black/60 border border-white/10 rounded-2xl p-5 space-y-3 my-4 shadow-inner">
                               <div className="text-xs font-mono text-white/60 uppercase tracking-widest pb-2 border-b border-white/10 flex items-center justify-between">
                                 <span className="flex items-center gap-1.5">
-                                  <ShieldCheck className="w-4 h-4 text-emerald-400" />
+                                  <ShieldCheck className="w-4 h-4 text-white" />
                                   <span>Atomic Execution Checkpoints</span>
                                 </span>
-                                <span className="text-cyan-400 font-bold bg-cyan-500/10 px-2 py-0.5 rounded-full border border-cyan-500/20">
+                                <span className="text-white font-bold bg-white/10 px-2 py-0.5 rounded-full border border-white/20">
                                   {block.items.length} Tasks
                                 </span>
                               </div>
@@ -529,13 +529,13 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                                   key={i}
                                   className={`flex items-start gap-3.5 p-3.5 rounded-xl transition-all border ${
                                     item.checked
-                                      ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300 shadow-[0_0_20px_rgba(16,185,129,0.1)]'
+                                      ? 'bg-white/10 border-white/30 text-white shadow-sm'
                                       : 'bg-white/[0.02] border-white/10 text-white/90 hover:border-white/20'
                                   }`}
                                 >
                                   <div className="mt-0.5 shrink-0">
                                     {item.checked ? (
-                                      <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                                      <CheckCircle2 className="w-5 h-5 text-white" />
                                     ) : (
                                       <Circle className="w-5 h-5 text-white/30" />
                                     )}
@@ -547,7 +547,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                                   </div>
                                   <span className={`text-[10px] font-mono px-2.5 py-0.5 rounded-full uppercase tracking-wider shrink-0 font-bold border ${
                                     item.checked 
-                                      ? 'bg-emerald-500/25 text-emerald-300 border-emerald-500/40' 
+                                      ? 'bg-white/15 text-white border-white/30' 
                                       : 'bg-white/5 text-white/40 border-white/10'
                                   }`}>
                                     {item.checked ? '✓ VERIFIED' : 'PENDING'}
@@ -560,27 +560,27 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
 
                         if (block.type === 'codeblock') {
                           return (
-                            <div key={idx} className="bg-[#05070c] rounded-2xl border border-white/15 overflow-hidden my-5 shadow-2xl">
+                            <div key={idx} className="bg-[#09090b] rounded-2xl border border-white/15 overflow-hidden my-5 shadow-2xl">
                               {/* Mac-style IDE title bar */}
                               <div className="flex items-center justify-between px-5 py-3 bg-white/5 border-b border-white/10 text-xs font-mono">
                                 <div className="flex items-center gap-3">
                                   <div className="flex items-center gap-1.5">
-                                    <div className="w-3 h-3 rounded-full bg-rose-500/90" />
-                                    <div className="w-3 h-3 rounded-full bg-amber-500/90" />
-                                    <div className="w-3 h-3 rounded-full bg-emerald-500/90" />
+                                    <div className="w-3 h-3 rounded-full bg-white/20" />
+                                    <div className="w-3 h-3 rounded-full bg-white/30" />
+                                    <div className="w-3 h-3 rounded-full bg-white/40" />
                                   </div>
-                                  <span className="uppercase tracking-wider text-xs font-black text-cyan-300 bg-cyan-500/20 px-2.5 py-0.5 rounded border border-cyan-500/30">
+                                  <span className="uppercase tracking-wider text-xs font-bold text-white bg-white/10 px-2.5 py-0.5 rounded border border-white/20">
                                     {block.language}
                                   </span>
                                 </div>
                                 <button
                                   onClick={() => copySnippet(block.code, idx)}
-                                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/15 text-white/80 hover:text-white transition-all text-xs font-mono border border-white/10 shadow-sm"
+                                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/15 text-white/80 hover:text-white transition-all text-xs font-mono border border-white/10 shadow-sm cursor-pointer"
                                 >
                                   {copiedCodeIndex === idx ? (
                                     <>
-                                      <Check className="w-3.5 h-3.5 text-emerald-400" />
-                                      <span className="text-emerald-400 font-bold">Copied</span>
+                                      <Check className="w-3.5 h-3.5 text-white" />
+                                      <span className="text-white font-bold">Copied</span>
                                     </>
                                   ) : (
                                     <>
@@ -591,7 +591,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                                 </button>
                               </div>
                               <div className="p-5 overflow-x-auto custom-scrollbar">
-                                <pre className="text-xs font-mono leading-relaxed text-slate-200">
+                                <pre className="text-xs font-mono leading-relaxed text-zinc-200">
                                   {block.code}
                                 </pre>
                               </div>
@@ -601,7 +601,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
 
                         if (block.type === 'quote') {
                           return (
-                            <div key={idx} className="p-5 rounded-2xl bg-cyan-950/30 border-l-4 border-cyan-400 text-xs sm:text-sm font-mono text-cyan-200/90 my-4 shadow-sm">
+                            <div key={idx} className="p-5 rounded-2xl bg-white/5 border-l-4 border-white/30 text-xs sm:text-sm font-mono text-zinc-300 my-4 shadow-sm">
                               {formatTextWithBadges(block.text)}
                             </div>
                           );
@@ -612,7 +612,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                             <ul key={idx} className="space-y-3 pl-2 my-4">
                               {block.items.map((item, i) => (
                                 <li key={i} className="flex items-start gap-3 text-xs sm:text-sm leading-relaxed text-white/80">
-                                  <span className="w-2 h-2 rounded-full bg-cyan-400 mt-2 shrink-0 shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
+                                  <span className="w-1.5 h-1.5 rounded-full bg-white mt-2 shrink-0" />
                                   <span>{formatTextWithBadges(item)}</span>
                                 </li>
                               ))}

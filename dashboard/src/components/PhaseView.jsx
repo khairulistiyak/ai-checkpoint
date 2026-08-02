@@ -1,11 +1,31 @@
 import React, { useState } from 'react';
-import { ChevronDown, CheckCircle2 } from 'lucide-react';
+import { ChevronDown, CheckCircle2, Layers } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import StepItem from './StepItem';
 
-export default function PhaseView({ phase, isActive, index, projectId, hasPlanFiles, onRefresh }) {
+function findPlanFileForPhase(phase, planFiles = []) {
+  if (!phase || !planFiles.length) return null;
+  const byNumber = planFiles.find((f) => {
+    const match = f.name.match(/(?:^|[-_])(?:phase)?[-_]?(\d+)(?:[-_.]|$)/i);
+    return match && parseInt(match[1], 10) === phase.number;
+  });
+  if (byNumber) return byNumber;
+
+  if (phase.name) {
+    const clean = phase.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    if (clean.length > 3) {
+      const byName = planFiles.find((f) => f.name.toLowerCase().includes(clean));
+      if (byName) return byName;
+    }
+  }
+
+  return planFiles.find((f) => f.name.toLowerCase().includes('plan')) || planFiles[0] || null;
+}
+
+export default function PhaseView({ phase, isActive, index, projectId, hasPlanFiles, planFiles = [], onOpenArchitect, onRefresh }) {
   const [expanded, setExpanded] = useState(isActive || phase.percentage < 100);
   const isDone = phase.percentage === 100;
+  const matchingFile = findPlanFileForPhase(phase, planFiles);
 
   return (
     <motion.div
@@ -14,20 +34,20 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
       transition={{ delay: index * 0.05, duration: 0.2 }}
       className={`bg-black/25 border rounded-2xl mb-4 overflow-hidden transition-all ${
         isActive 
-          ? 'border-cyan-500/30 bg-cyan-950/10' 
+          ? 'border-white/20 bg-white/[0.04]' 
           : 'border-white/5 hover:border-white/10'
       }`}
     >
-      <button
+      <div
         onClick={() => setExpanded(!expanded)}
-        className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/[0.02] transition-colors focus:outline-none group"
+        className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/[0.02] transition-colors cursor-pointer select-none group"
       >
         <div className="flex items-center gap-4 min-w-0 flex-1 pr-4 text-left">
           <div className={`w-8 h-8 rounded-xl flex items-center justify-center font-mono text-xs font-bold shrink-0 border ${
             isDone 
-              ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' 
+              ? 'bg-white/10 text-white/70 border-white/20' 
               : isActive 
-                ? 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40' 
+                ? 'bg-white/15 text-white border-white/30' 
                 : 'bg-white/5 text-white/40 border-white/5'
           }`}>
             {isDone ? '✓' : phase.number}
@@ -44,11 +64,25 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
+          {matchingFile && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                if (onOpenArchitect) onOpenArchitect(matchingFile.name);
+              }}
+              className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/15 text-zinc-300 hover:text-white border border-white/15 flex items-center gap-1.5 font-mono text-xs font-bold transition-all shrink-0 shadow-sm cursor-pointer"
+              title={`Open Architect View (${matchingFile.name})`}
+            >
+              <Layers className="w-3.5 h-3.5 text-zinc-400" />
+              <span>Architect View</span>
+            </button>
+          )}
+
           <span className={`text-xs font-mono font-bold px-2.5 py-1 rounded-lg border ${
             isDone 
-              ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' 
+              ? 'bg-white/10 text-white/70 border-white/20' 
               : isActive 
-                ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20' 
+                ? 'bg-white/15 text-white border-white/30' 
                 : 'bg-white/5 text-white/40 border-white/5'
           }`}>
             {phase.percentage}%
@@ -61,7 +95,7 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
             <ChevronDown className="w-4 h-4 text-white/40" />
           </motion.div>
         </div>
-      </button>
+      </div>
 
       <AnimatePresence>
         {expanded && (
@@ -84,7 +118,9 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
                     step={step}
                     index={idx} 
                     projectId={projectId} 
-                    hasPlanFiles={hasPlanFiles} 
+                    hasPlanFiles={hasPlanFiles}
+                    matchingFile={matchingFile}
+                    onOpenArchitect={onOpenArchitect}
                     onRefresh={onRefresh} 
                   />
                 ))

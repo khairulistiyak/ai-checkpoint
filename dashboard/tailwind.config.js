@@ -13,15 +13,15 @@ export default {
       },
       colors: {
         cyber: {
-          dark: "#08090a",
-          card: "#0d0e12",
-          "card-border": "#ffffff0d", // 5% white
-          primary: "#ffffff",
-          secondary: "#a1a1aa",
-          accent: "#00f0ff", // Neon Cyan
-          "text-primary": "#f3f4f6",
-          "text-secondary": "#a1a1aa",
-          "text-muted": "#52525b",
+          dark: "#09090b",           // Apple/Linear Studio Matte Black
+          card: "#121214",           // Minimalist Dark Charcoal Card
+          "card-border": "#ffffff14",// Subtle 8% white border
+          primary: "#ffffff",        // Pure white
+          secondary: "#a1a1aa",      // Clean silver gray (zinc-400)
+          accent: "#ffffff",         // Clean monochrome white accent
+          "text-primary": "#f4f4f5", // Bright crisp zinc-100
+          "text-secondary": "#a1a1aa",// Muted zinc-400
+          "text-muted": "#71717a",   // Muted zinc-500
         }
       }
     },

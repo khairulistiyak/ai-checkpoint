@@ -60,7 +60,7 @@ export default function PlanCard({ project, onOpenPlan }) {
               </div>
             )}
           </div>
-          <button className="px-3.5 py-1.5 rounded-lg bg-sky-500/10 border border-sky-400/20 group-hover:bg-sky-500/20 group-hover:border-sky-400/40 text-[10px] font-bold text-sky-400 group-hover:text-white uppercase tracking-wider font-mono flex items-center gap-1 transition-all duration-300 pointer-events-none">
+          <button className="px-3.5 py-1.5 rounded-lg bg-white/10 border border-white/20 group-hover:bg-white group-hover:border-white text-[10px] font-bold text-white group-hover:text-zinc-950 uppercase tracking-wider font-mono flex items-center gap-1 transition-all duration-300 pointer-events-none">
             Open Plan <span className="text-[11px] transition-transform duration-300 group-hover:translate-x-0.5">→</span>
           </button>
         </div>
