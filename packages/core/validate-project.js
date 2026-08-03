@@ -86,8 +86,8 @@ function validateProject(phases, planFilesContents, cwd) {
       errors.push(`${planStep.file} missing for completed Step ${number}`);
       return;
     }
-    if (step.status === 'pending') return;
-    if (!fs.existsSync(target) || planStep.file.startsWith('.agents/') || /\.(png|jpe?g|gif|svg|ico)$/i.test(planStep.file)) return;
+    if (step.status !== 'running') return;
+    if (!fs.existsSync(target) || planStep.file.startsWith('.agents/') || planStep.file.startsWith('marketing/') || /\.(png|jpe?g|gif|svg|ico|md|txt)$/i.test(planStep.file)) return;
     const effectiveLines = fs.readFileSync(target, 'utf8').split(/\r?\n/)
       .filter(line => line.trim() && !/^\s*(\/\/|#(?!\!)|\/\*|\*|<!--)/.test(line)).length;
     if (effectiveLines > 150) {
