@@ -250,7 +250,7 @@ export default function FilePreviewDrawer({
               onClick={() => setShowToc(!showToc)}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-mono transition-all cursor-pointer ${
                 showToc
-                  ? 'bg-white/15 text-white border-white/30 shadow-sm'
+                  ? 'bg-cyber-accent/10 text-cyber-accent border-cyber-accent/30 shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.1)]'
                   : 'bg-white/5 hover:bg-white/10 text-white/60 hover:text-white border-white/10'
               }`}
               title="Toggle Table of Contents Minimap (O)"
@@ -265,7 +265,7 @@ export default function FilePreviewDrawer({
                 onClick={() => setViewMode('architect')}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all cursor-pointer ${
                   viewMode === 'architect' 
-                    ? 'bg-white/15 text-white font-bold border border-white/30 shadow-sm' 
+                    ? 'bg-cyber-accent/10 text-cyber-accent font-bold border border-cyber-accent/30 shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.15)]' 
                     : 'text-white/50 hover:text-white'
                 }`}
               >
@@ -363,12 +363,12 @@ export default function FilePreviewDrawer({
                         <button
                           key={idx}
                           onClick={() => scrollToElement(item.id)}
-                          className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-mono text-white/90 hover:text-white hover:bg-white/10 transition-colors flex items-center gap-2 group cursor-pointer"
+                          className="w-full text-left px-2.5 py-1.5 rounded-lg text-xs font-mono text-white/90 hover:text-white hover:bg-cyber-accent/10 hover:shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.15)] transition-all flex items-center gap-2 group cursor-pointer"
                         >
-                          <span className="w-4 h-4 rounded bg-white/10 text-white text-[10px] font-bold flex items-center justify-center shrink-0 border border-white/15">
+                          <span className="w-4 h-4 rounded bg-white/10 group-hover:bg-cyber-accent/20 group-hover:text-cyber-accent group-hover:border-cyber-accent/40 text-white text-[10px] font-bold flex items-center justify-center shrink-0 border border-white/15 transition-all">
                             {item.index + 1}
                           </span>
-                          <span className="truncate font-semibold">{item.title}</span>
+                          <span className="truncate font-semibold group-hover:text-cyber-accent transition-colors">{item.title}</span>
                         </button>
                       );
                     }

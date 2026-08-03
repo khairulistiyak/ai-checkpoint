@@ -135,3 +135,6 @@
 {"ts":"2026-08-03T04:19:50.336Z","action":"MODIFIED","file":"dashboard/src/index.css","size":2516}
 {"ts":"2026-08-03T04:26:35.048Z","action":"MODIFIED","file":"dashboard/src/components/ProjectGrid.jsx","size":22171}
 {"ts":"2026-08-03T04:26:58.799Z","action":"MODIFIED","file":"dashboard/src/components/ProjectCard.jsx","size":10999}
+{"ts":"2026-08-03T04:29:39.457Z","action":"MODIFIED","file":"dashboard/src/components/plans/FilePreviewDrawer.jsx","size":18994}
+{"ts":"2026-08-03T04:30:07.175Z","action":"MODIFIED","file":"dashboard/src/components/plans/ArchitecturalPlanViewer.jsx","size":36801}
+{"ts":"2026-08-03T04:31:25.904Z","action":"MODIFIED","file":"dashboard/src/components/plans/ArchitecturalPlanViewer.jsx","size":36681}
