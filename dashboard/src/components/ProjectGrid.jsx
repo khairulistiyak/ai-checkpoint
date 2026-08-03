@@ -1,11 +1,11 @@
-import React, { useState, useMemo } from 'react';
-import ProjectCard from './ProjectCard';
-import GitVisualizer from './GitVisualizer';
-import ActivityLog from './ActivityLog';
-import NotInitializedView from './NotInitializedView';
-import PlanProgressTab from './plans/PlanProgressTab';
-import PlanFilesTab from './plans/PlanFilesTab';
-import FilePreviewDrawer from './plans/FilePreviewDrawer';
+import React, { useState, useMemo } from "react";
+import ProjectCard from "./ProjectCard";
+import GitVisualizer from "./GitVisualizer";
+import ActivityLog from "./ActivityLog";
+import NotInitializedView from "./NotInitializedView";
+import PlanProgressTab from "./plans/PlanProgressTab";
+import PlanFilesTab from "./plans/PlanFilesTab";
+import FilePreviewDrawer from "./plans/FilePreviewDrawer";
 import {
   Rocket,
   Sparkles,
@@ -27,9 +27,9 @@ import {
   Shield,
   Search,
   BookOpen,
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useToast } from './ToastProvider';
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { useToast } from "./ToastProvider";
 
 export default function ProjectGrid({
   selectedProject,
@@ -43,18 +43,24 @@ export default function ProjectGrid({
   liveActivityEntry,
 }) {
   const { showToast } = useToast();
-  const [activeTab, setActiveTab] = useState('cockpit'); // 'cockpit' | 'roadmap' | 'generator' | 'files' | 'audit'
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedPhaseNumber, setSelectedPhaseNumber] = useState('all');
+  const [activeTab, setActiveTab] = useState("cockpit"); // 'cockpit' | 'roadmap' | 'generator' | 'files' | 'audit'
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedPhaseNumber, setSelectedPhaseNumber] = useState("all");
   const [copiedCmd, setCopiedCmd] = useState(null);
   const [selectedArchitectFile, setSelectedArchitectFile] = useState(null);
 
   const { progress, planStats } = selectedProject || {};
-  const overall = progress?.overall || { percentage: 0, completed: 0, total: 0 };
+  const overall = progress?.overall || {
+    percentage: 0,
+    completed: 0,
+    total: 0,
+  };
   const allPhases = progress?.phases || [];
   const remaining = Math.max(0, overall.total - overall.completed);
-  const activePhases = allPhases.filter((p) => p.percentage > 0 && p.percentage < 100).length;
+  const activePhases = allPhases.filter(
+    (p) => p.percentage > 0 && p.percentage < 100,
+  ).length;
   const totalPlanSteps = planStats?.totalSteps || overall.total || 0;
   const planFilesList = planStats?.files || [];
 
@@ -62,7 +68,10 @@ export default function ProjectGrid({
     if (filename) {
       setSelectedArchitectFile(filename);
     } else if (planFilesList.length > 0) {
-      const first = typeof planFilesList[0] === 'string' ? planFilesList[0] : planFilesList[0].name;
+      const first =
+        typeof planFilesList[0] === "string"
+          ? planFilesList[0]
+          : planFilesList[0].name;
       setSelectedArchitectFile(first);
     }
   };
@@ -71,11 +80,16 @@ export default function ProjectGrid({
   const filteredPhases = useMemo(() => {
     if (!allPhases.length) return [];
     return allPhases
-      .filter((phase) => selectedPhaseNumber === 'all' || String(phase.number) === String(selectedPhaseNumber))
+      .filter(
+        (phase) =>
+          selectedPhaseNumber === "all" ||
+          String(phase.number) === String(selectedPhaseNumber),
+      )
       .map((phase) => ({
         ...phase,
         steps: (phase.steps || []).filter((step) => {
-          const matchStatus = statusFilter === 'all' || step.status === statusFilter;
+          const matchStatus =
+            statusFilter === "all" || step.status === statusFilter;
           const matchSearch =
             !searchQuery ||
             step.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -90,7 +104,7 @@ export default function ProjectGrid({
     if (navigator.clipboard) {
       navigator.clipboard.writeText(text);
       setCopiedCmd(text);
-      showToast(`Copied ${label || text}`, 'info');
+      showToast(`Copied ${label || text}`, "info");
       setTimeout(() => setCopiedCmd(null), 2000);
     }
   };
@@ -109,14 +123,35 @@ export default function ProjectGrid({
   }
 
   if (!selectedProject.isInstalled) {
-    return <NotInitializedView installing={installing} onInstall={onInstall} onRemove={onRemove} />;
+    return (
+      <NotInitializedView
+        installing={installing}
+        onInstall={onInstall}
+        onRemove={onRemove}
+      />
+    );
   }
 
   const tabItems = [
-    { id: 'cockpit', label: 'Cockpit Overview', icon: Activity, badge: `${overall.percentage}%` },
-    { id: 'roadmap', label: 'Roadmap & Steps', icon: ListTodo, badge: `${overall.completed}/${overall.total}` },
-    { id: 'files', label: 'Plan Blueprints', icon: FileCode, badge: planStats?.files?.length || 0 },
-    { id: 'audit', label: 'Audit & Rules', icon: ShieldCheck },
+    {
+      id: "cockpit",
+      label: "Cockpit Overview",
+      icon: Activity,
+      badge: `${overall.percentage}%`,
+    },
+    {
+      id: "roadmap",
+      label: "Roadmap & Steps",
+      icon: ListTodo,
+      badge: `${overall.completed}/${overall.total}`,
+    },
+    {
+      id: "files",
+      label: "Plan Blueprints",
+      icon: FileCode,
+      badge: planStats?.files?.length || 0,
+    },
+    { id: "audit", label: "Audit & Rules", icon: ShieldCheck },
   ];
 
   return (
@@ -131,7 +166,7 @@ export default function ProjectGrid({
       />
 
       {/* 2. Apple Studio Segmented Workspace Navigation Bar */}
-      <div className="bg-[#121215]/90 backdrop-blur-xl border border-white/10 rounded-xl p-1 flex items-center justify-between gap-1.5 overflow-x-auto custom-scrollbar shadow-sm shrink-0">
+      <div className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-xl p-1 flex items-center justify-between gap-1.5 overflow-x-auto custom-scrollbar shadow-sm shrink-0">
         <div className="flex items-center gap-1 min-w-max">
           {tabItems.map((tab) => {
             const Icon = tab.icon;
@@ -142,18 +177,20 @@ export default function ProjectGrid({
                 onClick={() => setActiveTab(tab.id)}
                 className={`relative px-3 py-1.5 rounded-lg text-xs font-mono font-medium flex items-center gap-1.5 transition-all cursor-pointer select-none ${
                   isActive
-                    ? 'text-white bg-white/10 border border-white/20 shadow-sm font-bold'
-                    : 'text-white/60 hover:text-white hover:bg-white/5 border border-transparent'
+                    ? "text-cyber-text-primary bg-cyber-accent/10 border border-cyber-accent/20 shadow-sm font-bold"
+                    : "text-cyber-text-secondary hover:text-cyber-text-primary hover:bg-cyber-dark/50 border border-transparent"
                 }`}
               >
-                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-white' : 'text-white/50'}`} />
+                <Icon
+                  className={`w-3.5 h-3.5 ${isActive ? "text-cyber-text-primary" : "text-cyber-text-secondary"}`}
+                />
                 <span>{tab.label}</span>
                 {tab.badge !== undefined && (
                   <span
                     className={`text-[10px] px-1.5 py-0.2 rounded-full font-mono ${
                       isActive
-                        ? 'bg-white/20 text-white font-bold'
-                        : 'bg-white/5 text-white/40'
+                        ? "bg-cyber-accent/20 text-cyber-text-primary font-bold"
+                        : "bg-cyber-card-border text-cyber-text-muted"
                     }`}
                   >
                     {tab.badge}
@@ -167,7 +204,7 @@ export default function ProjectGrid({
 
       {/* 3. Main Dynamic Workspace Tab Content */}
       <AnimatePresence mode="wait">
-        {activeTab === 'cockpit' && (
+        {activeTab === "cockpit" && (
           <motion.div
             key="cockpit"
             initial={{ opacity: 0, y: 6 }}
@@ -179,67 +216,88 @@ export default function ProjectGrid({
             {/* B. Studio 4-Metrics HUD */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
               {/* 1. Completion Rate */}
-              <div className="bg-[#121215]/90 border border-white/10 rounded-xl p-3 flex flex-col justify-between gap-1.5 shadow-sm hover:border-white/20 transition-all">
-                <div className="flex items-center justify-between text-white/50 text-xs font-mono">
+              <div className="bg-cyber-card/90 border border-cyber-card-border rounded-xl p-3 flex flex-col justify-between gap-1.5 shadow-sm hover:border-cyber-accent/20 transition-all">
+                <div className="flex items-center justify-between text-cyber-text-secondary text-xs font-mono">
                   <span>Completion</span>
-                  <Target className="w-3.5 h-3.5 text-white/40" />
+                  <div className="w-6 h-6 rounded-lg bg-cyber-accent/10 border border-cyber-accent/20 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.1)]">
+                    <Target className="w-3.5 h-3.5 text-cyber-accent drop-shadow-[0_0_8px_rgba(var(--cyber-accent-rgb),0.5)]" />
+                  </div>
                 </div>
-                <div className="text-xl font-bold font-outfit text-white tracking-tight">
+                <div className="text-xl font-bold font-outfit text-cyber-text-primary tracking-tight">
                   {overall.percentage}%
                 </div>
-                <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+                <div className="w-full bg-cyber-dark h-1.5 rounded-full overflow-hidden shadow-inner">
                   <div
-                    className="bg-white h-full rounded-full transition-all duration-500"
+                    className="bg-gradient-to-r from-cyber-accent to-blue-500 h-full rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.5)]"
                     style={{ width: `${overall.percentage}%` }}
                   />
                 </div>
               </div>
 
               {/* 2. Steps Executed */}
-              <div className="bg-[#121215]/90 border border-white/10 rounded-xl p-3 flex flex-col justify-between gap-1.5 shadow-sm hover:border-white/20 transition-all">
-                <div className="flex items-center justify-between text-white/50 text-xs font-mono">
+              <div className="bg-cyber-card/90 border border-cyber-card-border rounded-xl p-3 flex flex-col justify-between gap-1.5 shadow-sm hover:border-cyber-accent/20 transition-all">
+                <div className="flex items-center justify-between text-cyber-text-secondary text-xs font-mono">
                   <span>Steps Done</span>
-                  <Activity className="w-3.5 h-3.5 text-white/40" />
+                  <div className="w-6 h-6 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(52,211,153,0.05)]">
+                    <Activity className="w-3.5 h-3.5 text-emerald-400" />
+                  </div>
                 </div>
-                <div className="text-xl font-bold font-outfit text-white tracking-tight">
-                  {overall.completed} <span className="text-xs font-mono text-white/40 font-normal">/ {overall.total}</span>
+                <div className="text-xl font-bold font-outfit text-cyber-text-primary tracking-tight">
+                  {overall.completed}{" "}
+                  <span className="text-xs font-mono text-cyber-text-muted font-normal">
+                    / {overall.total}
+                  </span>
                 </div>
-                <div className="text-[11px] font-mono text-white/40 truncate">
+                <div className="text-[11px] font-mono text-cyber-text-muted truncate">
                   {remaining} steps remaining
                 </div>
               </div>
 
               {/* 3. Phase Momentum */}
-              <div className="bg-[#121215]/90 border border-white/10 rounded-xl p-3 flex flex-col justify-between gap-1.5 shadow-sm hover:border-white/20 transition-all">
-                <div className="flex items-center justify-between text-white/50 text-xs font-mono">
+              <div className="bg-cyber-card/90 border border-cyber-card-border rounded-xl p-3 flex flex-col justify-between gap-1.5 shadow-sm hover:border-cyber-accent/20 transition-all">
+                <div className="flex items-center justify-between text-cyber-text-secondary text-xs font-mono">
                   <span>Phases</span>
-                  <Layers className="w-3.5 h-3.5 text-white/40" />
+                  <div className="w-6 h-6 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(168,85,247,0.05)]">
+                    <Layers className="w-3.5 h-3.5 text-purple-400" />
+                  </div>
                 </div>
-                <div className="text-xl font-bold font-outfit text-white tracking-tight">
-                  {allPhases.length} <span className="text-xs font-mono text-white/40 font-normal">Total</span>
+                <div className="text-xl font-bold font-outfit text-cyber-text-primary tracking-tight">
+                  {allPhases.length}{" "}
+                  <span className="text-xs font-mono text-cyber-text-muted font-normal">
+                    Total
+                  </span>
                 </div>
-                <div className="text-[11px] font-mono text-white/40 truncate">
-                  {activePhases} active • {allPhases.filter((p) => p.percentage === 100).length} completed
+                <div className="text-[11px] font-mono text-cyber-text-muted truncate">
+                  {activePhases} active •{" "}
+                  {allPhases.filter((p) => p.percentage === 100).length}{" "}
+                  completed
                 </div>
               </div>
 
               {/* 4. Plan Specifications */}
               <div
                 onClick={() => handleOpenArchitect()}
-                className="bg-[#121215]/90 border border-white/10 rounded-xl p-3 flex flex-col justify-between gap-1.5 shadow-sm hover:border-white/30 hover:bg-white/[0.04] transition-all cursor-pointer group"
+                className="bg-cyber-card/90 border border-cyber-card-border rounded-xl p-3 flex flex-col justify-between gap-1.5 shadow-sm hover:border-cyber-accent/30 hover:bg-cyber-accent/5 transition-all cursor-pointer group"
                 title="Click to Open Architectural Blueprint Modal"
               >
-                <div className="flex items-center justify-between text-white/50 group-hover:text-white/80 text-xs font-mono transition-colors">
+                <div className="flex items-center justify-between text-cyber-text-secondary group-hover:text-cyber-text-primary text-xs font-mono transition-colors">
                   <span className="flex items-center gap-1.5 font-bold">
                     <span>Blueprints</span>
-                    <span className="text-[9px] px-1.5 py-0.2 rounded bg-white/10 text-white font-mono">CAD</span>
+                    <span className="text-[9px] px-1.5 py-0.2 rounded bg-cyber-accent/10 text-cyber-accent font-mono shadow-[0_0_5px_rgba(var(--cyber-accent-rgb),0.2)]">
+                      CAD
+                    </span>
                   </span>
-                  <FileText className="w-3.5 h-3.5 text-white/40 group-hover:text-white transition-colors" />
+                  <div className="w-6 h-6 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center shrink-0 transition-colors group-hover:bg-amber-500/20 shadow-[0_0_10px_rgba(245,158,11,0.05)]">
+                    <FileText className="w-3.5 h-3.5 text-amber-400" />
+                  </div>
                 </div>
-                <div className="text-xl font-bold font-outfit text-white tracking-tight">
-                  {planStats?.files?.length || 0} <span className="text-xs font-mono text-white/40 font-normal">Files</span>
+                <div className="text-xl font-bold font-outfit text-cyber-text-primary tracking-tight">
+                  {planStats?.files?.length || 0}{" "}
+                  <span className="text-xs font-mono text-cyber-text-muted font-normal">
+                    Files
+                  </span>
                 </div>
-                <div className="text-[11px] font-mono text-white/40 group-hover:text-white/60 truncate transition-colors">
+                <div className="text-[11px] font-mono text-cyber-text-muted group-hover:text-cyber-text-secondary truncate transition-colors">
                   {totalPlanSteps} planned steps • Open View →
                 </div>
               </div>
@@ -248,19 +306,22 @@ export default function ProjectGrid({
             {/* C. Dual-Console Studio (Side-by-Side on Desktop) */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 items-stretch">
               {/* Left Console: Git Snapshots & Checkpoints */}
-              <div className="bg-[#121215]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-3.5 sm:p-4 flex flex-col shadow-sm min-h-[400px]">
-                <div className="flex items-center justify-between gap-2.5 mb-3 pb-2.5 border-b border-white/10 shrink-0">
-                  <h2 className="text-sm font-bold text-white flex items-center gap-2 font-outfit">
-                    <Rocket className="w-3.5 h-3.5 text-white" />
+              <div className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-3.5 sm:p-4 flex flex-col shadow-sm min-h-[400px]">
+                <div className="flex items-center justify-between gap-2.5 mb-3 pb-2.5 border-b border-cyber-card-border shrink-0">
+                  <h2 className="text-sm font-bold text-cyber-text-primary flex items-center gap-2 font-outfit">
+                    <Rocket className="w-3.5 h-3.5 text-cyber-text-primary" />
                     <span>Git Snapshots & Checkpoints</span>
                   </h2>
-                  <span className="text-[10px] font-mono text-white/40">
+                  <span className="text-[10px] font-mono text-cyber-text-secondary">
                     Live Rollback Tree
                   </span>
                 </div>
 
                 <div className="flex-1 min-h-0 overflow-hidden">
-                  <GitVisualizer projectId={selectedProject.id} onRefresh={refresh} />
+                  <GitVisualizer
+                    projectId={selectedProject.id}
+                    onRefresh={refresh}
+                  />
                 </div>
               </div>
 
@@ -276,14 +337,14 @@ export default function ProjectGrid({
         )}
 
         {/* Tab 2: Roadmap & Step Execution */}
-        {activeTab === 'roadmap' && (
+        {activeTab === "roadmap" && (
           <motion.div
             key="roadmap"
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.2 }}
-            className="bg-[#121215]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-3 sm:p-4 shadow-sm min-h-[450px]"
+            className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-3 sm:p-4 shadow-sm min-h-[450px]"
           >
             <PlanProgressTab
               project={selectedProject}
@@ -301,30 +362,28 @@ export default function ProjectGrid({
         )}
 
         {/* Tab 3: Plan Files & Drafts Explorer */}
-        {activeTab === 'files' && (
+        {activeTab === "files" && (
           <motion.div
             key="files"
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.2 }}
-            className="bg-[#121215]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-3 sm:p-4 shadow-sm min-h-[450px]"
+            className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-3 sm:p-4 shadow-sm min-h-[450px]"
           >
-            <PlanFilesTab
-              project={selectedProject}
-            />
+            <PlanFilesTab project={selectedProject} />
           </motion.div>
         )}
 
         {/* Tab 5: Audit & Rules Inspector */}
-        {activeTab === 'audit' && (
+        {activeTab === "audit" && (
           <motion.div
             key="audit"
             initial={{ opacity: 0, y: 6 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.2 }}
-            className="bg-[#121215]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-4 sm:p-5 shadow-sm space-y-4"
+            className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-4 sm:p-5 shadow-sm space-y-4"
           >
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <div className="flex items-center gap-3">
@@ -336,7 +395,8 @@ export default function ProjectGrid({
                     AI Agent Workflow Conventions & Audit
                   </h3>
                   <p className="text-[11px] text-white/50 font-mono">
-                    Zero-token logging, single-step execution, and checkpoint validation rules.
+                    Zero-token logging, single-step execution, and checkpoint
+                    validation rules.
                   </p>
                 </div>
               </div>
@@ -357,24 +417,24 @@ export default function ProjectGrid({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 {[
                   {
-                    title: 'Start a Step',
-                    cmd: './l start X.Y',
-                    desc: 'Creates the target file and marks step as running in PROGRESS.md',
+                    title: "Start a Step",
+                    cmd: "./l start X.Y",
+                    desc: "Creates the target file and marks step as running in PROGRESS.md",
                   },
                   {
-                    title: 'Complete a Step',
+                    title: "Complete a Step",
                     cmd: './l c X.Y "implemented feature"',
-                    desc: 'Validates code, runs git diff check, and marks step complete',
+                    desc: "Validates code, runs git diff check, and marks step complete",
                   },
                   {
-                    title: 'Save Recovery Snapshot',
+                    title: "Save Recovery Snapshot",
                     cmd: './l cp save "Checkpoint description"',
-                    desc: 'Instantly saves atomic checkpoint snapshot into git ledger',
+                    desc: "Instantly saves atomic checkpoint snapshot into git ledger",
                   },
                   {
-                    title: 'Audit System Health',
-                    cmd: './l doctor',
-                    desc: 'Runs self-diagnostics on .agents/, PROGRESS.md, and plan/ files',
+                    title: "Audit System Health",
+                    cmd: "./l doctor",
+                    desc: "Runs self-diagnostics on .agents/, PROGRESS.md, and plan/ files",
                   },
                 ].map((item) => (
                   <div
@@ -382,8 +442,12 @@ export default function ProjectGrid({
                     className="p-4 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-white/20 transition-all flex flex-col justify-between gap-3"
                   >
                     <div>
-                      <div className="text-xs font-bold text-white font-outfit mb-1">{item.title}</div>
-                      <div className="text-[11px] text-white/50 font-mono">{item.desc}</div>
+                      <div className="text-xs font-bold text-white font-outfit mb-1">
+                        {item.title}
+                      </div>
+                      <div className="text-[11px] text-white/50 font-mono">
+                        {item.desc}
+                      </div>
                     </div>
                     <button
                       onClick={() => handleCopyCli(item.cmd, item.title)}
@@ -408,10 +472,25 @@ export default function ProjectGrid({
                 <span>Golden Rules for Autonomous Execution:</span>
               </div>
               <ul className="list-disc list-inside space-y-1 text-white/50 pl-2">
-                <li><strong className="text-white/80">1 step = 1 file:</strong> Finish one step completely before starting the next.</li>
-                <li><strong className="text-white/80">Zero token waste:</strong> Background activity logger writes directly to local filesystem.</li>
-                <li><strong className="text-white/80">Never skip steps:</strong> Execute incrementally in strictly ordered sequence.</li>
-                <li><strong className="text-white/80">Auto-recovery:</strong> Use GitVisualizer or <code className="text-white">./l rollback</code> to restore previous states.</li>
+                <li>
+                  <strong className="text-white/80">1 step = 1 file:</strong>{" "}
+                  Finish one step completely before starting the next.
+                </li>
+                <li>
+                  <strong className="text-white/80">Zero token waste:</strong>{" "}
+                  Background activity logger writes directly to local
+                  filesystem.
+                </li>
+                <li>
+                  <strong className="text-white/80">Never skip steps:</strong>{" "}
+                  Execute incrementally in strictly ordered sequence.
+                </li>
+                <li>
+                  <strong className="text-white/80">Auto-recovery:</strong> Use
+                  GitVisualizer or{" "}
+                  <code className="text-white">./l rollback</code> to restore
+                  previous states.
+                </li>
               </ul>
             </div>
           </motion.div>

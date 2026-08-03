@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import ProgressRing from './ProgressRing';
-import ExportButton from './ExportButton';
+import React, { useState, useEffect } from "react";
+import ProgressRing from "./ProgressRing";
+import ExportButton from "./ExportButton";
 import {
   Terminal,
   FolderOpen,
@@ -15,12 +15,20 @@ import {
   BookmarkPlus,
   Sparkles,
   Layers,
-} from 'lucide-react';
-import { motion } from 'framer-motion';
-import * as api from '../utils/api';
-import { useToast } from './ToastProvider';
+} from "lucide-react";
+import { motion } from "framer-motion";
+import * as api from "../utils/api";
+import { useToast } from "./ToastProvider";
 
-export default function ProjectCard({ project, onRemove, onOpenConfig, onOpenPlans, onOpenArchitect, activeTab, onTabChange }) {
+export default function ProjectCard({
+  project,
+  onRemove,
+  onOpenConfig,
+  onOpenPlans,
+  onOpenArchitect,
+  activeTab,
+  onTabChange,
+}) {
   const { showToast } = useToast();
   const { progress } = project;
   const [health, setHealth] = useState(null);
@@ -30,11 +38,18 @@ export default function ProjectCard({ project, onRemove, onOpenConfig, onOpenPla
 
   useEffect(() => {
     if (project.isInstalled) {
-      api.fetchProjectHealth(project.id).then(setHealth).catch(() => {});
+      api
+        .fetchProjectHealth(project.id)
+        .then(setHealth)
+        .catch(() => {});
     }
   }, [project.id, project.isInstalled]);
 
-  const overall = progress?.overall || { percentage: 0, completed: 0, total: 0 };
+  const overall = progress?.overall || {
+    percentage: 0,
+    completed: 0,
+    total: 0,
+  };
   const isDone = overall.percentage === 100;
   const passedChecks = health?.checks?.filter((c) => c.passed).length || 0;
   const totalChecks = health?.checks?.length || 0;
@@ -44,7 +59,7 @@ export default function ProjectCard({ project, onRemove, onOpenConfig, onOpenPla
     if (project.path && navigator.clipboard) {
       navigator.clipboard.writeText(project.path);
       setCopied(true);
-      showToast('Project path copied!', 'info');
+      showToast("Project path copied!", "info");
       setTimeout(() => setCopied(false), 2000);
     }
   };
@@ -53,16 +68,16 @@ export default function ProjectCard({ project, onRemove, onOpenConfig, onOpenPla
     if (project.path && navigator.clipboard) {
       navigator.clipboard.writeText(`cd "${project.path}"`);
       setCopiedCd(true);
-      showToast('cd command copied to clipboard!', 'info');
+      showToast("cd command copied to clipboard!", "info");
       setTimeout(() => setCopiedCd(false), 2000);
     }
   };
 
   const handleQuickCheckpoint = () => {
     if (navigator.clipboard) {
-      const msg = `checkpoint: ${new Date().toISOString().replace('T', ' ').slice(0, 16)}`;
+      const msg = `checkpoint: ${new Date().toISOString().replace("T", " ").slice(0, 16)}`;
       navigator.clipboard.writeText(`./l cp save "${msg}"`);
-      showToast('Copied: ./l cp save command', 'success');
+      showToast("Copied: ./l cp save command", "success");
     }
   };
 
@@ -101,23 +116,23 @@ export default function ProjectCard({ project, onRemove, onOpenConfig, onOpenPla
 
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-sm sm:text-base font-bold text-white tracking-tight font-outfit truncate">
+              <h1 className="text-base sm:text-lg font-bold text-cyber-text-primary tracking-tight font-outfit truncate">
                 {project.name}
               </h1>
 
               {isDone ? (
-                <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-full text-[10px] font-mono uppercase font-bold tracking-wider flex items-center gap-1">
+                <span className="bg-workflow-success/10 text-workflow-success border border-workflow-success/20 px-2 py-0.5 rounded-full text-[10px] font-mono uppercase font-bold tracking-wider flex items-center gap-1 shadow-[0_0_8px_rgba(52,211,153,0.2)]">
                   <Check className="w-2.5 h-2.5" />
                   <span>100% Done</span>
                 </span>
               ) : (
-                <span className="bg-white/10 text-white/90 border border-white/15 px-2 py-0.5 rounded-full text-[10px] font-mono uppercase font-bold tracking-wider flex items-center gap-1">
-                  <Zap className="w-2.5 h-2.5 text-white" />
+                <span className="bg-cyber-accent/10 text-cyber-accent border border-cyber-accent/20 px-2 py-0.5 rounded-full text-[10px] font-mono uppercase font-bold tracking-wider flex items-center gap-1 shadow-[0_0_8px_rgba(var(--cyber-accent-rgb),0.2)]">
+                  <Zap className="w-2.5 h-2.5" />
                   <span>Active</span>
                 </span>
               )}
 
-              <span className="bg-white/5 text-white/50 border border-white/10 px-2 py-0.5 rounded-md text-[10px] font-mono">
+              <span className="bg-cyber-card-border text-cyber-text-secondary border border-cyber-card-border px-2 py-0.5 rounded-md text-[10px] font-mono">
                 {overall.completed} / {overall.total} Steps
               </span>
 
@@ -126,13 +141,15 @@ export default function ProjectCard({ project, onRemove, onOpenConfig, onOpenPla
                   onClick={() => setShowAuditDetails(!showAuditDetails)}
                   className={`text-[10px] font-mono px-2 py-0.5 rounded-full border flex items-center gap-1 transition-all cursor-pointer ${
                     allPassed
-                      ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/15'
-                      : 'bg-amber-500/10 text-amber-400 border-amber-500/20 hover:bg-amber-500/15'
+                      ? "bg-workflow-success/10 text-workflow-success border-workflow-success/20 hover:bg-workflow-success/15"
+                      : "bg-workflow-warning/10 text-workflow-warning border-workflow-warning/20 hover:bg-workflow-warning/15"
                   }`}
                   title="Click to view health audit details"
                 >
                   <ShieldCheck className="w-2.5 h-2.5" />
-                  <span>{allPassed ? 'Verified' : `${passedChecks}/${totalChecks}`}</span>
+                  <span>
+                    {allPassed ? "Verified" : `${passedChecks}/${totalChecks}`}
+                  </span>
                 </button>
               )}
             </div>
@@ -149,7 +166,11 @@ export default function ProjectCard({ project, onRemove, onOpenConfig, onOpenPla
                   title="Copy full path"
                   className="p-0.5 rounded hover:bg-white/10 text-white/40 hover:text-white transition-colors cursor-pointer shrink-0 ml-0.5"
                 >
-                  {copied ? <Check className="w-2.5 h-2.5 text-emerald-400" /> : <Copy className="w-2.5 h-2.5" />}
+                  {copied ? (
+                    <Check className="w-2.5 h-2.5 text-emerald-400" />
+                  ) : (
+                    <Copy className="w-2.5 h-2.5" />
+                  )}
                 </button>
                 <div className="w-[1px] h-2.5 bg-white/10 shrink-0" />
                 <button
@@ -158,7 +179,7 @@ export default function ProjectCard({ project, onRemove, onOpenConfig, onOpenPla
                   className="px-1 py-0.2 rounded hover:bg-white/10 text-white/50 hover:text-white transition-all cursor-pointer flex items-center gap-0.5 text-[9px]"
                 >
                   <Terminal className="w-2.5 h-2.5 text-white/40" />
-                  <span>{copiedCd ? 'copied' : 'cd'}</span>
+                  <span>{copiedCd ? "copied" : "cd"}</span>
                 </button>
               </div>
             </div>
@@ -171,9 +192,9 @@ export default function ProjectCard({ project, onRemove, onOpenConfig, onOpenPla
             <button
               onClick={() => onOpenArchitect && onOpenArchitect()}
               title="Open Full Architectural Plan Blueprint Modal"
-              className="px-2.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer shadow-sm"
+              className="px-2.5 py-1.5 rounded-lg bg-gradient-to-r from-cyber-accent/10 to-blue-500/10 hover:from-cyber-accent/20 hover:to-blue-500/20 border border-cyber-accent/20 text-cyber-accent hover:text-white transition-all text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.1)] hover:shadow-[0_0_15px_rgba(var(--cyber-accent-rgb),0.25)]"
             >
-              <Layers className="w-3.5 h-3.5 text-white" />
+              <Layers className="w-3.5 h-3.5" />
               <span>Architect View</span>
             </button>
           )}
@@ -219,8 +240,8 @@ export default function ProjectCard({ project, onRemove, onOpenConfig, onOpenPla
               key={c.name}
               className={`px-1.5 py-0.5 rounded border flex items-center gap-1 ${
                 c.passed
-                  ? 'bg-white/5 text-white/70 border-white/10'
-                  : 'bg-red-500/10 text-red-400 border-red-500/20 font-bold'
+                  ? "bg-white/5 text-white/70 border-white/10"
+                  : "bg-red-500/10 text-red-400 border-red-500/20 font-bold"
               }`}
             >
               {c.passed ? (

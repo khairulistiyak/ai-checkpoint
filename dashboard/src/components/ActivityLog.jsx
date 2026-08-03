@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   ScrollText,
   FileEdit,
@@ -14,50 +14,71 @@ import {
   CalendarDays,
   AlertTriangle,
   X,
-} from 'lucide-react';
-import { useToast } from './ToastProvider';
-import { clearActivityLog } from '../hooks/useFileWatcher';
+} from "lucide-react";
+import { useToast } from "./ToastProvider";
+import { clearActivityLog } from "../hooks/useFileWatcher";
 
-const BASE_URL = (window.location.port === '5173'
-  ? 'http://localhost:20226'
-  : window.location.origin) + '/api';
+const BASE_URL =
+  (window.location.port === "5173"
+    ? "http://localhost:20226"
+    : window.location.origin) + "/api";
 
 const ACTION_CONFIG = {
-  CREATED:  { icon: FilePlus,   color: 'text-emerald-400', bg: 'bg-emerald-500/10', label: 'Created' },
-  MODIFIED: { icon: FileEdit,   color: 'text-blue-400',    bg: 'bg-blue-500/10',    label: 'Modified' },
-  DELETED:  { icon: FileX,      color: 'text-red-400',     bg: 'bg-red-500/10',     label: 'Deleted' },
-  RESTORED: { icon: RotateCcw,  color: 'text-yellow-400',  bg: 'bg-yellow-500/10',  label: 'Restored' },
+  CREATED: {
+    icon: FilePlus,
+    color: "text-emerald-400",
+    bg: "bg-emerald-500/10",
+    label: "Created",
+  },
+  MODIFIED: {
+    icon: FileEdit,
+    color: "text-blue-400",
+    bg: "bg-blue-500/10",
+    label: "Modified",
+  },
+  DELETED: {
+    icon: FileX,
+    color: "text-red-400",
+    bg: "bg-red-500/10",
+    label: "Deleted",
+  },
+  RESTORED: {
+    icon: RotateCcw,
+    color: "text-yellow-400",
+    bg: "bg-yellow-500/10",
+    label: "Restored",
+  },
 };
 
 const TIME_RANGES = [
   {
-    id: 'last_hour',
-    label: 'Last 1 Hour',
-    desc: 'Activity from past 60 mins',
+    id: "last_hour",
+    label: "Last 1 Hour",
+    desc: "Activity from past 60 mins",
     icon: Clock,
   },
   {
-    id: 'today',
-    label: 'Today / Last 24 Hours',
-    desc: 'Activity from past 24 hours',
+    id: "today",
+    label: "Today / Last 24 Hours",
+    desc: "Activity from past 24 hours",
     icon: Calendar,
   },
   {
-    id: 'last_7d',
-    label: 'Last 7 Days',
-    desc: 'Activity from past week',
+    id: "last_7d",
+    label: "Last 7 Days",
+    desc: "Activity from past week",
     icon: CalendarRange,
   },
   {
-    id: 'last_30d',
-    label: 'Last 30 Days',
-    desc: 'Activity from past month',
+    id: "last_30d",
+    label: "Last 30 Days",
+    desc: "Activity from past month",
     icon: CalendarDays,
   },
   {
-    id: 'all',
-    label: 'All Time',
-    desc: 'Wipe entire logged activity history',
+    id: "all",
+    label: "All Time",
+    desc: "Wipe entire logged activity history",
     icon: Trash2,
     danger: true,
   },
@@ -66,9 +87,13 @@ const TIME_RANGES = [
 function formatTime(isoString) {
   try {
     const d = new Date(isoString);
-    return d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+    return d.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
   } catch (e) {
-    return '--:--';
+    return "--:--";
   }
 }
 
@@ -79,11 +104,11 @@ function formatDate(isoString) {
     const yesterday = new Date(today);
     yesterday.setDate(yesterday.getDate() - 1);
 
-    if (d.toDateString() === today.toDateString()) return 'Today';
-    if (d.toDateString() === yesterday.toDateString()) return 'Yesterday';
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    if (d.toDateString() === today.toDateString()) return "Today";
+    if (d.toDateString() === yesterday.toDateString()) return "Yesterday";
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   } catch (e) {
-    return 'Unknown';
+    return "Unknown";
   }
 }
 
@@ -105,7 +130,7 @@ export default function ActivityLog({ projectId, liveEntry }) {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [showClearModal, setShowClearModal] = useState(false);
-  const [selectedRange, setSelectedRange] = useState('today');
+  const [selectedRange, setSelectedRange] = useState("today");
   const [clearing, setClearing] = useState(false);
   const scrollRef = useRef(null);
 
@@ -114,8 +139,8 @@ export default function ActivityLog({ projectId, liveEntry }) {
     if (!projectId) return;
     setLoading(true);
     fetch(`${BASE_URL}/projects/${projectId}/activity-log?limit=50`)
-      .then(r => r.json())
-      .then(data => {
+      .then((r) => r.json())
+      .then((data) => {
         setEntries(data.entries || []);
         setTotal(data.total || 0);
         setHasMore(data.hasMore || false);
@@ -131,8 +156,8 @@ export default function ActivityLog({ projectId, liveEntry }) {
   // Add live entries from SSE
   useEffect(() => {
     if (!liveEntry) return;
-    setEntries(prev => [liveEntry, ...prev]);
-    setTotal(prev => prev + 1);
+    setEntries((prev) => [liveEntry, ...prev]);
+    setTotal((prev) => prev + 1);
   }, [liveEntry]);
 
   // Load more
@@ -141,10 +166,10 @@ export default function ActivityLog({ projectId, liveEntry }) {
     setLoadingMore(true);
     try {
       const res = await fetch(
-        `${BASE_URL}/projects/${projectId}/activity-log?limit=50&offset=${entries.length}`
+        `${BASE_URL}/projects/${projectId}/activity-log?limit=50&offset=${entries.length}`,
       );
       const data = await res.json();
-      setEntries(prev => [...prev, ...(data.entries || [])]);
+      setEntries((prev) => [...prev, ...(data.entries || [])]);
       setHasMore(data.hasMore || false);
     } catch (e) {}
     setLoadingMore(false);
@@ -156,34 +181,38 @@ export default function ActivityLog({ projectId, liveEntry }) {
     setClearing(true);
     try {
       const res = await clearActivityLog(projectId, selectedRange);
-      const activeRangeObj = TIME_RANGES.find(r => r.id === selectedRange);
+      const activeRangeObj = TIME_RANGES.find((r) => r.id === selectedRange);
       showToast(
         `Cleared ${res.deletedCount || 0} events (${activeRangeObj?.label || selectedRange})`,
-        'success'
+        "success",
       );
       setShowClearModal(false);
 
       // Instantly filter out deleted entries from view
-      if (selectedRange === 'all') {
+      if (selectedRange === "all") {
         setEntries([]);
         setTotal(0);
       } else {
         const now = Date.now();
         let thresholdMs = 0;
-        if (selectedRange === 'last_hour') thresholdMs = 60 * 60 * 1000;
-        else if (selectedRange === 'today') thresholdMs = 24 * 60 * 60 * 1000;
-        else if (selectedRange === 'last_7d') thresholdMs = 7 * 24 * 60 * 60 * 1000;
-        else if (selectedRange === 'last_30d') thresholdMs = 30 * 24 * 60 * 60 * 1000;
+        if (selectedRange === "last_hour") thresholdMs = 60 * 60 * 1000;
+        else if (selectedRange === "today") thresholdMs = 24 * 60 * 60 * 1000;
+        else if (selectedRange === "last_7d")
+          thresholdMs = 7 * 24 * 60 * 60 * 1000;
+        else if (selectedRange === "last_30d")
+          thresholdMs = 30 * 24 * 60 * 60 * 1000;
 
         const cutoff = now - thresholdMs;
-        setEntries(prev => prev.filter(e => {
-          const t = new Date(e.ts).getTime();
-          return isNaN(t) || t < cutoff;
-        }));
+        setEntries((prev) =>
+          prev.filter((e) => {
+            const t = new Date(e.ts).getTime();
+            return isNaN(t) || t < cutoff;
+          }),
+        );
         setTotal(res.remainingCount ?? 0);
       }
     } catch (err) {
-      showToast(err.message || 'Failed to clear activity log', 'error');
+      showToast(err.message || "Failed to clear activity log", "error");
     } finally {
       setClearing(false);
     }
@@ -208,18 +237,18 @@ export default function ActivityLog({ projectId, liveEntry }) {
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.1, duration: 0.25, ease: 'easeOut' }}
-      className="bg-[#121214] border border-white/10 rounded-2xl p-3.5 sm:p-4 relative flex flex-col shadow-sm h-full"
+      transition={{ delay: 0.1, duration: 0.25, ease: "easeOut" }}
+      className="bg-cyber-card/90 border border-cyber-card-border rounded-2xl p-3.5 sm:p-4 relative flex flex-col shadow-sm h-full"
     >
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 mb-3 pb-2.5 border-b border-white/10 shrink-0">
-        <h2 className="text-sm font-bold text-white flex items-center gap-2 font-outfit">
-          <ScrollText className="w-3.5 h-3.5 text-white" />
+      <div className="flex items-center justify-between gap-3 mb-3 pb-2.5 border-b border-cyber-card-border shrink-0">
+        <h2 className="text-sm font-bold text-cyber-text-primary flex items-center gap-2 font-outfit">
+          <ScrollText className="w-3.5 h-3.5 text-cyber-text-primary" />
           <span>Activity Log</span>
         </h2>
 
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono text-white/40">
+          <span className="text-[10px] font-mono text-cyber-text-secondary">
             {total} events
           </span>
 
@@ -227,7 +256,7 @@ export default function ActivityLog({ projectId, liveEntry }) {
             <button
               onClick={() => setShowClearModal(true)}
               title="Clear Activity History"
-              className="flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-mono text-zinc-400 hover:text-red-400 bg-white/[0.03] hover:bg-red-500/10 border border-white/5 hover:border-red-500/20 transition-all cursor-pointer"
+              className="flex items-center gap-1 px-2 py-0.5 rounded-lg text-[10px] font-mono text-cyber-text-secondary hover:text-red-400 bg-cyber-dark/50 hover:bg-red-500/10 border border-cyber-card-border hover:border-red-500/20 transition-all cursor-pointer"
             >
               <Trash2 className="w-3 h-3" />
               <span>Clear</span>
@@ -237,21 +266,25 @@ export default function ActivityLog({ projectId, liveEntry }) {
       </div>
 
       {/* Entries */}
-      <div ref={scrollRef} className="flex-1 max-h-[340px] overflow-y-auto custom-scrollbar -mr-1.5 pr-1.5 space-y-3">
+      <div
+        ref={scrollRef}
+        className="flex-1 max-h-[340px] overflow-y-auto custom-scrollbar -mr-1.5 pr-1.5 space-y-3"
+      >
         {entries.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-10 text-white/30">
+          <div className="flex flex-col items-center justify-center py-10 text-cyber-text-muted">
             <ScrollText className="w-8 h-8 mb-2 opacity-40" />
             <p className="text-sm">No activity recorded yet</p>
           </div>
         ) : (
           Object.entries(grouped).map(([dateLabel, dateEntries]) => (
             <div key={dateLabel}>
-              <div className="text-[10px] font-mono uppercase tracking-widest text-white/40 mb-2">
+              <div className="text-[10px] font-mono uppercase tracking-widest text-cyber-text-muted mb-2">
                 {dateLabel}
               </div>
               <div className="space-y-1">
                 {dateEntries.map((entry, idx) => {
-                  const config = ACTION_CONFIG[entry.action] || ACTION_CONFIG.MODIFIED;
+                  const config =
+                    ACTION_CONFIG[entry.action] || ACTION_CONFIG.MODIFIED;
                   const Icon = config.icon;
                   return (
                     <motion.div
@@ -259,20 +292,24 @@ export default function ActivityLog({ projectId, liveEntry }) {
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.2 }}
-                      className="flex items-center gap-3 py-1.5 px-2 rounded-lg hover:bg-white/[0.03] transition-colors group"
+                      className="flex items-center gap-3 py-1.5 px-2 rounded-lg hover:bg-cyber-dark/50 transition-colors group border border-transparent hover:border-cyber-card-border"
                     >
-                      <span className="text-[11px] font-mono text-white/30 w-12 shrink-0">
+                      <span className="text-[11px] font-mono text-cyber-text-muted w-12 shrink-0">
                         {formatTime(entry.ts)}
                       </span>
-                      <div className={`w-6 h-6 rounded-md ${config.bg} flex items-center justify-center shrink-0`}>
+                      <div
+                        className={`w-6 h-6 rounded-md ${config.bg} flex items-center justify-center shrink-0 border border-cyber-card-border group-hover:border-transparent`}
+                      >
                         <Icon className={`w-3 h-3 ${config.color}`} />
                       </div>
-                      <span className="text-xs text-white/70 truncate group-hover:text-white transition-colors font-mono">
+                      <span className="text-xs text-cyber-text-secondary truncate group-hover:text-cyber-text-primary transition-colors font-mono">
                         {entry.file}
                       </span>
                       {entry.size != null && (
-                        <span className="text-[10px] text-white/20 ml-auto shrink-0">
-                          {entry.size > 1024 ? `${(entry.size / 1024).toFixed(1)}KB` : `${entry.size}B`}
+                        <span className="text-[10px] text-cyber-text-muted ml-auto shrink-0">
+                          {entry.size > 1024
+                            ? `${(entry.size / 1024).toFixed(1)}KB`
+                            : `${entry.size}B`}
                         </span>
                       )}
                     </motion.div>
@@ -291,7 +328,9 @@ export default function ActivityLog({ projectId, liveEntry }) {
             className="w-full py-2 text-xs text-white/40 hover:text-white/70 transition-colors flex items-center justify-center gap-2 font-mono"
           >
             <ChevronDown className="w-3 h-3" />
-            {loadingMore ? 'Loading...' : `Load More (${total - entries.length} more)`}
+            {loadingMore
+              ? "Loading..."
+              : `Load More (${total - entries.length} more)`}
           </button>
         )}
       </div>
@@ -304,7 +343,7 @@ export default function ActivityLog({ projectId, liveEntry }) {
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
               className="bg-[#121214] border border-white/10 rounded-3xl p-6 w-full max-w-md shadow-2xl space-y-6 relative"
             >
               {/* Modal Header */}
@@ -336,7 +375,7 @@ export default function ActivityLog({ projectId, liveEntry }) {
                 <div className="text-[11px] font-mono uppercase tracking-wider text-zinc-400 mb-1">
                   Time Range
                 </div>
-                {TIME_RANGES.map(range => {
+                {TIME_RANGES.map((range) => {
                   const Icon = range.icon;
                   const isSelected = selectedRange === range.id;
                   return (
@@ -347,25 +386,33 @@ export default function ActivityLog({ projectId, liveEntry }) {
                       className={`w-full flex items-center justify-between p-3 rounded-2xl border transition-all text-left cursor-pointer ${
                         isSelected
                           ? range.danger
-                            ? 'bg-red-500/10 border-red-500/30 text-white'
-                            : 'bg-white/[0.08] border-white/20 text-white'
-                          : 'bg-white/[0.02] border-white/5 hover:bg-white/[0.04] text-zinc-400'
+                            ? "bg-red-500/10 border-red-500/30 text-white"
+                            : "bg-white/[0.08] border-white/20 text-white"
+                          : "bg-white/[0.02] border-white/5 hover:bg-white/[0.04] text-zinc-400"
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
-                          isSelected
-                            ? range.danger ? 'bg-red-500/20 text-red-300' : 'bg-white/10 text-white'
-                            : 'bg-white/[0.03] text-zinc-500'
-                        }`}>
+                        <div
+                          className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
+                            isSelected
+                              ? range.danger
+                                ? "bg-red-500/20 text-red-300"
+                                : "bg-white/10 text-white"
+                              : "bg-white/[0.03] text-zinc-500"
+                          }`}
+                        >
                           <Icon className="w-4 h-4" />
                         </div>
                         <div>
-                          <div className={`text-xs font-bold font-outfit ${
-                            isSelected
-                              ? range.danger ? 'text-red-300' : 'text-white'
-                              : 'text-zinc-300'
-                          }`}>
+                          <div
+                            className={`text-xs font-bold font-outfit ${
+                              isSelected
+                                ? range.danger
+                                  ? "text-red-300"
+                                  : "text-white"
+                                : "text-zinc-300"
+                            }`}
+                          >
                             {range.label}
                           </div>
                           <div className="text-[11px] text-zinc-500 font-mono">
@@ -375,17 +422,21 @@ export default function ActivityLog({ projectId, liveEntry }) {
                       </div>
 
                       {/* Selection radio indicator */}
-                      <div className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${
-                        isSelected
-                          ? range.danger
-                            ? 'border-red-400 bg-red-500'
-                            : 'border-white bg-white'
-                          : 'border-white/20'
-                      }`}>
+                      <div
+                        className={`w-4 h-4 rounded-full border flex items-center justify-center transition-all ${
+                          isSelected
+                            ? range.danger
+                              ? "border-red-400 bg-red-500"
+                              : "border-white bg-white"
+                            : "border-white/20"
+                        }`}
+                      >
                         {isSelected && (
-                          <div className={`w-1.5 h-1.5 rounded-full ${
-                            range.danger ? 'bg-black' : 'bg-[#121214]'
-                          }`} />
+                          <div
+                            className={`w-1.5 h-1.5 rounded-full ${
+                              range.danger ? "bg-black" : "bg-[#121214]"
+                            }`}
+                          />
                         )}
                       </div>
                     </button>
@@ -397,7 +448,8 @@ export default function ActivityLog({ projectId, liveEntry }) {
               <div className="flex items-start gap-2.5 p-3 rounded-xl bg-white/[0.02] border border-white/5 text-[11px] text-zinc-400 font-mono">
                 <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
                 <span>
-                  This will only delete the activity audit log. Your actual project files will not be touched.
+                  This will only delete the activity audit log. Your actual
+                  project files will not be touched.
                 </span>
               </div>
 
@@ -417,9 +469,9 @@ export default function ActivityLog({ projectId, liveEntry }) {
                   onClick={handleClear}
                   disabled={clearing}
                   className={`px-5 py-2 rounded-xl text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer ${
-                    selectedRange === 'all'
-                      ? 'bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-500/20'
-                      : 'bg-white hover:bg-zinc-200 text-black font-semibold'
+                    selectedRange === "all"
+                      ? "bg-red-500 hover:bg-red-600 text-white shadow-lg shadow-red-500/20"
+                      : "bg-white hover:bg-zinc-200 text-black font-semibold"
                   }`}
                 >
                   {clearing ? (
@@ -439,4 +491,3 @@ export default function ActivityLog({ projectId, liveEntry }) {
     </motion.div>
   );
 }
-
