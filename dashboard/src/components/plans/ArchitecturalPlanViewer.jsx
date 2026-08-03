@@ -267,14 +267,14 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
       if (part.startsWith('`') && part.endsWith('`')) {
         const codeText = part.slice(1, -1);
         return (
-          <span key={index} className="inline-flex items-center gap-1 font-mono text-zinc-200 bg-white/10 border border-white/15 px-1.5 py-0.2 rounded text-[11px] mx-0.5 font-bold">
+          <span key={index} className="inline-flex items-center gap-1 font-mono text-cyber-accent bg-cyber-accent/[0.08] px-1.5 py-0.2 rounded text-[11px] mx-0.5 font-bold">
             <span>{codeText}</span>
           </span>
         );
       }
       if (part.startsWith('**') && part.endsWith('**')) {
         return (
-          <strong key={index} className="text-white font-bold tracking-tight bg-white/5 px-1 py-0.2 rounded">
+          <strong key={index} className="text-cyber-accent font-bold tracking-tight bg-cyber-accent/[0.08] px-1.5 py-0.2 rounded">
             {part.slice(2, -2)}
           </strong>
         );
@@ -373,7 +373,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                     setCopiedFilePath(filePath);
                     setTimeout(() => setCopiedFilePath(null), 1500);
                   }}
-                  className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/25 text-white/80 hover:text-white text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer group"
+                  className="px-2.5 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] hover:border-white/[0.15] text-white/80 hover:text-white text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer group shadow-sm"
                   title="Click to copy file path"
                 >
                   <span className="text-white/40 group-hover:text-white/60">📄</span>
@@ -528,8 +528,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                 key={modIdx}
                 className="relative overflow-hidden rounded-2xl bg-[#0b0b0e] border border-white/15 shadow-xl transition-all"
               >
-                {/* Left Status Line */}
-                <div className="absolute top-0 bottom-0 left-0 w-1 bg-white/40" />
+                <div className={`absolute top-0 bottom-0 left-0 w-0.5 transition-colors duration-500 ${isCollapsed ? 'bg-white/5' : 'bg-cyber-accent/60'}`} />
 
                 {/* Collapsible Module Header */}
                 <button
@@ -537,7 +536,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                   className="w-full px-5 py-4 bg-white/[0.02] border-b border-white/10 flex flex-wrap items-center justify-between gap-3 hover:bg-white/[0.04] transition-colors text-left cursor-pointer"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="px-2.5 py-0.5 rounded-lg bg-white/10 border border-white/20 text-white font-mono text-xs font-bold">
+                    <span className="px-2.5 py-0.5 rounded-lg bg-cyber-accent/10 text-cyber-accent font-mono text-xs font-bold">
                       LAYER {mod.number}
                     </span>
                     <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">
@@ -572,9 +571,12 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                           const isPromptCopied = copiedStepBadge === `${block.stepNum}-prompt`;
 
                           return (
-                            <div key={idx} className="bg-[#0f0f13] border border-white/15 rounded-xl p-4 sm:p-5 my-4 space-y-3.5 shadow-lg">
+                            <div key={idx} className="bg-[#121215]/80 backdrop-blur-xl border border-white/[0.08] hover:border-white/[0.15] rounded-2xl p-4 sm:p-5 my-5 space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.6)] transition-all relative overflow-hidden group">
+                              {/* Subtle Glow Background */}
+                              <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/[0.02] rounded-full blur-3xl pointer-events-none group-hover:bg-white/[0.03] transition-colors" />
+                              
                               {/* Step Header */}
-                              <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/10">
+                              <div className="flex flex-wrap items-center justify-between gap-3 pb-3.5 border-b border-white/[0.08] relative z-10">
                                 <div className="flex items-center gap-2.5">
                                   <span className="px-2.5 py-1 rounded-lg bg-white text-black font-mono text-xs font-black">
                                     Step {block.stepNum}
@@ -644,7 +646,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                         if (block.type === 'h3') {
                           return (
                             <div key={idx} className="flex items-center gap-2 pt-2 pb-1 border-b border-white/5">
-                              <div className="w-1.5 h-1.5 rounded-full bg-white" />
+                              <div className="w-1.5 h-1.5 rounded-full bg-cyber-accent shadow-[0_0_8px_rgba(var(--cyber-accent-rgb),0.8)]" />
                               <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white font-mono">
                                 {block.text}
                               </h3>
@@ -655,8 +657,8 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                         // 3. Checklist Tasks
                         if (block.type === 'checklist') {
                           return (
-                            <div key={idx} className="bg-black/40 border border-white/10 rounded-xl p-4 space-y-2.5 my-3">
-                              <div className="text-[11px] font-mono text-white/50 uppercase tracking-widest pb-1.5 border-b border-white/10 flex items-center justify-between">
+                            <div key={idx} className="bg-black/50 border border-white/[0.06] rounded-xl p-4 sm:p-5 space-y-3 my-4 shadow-inner relative overflow-hidden">
+                              <div className="text-[11px] font-mono text-white/50 uppercase tracking-widest pb-2 border-b border-white/5 flex items-center justify-between relative z-10">
                                 <span className="flex items-center gap-1.5">
                                   <ShieldCheck className="w-3.5 h-3.5 text-white/70" />
                                   <span>Execution Checkpoints</span>
@@ -695,8 +697,8 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                         // 4. Code Block
                         if (block.type === 'codeblock') {
                           return (
-                            <div key={idx} className="bg-[#070709] rounded-xl border border-white/15 overflow-hidden my-4 shadow-xl">
-                              <div className="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/10 text-xs font-mono">
+                            <div key={idx} className="bg-[#070709]/90 backdrop-blur-md rounded-xl border border-white/[0.12] overflow-hidden my-5 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+                              <div className="flex items-center justify-between px-4 py-2.5 bg-white/[0.03] border-b border-white/10 text-xs font-mono">
                                 <span className="uppercase tracking-wider text-[11px] font-bold text-white/80 bg-white/10 px-2 py-0.5 rounded border border-white/15">
                                   {block.language}
                                 </span>
@@ -741,7 +743,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
                             <ul key={idx} className="space-y-2 pl-2 my-3">
                               {block.items.map((item, i) => (
                                 <li key={i} className="flex items-start gap-2.5 text-xs font-mono leading-relaxed text-white/80">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-white mt-1.5 shrink-0" />
+                                  <span className="w-1.5 h-1.5 rounded-full bg-cyber-accent mt-1.5 shrink-0 shadow-[0_0_8px_rgba(var(--cyber-accent-rgb),0.8)]" />
                                   <span>{formatTextWithBadges(item)}</span>
                                 </li>
                               ))}

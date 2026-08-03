@@ -84,9 +84,9 @@ export default function PlanMarkdownEditor({
   const lineCount = lines.length;
 
   return (
-    <div className="flex flex-col h-full w-full bg-[#070709] rounded-xl border border-white/15 overflow-hidden shadow-2xl">
+    <div className="flex flex-col h-full w-full bg-[#0d0d12]/95 backdrop-blur-3xl rounded-2xl border border-white/[0.08] overflow-hidden shadow-[0_10px_40px_rgba(0,0,0,0.8)] relative">
       {/* Editor Sub-Header Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 bg-[#0e0e12] border-b border-white/10 shrink-0">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 bg-black/40 border-b border-white/[0.08] shrink-0 relative z-10">
         <div className="flex items-center gap-2.5">
           <div className="flex items-center gap-1.5 text-xs font-mono text-white/70">
             <FileCode className="w-3.5 h-3.5 text-white/50" />
@@ -152,7 +152,7 @@ export default function PlanMarkdownEditor({
               savedSuccess
                 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
                 : dirty
-                ? 'bg-white text-black hover:bg-zinc-200 border border-white'
+                ? 'bg-cyber-accent text-black hover:bg-cyber-accent/90 shadow-[0_0_15px_rgba(var(--cyber-accent-rgb),0.3)] border-transparent'
                 : 'bg-white/5 text-white/30 border border-white/5 cursor-not-allowed'
             }`}
             title="Save Blueprint Changes (Cmd+S)"
@@ -183,10 +183,10 @@ export default function PlanMarkdownEditor({
         {/* Line Numbers Gutter */}
         <div
           ref={lineNumbersRef}
-          className="select-none py-4 px-3 text-right text-white/20 bg-[#0a0a0d] border-r border-white/10 overflow-hidden font-mono min-w-[3.2rem]"
+          className="select-none py-5 px-3 text-right text-white/30 bg-black/40 border-r border-white/5 overflow-hidden font-mono min-w-[3.5rem]"
         >
           {Array.from({ length: lineCount }).map((_, i) => (
-            <div key={i} className="h-5 leading-5 text-[11px]">
+            <div key={i} className="h-6 leading-6 text-xs opacity-70 hover:opacity-100 transition-opacity">
               {i + 1}
             </div>
           ))}
@@ -199,7 +199,7 @@ export default function PlanMarkdownEditor({
           onChange={handleChange}
           onScroll={handleScroll}
           spellCheck={false}
-          className="flex-1 h-full w-full py-4 px-4 bg-transparent text-zinc-200 font-mono text-xs leading-5 resize-none outline-none custom-scrollbar selection:bg-white/20 selection:text-white"
+          className="flex-1 h-full w-full py-5 px-5 bg-transparent text-[#e2e8f0] font-mono text-sm leading-6 resize-none outline-none custom-scrollbar selection:bg-cyber-accent/30 selection:text-white"
           placeholder="Enter architectural plan specification markdown here..."
         />
       </div>

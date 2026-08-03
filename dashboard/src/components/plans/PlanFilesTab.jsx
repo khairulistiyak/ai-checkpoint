@@ -59,13 +59,13 @@ export default function PlanFilesTab({ project }) {
                   onClick={() => setSelectedFile(file.name)}
                   className={`p-3 rounded-xl cursor-pointer flex items-center justify-between gap-3 border transition-all duration-150 group ${
                     isSelected
-                      ? 'bg-white/10 border-white/20 text-white'
+                      ? 'bg-cyber-accent/10 border-cyber-accent/30 text-cyber-accent shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.15)]'
                       : 'bg-transparent border-transparent text-white/60 hover:bg-white/5 hover:text-white'
                   }`}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className={`p-1.5 rounded-lg border ${
-                      isSelected ? 'bg-white/15 border-white/30 text-white' : 'bg-white/5 border-white/10 text-white/40 group-hover:text-white'
+                    <div className={`p-1.5 rounded-lg border transition-all ${
+                      isSelected ? 'bg-cyber-accent/20 border-cyber-accent/40 text-cyber-accent' : 'bg-white/5 border-white/10 text-white/40 group-hover:text-white'
                     }`}>
                       <Cpu className="w-3.5 h-3.5" />
                     </div>
@@ -74,12 +74,12 @@ export default function PlanFilesTab({ project }) {
                     </span>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
-                    <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-medium ${
-                      isSelected ? 'bg-white/10 text-white border border-white/20' : 'bg-white/5 text-white/50'
+                    <span className={`text-[10px] font-mono px-2 py-0.5 rounded font-medium transition-all ${
+                      isSelected ? 'bg-cyber-accent/20 text-cyber-accent border border-cyber-accent/30' : 'bg-white/5 text-white/50 border border-transparent'
                     }`}>
                       {file.steps} {file.steps === 1 ? 'step' : 'steps'}
                     </span>
-                    <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isSelected ? 'text-white translate-x-0.5' : 'text-white/20 opacity-0 group-hover:opacity-100'}`} />
+                    <ChevronRight className={`w-3.5 h-3.5 transition-transform ${isSelected ? 'text-cyber-accent translate-x-0.5' : 'text-white/20 opacity-0 group-hover:opacity-100'}`} />
                   </div>
                 </div>
               );
@@ -137,11 +137,14 @@ export default function PlanFilesTab({ project }) {
                   transition={{ delay: idx * 0.05 }}
                   whileHover={{ y: -3 }}
                   onClick={() => setSelectedFile(file.name)}
-                  className="group rounded-2xl p-5 cursor-pointer flex flex-col justify-between gap-5 transition-all duration-200 bg-[#121214] border border-white/10 hover:border-white/20 hover:bg-[#18181b]"
+                  className="group rounded-2xl p-5 cursor-pointer flex flex-col justify-between gap-5 transition-all duration-300 bg-[#121215]/80 backdrop-blur-xl border border-white/[0.08] hover:border-cyber-accent/30 hover:bg-cyber-accent/5 hover:shadow-[0_8px_30px_rgba(var(--cyber-accent-rgb),0.15)] relative overflow-hidden"
                 >
-                  <div className="flex items-start justify-between gap-3">
+                  {/* Subtle Glow Background */}
+                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/[0.02] rounded-full blur-3xl pointer-events-none group-hover:bg-cyber-accent/10 transition-colors" />
+
+                  <div className="flex items-start justify-between gap-3 relative z-10">
                     <div className="flex items-center gap-3.5 min-w-0">
-                      <div className="p-2.5 rounded-xl border bg-white/5 border-white/10 text-white group-hover:bg-white/10 transition-all">
+                      <div className="p-2.5 rounded-xl border bg-white/5 border-white/10 text-white group-hover:bg-cyber-accent/10 group-hover:text-cyber-accent group-hover:border-cyber-accent/30 transition-all">
                         <Cpu className="w-5 h-5" />
                       </div>
                       <div className="flex flex-col min-w-0">
@@ -158,12 +161,12 @@ export default function PlanFilesTab({ project }) {
                     </span>
                   </div>
 
-                  <div className="flex items-center justify-between border-t border-white/10 pt-3.5 text-[11px] font-mono text-white/50">
+                  <div className="flex items-center justify-between border-t border-white/10 pt-3.5 text-[11px] font-mono text-white/50 relative z-10">
                     <span className="flex items-center gap-1.5">
                       <Calendar className="w-3.5 h-3.5 text-white/40" />
                       {fmtDate(file.createdAt) || 'Saved Blueprint'}
                     </span>
-                    <div className="flex items-center gap-1 text-white font-medium group-hover:translate-x-1 transition-transform">
+                    <div className="flex items-center gap-1 text-white/80 group-hover:text-cyber-accent font-medium group-hover:translate-x-1 transition-all">
                       <Eye className="w-3.5 h-3.5" />
                       <span>View Blueprint</span>
                       <ArrowRight className="w-3.5 h-3.5" />

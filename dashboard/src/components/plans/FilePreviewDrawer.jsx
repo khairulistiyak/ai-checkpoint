@@ -410,11 +410,11 @@ export default function FilePreviewDrawer({
               </div>
             ) : (
               /* Raw Markdown Code View */
-              <div className="flex gap-4 font-mono text-xs leading-relaxed max-w-6xl mx-auto bg-black/70 p-6 sm:p-8 rounded-2xl border border-white/15 shadow-inner">
-                <div className="select-none text-white/20 text-right font-mono text-xs space-y-0.5 min-w-[2.5rem] pr-3 border-r border-white/5">
-                  {content.split('\n').map((_, i) => <div key={i}>{i + 1}</div>)}
+              <div className="flex font-mono text-sm leading-relaxed max-w-6xl mx-auto bg-[#0d0d12]/95 backdrop-blur-3xl rounded-2xl border border-white/[0.08] shadow-[0_10px_40px_rgba(0,0,0,0.8)] overflow-hidden min-h-[500px]">
+                <div className="select-none text-white/30 text-right font-mono text-xs bg-black/40 py-6 px-3 min-w-[3.5rem] border-r border-white/5 space-y-0.5">
+                  {content.split('\n').map((_, i) => <div key={i} className="h-6 leading-6 opacity-70 hover:opacity-100 transition-opacity">{i + 1}</div>)}
                 </div>
-                <pre className="text-zinc-200 whitespace-pre-wrap flex-1 text-xs space-y-0.5 overflow-x-auto selection:bg-white/20 selection:text-white">
+                <pre className="text-[#e2e8f0] whitespace-pre-wrap flex-1 py-6 px-6 text-sm leading-6 overflow-x-auto selection:bg-cyber-accent/30 selection:text-white custom-scrollbar">
                   {content}
                 </pre>
               </div>
