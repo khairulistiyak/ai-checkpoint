@@ -2,7 +2,7 @@
 
 - **সংযুক্ত ছবি (Attached Image):** `images/twitter_code_flow.png` (Tweet 1-এ যুক্ত করবেন)
 - **পোস্টিংয়ের সেরা সময়:** দুপুর ১২:০০ PM – ২:০০ PM বা রাত ৯:০০ PM
-- **কন্টেন্ট আর্কিটেকচার:** পাঞ্চি হুক ➔ ৫টি বাস্তব পর্যবেক্ষণ ➔ সমাধান ও কনক্লুশন
+- **কন্টেন্ট আর্কিটেকচার:** পাঞ্চি হুক ➔ ৪টি বাস্তব পর্যবেক্ষণ ➔ সমাধান ও কনক্লুশন
 
 ---
 
@@ -11,7 +11,7 @@
 **১/৬ [হুক + ইমেজ]**
 "শুধু ভালো প্রম্পট দিলেই এআই নিখুঁত কোড লিখে দেবে"—এই বিশ্বাসে যারা প্রোডাকশন কোড বানাচ্ছেন, তারা আসলে একটা টাইম বোমার ওপর বসে আছেন। 🧵👇
 
-এখানে আমার বাস্তব ৫টি উপলব্ধি শেয়ার করছি:
+এখানে আমার বাস্তব ৪টি উপলব্ধি শেয়ার করছি:
 
 **২/৬**
 ১. এআই কোড খুব দ্রুত লেখে, কিন্তু সিস্টেমের আর্কিটেকচার বোঝে না। 
@@ -41,7 +41,7 @@
 **1/6 [Hook + Image]**
 Relying purely on "prompt engineering" to generate production software is a ticking time bomb. 🧵👇
 
-Here are 5 honest engineering realities I learned the hard way:
+Here are 4 honest engineering realities I learned the hard way:
 
 **2/6**
 1. AI writes fast syntax, not scalable architectures.
