@@ -1,6 +1,6 @@
 * .agent fodar dainamic idew wase , jodi antigrabity use kori tahole .aget a alada stacher hishabe thakbe amader project .aget foldare amder project name 1ta folder banabe then kaj korbe .agent a ide ba onno kuno file delte korbena kokhonoi , amar jani cloude aer jonee , cloud er khtre jei name foldar thake oi namei thakbe .kilo er jonne kilo hobe amader atak kivabe handel korle best hobe ta jante chaichi . ide dorkar 
 
-* amader ai tool use korle kokhonoi jate ai project a kuno error na rakhe seta o dorkar . best idea dew 
+* amader ai-chackpoint tool use korle kokhonoi jate ai project a kuno error na rakhe seta o dorkar . best idea dew 
 
 * jodii kuno running project a amader project install kore tokhon kemon kivabe handel korba taw jana dorkar 
 

@@ -13,14 +13,14 @@
 
 ---
 
-## 📊 Overall Progress: 100% (307/307 steps complete)
+## 📊 Overall Progress: 91% (312/341 steps complete)
 
 ```
-[████████████████████] 100% (307/307 steps complete)
+[██████████████████░░] 91% (312/341 steps complete)
 ```
 
-## 👉 NEXT: None (Project Complete) ✅
-> 📋 Details → `plan/` → Phase 39 → Step 39.10
+## 👉 NEXT: Step 41.1 — Health Command (`packages/cli/cmd-health.js`)
+> 📋 Details → `plan/` → Phase 41 → Step 41.1
 
 ---
 
@@ -659,6 +659,11 @@ UPDATE LOG:
 [2026-08-05 22:14] Step 39.8 completed — Integrate ProjectRunPanel into ProjectGrid tabs | Agent: CLI
 [2026-08-05 22:15] Step 39.9 completed — Create CLI run command and register in CLI router | Agent: CLI
 [2026-08-05 22:16] Step 39.10 completed — Add bats tests for project run config and CLI run command | Agent: CLI
+[2026-08-06 00:48] Step 40.1 completed — Created workspace scanner | Agent: CLI
+[2026-08-06 00:48] Step 40.2 completed — Created security scanner | Agent: CLI
+[2026-08-06 00:48] Step 40.3 completed — Created circular dep detector | Agent: CLI
+[2026-08-06 00:49] Step 40.4 completed — Created auto-fixer | Agent: CLI
+[2026-08-06 00:49] Step 40.5 completed — Created health score calculator | Agent: CLI
 -->
 
 
@@ -792,3 +797,99 @@ UPDATE LOG:
 - [x] **Step 39.8** — ProjectGrid-এ রান প্যানেল ও ককপিট উইজেট ইন্টিগ্রেট করা (`dashboard/src/components/ProjectGrid.jsx`)
 - [x] **Step 39.9** — CLI রান কমান্ড তৈরি ও রাউটারে রেজিস্টার করা (`packages/cli/cmd-run.js`)
 - [x] **Step 39.10** — রান কনফিগ ও CLI রানের অটোমেটেড টেস্ট লেখা (`tests/run-config.bats`)
+
+
+---
+
+## 🔷 Phase 40: Core Scanner Engine — ✅ 100% COMPLETE
+
+- [x] **Step 40.1** — Workspace Syntax Scanner (`packages/core/workspace-scanner.js`)
+- [x] **Step 40.2** — Security Pattern Scanner (`packages/core/security-scanner.js`)
+- [x] **Step 40.3** — Circular Dependency Detector (`packages/core/circular-dep-detector.js`)
+- [x] **Step 40.4** — Auto-Fix Engine (`packages/core/auto-fixer.js`)
+- [x] **Step 40.5** — Health Score Calculator (`packages/core/health-score.js`)
+
+---
+
+## 🔷 Phase 41: CLI Health Command — 🔴 0% PENDING
+
+- [ ] **Step 41.1** — Health Command (`packages/cli/cmd-health.js`)
+- [ ] **Step 41.2** — Register Health Command in CLI Router (`packages/cli/index.js`)
+
+---
+
+## 🔷 Phase 42: Gate Enforcement — 🔴 0% PENDING
+
+- [ ] **Step 42.1** — Upgrade Complete with Workspace Gate (`packages/cli/cmd-complete.js`)
+- [ ] **Step 42.2** — Upgrade Checkpoint with Fortress Gates (`packages/cli/cmd-checkpoint.js`)
+
+---
+
+## 🔷 Phase 43: Watch Mode & Templates — 🔴 0% PENDING
+
+- [ ] **Step 43.1** — Upgrade Watch with In-Flight Guards (`packages/cli/cmd-watch.js`)
+- [ ] **Step 43.2** — Add Zero-Error Protocol to AGENTS.md (`templates/AGENTS.md`)
+- [ ] **Step 43.3** — Add Rule 3 to RULES.md (`templates/RULES.md`)
+
+---
+
+## 🔷 Phase 44: Dashboard Health Center — 🔴 0% PENDING
+
+- [ ] **Step 44.1** — Health API Route (`dashboard/src/server/health.js`)
+- [ ] **Step 44.2** — Mount Health Route (`dashboard/server.js`)
+- [ ] **Step 44.3** — Health Command Center Component (`dashboard/src/components/HealthCommandCenter.jsx`)
+- [ ] **Step 44.4** — Wire Health Tab into ProjectGrid (`dashboard/src/components/ProjectGrid.jsx`)
+
+---
+
+## 🔷 Phase 45: Tests & Final Validation — 🔴 0% PENDING
+
+- [ ] **Step 45.1** — Health System Tests (`tests/health.bats`)
+- [ ] **Step 45.2** — Full Validation Run (`tests/health.bats`)
+
+
+---
+
+## 🔷 Phase 48: Structure Enforcer Engine — 🔴 0% PENDING
+
+- [ ] **Step 48.1** — Folder Structure Analyzer (`packages/core/structure-analyzer.js`)
+- [ ] **Step 48.2** — Naming Convention Checker (`packages/core/naming-checker.js`)
+- [ ] **Step 48.3** — Code Hygiene Scanner (`packages/core/code-hygiene.js`)
+- [ ] **Step 48.4** — Unified Quality Report (`packages/core/quality-report.js`)
+
+---
+
+## 🔷 Phase 49: CLI Quality Command — 🔴 0% PENDING
+
+- [ ] **Step 49.1** — Quality Command (`packages/cli/cmd-quality.js`)
+- [ ] **Step 49.2** — Register Quality Command in CLI Router (`packages/cli/index.js`)
+
+---
+
+## 🔷 Phase 50: Auto-Clean Engine — 🔴 0% PENDING
+
+- [ ] **Step 50.1** — Structure Cleaner (`packages/core/structure-cleaner.js`)
+- [ ] **Step 50.2** — Code Hygiene Fixer (`packages/core/hygiene-fixer.js`)
+
+---
+
+## 🔷 Phase 51: Integration & Templates — 🔴 0% PENDING
+
+- [ ] **Step 51.1** — Add Quality Gate to Complete Command (`packages/cli/cmd-complete.js`)
+- [ ] **Step 51.2** — Add Rule 4 Clean Code Policy to RULES.md (`templates/RULES.md`)
+- [ ] **Step 51.3** — Quality Tests (`tests/quality.bats`)
+
+---
+
+## 🔷 Phase 52: Deep Code Quality Scanners — 🔴 0% PENDING
+
+- [ ] **Step 52.1** — Function Complexity Analyzer (`packages/core/complexity-analyzer.js`)
+- [ ] **Step 52.2** — Dependency Hygiene Scanner (`packages/core/dep-hygiene.js`)
+- [ ] **Step 52.3** — Project Config Checker (`packages/core/project-config-checker.js`)
+- [ ] **Step 52.4** — Upgrade Quality Report with Deep Scanners (`packages/core/quality-report.js`)
+
+---
+
+## 🔷 Phase 53: Deep Quality Tests — 🔴 0% PENDING
+
+- [ ] **Step 53.1** — Deep Quality Tests (`tests/quality-deep.bats`)
