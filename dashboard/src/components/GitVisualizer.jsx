@@ -208,13 +208,32 @@ export default function GitVisualizer({ projectId, onRefresh }) {
                     </div>
 
                     <div
-                      className="text-cyber-text-primary text-xs font-mono break-words leading-relaxed"
+                      className="text-cyber-text-primary text-xs font-mono break-words leading-relaxed flex items-start mt-1.5"
                       title={cp.message}
                     >
-                      {cp.message.replace(
-                        /^(?:aicp\/[^\s]+|checkpoint:)\s*/i,
-                        "",
-                      )}
+                      {(() => {
+                        const m = cp.message.toLowerCase();
+                        let badge = null;
+                        if (m.includes('delete') || m.includes('remove') || m.includes('drop') || m.includes('rm ')) {
+                          badge = <span className="px-1.5 py-0.5 rounded bg-red-500/10 border border-red-500/20 text-red-400 text-[9px] font-bold uppercase tracking-wider mr-2 shrink-0">🗑️ Delete</span>;
+                        } else if (m.includes('add') || m.includes('create') || m.includes('new ') || m.includes('init') || m.includes('implement')) {
+                          badge = <span className="px-1.5 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[9px] font-bold uppercase tracking-wider mr-2 shrink-0">✨ Add</span>;
+                        } else if (m.includes('fix') || m.includes('resolve') || m.includes('patch')) {
+                          badge = <span className="px-1.5 py-0.5 rounded bg-purple-500/10 border border-purple-500/20 text-purple-400 text-[9px] font-bold uppercase tracking-wider mr-2 shrink-0">🐛 Fix</span>;
+                        } else if (m.includes('update') || m.includes('modif') || m.includes('change') || m.includes('edit')) {
+                          badge = <span className="px-1.5 py-0.5 rounded bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[9px] font-bold uppercase tracking-wider mr-2 shrink-0">📝 Modify</span>;
+                        } else {
+                          badge = <span className="px-1.5 py-0.5 rounded bg-zinc-500/10 border border-zinc-500/20 text-zinc-400 text-[9px] font-bold uppercase tracking-wider mr-2 shrink-0">📌 Commit</span>;
+                        }
+                        return (
+                          <>
+                            {badge}
+                            <span className="pt-0.5 leading-snug opacity-90">
+                              {cp.message.replace(/^(?:aicp\/[^\s]+|checkpoint:)\s*/i, "")}
+                            </span>
+                          </>
+                        );
+                      })()}
                     </div>
                   </div>
 

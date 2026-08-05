@@ -4,9 +4,12 @@ const { PROGRESS_PATH } = require('./paths.js');
 const { log } = require('./colors.js');
 const { parseProgress, findStepInPlanFiles } = require('./parse-progress.js');
 const { checkFiles } = require('./validate.js');
+const { silentSync } = require('./plan-sync.js');
+const { saveIntegritySnapshot } = require('./integrity-guard.js');
 
 function startCommand(stepNum) {
   checkFiles();
+  silentSync();
   if (!stepNum) { log.error("Step number দাও (e.g., 2.2)"); process.exit(1); }
   if (!/^\d+\.\d+$/.test(stepNum)) { log.error(`Invalid step format: "${stepNum}". Expected X.Y format (e.g., 2.2)`); process.exit(1); }
 
@@ -69,6 +72,7 @@ function startCommand(stepNum) {
   if (lines[targetPhase.headerIndex].includes('🔴 0% PENDING')) lines[targetPhase.headerIndex] = lines[targetPhase.headerIndex].replace('🔴 0% PENDING', '🟡 0% IN PROGRESS');
 
   fs.writeFileSync(PROGRESS_PATH, lines.join('\n'), 'utf8');
+  saveIntegritySnapshot(stepNum);
   log.success(`Step ${stepNum} initialized [~]`);
 }
 

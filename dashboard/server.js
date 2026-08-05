@@ -5,7 +5,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import apiRouter from './src/server/api.js';
 import aiTierRouter from './src/server/ai-tier.js';
+import runConfigRouter from './src/server/run-config.js';
 import { watcherManager } from './src/server/watcher.js';
+import { watchPlanDirectory, stopWatching } from './src/server/plan-watcher.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,6 +25,7 @@ app.use(express.json());
 // API Routes
 app.use('/api', apiRouter);
 app.use('/api', aiTierRouter);
+app.use('/api', runConfigRouter);
 
 // API 404 — unknown API paths return JSON, not HTML
 app.all('/api/*', (req, res) => {
@@ -51,6 +54,16 @@ app.listen(PORT, () => {
   console.log(`🤖 AI-Checkpoint Dashboard backend running on http://localhost:${PORT}`);
   // Start file watchers for all registered projects
   watcherManager.initializeAll();
+  // Watch plan directory of first project for changes
+  try {
+    const config = JSON.parse(fs.readFileSync(path.join(process.cwd(), '.agents', 'config.json'), 'utf8'));
+    const firstProject = (config.projects || [])[0];
+    if (firstProject && firstProject.path) {
+      watchPlanDirectory(firstProject.path, ({ filename }) => {
+        console.log(`📋 Plan file changed: ${filename}`);
+      });
+    }
+  } catch {}
 });
 
 // Graceful shutdown — stop all watchers

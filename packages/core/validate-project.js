@@ -50,7 +50,10 @@ function validateProject(phases, planFilesContents, cwd) {
   planFilesContents.forEach(({ planFile, content }) => {
     const lines = content.split(/\r?\n/);
     let currentStep = null;
+    let inFence = false;
     lines.forEach(line => {
+      if (/^```/.test(line)) { inFence = !inFence; return; }
+      if (inFence) return;
       const heading = line.match(/^#{2,3}\s+(?:Step\s+)?(\d+\.\d+)\s+—\s+(.+)$/);
       if (heading) {
         currentStep = { number: heading[1], title: heading[2], file: null, planFile };

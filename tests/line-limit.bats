@@ -6,10 +6,10 @@ load test_helper
   cat <<EOF > plan/phase-1.md
 # Phase 1
 ## Step 1.1 — Test
-- **File:** \`large.txt\`
+- **File:** \`large.js\`
 - **Action:** CREATE
 - **Content:** test file
-- **Done-check:** \`test -f large.txt\` → exit 0
+- **Done-check:** \`test -f large.js\` → exit 0
 EOF
 
   run ./l start 1.1
@@ -17,7 +17,7 @@ EOF
   
   # Create a file with 200 non-comment lines
   for i in {1..200}; do
-    echo "line \$i" >> large.txt
+    echo "console.log('line \$i');" >> large.js
   done
   
   run ./l v
@@ -26,5 +26,5 @@ EOF
     echo "$output" >&3
   fi
   [ "$status" -ne 0 ]
-  [[ "$output" == *"large.txt exceeds 150 lines (200 lines)"* ]]
+  [[ "$output" == *"large.js exceeds 150 lines (200 lines)"* ]]
 }

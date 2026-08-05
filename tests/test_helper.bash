@@ -22,6 +22,10 @@ setup() {
   echo "  - [ ] **Step 1.1** — Test" >> .agents/PROGRESS.md
 }
 
+setup_test_env() {
+  export CLI_DIR="$PROJECT_DIR/.agents/packages/cli"
+}
+
 teardown() {
   cd "$ORIGINAL_PWD"
   rm -rf "$PROJECT_DIR"

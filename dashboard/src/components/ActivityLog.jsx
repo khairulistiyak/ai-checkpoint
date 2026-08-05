@@ -28,25 +28,25 @@ const ACTION_CONFIG = {
     icon: FilePlus,
     color: "text-emerald-400",
     bg: "bg-emerald-500/10",
-    label: "Created",
+    label: "Create",
   },
   MODIFIED: {
     icon: FileEdit,
     color: "text-blue-400",
     bg: "bg-blue-500/10",
-    label: "Modified",
+    label: "Modify",
   },
   DELETED: {
     icon: FileX,
     color: "text-red-400",
     bg: "bg-red-500/10",
-    label: "Deleted",
+    label: "Delete",
   },
   RESTORED: {
     icon: RotateCcw,
     color: "text-yellow-400",
     bg: "bg-yellow-500/10",
-    label: "Restored",
+    label: "Restore",
   },
 };
 
@@ -298,9 +298,13 @@ export default function ActivityLog({ projectId, liveEntry }) {
                         {formatTime(entry.ts)}
                       </span>
                       <div
-                        className={`w-6 h-6 rounded-md ${config.bg} flex items-center justify-center shrink-0 border border-cyber-card-border group-hover:border-transparent`}
+                        className={`flex items-center gap-1.5 w-[76px] py-1 px-2 rounded-md ${config.bg} border border-cyber-card-border group-hover:border-transparent shrink-0`}
+                        title={config.label}
                       >
                         <Icon className={`w-3 h-3 ${config.color}`} />
+                        <span className={`text-[9px] font-bold uppercase tracking-wider ${config.color}`}>
+                          {config.label}
+                        </span>
                       </div>
                       <span className="text-xs text-cyber-text-secondary truncate group-hover:text-cyber-text-primary transition-colors font-mono">
                         {entry.file}

@@ -68,6 +68,21 @@ Do not use: "appropriately", "as needed", "properly", "etc.", "and so on", "refa
 
 ---
 
+## RULE 2 — Project Execution & Run Environment
+
+Every project must declare its execution location and standard runnable commands:
+
+1. **Run Location**: Commands must run in their declared directory (e.g. root `.`, `./dashboard`, `./frontend`).
+2. **Directory Switching**: For commands outside root, explicitly switch directory (e.g. `cd dashboard && npm run dev`).
+3. **Standard Command Matrix**:
+   - `dev`: Local development server (e.g. `npm run dev`)
+   - `build`: Production build/bundle (e.g. `npm run build`)
+   - `test`: Test suite runner (e.g. `npm test`, `bats tests/`)
+   - `lint` / `verify`: Validation & linting (e.g. `./l v`, `npm run lint`)
+   - `checkpoint`: Checkpoint management (e.g. `./l cp save`, `./l start X.Y`)
+
+---
+
 ## Project Settings
 
 | Key | Value |

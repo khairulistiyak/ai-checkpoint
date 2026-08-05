@@ -10,6 +10,8 @@ const { watchCommand } = require('./cmd-watch.js');
 const { blockCommand } = require('./cmd-block.js');
 const { projectsCommand } = require('./cmd-projects.js');
 const { lintPlanCommand } = require('./cmd-lint-plan.js');
+const { syncCommand } = require('./cmd-sync.js');
+const { runProjectCommand } = require('./cmd-run.js');
 
 function showHelp() {
   console.log(`
@@ -24,11 +26,13 @@ ${colors.bright}Structure:${colors.reset}
 ${colors.bright}Commands:${colors.reset}
   ${colors.green}./l${colors.reset}                      Dashboard
   ${colors.green}./l start <step>${colors.reset}          Step শুরু করো
-  ${colors.green}./l c <step> "note"${colors.reset}       Step complete করো
+  ${colors.green}./l c <step> "note"${colors.reset}       Step complete করো (with syntax check ✅)
   ${colors.green}./l v${colors.reset}                     Validate (sync + files + 150-line)
   ${colors.green}./l doctor${colors.reset}                Health check
   ${colors.green}./l new-plan <name>${colors.reset}       Create plan from template
+  ${colors.green}./l run [name]${colors.reset}            Project run commands (dev, test, etc.)
   ${colors.green}./l cp save|list|back${colors.reset}     Checkpoints
+  ${colors.green}./l sync${colors.reset}                  Sync plan files → PROGRESS.md
   ${colors.green}./l h${colors.reset}                     Help
 
 ${colors.bright}Plan File Naming:${colors.reset}
@@ -49,7 +53,9 @@ function run() {
     case 'status': case 's': statusCommand(); break;
     case 'projects': case 'p': projectsCommand(); break;
     case 'lint-plan': case 'lp': lintPlanCommand(); break;
+    case 'sync': syncCommand(); break;
     case 'watch': case 'w': watchCommand(); break;
+    case 'run': case 'r': runProjectCommand(args[1], args.slice(2)); break;
     case 'start': startCommand(args[1]); break;
     case 'complete': case 'c': completeCommand(args[1], args[2]); break;
     case 'block': case 'b': blockCommand(args[1], args[2]); break;
