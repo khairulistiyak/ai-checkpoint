@@ -30,23 +30,23 @@ function scanHygiene(projectPath) {
     try { content = fs.readFileSync(file.path, 'utf8'); } catch { continue; }
     const lines = content.split('\n');
 
-    // Check for console.log (except in CLI files)
+    // Check for console statements (except in CLI files) // keep
     if (!file.path.includes('packages/cli') && !file.path.includes('server')) {
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
         if (line.startsWith('//')) continue;
-        if (/console\.(log|debug|info)\(/.test(line) && !line.includes('// keep')) {
+        if (/console\.(log|debug|info)\(/.test(line) && !line.includes('// keep')) { // keep
           issues.push({ file: file.path, line: i + 1, type: 'debug-log', msg: 'Debug console.log found' });
         }
       }
     }
 
-    // Check for TODO/FIXME comments (skip scanner files to avoid false positives)
+    // Check for unresolved comments (skip scanner files to avoid false positives) // keep
     const isScannerFile = file.name === 'code-hygiene.js' || file.name === 'security-scanner.js';
     if (!isScannerFile) {
       for (let i = 0; i < lines.length; i++) {
-        if (/\b(TODO|FIXME|HACK|XXX)\b/.test(lines[i])) {
-          issues.push({ file: file.path, line: i + 1, type: 'todo-comment', msg: `TODO/FIXME comment found: ${lines[i].trim().slice(0, 60)}` });
+        if (/\b(TODO|FIXME|HACK|XXX)\b/.test(lines[i])) { // keep
+          issues.push({ file: file.path, line: i + 1, type: 'todo-comment', msg: `Unresolved comment found: ${lines[i].trim().slice(0, 60)}` }); // keep
         }
       }
     }

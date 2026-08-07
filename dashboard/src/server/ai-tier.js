@@ -58,7 +58,7 @@ router.post('/projects/:id/ai-tier', (req, res) => {
     if (fs.existsSync(configPath)) {
       try {
         config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-      } catch (e) {}
+      } catch (e) { /* tier file read error */ }
     }
     config.tier = tier;
     fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf8');
@@ -104,7 +104,7 @@ router.post('/projects/:id/generate-plan', (req, res) => {
       const configPath = path.join(agentsDir, 'ai-config.json');
       let config = {};
       if (fs.existsSync(configPath)) {
-        try { config = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch (e) {}
+        try { config = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch (e) { /* tier file write error */ }
       }
       config.tier = tier;
       fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf8');

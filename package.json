@@ -23,7 +23,13 @@
   "scripts": {
     "test": "bats tests",
     "doctor": "./l doctor",
-    "validate": "./l v"
+    "validate": "./l v",
+    "electron:dev": "electron .",
+    "electron:build": "bash scripts/build-desktop.sh",
+    "electron:build:mac": "bash scripts/build-desktop.sh mac",
+    "electron:build:win": "bash scripts/build-desktop.sh win",
+    "electron:build:linux": "bash scripts/build-desktop.sh linux",
+    "electron:build:all": "bash scripts/build-desktop.sh all"
   },
   "repository": {
     "type": "git",

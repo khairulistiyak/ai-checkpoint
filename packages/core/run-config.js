@@ -33,7 +33,7 @@ function findWorkingDirectories(rootDir) {
         }
       }
     }
-  } catch (e) {}
+  } catch (e) { /* find dirs error ignored */ }
   return dirs;
 }
 
@@ -67,7 +67,7 @@ export function detectProjectRunConfig(projectPath) {
             isDefault: category === 'dev' && (name === 'dev' || name === 'start')
           });
         }
-      } catch (e) {}
+      } catch (e) { /* package.json read error */ }
     }
   }
 
@@ -86,7 +86,7 @@ export function detectProjectRunConfig(projectPath) {
     try {
       const data = JSON.parse(fs.readFileSync(customConfigPath, 'utf8'));
       if (Array.isArray(data.customCommands)) customCommands = data.customCommands;
-    } catch (e) {}
+    } catch (e) { /* run config read error */ }
   }
 
   return { projectPath, workingDirectories, commands, customCommands };

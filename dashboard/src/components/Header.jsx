@@ -1,8 +1,8 @@
 import React from 'react';
-import { Brain, Settings, Search, Menu, Command } from 'lucide-react';
+import { Brain, Settings, Search, Menu } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleMenu, onOpenLibrary }) {
+export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleMenu }) {
   return (
     <motion.header
       initial={{ y: -15, opacity: 0 }}
@@ -31,11 +31,7 @@ export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleM
           </div>
         </div>
         <div className="hidden sm:block h-4 w-px bg-white/10" />
-        <span
-          onClick={onOpenLibrary}
-          className="hidden sm:inline-block text-xs font-mono text-zinc-400 hover:text-white transition-colors cursor-pointer"
-          title="Open Developer Control Studio"
-        >
+        <span className="hidden sm:inline-block text-xs font-mono text-zinc-400 select-none">
           Workspaces & Execution
         </span>
       </div>

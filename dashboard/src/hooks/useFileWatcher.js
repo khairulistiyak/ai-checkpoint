@@ -33,7 +33,7 @@ export function useFileWatcher(projectId, callbacks = {}) {
     eventSourceRef.current = es;
 
     es.addEventListener('connected', () => {
-      console.log(`🔗 File watcher connected for project ${projectId}`);
+      // connected successfully
     });
 
     es.addEventListener('file-restored', (e) => {

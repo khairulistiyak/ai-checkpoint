@@ -1,32 +1,23 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import ProjectCard from './ProjectCard';
 import NotInitializedView from './NotInitializedView';
-import CockpitTab from './CockpitTab';
-import PlanProgressTab from './plans/PlanProgressTab';
-import PlanFilesTab from './plans/PlanFilesTab';
-import ProjectRunPanel from './runs/ProjectRunPanel';
-import AuditRulesTab from './AuditRulesTab';
-import HealthCommandCenter from './HealthCommandCenter';
 import FilePreviewDrawer from './plans/FilePreviewDrawer';
 import ProjectTabBar from './ProjectTabBar';
-import { motion, AnimatePresence } from 'framer-motion';
+import DeveloperActionDock from './DeveloperActionDock';
+import QuickTerminalDrawer from './QuickTerminalDrawer';
+import ProjectTabsContent from './ProjectTabsContent';
 
 export default function ProjectGrid({
-  selectedProject,
-  loading,
-  installing,
-  onRemove,
-  onOpenConfig,
-  onOpenPlans,
-  onInstall,
-  refresh,
-  liveActivityEntry
+  selectedProject, loading, installing, onRemove, onOpenConfig,
+  onOpenPlans, onInstall, refresh, liveActivityEntry
 }) {
   const [activeTab, setActiveTab] = useState('cockpit');
   const [statusFilter, setStatusFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedPhaseNumber, setSelectedPhaseNumber] = useState('all');
   const [selectedArchitectFile, setSelectedArchitectFile] = useState(null);
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
 
   const { progress, planStats } = selectedProject || {};
   const overall = progress?.overall || { percentage: 0, completed: 0, total: 0 };
@@ -35,6 +26,34 @@ export default function ProjectGrid({
   const activePhases = allPhases.filter(p => p.percentage > 0 && p.percentage < 100).length;
   const totalPlanSteps = planStats?.totalSteps || overall.total || 0;
   const planFilesList = planStats?.files || [];
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === '`' || e.key === '~')) {
+        e.preventDefault();
+        setIsTerminalOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const { runningStep, nextStep } = useMemo(() => {
+    let running = null;
+    let next = null;
+    for (const phase of allPhases) {
+      for (const step of (phase.steps || [])) {
+        if (step.status === 'running' && !running) {
+          running = { ...step, phaseNumber: phase.number, phaseName: phase.name };
+        } else if (step.status === 'pending' && !next) {
+          next = { ...step, phaseNumber: phase.number, phaseName: phase.name };
+        }
+        if (running && next) break;
+      }
+      if (running && next) break;
+    }
+    return { runningStep: running, nextStep: next };
+  }, [allPhases]);
 
   const handleOpenArchitect = (filename) => {
     if (filename) setSelectedArchitectFile(filename);
@@ -47,16 +66,16 @@ export default function ProjectGrid({
   const filteredPhases = useMemo(() => {
     if (!allPhases.length) return [];
     return allPhases
-      .filter(phase => selectedPhaseNumber === 'all' || String(phase.number) === String(selectedPhaseNumber))
-      .map(phase => ({
-        ...phase,
-        steps: (phase.steps || []).filter(step => {
+      .filter(p => selectedPhaseNumber === 'all' || String(p.number) === String(selectedPhaseNumber))
+      .map(p => ({
+        ...p,
+        steps: (p.steps || []).filter(step => {
           const matchStatus = statusFilter === 'all' || step.status === statusFilter;
           const matchSearch = !searchQuery || step.title.toLowerCase().includes(searchQuery.toLowerCase()) || String(step.number).includes(searchQuery);
           return matchStatus && matchSearch;
         })
       }))
-      .filter(phase => phase.steps.length > 0);
+      .filter(p => p.steps.length > 0);
   }, [allPhases, selectedPhaseNumber, statusFilter, searchQuery]);
 
   if (loading || !selectedProject) {
@@ -73,7 +92,7 @@ export default function ProjectGrid({
   }
 
   return (
-    <div className="flex flex-col gap-4 min-h-full w-full">
+    <div className="flex flex-col gap-4 min-h-full w-full pb-20">
       <ProjectCard project={selectedProject} onRemove={onRemove} onOpenConfig={onOpenConfig} onOpenPlans={onOpenPlans} onOpenArchitect={handleOpenArchitect} />
 
       <ProjectTabBar
@@ -84,42 +103,56 @@ export default function ProjectGrid({
         healthScore={selectedProject?.health?.score}
       />
 
-      <AnimatePresence mode="wait">
-        {activeTab === 'cockpit' && (
-          <motion.div key="cockpit" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }}>
-            <CockpitTab selectedProject={selectedProject} overall={overall} allPhases={allPhases} activePhases={activePhases} remaining={remaining} planStats={planStats} totalPlanSteps={totalPlanSteps} handleOpenArchitect={handleOpenArchitect} refresh={refresh} liveActivityEntry={liveActivityEntry} />
-          </motion.div>
-        )}
-        {activeTab === 'roadmap' && (
-          <motion.div key="roadmap" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }} className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-3 sm:p-4 shadow-sm min-h-[450px]">
-            <PlanProgressTab project={selectedProject} allPhases={allPhases} filteredPhases={filteredPhases} statusFilter={statusFilter} setStatusFilter={setStatusFilter} searchQuery={searchQuery} setSearchQuery={setSearchQuery} selectedPhaseNumber={selectedPhaseNumber} setSelectedPhaseNumber={setSelectedPhaseNumber} onRefresh={refresh} />
-          </motion.div>
-        )}
-        {activeTab === 'files' && (
-          <motion.div key="files" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }} className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-3 sm:p-4 shadow-sm min-h-[450px]">
-            <PlanFilesTab project={selectedProject} />
-          </motion.div>
-        )}
-        {activeTab === 'commands' && (
-          <motion.div key="commands" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }} className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-2 sm:p-4 shadow-sm min-h-[450px] flex flex-col">
-            <ProjectRunPanel project={selectedProject} />
-          </motion.div>
-        )}
-        {activeTab === 'audit' && (
-          <motion.div key="audit" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }} className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
-            <AuditRulesTab onOpenConfig={onOpenConfig} />
-          </motion.div>
-        )}
-        {activeTab === 'health' && (
-          <motion.div key="health" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }} className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-2 sm:p-4 shadow-sm min-h-[450px]">
-            <HealthCommandCenter projectId={selectedProject.id} />
-          </motion.div>
+      <ProjectTabsContent
+        activeTab={activeTab}
+        selectedProject={selectedProject}
+        overall={overall}
+        allPhases={allPhases}
+        activePhases={activePhases}
+        remaining={remaining}
+        planStats={planStats}
+        totalPlanSteps={totalPlanSteps}
+        handleOpenArchitect={handleOpenArchitect}
+        refresh={refresh}
+        liveActivityEntry={liveActivityEntry}
+        filteredPhases={filteredPhases}
+        statusFilter={statusFilter}
+        setStatusFilter={setStatusFilter}
+        searchQuery={searchQuery}
+        setSearchQuery={setSearchQuery}
+        selectedPhaseNumber={selectedPhaseNumber}
+        setSelectedPhaseNumber={setSelectedPhaseNumber}
+        onOpenConfig={onOpenConfig}
+      />
+
+      <DeveloperActionDock
+        project={selectedProject}
+        nextStep={nextStep}
+        runningStep={runningStep}
+        onRefresh={refresh}
+        onToggleTerminal={() => setIsTerminalOpen(prev => !prev)}
+        isTerminalOpen={isTerminalOpen}
+      />
+
+      <AnimatePresence>
+        {isTerminalOpen && (
+          <QuickTerminalDrawer
+            isOpen={isTerminalOpen}
+            onClose={() => setIsTerminalOpen(false)}
+            projectId={selectedProject.id}
+          />
         )}
       </AnimatePresence>
 
       <AnimatePresence>
         {selectedArchitectFile && (
-          <FilePreviewDrawer projectId={selectedProject.id} filename={selectedArchitectFile} allFiles={planFilesList} onSelectFile={(f) => setSelectedArchitectFile(f)} onClose={() => setSelectedArchitectFile(null)} />
+          <FilePreviewDrawer
+            projectId={selectedProject.id}
+            filename={selectedArchitectFile}
+            allFiles={planFilesList}
+            onSelectFile={(f) => setSelectedArchitectFile(f)}
+            onClose={() => setSelectedArchitectFile(null)}
+          />
         )}
       </AnimatePresence>
     </div>

@@ -84,6 +84,7 @@ export default function PlanProgressTab({
               key={phase.number}
               phase={phase}
               projectId={project?.id}
+              projectPath={project?.path}
               planFiles={project?.planStats?.files || []}
               onOpenArchitect={(filename) => setSelectedPlanFile(filename)}
               onRefresh={onRefresh}

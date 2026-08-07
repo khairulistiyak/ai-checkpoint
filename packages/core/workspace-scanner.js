@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', '.agents', 'plan', '.vscode', '.github'];
+const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', '.agents', 'plan', '.vscode', '.github', '_archive'];
 const SCAN_EXTS = ['.js', '.cjs', '.mjs', '.jsx', '.tsx', '.ts', '.json', '.css', '.sh'];
 
 function walkFiles(dir, results = []) {
@@ -39,8 +39,15 @@ function checkBalanced(content, open, close, label) {
 
 function checkImports(filePath) {
   const warnings = [];
-  const content = fs.readFileSync(filePath, 'utf8');
-  const re = /(?:from\s+|require\(\s*)['"]([^'"]+)['"]/g;
+  let content = fs.readFileSync(filePath, 'utf8');
+  // Strip comments and template string literal contents to avoid false positives in templates/examples
+  content = content
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\/\/.*/g, '')
+    .replace(/\\?`[\s\S]*?\\?`/g, '""')
+    .replace(/\\"[^"]*\\"/g, '""');
+
+  const re = /^\s*(?:import\s+(?:[\w*\s{},]*\s+from\s+)?|(?:const|let|var)\s+[\w*\s{},:]+\s*=\s*require\(\s*|require\(\s*)['"]([^'"]+)['"]/gm;
   let m;
   while ((m = re.exec(content)) !== null) {
     const spec = m[1];

@@ -16,8 +16,9 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = 20226;
 
-// CORS: permissive in dev, same-origin in production
-const corsOptions = process.env.NODE_ENV === 'production'
+// CORS: permissive in dev/electron, same-origin in web production
+const isElectron = process.env.ELECTRON === '1';
+const corsOptions = (process.env.NODE_ENV === 'production' && !isElectron)
   ? { origin: false }
   : { origin: true };
 app.use(cors(corsOptions));
@@ -52,22 +53,34 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('⚠️ Unhandled Rejection in Server:', reason);
 });
 
-app.listen(PORT, () => {
-  console.log(`🤖 AI-Checkpoint Dashboard backend running on http://localhost:${PORT}`);
-  // Start file watchers for all registered projects
-  watcherManager.initializeAll();
-  // Watch plan directory of first project for changes
-  try {
-    const config = JSON.parse(fs.readFileSync(path.join(process.cwd(), '.agents', 'config.json'), 'utf8'));
-    const firstProject = (config.projects || [])[0];
-    if (firstProject && firstProject.path) {
-      watchPlanDirectory(firstProject.path, ({ filename }) => {
-        console.log(`📋 Plan file changed: ${filename}`);
-      });
-    }
-  } catch {}
-});
+export function startServer(customPort = PORT) {
+  const server = app.listen(customPort, () => {
+    const activePort = server.address().port;
+    console.log(`🤖 AI-Checkpoint Dashboard backend running on http://localhost:${activePort}`);
+    // Start file watchers for all registered projects
+    watcherManager.initializeAll();
+    // Watch plan directory of first project for changes
+    try {
+      const config = JSON.parse(fs.readFileSync(path.join(process.cwd(), '.agents', 'config.json'), 'utf8'));
+      const firstProject = (config.projects || [])[0];
+      if (firstProject && firstProject.path) {
+        watchPlanDirectory(firstProject.path, ({ filename }) => {
+          // Plan file change detected — handled by watcher
+        });
+      }
+    } catch {}
+  });
+
+  return server;
+}
+
+// Standalone mode execution (when not running in Electron or imported as module)
+if (process.env.ELECTRON !== '1' && process.env.NODE_ENV !== 'test') {
+  startServer(PORT);
+}
 
 // Graceful shutdown — stop all watchers
 process.on('SIGTERM', () => { watcherManager.stopAll(); process.exit(0); });
 process.on('SIGINT', () => { watcherManager.stopAll(); process.exit(0); });
+
+export default app;

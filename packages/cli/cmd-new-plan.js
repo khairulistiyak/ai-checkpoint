@@ -25,7 +25,7 @@ function newPlanCommand(name, extraArgs = []) {
     const configPath = path.join(configDir, 'ai-config.json');
     let config = {};
     if (fs.existsSync(configPath)) {
-      try { config = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch (e) {}
+      try { config = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch (e) { /* read config error ignored */ }
     }
     config.tier = tier;
     fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf8');

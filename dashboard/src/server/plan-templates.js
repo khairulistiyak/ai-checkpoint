@@ -66,7 +66,7 @@ function generatePlanTemplate(name, tier, description = '') {
 - **Action:** CREATE
 - **Content:**
   \`\`\`javascript
-  console.log('Hello from small model template');
+  module.exports = { name: 'small-model-template' };
   \`\`\`
 - **Done-check:** \`test -f src/index.js\`
 - **Depends:** None

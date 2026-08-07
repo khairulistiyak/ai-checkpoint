@@ -1,112 +1,100 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { Shield, RefreshCw, AlertTriangle, CheckCircle2, XCircle } from 'lucide-react';
-
-const BASE = window.location.origin;
+import React from 'react';
+import { Shield, RefreshCw, AlertTriangle, Sparkles, Check } from 'lucide-react';
+import { useToast } from './ToastProvider';
+import HealthScoreGauge from './health/HealthScoreGauge';
+import HealthPillarGrid from './health/HealthPillarGrid';
+import HealthCoreChecklist from './health/HealthCoreChecklist';
+import HealthIssueExplorer from './health/HealthIssueExplorer';
+import { useHealthCommandCenter } from './health/useHealthCommandCenter';
 
 export default function HealthCommandCenter({ projectId }) {
-  const [health, setHealth] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const fetchHealth = useCallback(async () => {
-    if (!projectId) return;
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(`${BASE}/api/projects/${projectId}/health`);
-      if (!res.ok) throw new Error('Failed to fetch health');
-      const data = await res.json();
-      setHealth(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [projectId]);
-
-  useEffect(() => { fetchHealth(); }, [fetchHealth]);
-
-  const scoreColor = !health ? '#888' : health.score >= 90 ? '#4ade80' : health.score >= 60 ? '#facc15' : '#f87171';
+  const { showToast } = useToast();
+  const {
+    health, loading, copiedReport, error, activeCategory, setActiveCategory,
+    searchQuery, setSearchQuery, fetchHealth, handleCopyDiagnosticReport,
+    handleOpenInIde, score, healthScore, qualityScore, scoreColor, breakdown,
+    issues, checks, filteredIssues, categoryCounts
+  } = useHealthCommandCenter({ projectId, showToast });
 
   return (
-    <div style={{ padding: '24px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Shield size={20} style={{ color: scoreColor }} />
-          <span style={{ fontSize: '16px', fontWeight: 600, color: '#e2e8f0' }}>Health Center</span>
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#121214] border border-white/[0.08] p-4 sm:p-5 rounded-2xl">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/10 flex items-center justify-center shrink-0">
+            <Shield className="w-5 h-5" style={{ color: scoreColor }} />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg font-bold text-white font-outfit tracking-tight">Health & Quality Fortress</h2>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold uppercase tracking-wider bg-white/5 border border-white/10 text-zinc-300">Live Scan</span>
+            </div>
+            <p className="text-xs font-mono text-zinc-400">Continuous AST integrity, Rule 0 enforcement, security auditing & code hygiene.</p>
+          </div>
         </div>
-        <button
-          onClick={fetchHealth}
-          disabled={loading}
-          style={{
-            background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: '8px', padding: '6px 14px', color: '#94a3b8', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px'
-          }}
-        >
-          <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
-          {loading ? 'Scanning...' : 'Re-scan'}
-        </button>
+
+        <div className="flex flex-wrap items-center gap-2 shrink-0">
+          <button
+            onClick={handleCopyDiagnosticReport}
+            disabled={!health || loading}
+            className="bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-xl px-3.5 py-2 text-xs font-mono font-semibold transition-all flex items-center gap-2 cursor-pointer shadow-sm disabled:opacity-50 active:scale-95"
+            title="Copy structured diagnostic prompt for Cursor, Claude, or ChatGPT to fix issues"
+          >
+            {copiedReport ? <Check size={13} className="text-purple-300" /> : <Sparkles size={13} className="text-purple-400" />}
+            <span>{copiedReport ? 'Copied to Clipboard!' : 'Copy Fix Prompt'}</span>
+          </button>
+
+          <button
+            onClick={fetchHealth}
+            disabled={loading}
+            className="bg-white/[0.06] hover:bg-white/[0.1] text-zinc-200 border border-white/10 rounded-xl px-3.5 py-2 text-xs font-mono font-semibold transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 active:scale-95"
+          >
+            <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
+            <span>{loading ? 'Scanning...' : 'Re-scan'}</span>
+          </button>
+        </div>
       </div>
 
       {error && (
-        <div style={{ padding: '12px 16px', background: 'rgba(248,113,113,0.1)', border: '1px solid rgba(248,113,113,0.2)', borderRadius: '8px', color: '#f87171', marginBottom: '16px', fontSize: '13px' }}>
-          {error}
+        <div className="p-4 bg-rose-500/10 border border-rose-500/20 rounded-2xl text-rose-300 text-xs font-mono flex items-center gap-3">
+          <AlertTriangle size={16} className="shrink-0 text-rose-400" />
+          <span>{error}</span>
         </div>
       )}
 
       {health && (
         <>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-            style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '12px', padding: '20px', marginBottom: '16px', textAlign: 'center' }}
-          >
-            <div style={{ fontSize: '48px', fontWeight: 700, color: scoreColor }}>{health.score}</div>
-            <div style={{ fontSize: '13px', color: '#64748b', marginTop: '4px' }}>/100 — {health.filesScanned} files scanned</div>
-            <div style={{ marginTop: '8px', fontSize: '14px', color: health.passed ? '#4ade80' : '#f87171' }}>
-              {health.passed ? '✅ All Clear' : '⚠️ Issues Found'}
-            </div>
-          </motion.div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '10px', marginBottom: '16px' }}>
-            {[
-              { label: 'Syntax', value: health.breakdown.syntaxErrors, icon: health.breakdown.syntaxErrors === 0 ? CheckCircle2 : XCircle },
-              { label: 'Imports', value: health.breakdown.brokenImports, icon: health.breakdown.brokenImports === 0 ? CheckCircle2 : AlertTriangle },
-              { label: 'Rule 0', value: health.breakdown.rule0Violations, icon: health.breakdown.rule0Violations === 0 ? CheckCircle2 : AlertTriangle },
-              { label: 'Critical', value: health.breakdown.criticalSecurity, icon: health.breakdown.criticalSecurity === 0 ? CheckCircle2 : XCircle },
-              { label: 'Warnings', value: health.breakdown.warningSecurity, icon: health.breakdown.warningSecurity === 0 ? CheckCircle2 : AlertTriangle },
-            ].map(item => {
-              const Icon = item.icon;
-              const ok = item.value === 0;
-              return (
-                <div key={item.label} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '12px', textAlign: 'center' }}>
-                  <Icon size={16} style={{ color: ok ? '#4ade80' : '#f87171', marginBottom: '4px' }} />
-                  <div style={{ fontSize: '20px', fontWeight: 600, color: ok ? '#4ade80' : '#f87171' }}>{item.value}</div>
-                  <div style={{ fontSize: '11px', color: '#64748b' }}>{item.label}</div>
-                </div>
-              );
-            })}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+            <HealthScoreGauge
+              score={score}
+              scoreColor={scoreColor}
+              healthScore={healthScore}
+              qualityScore={qualityScore}
+              filesScanned={health.filesScanned}
+              passed={health.passed}
+            />
+            <HealthPillarGrid breakdown={breakdown} />
           </div>
 
-          {health.issues.length > 0 && (
-            <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '12px', maxHeight: '200px', overflowY: 'auto' }}>
-              <div style={{ fontSize: '13px', fontWeight: 600, color: '#94a3b8', marginBottom: '8px' }}>Issues ({health.issues.length})</div>
-              {health.issues.slice(0, 20).map((issue, i) => (
-                <div key={i} style={{ fontSize: '12px', color: '#94a3b8', padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.03)', display: 'flex', gap: '8px' }}>
-                  <span style={{ color: '#f87171', flexShrink: 0 }}>•</span>
-                  <span style={{ color: '#64748b', flexShrink: 0 }}>{(issue.file || '').split('/').pop()}{issue.line ? `:${issue.line}` : ''}</span>
-                  <span>{issue.error || issue.msg || issue.type}</span>
-                </div>
-              ))}
-            </div>
-          )}
+          <HealthCoreChecklist checks={checks} />
+
+          <HealthIssueExplorer
+            issues={issues}
+            filteredIssues={filteredIssues}
+            categoryCounts={categoryCounts}
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+            onOpenInIde={handleOpenInIde}
+          />
         </>
       )}
 
       {!health && !loading && !error && (
-        <div style={{ textAlign: 'center', padding: '40px', color: '#64748b', fontSize: '14px' }}>
-          Click "Re-scan" to run health check
+        <div className="text-center py-16 bg-[#121214] border border-white/[0.08] rounded-3xl space-y-3">
+          <Shield className="w-10 h-10 text-zinc-600 mx-auto" />
+          <h3 className="text-sm font-bold text-white font-outfit">Health Scanner Ready</h3>
+          <p className="text-xs font-mono text-zinc-500">Click "Re-scan" to run the continuous diagnostic suite.</p>
         </div>
       )}
     </div>

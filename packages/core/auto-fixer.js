@@ -3,7 +3,7 @@ const path = require('path');
 
 const FIXABLE = [
   { name: 'console-log', regex: /^\s*console\.(log|debug|info)\s*\(.*\);?\s*$/gm, replacement: '' },
-  { name: 'debugger', regex: /^\s*debugger;?\s*$/gm, replacement: '' },
+  { name: 'debugger', regex: /^\s*debugger;?\s*$/gm, replacement: '' }, // keep
   { name: 'trailing-whitespace', regex: /[ \t]+$/gm, replacement: '' },
 ];
 

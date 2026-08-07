@@ -1,21 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
-  FileCode, Calendar, Eye, Sparkles, Code2, ArrowRight,
-  Layers, Cpu, ShieldCheck, Zap, Activity, FileText, ChevronRight
-} from 'lucide-react';
-import { GlassButton } from '../ui/GlassButton';
+import { Layers, Cpu, ChevronRight } from 'lucide-react';
 import FilePreviewDrawer from './FilePreviewDrawer';
+import PlanFileCard from '../plan/PlanFileCard';
+import PlanFilesHeader from './PlanFilesHeader';
 
 export default function PlanFilesTab({ project }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const files = project?.planStats?.files || [];
-
-  const fmtDate = (d) => {
-    if (!d) return null;
-    try { return new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }); }
-    catch { return null; }
-  };
 
   if (files.length === 0) {
     return (
@@ -35,7 +27,6 @@ export default function PlanFilesTab({ project }) {
 
   return (
     <div className="flex flex-col lg:flex-row flex-1 overflow-hidden relative">
-      {/* 1. When a file IS open: sleek compact eye-comfort sidebar */}
       {selectedFile && (
         <div className="hidden lg:flex w-72 xl:w-80 shrink-0 border-r border-white/10 bg-[#09090b] flex-col overflow-hidden z-20">
           <div className="px-4 py-4 border-b border-white/10 bg-black/20 flex items-center justify-between">
@@ -88,98 +79,26 @@ export default function PlanFilesTab({ project }) {
         </div>
       )}
 
-      {/* 2. When NO file is open: Full 3-Column Eye-Comfort Minimal Grid */}
       {!selectedFile && (
         <div className="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
-          {/* Top Repository Header (Restful dark matte) */}
-          <div className="rounded-2xl bg-[#121214] border border-white/10 p-5 flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                <Layers className="w-6 h-6" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <span className="text-[10px] font-mono uppercase bg-white/5 text-white/70 px-2 py-0.5 rounded border border-white/10 font-bold">
-                    REPOSITORY
-                  </span>
-                  <span className="text-[11px] font-mono text-zinc-300 font-semibold flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white" />
-                    LIVE BLUEPRINTS
-                  </span>
-                </div>
-                <h2 className="text-base sm:text-lg font-bold text-white tracking-tight mt-0.5 font-outfit">
-                  Architectural Plan Specifications
-                </h2>
-              </div>
-            </div>
+          <PlanFilesHeader
+            filesCount={files.length}
+            totalStepsAcrossFiles={totalStepsAcrossFiles}
+          />
 
-            <div className="flex items-center gap-6 text-xs font-mono">
-              <div className="flex flex-col items-end">
-                <span className="text-white/40 text-[10px] uppercase">Specifications</span>
-                <span className="text-white font-medium">{files.length} Blueprints</span>
-              </div>
-              <div className="w-px h-8 bg-white/10" />
-              <div className="flex flex-col items-end">
-                <span className="text-white/40 text-[10px] uppercase">Atomic Steps</span>
-                <span className="text-white font-bold">{totalStepsAcrossFiles} Tasks</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Blueprint Grid - Linear Matte Style */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {files.map((file, idx) => {
-              return (
-                <motion.div
-                  key={file.name}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  whileHover={{ y: -3 }}
-                  onClick={() => setSelectedFile(file.name)}
-                  className="group rounded-2xl p-5 cursor-pointer flex flex-col justify-between gap-5 transition-all duration-300 bg-[#121215]/80 backdrop-blur-xl border border-white/[0.08] hover:border-cyber-accent/30 hover:bg-cyber-accent/5 hover:shadow-[0_8px_30px_rgba(var(--cyber-accent-rgb),0.15)] relative overflow-hidden"
-                >
-                  {/* Subtle Glow Background */}
-                  <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/[0.02] rounded-full blur-3xl pointer-events-none group-hover:bg-cyber-accent/10 transition-colors" />
-
-                  <div className="flex items-start justify-between gap-3 relative z-10">
-                    <div className="flex items-center gap-3.5 min-w-0">
-                      <div className="p-2.5 rounded-xl border bg-white/5 border-white/10 text-white group-hover:bg-cyber-accent/10 group-hover:text-cyber-accent group-hover:border-cyber-accent/30 transition-all">
-                        <Cpu className="w-5 h-5" />
-                      </div>
-                      <div className="flex flex-col min-w-0">
-                        <span className="text-sm font-mono font-bold text-white truncate group-hover:text-white transition-colors">
-                          {file.name}
-                        </span>
-                        <span className="text-[10px] font-mono text-white/50 uppercase tracking-wider">
-                          CAD Architectural Spec
-                        </span>
-                      </div>
-                    </div>
-                    <span className="text-[11px] font-mono bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full text-white/80 font-medium shrink-0">
-                      {file.steps} {file.steps === 1 ? 'step' : 'steps'}
-                    </span>
-                  </div>
-
-                  <div className="flex items-center justify-between border-t border-white/10 pt-3.5 text-[11px] font-mono text-white/50 relative z-10">
-                    <span className="flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-white/40" />
-                      {fmtDate(file.createdAt) || 'Saved Blueprint'}
-                    </span>
-                    <div className="flex items-center gap-1 text-white/80 group-hover:text-cyber-accent font-medium group-hover:translate-x-1 transition-all">
-                      <Eye className="w-3.5 h-3.5" />
-                      <span>View Blueprint</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
+            {files.map((file, idx) => (
+              <PlanFileCard
+                key={file.name}
+                file={file}
+                index={idx}
+                setSelectedFile={setSelectedFile}
+              />
+            ))}
           </div>
         </div>
       )}
 
-      {/* 3. Architectural Blueprint Drawer */}
       <AnimatePresence>
         {selectedFile && (
           <FilePreviewDrawer

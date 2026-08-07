@@ -2,7 +2,9 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
 
+const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 import { getSettings } from './settings.js';
@@ -10,7 +12,10 @@ import { enrichProject } from './parser.js';
 import { runCommand } from './run-command.js';
 import checkpointsRouter from './checkpoints.js';
 import { watcherManager } from './watcher.js';
-import { ActivityLogger } from './activity-logger.js';
+import { handleHealthCheck, handleAutofix } from './project-health.js';
+import { handleCommand } from './project-commands.js';
+import { handleGetPlanFile, handleSavePlanFile, handleRestoreProgress } from './project-plans.js';
+import { handleWatch, handleGetActivityLog, handleDeleteActivityLog } from './project-activity.js';
 
 const router = express.Router();
 
@@ -101,228 +106,30 @@ router.post('/:id/install', (req, res) => {
   }
 });
 
-router.get('/:id/health', (req, res) => {
-  try {
-    const settings = getSettings();
-    const project = settings.projects.find(p => p.id === req.params.id);
-    if (!project) return res.status(404).json({ error: 'Not found' });
+router.get('/:id/health', handleHealthCheck);
+router.post('/:id/autofix', handleAutofix);
 
-    const cwd = project.path;
-    const checks = [
-      { name: '.agents directory', passed: fs.existsSync(path.join(cwd, '.agents')) },
-      { name: 'PROGRESS.md', passed: fs.existsSync(path.join(cwd, '.agents', 'PROGRESS.md')) },
-      { name: 'RULES.md', passed: fs.existsSync(path.join(cwd, '.agents', 'RULES.md')) },
-      { name: 'AGENTS.md', passed: fs.existsSync(path.join(cwd, '.agents', 'AGENTS.md')) },
-      { name: 'CLI scripts', passed: fs.existsSync(path.join(cwd, '.agents', 'scripts', 'ledger.cjs')) },
-      { name: 'plan directory', passed: fs.existsSync(path.join(cwd, 'plan')) },
-      { name: 'git repository', passed: fs.existsSync(path.join(cwd, '.git')) }
-    ];
-    res.json({ checks, allPassed: checks.every(c => c.passed) });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
-
-router.post('/:id/command', (req, res) => {
-  const settings = getSettings();
-  const project = settings.projects.find(p => p.id === req.params.id);
-  if (!project) return res.status(404).json({ error: 'Not found' });
-
-  const { command, step, message } = req.body;
-  const cwd = project.path;
-
-  try {
-    if (!/^\d+\.\d+$/.test(step)) return res.status(400).json({ error: 'Invalid step format. Use X.Y' });
-    const safeMessage = (message || 'Completed via Dashboard').replace(/[\x00-\x1f]/g, '').slice(0, 200);
-    if (command === 'start') {
-      runCommand('./l', ['start', step], cwd);
-    } else if (command === 'complete') {
-      runCommand('./l', ['c', step, safeMessage], cwd);
-    } else {
-      return res.status(400).json({ error: 'Invalid command' });
-    }
-    res.json({ success: true });
-  } catch (e) {
-    let errorMessage = 'Command execution failed';
-    if (e.stdout && e.stdout.toString().trim()) {
-      const lines = e.stdout.toString().trim().split('\n');
-      errorMessage = lines[lines.length - 1].replace(/\x1b\[[0-9;]*m/g, '').trim();
-    } else if (e.stderr && e.stderr.toString().trim()) {
-      errorMessage = e.stderr.toString().trim();
-    } else if (e.message) {
-      errorMessage = e.message;
-    }
-    // Return HTTP 400 for user execution/validation errors instead of crashing server with 500
-    res.status(400).json({ error: errorMessage });
-  }
-});
+router.post('/:id/command', handleCommand);
 
 router.use('/', checkpointsRouter);
 
-router.get('/:id/plan-file/:filename', (req, res) => {
-  const project = getSettings().projects.find(p => p.id === req.params.id);
-  if (!project) return res.status(404).json({ error: 'Project not found' });
-  const filename = req.params.filename;
-  if (!/^[a-zA-Z0-9_.-]+\.md$/.test(filename)) {
-    return res.status(400).json({ error: 'Invalid filename' });
-  }
-  const filePath = path.join(project.path, 'plan', filename);
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).json({ error: 'Plan file not found' });
-  }
-  try {
-    const content = fs.readFileSync(filePath, 'utf8');
-    res.json({ content, filename });
-  } catch (e) {
-    res.status(500).json({ error: 'Failed to read file' });
-  }
-});
-
-router.post('/:id/plan-file/:filename', (req, res) => {
-  const project = getSettings().projects.find(p => p.id === req.params.id);
-  if (!project) return res.status(404).json({ error: 'Project not found' });
-  const filename = req.params.filename;
-  if (!/^[a-zA-Z0-9_.-]+\.md$/.test(filename)) {
-    return res.status(400).json({ error: 'Invalid filename' });
-  }
-  const filePath = path.join(project.path, 'plan', filename);
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).json({ error: 'Plan file not found' });
-  }
-  const { content } = req.body;
-  if (typeof content !== 'string') {
-    return res.status(400).json({ error: 'Content must be a string' });
-  }
-  try {
-    fs.writeFileSync(filePath, content, 'utf8');
-    res.json({ success: true, filename });
-  } catch (e) {
-    res.status(500).json({ error: 'Failed to save plan file' });
-  }
-});
+router.get('/:id/plan-file/:filename', handleGetPlanFile);
+router.post('/:id/plan-file/:filename', handleSavePlanFile);
 
 // ──────────────────────────────────────────────
 // SSE: Real-time file watching endpoint
 // ──────────────────────────────────────────────
-
-router.get('/:id/watch', (req, res) => {
-  const settings = getSettings();
-  const project = settings.projects.find(p => p.id === req.params.id);
-  if (!project) return res.status(404).json({ error: 'Not found' });
-
-  // SSE headers
-  res.writeHead(200, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive',
-    'X-Accel-Buffering': 'no',
-  });
-  res.flushHeaders();
-
-  // Send initial connection event
-  res.write(`event: connected\ndata: ${JSON.stringify({ projectId: project.id })}\n\n`);
-
-  // Ensure watcher is running and register this SSE client
-  if (fs.existsSync(project.path) && fs.existsSync(path.join(project.path, '.agents'))) {
-    watcherManager.getOrCreateWatcher(project.id, project.path);
-  }
-  watcherManager.sseManager.addClient(project.id, res);
-
-  // Heartbeat every 30s to keep connection alive
-  const heartbeat = setInterval(() => {
-    try { res.write(': heartbeat\n\n'); } catch (e) { clearInterval(heartbeat); }
-  }, 30000);
-
-  // Cleanup on disconnect
-  req.on('close', () => {
-    clearInterval(heartbeat);
-    watcherManager.sseManager.removeClient(project.id, res);
-  });
-});
+router.get('/:id/watch', handleWatch);
 
 // ──────────────────────────────────────────────
 // Restore PROGRESS.md (user accepted warning)
 // ──────────────────────────────────────────────
-
-router.post('/:id/restore-progress', (req, res) => {
-  const settings = getSettings();
-  const project = settings.projects.find(p => p.id === req.params.id);
-  if (!project) return res.status(404).json({ error: 'Not found' });
-
-  const success = watcherManager.restoreProgressFromTemplate(project.id);
-  if (success) {
-    res.json({ success: true, message: 'PROGRESS.md restored from template' });
-  } else {
-    res.status(500).json({ error: 'Failed to restore PROGRESS.md' });
-  }
-});
+router.post('/:id/restore-progress', handleRestoreProgress);
 
 // ──────────────────────────────────────────────
 // Activity Log — read file change history
 // ──────────────────────────────────────────────
-
-router.get('/:id/activity-log', (req, res) => {
-  const settings = getSettings();
-  const project = settings.projects.find(p => p.id === req.params.id);
-  if (!project) return res.status(404).json({ error: 'Not found' });
-
-  const limit = Math.min(parseInt(req.query.limit) || 100, 500);
-  const offset = parseInt(req.query.offset) || 0;
-
-  try {
-    let logger;
-    const watcher = watcherManager.watchers.get(project.id);
-    if (watcher && watcher.logger) {
-      logger = watcher.logger;
-    } else {
-      logger = new ActivityLogger(project.path);
-    }
-    const result = logger.read(limit, offset);
-    res.json({
-      entries: result.entries,
-      total: result.total,
-      hasMore: (offset + limit) < result.total,
-    });
-  } catch (e) {
-    res.json({ entries: [], total: 0, hasMore: false });
-  }
-});
-
-router.delete('/:id/activity-log', (req, res) => {
-  const settings = getSettings();
-  const project = settings.projects.find(p => p.id === req.params.id);
-  if (!project) return res.status(404).json({ error: 'Not found' });
-
-  const range = req.query.range || req.body?.range || 'all';
-
-  try {
-    let logger;
-    const watcher = watcherManager.watchers.get(project.id);
-    if (watcher && watcher.logger) {
-      logger = watcher.logger;
-    } else {
-      logger = new ActivityLogger(project.path);
-    }
-
-    const result = logger.clear(range);
-
-    if (watcherManager.sseManager) {
-      watcherManager.sseManager.broadcast(project.id, 'activity-log-cleared', {
-        range,
-        deletedCount: result.deletedCount,
-        remainingCount: result.remainingCount,
-      });
-    }
-
-    res.json({
-      success: true,
-      range,
-      deletedCount: result.deletedCount,
-      remainingCount: result.remainingCount,
-    });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
-  }
-});
+router.get('/:id/activity-log', handleGetActivityLog);
+router.delete('/:id/activity-log', handleDeleteActivityLog);
 
 export default router;

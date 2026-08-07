@@ -9,7 +9,7 @@ async function req(url, options = {}) {
     try {
       const data = await res.json();
       if (data.error) err = data.error;
-    } catch (e) {}
+    } catch (e) { /* response not JSON */ }
     throw new Error(err);
   }
   return res.json();
@@ -33,7 +33,7 @@ export const reorderProjects = (projectIds) => req('/settings/projects/reorder',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ projectIds })
 });
-export const executeCommand = (id, command, step, message) => post(`/projects/${id}/command`, { command, step, message });
+export const executeCommand = (id, command, step, message, rawInput) => post(`/projects/${id}/command`, { command, step, message, rawInput });
 export const fetchConfig = (id) => req(`/projects/${id}/config`);
 export const updateConfig = (id, config) => post(`/projects/${id}/config`, config);
 export const rollbackCheckpoint = (id, hash) => post(`/projects/${id}/rollback`, { hash });
@@ -45,3 +45,5 @@ export const fetchPlanFileContent = (id, filename) => req(`/projects/${id}/plan-
 export const savePlanFileContent = (id, filename, content) => post(`/projects/${id}/plan-file/${encodeURIComponent(filename)}`, { content });
 export const fetchProjectRunConfig = (id) => req(`/projects/${id}/run-config`);
 export const saveProjectRunConfig = (id, config) => post(`/projects/${id}/run-config`, config);
+export const triggerProjectAutofix = (id) => post(`/projects/${id}/autofix`);
+

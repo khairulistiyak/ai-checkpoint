@@ -11,7 +11,7 @@ const PATTERNS = [
   { name: 'empty-catch', regex: /catch\s*\([^)]*\)\s*\{\s*\}/g, severity: 'warning', msg: 'Empty catch block' },
 ];
 
-const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', '.agents', 'plan'];
+const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', '.agents', 'plan', '_archive'];
 const CODE_EXTS = ['.js', '.cjs', '.mjs', '.jsx', '.tsx', '.ts'];
 
 function walkCodeFiles(dir, results = []) {
@@ -41,6 +41,7 @@ function scanSecurity(projectPath) {
     try { content = fs.readFileSync(fp, 'utf8'); } catch { continue; }
     const lines = content.split('\n');
     for (const pattern of PATTERNS) {
+      if (pattern.name === 'console-log' && (fp.includes('/cli/') || fp.includes('/scripts/'))) continue;
       for (let i = 0; i < lines.length; i++) {
         if (pattern.regex.test(lines[i])) {
           issues.push({ file: fp, line: i + 1, pattern: pattern.name, severity: pattern.severity, msg: pattern.msg });

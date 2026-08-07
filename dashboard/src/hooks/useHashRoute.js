@@ -9,10 +9,6 @@ function parseHash(hashString) {
     return { path: '/', route: 'home', projectId: null, tab: null };
   }
 
-  if (parts[0] === 'library') {
-    return { path: '/library', route: 'library', projectId: null, tab: null };
-  }
-
   if (parts[0] === 'project' && parts[1]) {
     const projectId = decodeURIComponent(parts[1]);
     if (parts[2] === 'plans') {

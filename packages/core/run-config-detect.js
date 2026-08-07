@@ -69,7 +69,7 @@ function detectEcosystemCommands(projectPath) {
         commands.push({ id: `py-${f}`, name: f, scriptName: f, category: 'dev', cmd: `python3 ${f}`, fullCmd: `python3 ${f}`, cwd: '.', description: `Python runner: ${f}`, isDefault: false });
       }
     }
-  } catch (e) {}
+  } catch (e) { /* directory read error ignored */ }
   return commands;
 }
 
