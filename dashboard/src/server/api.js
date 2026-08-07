@@ -1,6 +1,8 @@
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
+import os from 'os';
+import { execSync } from 'child_process';
 import { getSettings, saveSettings } from './settings.js';
 import projectsRouter from './projects.js';
 import configRouter from './config.js';
@@ -10,6 +12,27 @@ const router = express.Router();
 router.get('/settings', (req, res) => {
   res.json(getSettings());
 });
+
+router.get('/browse-directory', (req, res) => {
+  try {
+    let cmd = '';
+    const platform = os.platform();
+    if (platform === 'darwin') {
+      cmd = `osascript -e 'tell application (path to frontmost application as text) to set myFolder to choose folder with prompt "Select Project Folder"' -e 'POSIX path of myFolder'`;
+    } else if (platform === 'win32') {
+      cmd = `powershell -NoProfile -Command "(new-object -COM 'Shell.Application').BrowseForFolder(0,'Select Project Folder',0,0).self.path"`;
+    } else {
+      cmd = `zenity --file-selection --directory --title="Select Project Folder"`;
+    }
+    
+    const result = execSync(cmd, { encoding: 'utf8' }).trim();
+    res.json({ path: result });
+  } catch (err) {
+    // User cancelled dialog or error occurred
+    res.json({ path: null });
+  }
+});
+
 
 router.post('/settings/projects', (req, res) => {
   const { path: dirPath, name } = req.body;

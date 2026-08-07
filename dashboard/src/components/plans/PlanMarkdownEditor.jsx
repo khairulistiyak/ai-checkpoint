@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Save, RotateCcw, Check, Loader2, FileCode, AlertCircle, 
-  Sparkles, Terminal, Code2, Plus 
+import {
+  Save, RotateCcw, Check, Loader2, FileCode, AlertCircle,
+  Sparkles, Terminal, Code2, Plus
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function PlanMarkdownEditor({ 
-  initialContent, 
-  filename, 
-  onSave, 
-  saving = false 
+export default function PlanMarkdownEditor({
+  initialContent,
+  filename,
+  onSave,
+  saving = false
 }) {
   const [content, setContent] = useState(initialContent || '');
   const [savedSuccess, setSavedSuccess] = useState(false);

@@ -76,11 +76,11 @@ export default function Sidebar({ projects, selectedId, onSelect, onAddProject, 
 
         <div className="flex-1 overflow-y-auto p-3 sm:p-4 relative z-10 custom-scrollbar">
           <div className="mb-3 sm:mb-4 flex flex-col gap-3">
-            <button 
+            <button
               onClick={() => onSelect('library')}
               className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl border transition-all duration-300 cursor-pointer ${
-                selectedId === 'library' 
-                  ? 'bg-white/10 border-white text-white font-bold shadow-sm' 
+                selectedId === 'library'
+                  ? 'bg-white/10 border-white text-white font-bold shadow-sm'
                   : 'bg-white/5 border-white/5 text-white/60 hover:bg-white/10 hover:text-white hover:border-white/10'
               }`}
             >
@@ -88,7 +88,7 @@ export default function Sidebar({ projects, selectedId, onSelect, onAddProject, 
               <span className="text-sm font-semibold truncate">Component Library</span>
             </button>
 
-            <InputField 
+            <InputField
               placeholder="Search projects..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

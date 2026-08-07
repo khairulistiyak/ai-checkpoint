@@ -7,12 +7,16 @@ const { updateProgressState, appendLogEntry, saveProgress } = require('./progres
 const { silentSync } = require('./plan-sync.js');
 const { syntaxCheck } = require('./syntax-checker.js');
 const { checkIntegrity } = require('./integrity-guard.js');
+let calculateHealth;
+try { calculateHealth = require('../core/health-score.js').calculateHealth; } catch { calculateHealth = null; }
+let generateQualityReport;
+try { generateQualityReport = require('../core/quality-report.js').generateQualityReport; } catch { generateQualityReport = null; }
 
 function completeCommand(stepNum, comment) {
   checkFiles();
   silentSync();
-  if (!stepNum) { log.error("Step number দাও"); process.exit(1); }
-  if (!comment) { log.error("Comment দাও"); process.exit(1); }
+  if (!stepNum) { log.error("Step number required"); process.exit(1); }
+  if (!comment) { log.error("Comment required"); process.exit(1); }
   
   const { lines, phases } = parseProgress();
   let targetStep = null, targetPhase = null;
@@ -46,6 +50,23 @@ function completeCommand(stepNum, comment) {
     const integ = checkIntegrity(stepNum, v.path);
     if (integ.warnings && integ.warnings.length > 0) {
       integ.warnings.forEach(w => log.warn(w));
+    }
+  }
+
+  if (calculateHealth) {
+    const health = calculateHealth(process.cwd());
+    if (health.breakdown.syntaxErrors > 0 || health.breakdown.criticalSecurity > 0) {
+      console.log(`\n${colors.red}┌${'─'.repeat(74)}┐`);
+      console.log(`│ ❌ HEALTH GATE FAILED — Score: ${String(health.score).padEnd(3)} (syntax: ${health.breakdown.syntaxErrors}, critical: ${health.breakdown.criticalSecurity})`.padEnd(75) + "│");
+      console.log(`└${'─'.repeat(74)}┘${colors.reset}\n`);
+      process.exit(1);
+    }
+  }
+
+  if (generateQualityReport) {
+    const quality = generateQualityReport(process.cwd());
+    if (quality.score < 40) {
+      log.warn(`Quality score is ${quality.score}/100 — consider running ./l quality`);
     }
   }
 

@@ -66,6 +66,8 @@ function validateProject(phases, planFilesContents, cwd) {
       if (!currentStep) return;
       const file = line.match(/^-\s+\*\*File:?\*\*:?\s+`([^`]+)`/);
       if (file) currentStep.file = file[1];
+      const action = line.match(/^-\s+\*\*Action:?\*\*:?\s+([A-Za-z_]+)/);
+      if (action) currentStep.action = action[1].toUpperCase();
     });
   });
 
@@ -85,12 +87,16 @@ function validateProject(phases, planFilesContents, cwd) {
       return;
     }
     const target = path.join(cwd, planStep.file);
-    if (step.status === 'done' && !fs.existsSync(target)) {
-      errors.push(`${planStep.file} missing for completed Step ${number}`);
-      return;
+    if (step.status === 'done' && planStep.action !== 'DELETE' && !fs.existsSync(target)) {
+      const inArchive = fs.existsSync(path.join(cwd, '_archive', planStep.file)) ||
+        (fs.existsSync(path.join(cwd, '_archive')) && findFileRecursively(path.join(cwd, '_archive'), path.basename(planStep.file)));
+      if (!inArchive) {
+        errors.push(`${planStep.file} missing for completed Step ${number}`);
+        return;
+      }
     }
     if (step.status !== 'running') return;
-    if (!fs.existsSync(target) || planStep.file.startsWith('.agents/') || planStep.file.startsWith('marketing/') || /\.(png|jpe?g|gif|svg|ico|md|txt)$/i.test(planStep.file)) return;
+    if (!fs.existsSync(target) || fs.statSync(target).isDirectory() || planStep.file.startsWith('.agents/') || planStep.file.startsWith('marketing/') || planStep.file.startsWith('_archive/') || /\.(png|jpe?g|gif|svg|ico|md|txt)$/i.test(planStep.file)) return;
     const effectiveLines = fs.readFileSync(target, 'utf8').split(/\r?\n/)
       .filter(line => line.trim() && !/^\s*(\/\/|#(?!\!)|\/\*|\*|<!--)/.test(line)).length;
     if (effectiveLines > 150) {

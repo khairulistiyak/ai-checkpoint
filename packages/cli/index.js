@@ -12,6 +12,8 @@ const { projectsCommand } = require('./cmd-projects.js');
 const { lintPlanCommand } = require('./cmd-lint-plan.js');
 const { syncCommand } = require('./cmd-sync.js');
 const { runProjectCommand } = require('./cmd-run.js');
+const { healthCommand } = require('./cmd-health.js');
+const { qualityCommand } = require('./cmd-quality.js');
 
 function showHelp() {
   console.log(`
@@ -21,22 +23,24 @@ ${colors.bright}${colors.cyan}┌${'─'.repeat(54)}┐
 
 ${colors.bright}Structure:${colors.reset}
   ${colors.dim}.agents/${colors.reset}  → System files (PROGRESS.md, RULES.md, scripts)
-  ${colors.dim}plan/${colors.reset}     → ${colors.green}শুধু তোমার .md plan files${colors.reset} (clean!)
+  ${colors.dim}plan/${colors.reset}     → ${colors.green}Your .md plan files only${colors.reset} (clean!)
 
 ${colors.bright}Commands:${colors.reset}
   ${colors.green}./l${colors.reset}                      Dashboard
-  ${colors.green}./l start <step>${colors.reset}          Step শুরু করো
-  ${colors.green}./l c <step> "note"${colors.reset}       Step complete করো (with syntax check ✅)
+  ${colors.green}./l start <step>${colors.reset}          Start a step
+  ${colors.green}./l c <step> "note"${colors.reset}       Complete a step (with syntax check ✅)
   ${colors.green}./l v${colors.reset}                     Validate (sync + files + 150-line)
   ${colors.green}./l doctor${colors.reset}                Health check
   ${colors.green}./l new-plan <name>${colors.reset}       Create plan from template
   ${colors.green}./l run [name]${colors.reset}            Project run commands (dev, test, etc.)
   ${colors.green}./l cp save|list|back${colors.reset}     Checkpoints
   ${colors.green}./l sync${colors.reset}                  Sync plan files → PROGRESS.md
+  ${colors.green}./l health${colors.reset}                Project health scan
+  ${colors.green}./l quality${colors.reset}               Code quality report
   ${colors.green}./l h${colors.reset}                     Help
 
 ${colors.bright}Plan File Naming:${colors.reset}
-  ${colors.dim}plan/ folder এ যেকোনো নামে .md file:${colors.reset}
+  ${colors.dim}Create any .md file inside plan/ folder:${colors.reset}
   ${colors.green}bugfix-upload.md${colors.reset}         ← meaningful name ✅
   ${colors.green}add-dark-mode.md${colors.reset}         ← descriptive name ✅
   ${colors.green}plan_01.md${colors.reset}               ← generic name (OK too)
@@ -56,12 +60,24 @@ function run() {
     case 'sync': syncCommand(); break;
     case 'watch': case 'w': watchCommand(); break;
     case 'run': case 'r': runProjectCommand(args[1], args.slice(2)); break;
+    case 'health': case 'hl': healthCommand(args.slice(1)); break;
+    case 'quality': case 'q': qualityCommand(args.slice(1)); break;
     case 'start': startCommand(args[1]); break;
     case 'complete': case 'c': completeCommand(args[1], args[2]); break;
     case 'block': case 'b': blockCommand(args[1], args[2]); break;
     case 'validate': case 'v': validateCommand(); break;
     case 'doctor': doctorCommand(); break;
     case 'new-plan': case 'np': newPlanCommand(args[1], args.slice(2)); break;
+    case 'dashboard': case 'dash': case 'ui': {
+      const dashPath = require('path').resolve(__dirname, '..', '..', '..', 'dashboard');
+      const altDashPath = require('path').resolve(__dirname, '..', '..', 'dashboard');
+      const finalDash = require('fs').existsSync(dashPath) ? dashPath : require('fs').existsSync(altDashPath) ? altDashPath : null;
+      if (!finalDash) { log.error('Dashboard not found. Make sure you have the dashboard/ directory.'); process.exit(1); }
+      log.info(`Starting dashboard from: ${finalDash}`);
+      const { spawnSync } = require('child_process');
+      spawnSync('node', ['server.js'], { cwd: finalDash, stdio: 'inherit' });
+      break;
+    }
     case 'checkpoint': case 'cp': {
       const sub = args[1];
       if (sub === 'save') checkpointSave(args[2]);

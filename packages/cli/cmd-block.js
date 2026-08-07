@@ -5,8 +5,8 @@ const { updateProgressState, appendLogEntry, saveProgress } = require('./progres
 
 function blockCommand(stepNum, reason) {
   checkFiles();
-  if (!stepNum) { log.error("Step number দাও"); process.exit(1); }
-  if (!reason) { log.error("Reason দাও"); process.exit(1); }
+  if (!stepNum) { log.error("Step number required"); process.exit(1); }
+  if (!reason) { log.error("Reason required"); process.exit(1); }
   
   const { lines, phases } = parseProgress();
   let targetStep = null, targetPhase = null;

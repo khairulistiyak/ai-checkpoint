@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { PROGRESS_PATH, PLAN_DIR } = require('./paths.js');
 const { log } = require('./colors.js');
-const { parseProgress, getPlanFiles } = require('./parse-progress.js');
+const { parseProgress, getPlanFiles, getPlanFilePath } = require('./parse-progress.js');
 const { verifyTargetFileCore, validateProject } = require('../core/validate-project.js');
 
 function checkFiles() {
@@ -30,7 +30,7 @@ function validateCommand() {
   
   const planFilesContents = planFiles.map(planFile => ({
     planFile,
-    content: fs.readFileSync(path.join(PLAN_DIR, planFile), 'utf8')
+    content: fs.readFileSync(getPlanFilePath(planFile), 'utf8')
   }));
 
   const errors = validateProject(phases, planFilesContents, process.cwd());

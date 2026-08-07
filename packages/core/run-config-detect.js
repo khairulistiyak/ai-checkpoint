@@ -1,7 +1,7 @@
-import fs from 'fs';
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
-export function detectEcosystemCommands(projectPath) {
+function detectEcosystemCommands(projectPath) {
   const commands = [];
   try {
     const files = fs.readdirSync(projectPath);
@@ -73,4 +73,4 @@ export function detectEcosystemCommands(projectPath) {
   return commands;
 }
 
-export default { detectEcosystemCommands };
+module.exports = { detectEcosystemCommands };

@@ -58,7 +58,7 @@ export default function ConfigEditor({ projectId, onClose }) {
   if (loading) return null;
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.95 }}
@@ -85,7 +85,7 @@ export default function ConfigEditor({ projectId, onClose }) {
           </div>
           
           <div className="flex items-center gap-2 sm:gap-4">
-            <GlassButton 
+            <GlassButton
               variant="primary"
               onClick={handleSave}
               disabled={saving}

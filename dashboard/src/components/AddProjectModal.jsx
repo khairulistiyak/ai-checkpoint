@@ -5,6 +5,7 @@ import { InputField } from './ui/InputField';
 
 export default function AddProjectModal({ isOpen, onClose, onAdd }) {
   const [path, setPath] = useState('');
+  const [isBrowsing, setIsBrowsing] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
@@ -19,6 +20,20 @@ export default function AddProjectModal({ isOpen, onClose, onAdd }) {
     if (!path) return;
     await onAdd(path);
     setPath('');
+  };
+
+  const handleBrowse = async () => {
+    setIsBrowsing(true);
+    try {
+      const res = await fetch('/api/browse-directory');
+      const data = await res.json();
+      if (data && data.path) {
+        setPath(data.path);
+      }
+    } catch (err) {
+      console.error('Failed to browse directory', err);
+    }
+    setIsBrowsing(false);
   };
 
   return (
@@ -37,6 +52,7 @@ export default function AddProjectModal({ isOpen, onClose, onAdd }) {
               value={path}
               onChange={e => setPath(e.target.value)}
               placeholder="/path/to/your/project"
+              onBrowse={handleBrowse}
               required
             />
           </div>

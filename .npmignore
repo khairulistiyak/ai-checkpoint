@@ -1,0 +1,35 @@
+# GitHub
+.github/
+
+# Tests
+tests/
+
+# Examples & Docs
+examples/
+story/
+marketing/
+logo/
+
+# Plan & Agent data
+plan/
+.agents/
+_archive/
+
+# Design assets
+*.svg
+social-preview.png
+
+# Internal docs
+ROADMAP.md
+STATUS.md
+PRO_PLAN.md
+IMPLEMENTATION_NOTES.md
+EXECUTION_READY.md
+QUICK_REFERENCE.md
+
+# macOS
+.DS_Store
+._*
+
+# Editor
+.vscode/

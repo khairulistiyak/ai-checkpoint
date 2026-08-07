@@ -54,10 +54,11 @@ function runProjectCommand(name, extraArgs = []) {
   console.log(`\n${colors.cyan}🚀 Executing:${colors.reset} ${colors.bright}${target.cmd}${colors.reset}`);
   console.log(`${colors.dim}📁 Working Dir:${colors.reset} ${execCwd}\n`);
 
-  const fullCmd = extraArgs.length > 0 ? `${target.cmd} ${extraArgs.join(' ')}` : target.cmd;
-  const result = spawnSync(fullCmd, {
+  const cmdParts = target.cmd.split(/\s+/);
+  const cmdBin = cmdParts[0];
+  const cmdArgs = [...cmdParts.slice(1), ...extraArgs];
+  const result = spawnSync(cmdBin, cmdArgs, {
     cwd: execCwd,
-    shell: true,
     stdio: 'inherit'
   });
 

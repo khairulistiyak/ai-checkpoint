@@ -2,6 +2,8 @@ const { execFileSync } = require('child_process');
 const { log } = require('./colors.js');
 const { parseProgress } = require('./parse-progress.js');
 const { validateCommand } = require('./validate.js');
+let calculateHealth;
+try { calculateHealth = require('../core/health-score.js').calculateHealth; } catch { calculateHealth = null; }
 
 function getCurrentStep() {
   const { phases } = parseProgress();
@@ -17,6 +19,13 @@ function getCurrentStep() {
 function checkpointSave(message) {
   if (!message) { log.error('Message required: ./l cp save "message"'); process.exit(1); }
   validateCommand();
+  if (calculateHealth) {
+    const health = calculateHealth(process.cwd());
+    if (health.breakdown.syntaxErrors > 0 || health.breakdown.criticalSecurity > 0) {
+      log.error(`Health gate failed (score: ${health.score}). Fix syntax/security issues first.`);
+      process.exit(1);
+    }
+  }
   const step = getCurrentStep();
   const prefix = `aicp/${step}-`;
   let count = 0;
@@ -53,6 +62,20 @@ function checkpointList() {
 }
 
 function checkpointBack(tag, force) {
+  if (!tag) {
+    checkpointList();
+    log.info('Specify tag: ./l cp back <tag>');
+    process.exit(0);
+  }
+  // Validate tag format to prevent injection
+  if (!/^aicp\/[\w.-]+$/.test(tag)) {
+    log.error('Invalid tag format. Must start with aicp/');
+    process.exit(1);
+  }
+  if (!force) {
+    log.warn(`Rollback to ${tag}? Use --force to confirm.`);
+    process.exit(1);
+  }
   let stashId = null;
   try {
     const dirty = execFileSync('git', ['status', '--porcelain'], { stdio: 'pipe', encoding: 'utf8' }).trim();
@@ -63,21 +86,6 @@ function checkpointBack(tag, force) {
     }
   } catch (e) {
     log.error('Stash failed');
-    process.exit(1);
-  }
-  if (!tag) {
-    checkpointList();
-    log.info('Specify tag: ./l cp back <tag>');
-    if (stashId) log.info(`Stashed changes: ${stashId}`);
-    process.exit(0);
-  }
-  // Validate tag format to prevent injection
-  if (!/^aicp\/[\w.-]+$/.test(tag)) {
-    log.error('Invalid tag format. Must start with aicp/');
-    process.exit(1);
-  }
-  if (!force) {
-    log.warn(`Rollback to ${tag}? Use --force to confirm.`);
     process.exit(1);
   }
   try {

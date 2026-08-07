@@ -83,6 +83,26 @@ Every project must declare its execution location and standard runnable commands
 
 ---
 
+## RULE 3 — Zero-Error Health Gate
+
+1. **Health Score**: Every project must maintain a health score of 60+ at all times.
+2. **Syntax Gate**: `./l c` (complete) blocks if workspace has syntax errors.
+3. **Security Gate**: `./l cp save` blocks if workspace has critical security issues.
+4. **Monitoring**: Run `./l health` regularly to track project health.
+5. **Auto-Fix**: Use `./l health --json` for programmatic checks in CI/CD.
+
+---
+
+## RULE 4 — Clean Code Policy
+
+1. **No Junk Files**: Remove `.DS_Store`, `.bak`, `.tmp`, `backup.js`, `old.js` and similar garbage.
+2. **No Generic Names**: Never name files `utils.js`, `helpers.js`, or `misc.js`. Use descriptive names like `format-date.js`.
+3. **No Debug Leftovers**: Remove `console.log` and `debugger` before completing a step.
+4. **No TODO in Production**: Resolve all `TODO`, `FIXME`, `HACK`, `XXX` comments before release.
+5. **Quality Gate**: Run `./l quality` to check. Score must be 80+ for release.
+
+---
+
 ## Project Settings
 
 | Key | Value |

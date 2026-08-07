@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import apiRouter from './src/server/api.js';
 import aiTierRouter from './src/server/ai-tier.js';
 import runConfigRouter from './src/server/run-config.js';
+import healthRouter from './src/server/health.js';
 import { watcherManager } from './src/server/watcher.js';
 import { watchPlanDirectory, stopWatching } from './src/server/plan-watcher.js';
 
@@ -26,6 +27,7 @@ app.use(express.json());
 app.use('/api', apiRouter);
 app.use('/api', aiTierRouter);
 app.use('/api', runConfigRouter);
+app.use('/api', healthRouter);
 
 // API 404 — unknown API paths return JSON, not HTML
 app.all('/api/*', (req, res) => {

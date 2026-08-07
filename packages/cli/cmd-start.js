@@ -10,7 +10,7 @@ const { saveIntegritySnapshot } = require('./integrity-guard.js');
 function startCommand(stepNum) {
   checkFiles();
   silentSync();
-  if (!stepNum) { log.error("Step number দাও (e.g., 2.2)"); process.exit(1); }
+  if (!stepNum) { log.error("Step number required (e.g., 2.2)"); process.exit(1); }
   if (!/^\d+\.\d+$/.test(stepNum)) { log.error(`Invalid step format: "${stepNum}". Expected X.Y format (e.g., 2.2)`); process.exit(1); }
 
   const { lines, phases } = parseProgress();

@@ -33,6 +33,13 @@
 - Never add features or refactors outside the step.
 - Never complete a step when Done-check or `./l v` fails.
 
+## Zero-Error Protocol
+
+- Before completing any step, the health gate must pass.
+- If `./l health` shows syntax errors or critical security issues, fix them first.
+- Never complete a step with health score below 60.
+- Run `./l health` after every 3 completed steps to catch regressions.
+
 ## Checkpoints
 
 - Before risky changes: `./l cp save "description"`.

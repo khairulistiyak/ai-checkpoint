@@ -9,17 +9,38 @@ function parseProgress() {
 }
 
 function getPlanFiles() {
-  if (!fs.existsSync(PLAN_DIR)) return [];
-  return fs.readdirSync(PLAN_DIR).filter(f => {
-    const fullPath = path.join(PLAN_DIR, f);
-    return f.endsWith('.md') && !f.startsWith('.') && fs.statSync(fullPath).isFile();
+  const dirs = [PLAN_DIR, path.join(process.cwd(), '_archive', 'plans-completed')];
+  const fileSet = new Set();
+  const result = [];
+  dirs.forEach(dir => {
+    if (fs.existsSync(dir)) {
+      fs.readdirSync(dir).forEach(f => {
+        const fullPath = path.join(dir, f);
+        if (f.endsWith('.md') && !f.startsWith('.') && fs.statSync(fullPath).isFile()) {
+          if (!fileSet.has(f)) {
+            fileSet.add(f);
+            result.push(f);
+          }
+        }
+      });
+    }
   });
+  return result;
+}
+
+function getPlanFilePath(pf) {
+  const activePath = path.join(PLAN_DIR, pf);
+  if (fs.existsSync(activePath)) return activePath;
+  const archivePath = path.join(process.cwd(), '_archive', 'plans-completed', pf);
+  if (fs.existsSync(archivePath)) return archivePath;
+  return activePath;
 }
 
 function findStepInPlanFiles(stepNum) {
   const planFiles = getPlanFiles();
   for (const pf of planFiles) {
-    const pfPath = path.join(PLAN_DIR, pf);
+    const pfPath = getPlanFilePath(pf);
+    if (!fs.existsSync(pfPath)) continue;
     const pfContent = fs.readFileSync(pfPath, 'utf8');
     const pfLines = pfContent.split(/\r?\n/);
     const stepRegex = new RegExp(`^#{2,3}\\s+(?:Step\\s+)?${stepNum.replace(/\./g, '\\.')}\\b`);
@@ -32,5 +53,6 @@ function findStepInPlanFiles(stepNum) {
 module.exports = {
   parseProgress,
   getPlanFiles,
+  getPlanFilePath,
   findStepInPlanFiles
 };

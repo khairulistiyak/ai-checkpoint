@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { log, colors } = require('./colors.js');
-const { getPlanFiles } = require('./parse-progress.js');
+const { getPlanFiles, getPlanFilePath } = require('./parse-progress.js');
 const { PLAN_DIR } = require('./paths.js');
 
 function lintPlanCommand() {
@@ -9,7 +9,7 @@ function lintPlanCommand() {
   let errors = 0;
 
   planFiles.forEach(pf => {
-    const content = fs.readFileSync(path.join(PLAN_DIR, pf), 'utf8');
+    const content = fs.readFileSync(getPlanFilePath(pf), 'utf8');
     const steps = content.split(/^(?=#{2,3}\s+(?:Step\s+)?\d+\.\d+)/m);
     
     steps.forEach(stepBlock => {

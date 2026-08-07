@@ -62,9 +62,30 @@ function scanFile(fileInfo) {
       catch (e) { errors.push({ file: fp, error: (e.stderr || e.message).toString().split('\n')[0], type: 'syntax' }); }
       errors.push(...checkImports(fp));
     } else if (ext === '.jsx' || ext === '.tsx' || ext === '.ts') {
-      const content = fs.readFileSync(fp, 'utf8');
-      const err = checkBalanced(content, '([{', ')]}', 'bracket');
-      if (err) errors.push({ file: fp, error: err, type: 'syntax' });
+      let esbuild = null;
+      try { esbuild = require('esbuild'); } catch {
+        try { esbuild = require(path.resolve(__dirname, '..', '..', 'dashboard', 'node_modules', 'esbuild')); } catch { esbuild = null; }
+      }
+      if (esbuild) {
+        try {
+          const loader = ext.slice(1);
+          esbuild.transformSync(fs.readFileSync(fp, 'utf8'), { loader });
+        } catch (e) {
+          errors.push({ file: fp, error: e.message.split('\n')[0], type: 'syntax' });
+        }
+      } else {
+        const raw = fs.readFileSync(fp, 'utf8');
+        const sanitized = raw
+          .replace(/\/\*[\s\S]*?\*\//g, '')
+          .replace(/\/\/.*/g, '')
+          .replace(/<[^>]*>/g, '')
+          .replace(/\/(?![*+?])(?:[^\r\n\[/\\]|\\.|\[(?:[^\r\n\]\\]|\\.)*\])+\/[gimyus]*/g, '""')
+          .replace(/`[\s\S]*?`/g, '""')
+          .replace(/'(?:\\.|[^'\\])*'/g, '""')
+          .replace(/"(?:\\.|[^"\\])*"/g, '""');
+        const err = checkBalanced(sanitized, '([{', ')]}', 'bracket');
+        if (err) errors.push({ file: fp, error: err, type: 'syntax' });
+      }
       errors.push(...checkImports(fp));
     } else if (ext === '.json') {
       try { JSON.parse(fs.readFileSync(fp, 'utf8')); }

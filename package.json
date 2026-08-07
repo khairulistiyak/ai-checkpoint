@@ -1,7 +1,7 @@
 {
   "name": "ai-checkpoint",
   "version": "1.0.0",
-  "description": "Agentic framework for AI workflows",
+  "description": "The Deterministic State Ledger & Execution Framework for AI Coding Agents",
   "bin": {
     "ai-checkpoint": "./scripts/ledger.cjs"
   },
@@ -25,9 +25,25 @@
     "doctor": "./l doctor",
     "validate": "./l v"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/khairulistiyak/ai-checkpoint.git"
+  },
+  "keywords": [
+    "ai",
+    "checkpoint",
+    "coding-agent",
+    "context-ledger",
+    "deterministic",
+    "cli",
+    "llm",
+    "developer-tools"
+  ],
+  "homepage": "https://github.com/khairulistiyak/ai-checkpoint#readme",
+  "bugs": "https://github.com/khairulistiyak/ai-checkpoint/issues",
   "devDependencies": {
     "bats": "^1.13.0"
   },
-  "author": "Antigravity",
+  "author": "Khairul Istiyak",
   "license": "MIT"
 }

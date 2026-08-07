@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FileCode, Calendar, Eye, Sparkles, Code2, ArrowRight, 
+import {
+  FileCode, Calendar, Eye, Sparkles, Code2, ArrowRight,
   Layers, Cpu, ShieldCheck, Zap, Activity, FileText, ChevronRight
 } from 'lucide-react';
 import { GlassButton } from '../ui/GlassButton';

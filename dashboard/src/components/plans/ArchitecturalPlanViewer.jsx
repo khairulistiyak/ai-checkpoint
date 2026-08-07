@@ -1,8 +1,8 @@
 import React, { useState, useMemo } from 'react';
-import { 
-  Layers, CheckCircle2, Circle, Code2, Copy, Check, 
-  FileCode2, Sparkles, ChevronRight, ChevronDown, BookOpen, ShieldCheck, 
-  Terminal, Cpu, ArrowRight, Activity, Zap, CheckCircle, 
+import {
+  Layers, CheckCircle2, Circle, Code2, Copy, Check,
+  FileCode2, Sparkles, ChevronRight, ChevronDown, BookOpen, ShieldCheck,
+  Terminal, Cpu, ArrowRight, Activity, Zap, CheckCircle,
   Search, Play, Bot, FileText, CornerDownRight
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -245,12 +245,12 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
   // Filter modules based on search or active category filter
   const filteredModules = useMemo(() => {
     return modules.filter(mod => {
-      const matchesSearch = !searchQuery || 
+      const matchesSearch = !searchQuery ||
         mod.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         mod.blocks.some(b => JSON.stringify(b).toLowerCase().includes(searchQuery.toLowerCase()));
       
-      const matchesFilter = 
-        filterType === 'all' || 
+      const matchesFilter =
+        filterType === 'all' ||
         (filterType === 'tasks' && mod.tasksTotal > 0) ||
         (filterType === 'steps' && mod.stepsCount > 0) ||
         (filterType === 'code' && mod.codeCount > 0);

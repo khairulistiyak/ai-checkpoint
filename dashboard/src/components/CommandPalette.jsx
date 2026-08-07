@@ -70,7 +70,7 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-0 md:pt-[15vh]">
       <div className="absolute inset-0 bg-cyber-dark/80 backdrop-blur-md" onClick={onClose}></div>
       
-      <motion.div 
+      <motion.div
         initial={{ opacity: 0, scale: 0.95, y: -20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: -20 }}
@@ -107,13 +107,13 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
                 const Icon = item.type === 'project' ? Folder : item.icon;
                 
                 return (
-                  <li 
+                  <li
                     key={item.id}
                     onMouseEnter={() => setSelectedIndex(index)}
                     onClick={() => executeItem(item)}
                     className={`flex items-center gap-3 px-4 py-3 rounded-xl cursor-pointer transition-colors ${
-                      isSelected 
-                        ? 'bg-cyber-accent/10 text-cyber-text-primary border border-cyber-accent' 
+                      isSelected
+                        ? 'bg-cyber-accent/10 text-cyber-text-primary border border-cyber-accent'
                         : 'text-cyber-text-secondary hover:bg-cyber-dark/50 border border-transparent hover:border-cyber-card-border'
                     }`}
                   >
@@ -130,8 +130,8 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
                     </div>
                     {item.type === 'project' && (
                       <div className={`text-xs px-2 py-1 rounded-md ${
-                        item.isInstalled 
-                          ? 'bg-cyber-accent/20 text-cyber-text-primary border border-cyber-accent/50' 
+                        item.isInstalled
+                          ? 'bg-cyber-accent/20 text-cyber-text-primary border border-cyber-accent/50'
                           : 'bg-cyber-dark text-cyber-text-muted border border-cyber-card-border'
                       }`}>
                         {item.isInstalled ? `${item.progress?.overall?.percentage || 0}%` : 'Setup'}

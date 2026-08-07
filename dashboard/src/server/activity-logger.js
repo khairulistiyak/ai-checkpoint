@@ -40,7 +40,7 @@ function shouldIgnore(relativePath) {
 
 /**
  * ActivityLogger — writes file change entries to .agents/activity-log.jsonl
- * 
+ *
  * Format: one JSON object per line (JSONL)
  * Max entries: 5000 (oldest are trimmed)
  */

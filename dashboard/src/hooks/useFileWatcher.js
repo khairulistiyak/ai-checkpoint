@@ -6,7 +6,7 @@ const BASE_URL = (window.location.port === '5173'
 
 /**
  * useFileWatcher — Connects to the backend SSE endpoint for real-time file change events.
- * 
+ *
  * @param {string|null} projectId - The project to watch (null = no watching)
  * @param {object} callbacks - Event handlers
  * @param {function} callbacks.onRefresh - Called when UI should refresh data

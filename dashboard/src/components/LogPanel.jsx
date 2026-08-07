@@ -6,7 +6,7 @@ export default function LogPanel({ logs }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <motion.div 
+    <motion.div
       initial={false}
       animate={{ height: isOpen ? '16rem' : '2.5rem' }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -18,7 +18,7 @@ export default function LogPanel({ logs }) {
         className="h-10 px-4 flex items-center justify-between hover:bg-white/[0.02] transition-colors cursor-pointer group shrink-0"
       >
         <div className="flex items-center gap-3">
-          <motion.div 
+          <motion.div
             animate={isOpen ? { rotate: 360 } : {}}
             transition={{ duration: 0.5 }}
           >
@@ -33,7 +33,7 @@ export default function LogPanel({ logs }) {
             </span>
           )}
         </div>
-        <motion.div 
+        <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
           className="text-slate-500 group-hover:text-slate-300 transition-colors"
@@ -58,7 +58,7 @@ export default function LogPanel({ logs }) {
                 <p>No output logs available for this project.</p>
               </div>
             ) : (
-              <motion.div 
+              <motion.div
                 variants={{ show: { transition: { staggerChildren: 0.02 } } }}
                 initial="hidden" animate="show"
                 className="space-y-1.5 pb-4"
@@ -66,7 +66,7 @@ export default function LogPanel({ logs }) {
                 {logs.slice(-100).map((log, idx, arr) => {
                   const isRecent = idx >= arr.length - 5;
                   return (
-                  <motion.div 
+                  <motion.div
                     variants={{ hidden: { opacity: 0, x: -5 }, show: { opacity: 1, x: 0 } }}
                     key={idx} className="flex gap-4 group"
                   >
@@ -85,8 +85,8 @@ export default function LogPanel({ logs }) {
                 {/* Blinking cursor */}
                 <div className="flex gap-4 mt-1.5">
                   <div className="w-20 shrink-0 text-slate-600 select-none">{'>'}</div>
-                  <motion.div 
-                    animate={{ opacity: [1, 0, 1] }} 
+                  <motion.div
+                    animate={{ opacity: [1, 0, 1] }}
                     transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
                     className="w-2 h-3.5 bg-slate-400"
                   />

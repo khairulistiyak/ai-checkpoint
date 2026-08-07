@@ -11,6 +11,6 @@
 
 If you discover a security vulnerability within **AI-Checkpoint**, please do not report it through public GitHub issues.
 
-Instead, please send an email directly to the project maintainers or open a private security advisory through GitHub Security Advisories.
+Instead, please open a [private security advisory](https://github.com/khairulistiyak/ai-checkpoint/security/advisories/new) through GitHub.
 
 We will acknowledge receipt within 48 hours and work with you on a responsible disclosure timeline.

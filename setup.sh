@@ -52,14 +52,31 @@ find "$SCRIPT_DIR/packages/cli" -maxdepth 1 -name '*.js' -not -name '._*' -exec 
 find "$SCRIPT_DIR/packages/core" -maxdepth 1 -name '*.js' -not -name '._*' -exec cp {} "$PROJECT_DIR/.agents/packages/core/" \;
 find "$PROJECT_DIR/.agents" -name '._*' -delete 2>/dev/null || true
 
-# 3. Create ./l shortcut
+# 3. Create default config.json for dashboard
+CONFIG_FILE="$PROJECT_DIR/.agents/config.json"
+if [ ! -f "$CONFIG_FILE" ]; then
+  PROJECT_NAME=$(basename "$PROJECT_DIR")
+  cat > "$CONFIG_FILE" << EOFCONFIG
+{
+  "projects": [
+    {
+      "name": "$PROJECT_NAME",
+      "path": "$PROJECT_DIR"
+    }
+  ]
+}
+EOFCONFIG
+  echo -e "  ${GREEN}✔ Created config.json${NC}"
+fi
+
+# 4. Create ./l shortcut
 cat > "$PROJECT_DIR/l" << 'EOF'
 #!/bin/bash
 node .agents/scripts/ledger.cjs "$@"
 EOF
 chmod +x "$PROJECT_DIR/l"
 
-# 4. Copy system files to .agents/ (NOT plan/)
+# 5. Copy system files to .agents/ (NOT plan/)
 copy_if_new() {
   if [ -f "$2" ]; then
     echo -e "  ${YELLOW}⚠ $(basename "$2") already exists — skip${NC}"
@@ -78,7 +95,7 @@ copy_if_new "$SCRIPT_DIR/templates/SYSTEM_GUIDE.md" "$PROJECT_DIR/.agents/SYSTEM
 echo -e "${YELLOW}Setting up plan/ folder...${NC}"
 copy_if_new "$SCRIPT_DIR/templates/drafts-README.md" "$PROJECT_DIR/plan/drafts/README.md"
 
-# 5. Done!
+# 6. Done!
 echo ""
 echo -e "${BOLD}${GREEN}┌──────────────────────────────────────────────────────┐${NC}"
 echo -e "${BOLD}${GREEN}│   ✅ Installed Successfully!                         │${NC}"
@@ -91,11 +108,11 @@ echo -e "  ├── RULES.md                 ← Code rules"
 echo -e "  ├── SYSTEM_GUIDE.md          ← Guide"
 echo -e "  └── scripts/ledger.cjs       ← CLI"
 echo ""
-echo -e "  ${BOLD}plan/${NC}                          ← ${GREEN}তোমার .md files (clean!)${NC}"
+echo -e "  ${BOLD}plan/${NC}                          ← ${GREEN}Your .md plan files (clean!)${NC}"
 echo -e "  └── drafts/                  ← R&D notes"
 echo ""
 echo -e "${CYAN}Next:${NC}"
-echo "  1. তোমার plan বানাও:  plan/my-plan.md"
-echo "  2. Steps add করো:     .agents/PROGRESS.md"
-echo "  3. Dashboard দেখো:    ./l"
+echo "  1. Create your plan:   plan/my-plan.md"
+echo "  2. Add steps:          .agents/PROGRESS.md"
+echo "  3. View dashboard:     ./l"
 echo ""

@@ -20,7 +20,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-3fb950.svg?style=for-the-badge&logo=opensourceinitiative&logoColor=white&labelColor=0d1117" alt="MIT" /></a>
   <a href="https://nodejs.org"><img src="https://img.shields.io/badge/Node-%3E%3D18.0.0-58a6ff?style=for-the-badge&logo=node.js&logoColor=white&labelColor=0d1117" alt="Node" /></a>
   <a href="#-architecture"><img src="https://img.shields.io/badge/Zero--Deps-Pure%20Node-a371f7?style=for-the-badge&logo=feather&logoColor=white&labelColor=0d1117" alt="Zero Dependencies" /></a>
-  <a href="https://github.com/khairulistiyak/ai-checkpoint/actions"><img src="https://img.shields.io/badge/CI-Passing-2ea043?style=for-the-badge&logo=githubactions&logoColor=white&labelColor=0d1117" alt="CI" /></a>
+  <a href="https://github.com/khairulistiyak/ai-checkpoint/actions/workflows/ci.yml"><img src="https://github.com/khairulistiyak/ai-checkpoint/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
 </p>
 
 <p align="center">

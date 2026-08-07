@@ -48,7 +48,7 @@ export default function ExportButton({ project }) {
   };
 
   return (
-    <button 
+    <button
       onClick={handleExport}
       disabled={downloading}
       className="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white transition-all cursor-pointer shadow-sm disabled:opacity-50"

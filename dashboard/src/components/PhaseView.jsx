@@ -33,8 +33,8 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.03, duration: 0.2 }}
       className={`bg-black/25 border rounded-xl mb-2 overflow-hidden transition-all ${
-        isActive 
-          ? 'border-white/20 bg-white/[0.04]' 
+        isActive
+          ? 'border-white/20 bg-white/[0.04]'
           : 'border-white/5 hover:border-white/10'
       }`}
     >
@@ -44,10 +44,10 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
       >
         <div className="flex items-center gap-3 min-w-0 flex-1 pr-3 text-left">
           <div className={`w-6 h-6 rounded-lg flex items-center justify-center font-mono text-[11px] font-bold shrink-0 border ${
-            isDone 
-              ? 'bg-white/10 text-white/70 border-white/20' 
-              : isActive 
-                ? 'bg-white/15 text-white border-white/30' 
+            isDone
+              ? 'bg-white/10 text-white/70 border-white/20'
+              : isActive
+                ? 'bg-white/15 text-white border-white/30'
                 : 'bg-white/5 text-white/40 border-white/5'
           }`}>
             {isDone ? '✓' : phase.number}
@@ -79,16 +79,16 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
           )}
 
           <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-md border ${
-            isDone 
-              ? 'bg-white/10 text-white/70 border-white/20' 
-              : isActive 
-                ? 'bg-white/15 text-white border-white/30' 
+            isDone
+              ? 'bg-white/10 text-white/70 border-white/20'
+              : isActive
+                ? 'bg-white/15 text-white border-white/30'
                 : 'bg-white/5 text-white/40 border-white/5'
           }`}>
             {phase.percentage}%
           </span>
 
-          <motion.div 
+          <motion.div
             animate={{ rotate: expanded ? 180 : 0 }}
             className="w-6 h-6 rounded-md bg-white/5 flex items-center justify-center border border-white/5 group-hover:bg-white/10 transition-colors"
           >
@@ -113,15 +113,15 @@ export default function PhaseView({ phase, isActive, index, projectId, hasPlanFi
                 </div>
               ) : (
                 phase.steps.map((step, idx) => (
-                  <StepItem 
-                    key={step.id || idx} 
+                  <StepItem
+                    key={step.id || idx}
                     step={step}
-                    index={idx} 
-                    projectId={projectId} 
+                    index={idx}
+                    projectId={projectId}
                     hasPlanFiles={hasPlanFiles}
                     matchingFile={matchingFile}
                     onOpenArchitect={onOpenArchitect}
-                    onRefresh={onRefresh} 
+                    onRefresh={onRefresh}
                   />
                 ))
               )}

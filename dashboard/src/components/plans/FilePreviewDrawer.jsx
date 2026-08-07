@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FileCode, X, Loader2, Copy, Check, Layers, Code, 
+import {
+  FileCode, X, Loader2, Copy, Check, Layers, Code,
   Maximize2, Minimize2, ChevronDown, ChevronLeft, ChevronRight,
   Edit3, ListCollapse, Search, Eye, Terminal, Sparkles
 } from 'lucide-react';
@@ -10,12 +10,12 @@ import * as api from '../../utils/api';
 import ArchitecturalPlanViewer from './ArchitecturalPlanViewer';
 import PlanMarkdownEditor from './PlanMarkdownEditor';
 
-export default function FilePreviewDrawer({ 
-  projectId, 
-  filename, 
-  allFiles = [], 
-  onSelectFile, 
-  onClose 
+export default function FilePreviewDrawer({
+  projectId,
+  filename,
+  allFiles = [],
+  onSelectFile,
+  onClose
 }) {
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
@@ -167,8 +167,8 @@ export default function FilePreviewDrawer({
         exit={{ opacity: 0, scale: 0.96, y: 10 }}
         transition={{ type: 'spring', damping: 28, stiffness: 350 }}
         className={`w-full flex flex-col bg-[#08080b]/98 border border-white/20 shadow-[0_0_90px_rgba(0,0,0,0.95)] overflow-hidden transition-all duration-300 ${
-          isFullscreen 
-            ? 'fixed inset-0 h-screen w-screen rounded-none border-0 z-[100000]' 
+          isFullscreen
+            ? 'fixed inset-0 h-screen w-screen rounded-none border-0 z-[100000]'
             : 'h-[95vh] max-w-[1680px] rounded-2xl'
         }`}
         onClick={(e) => e.stopPropagation()}
@@ -264,8 +264,8 @@ export default function FilePreviewDrawer({
               <button
                 onClick={() => setViewMode('architect')}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                  viewMode === 'architect' 
-                    ? 'bg-cyber-accent/10 text-cyber-accent font-bold border border-cyber-accent/30 shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.15)]' 
+                  viewMode === 'architect'
+                    ? 'bg-cyber-accent/10 text-cyber-accent font-bold border border-cyber-accent/30 shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.15)]'
                     : 'text-white/50 hover:text-white'
                 }`}
               >
@@ -275,8 +275,8 @@ export default function FilePreviewDrawer({
               <button
                 onClick={() => setViewMode('raw')}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                  viewMode === 'raw' 
-                    ? 'bg-white/15 text-white font-bold border border-white/30 shadow-sm' 
+                  viewMode === 'raw'
+                    ? 'bg-white/15 text-white font-bold border border-white/30 shadow-sm'
                     : 'text-white/50 hover:text-white'
                 }`}
               >
@@ -286,8 +286,8 @@ export default function FilePreviewDrawer({
               <button
                 onClick={() => setViewMode('edit')}
                 className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                  viewMode === 'edit' 
-                    ? 'bg-white text-black font-bold shadow-md' 
+                  viewMode === 'edit'
+                    ? 'bg-white text-black font-bold shadow-md'
                     : 'text-white/50 hover:text-white'
                 }`}
               >
@@ -316,8 +316,8 @@ export default function FilePreviewDrawer({
             </button>
 
             {/* Close Button */}
-            <button 
-              onClick={onClose} 
+            <button
+              onClick={onClose}
               className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-red-500/20 border border-white/20 hover:border-red-500/30 text-white hover:text-red-300 transition-all cursor-pointer shadow-sm font-mono text-xs font-bold"
               title="Close Modal (Esc)"
             >

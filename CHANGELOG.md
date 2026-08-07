@@ -19,7 +19,7 @@ This project follows Keep a Changelog and Semantic Versioning.
 - One-command installer and idempotent setup.
 - Atomic examples, walkthrough, and macOS/Linux CI.
 - Full BATS test coverage for CLI commands.
-- Vue 3 + Vite visual dashboard on port 20226.
+- React + Vite visual dashboard on port 20226.
 
 ### Changed
 - CLI micro-file refactor: Refactored single-file `ledger.cjs` into modular `packages/cli/*`.
@@ -36,5 +36,6 @@ This project follows Keep a Changelog and Semantic Versioning.
 - Initial dashboard and progress tracker.
 - Project setup script and templates.
 
-[Unreleased]: https://github.com/khairulistiyak/ai-checkpoint/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/khairulistiyak/ai-checkpoint/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/khairulistiyak/ai-checkpoint/compare/v0.1.0...v1.0.0
 [0.1.0]: https://github.com/khairulistiyak/ai-checkpoint/releases/tag/v0.1.0
