@@ -1,5 +1,6 @@
 appId: com.khairulistiyak.ai-checkpoint
 productName: AI Checkpoint
+executableName: ai-checkpoint
 copyright: Copyright © 2026 Khairul Istiyak
 
 directories:
@@ -9,6 +10,10 @@ directories:
 asar: false
 
 files:
+  - "!**/._*"
+  - "!**/.DS_Store"
+  - "!**/*.map"
+  - "!**/*.ts"
   - electron/**
   - dashboard/dist/**
   - dashboard/server.js
@@ -68,17 +73,35 @@ nsis:
   shortcutName: AI Checkpoint
 
 linux:
+  executableName: ai-checkpoint
   target:
-    - target: AppImage
-      arch:
-        - x64
     - target: deb
       arch:
         - x64
-  category: Development
+    - target: tar.gz
+      arch:
+        - x64
+        - arm64
+    - target: zip
+      arch:
+        - x64
+        - arm64
+  maintainer: "Khairul Istiyak <khairulistiyak@gmail.com>"
+  category: Development;Utility;
   synopsis: Deterministic State Ledger & Execution Framework for AI Agents
   description: State ledger, execution engine, and real-time dashboard for autonomous AI coding agents.
   icon: build-resources/icon.png
+
+deb:
+  depends:
+    - gconf2
+    - gconf-service
+    - libnotify4
+    - libappindicator1
+    - libxtst6
+    - libnss3
+    - libasound2
+    - libxss1
 
 publish:
   provider: github

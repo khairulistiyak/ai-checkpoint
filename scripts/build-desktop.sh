@@ -4,6 +4,8 @@ set -euo pipefail
 # AI Checkpoint — Cross-Platform Desktop Build Script
 # Usage: ./scripts/build-desktop.sh [mac|win|linux|all]
 
+export COPYFILE_DISABLE=1
+
 show_help() {
   echo "AI Checkpoint Desktop Builder"
   echo ""
@@ -13,7 +15,7 @@ show_help() {
   echo "Platforms:"
   echo "  mac      Build for macOS (.dmg, .zip)"
   echo "  win      Build for Windows (.exe, portable)"
-  echo "  linux    Build for Linux (.AppImage, .deb)"
+  echo "  linux    Build for Linux (.tar.gz, .zip, .deb)"
   echo "  all      Build for all platforms"
   echo "  --help   Show this help message"
   echo ""
@@ -28,6 +30,11 @@ PLATFORM="${1:-}"
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
+
+echo "🧹 Cleaning AppleDouble junk files..."
+dot_clean -m . 2>/dev/null || true
+find . -name "._*" -delete 2>/dev/null || true
+find . -name ".DS_Store" -delete 2>/dev/null || true
 
 echo "📦 Step 1: Building Dashboard production bundle..."
 cd dashboard
@@ -45,6 +52,11 @@ if [ -f "package-lock.json" ]; then
 else
   npm install
 fi
+
+echo "🧹 Pre-package cleanup..."
+dot_clean -m . 2>/dev/null || true
+find . -name "._*" -delete 2>/dev/null || true
+find . -name ".DS_Store" -delete 2>/dev/null || true
 
 echo "🚀 Step 3: Packaging Desktop App with Electron Builder..."
 case "$PLATFORM" in

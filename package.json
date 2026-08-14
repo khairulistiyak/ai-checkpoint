@@ -56,6 +56,6 @@
     "electron": "^43.3.0",
     "electron-builder": "^26.15.3"
   },
-  "author": "Khairul Istiyak",
+  "author": "Khairul Istiyak <khairulistiyak@gmail.com>",
   "license": "MIT"
 }

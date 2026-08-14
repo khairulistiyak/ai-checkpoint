@@ -2,7 +2,7 @@
 
 <!-- Hero Banner Header -->
 <a href="https://github.com/khairulistiyak/ai-checkpoint">
-  <img src="ui-mockup-colorful.svg" alt="AI-Checkpoint" width="100%" style="border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 24px 64px rgba(0,0,0,0.8);" />
+  <img src="assets/ui-cockpit.png" alt="AI Checkpoint Studio Cockpit" width="100%" style="border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 24px 64px rgba(0,0,0,0.8);" />
 </a>
 
 <br/><br/>
@@ -164,7 +164,7 @@ graph LR
 The AI-Checkpoint dashboard provides an ultra-responsive visual workspace for multi-repo workflows:
 
 <div align="center">
-  <img src="ui-mockup-multiproject.svg" alt="AI Checkpoint Web UI" width="100%" style="border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);" />
+  <img src="assets/ui-multiproject.png" alt="AI Checkpoint Multi-Workspace Control Room" width="100%" style="border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);" />
 </div>
 
 <br/>

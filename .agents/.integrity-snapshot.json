@@ -1,6 +1,6 @@
 {
-  "step": "70.2",
-  "timestamp": "2026-08-14T09:06:28.423Z",
+  "step": "71.3",
+  "timestamp": "2026-08-14T13:05:18.153Z",
   "files": {
     "packages/cli/cmd-block.js": "d00a912a528b57c0",
     "packages/cli/cmd-checkpoint.js": "8fd4b79122eb9628",
@@ -155,7 +155,7 @@
     "dashboard/src/server/project-health.js": "2921c5134f66d1c1",
     "dashboard/src/server/project-plans.js": "f8cae3da9170bc39",
     "dashboard/src/server/projects.js": "23d16ab7f48a483c",
-    "dashboard/src/server/run-command.js": "5b8eb10a4674e9b3",
+    "dashboard/src/server/run-command.js": "f395cc2d9c0bc6ca",
     "dashboard/src/server/run-config.js": "e68b54c0b8843fb5",
     "dashboard/src/server/settings.js": "82bb16e92d213dca",
     "dashboard/src/server/watcher-events.js": "89cc871d977020f5",
@@ -163,7 +163,7 @@
     "dashboard/src/server/watcher-sse.js": "c7386881c7e7ad90",
     "dashboard/src/server/watcher.js": "b1dd4ee7884014f2",
     "dashboard/src/utils/api.js": "4c184e9b07592f8f",
-    "scripts/build-desktop.sh": "dd8e17c87e89a72b",
+    "scripts/build-desktop.sh": "cfeb722f27ab0c42",
     "scripts/generate-icons.cjs": "9858ad891885478d",
     "scripts/ledger.cjs": "6f0f5fea174838fd",
     "scripts/pre-release-check.sh": "f3619a94b10d4a9a",

@@ -1,220 +1,322 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" font-family="-apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Outfit', sans-serif">
   <defs>
-    <!-- Dark base background -->
-    <rect id="bg" width="1400" height="900" fill="#090514" />
-    
-    <!-- Colorful Mesh Gradient Orbs -->
-    <filter id="extremeBlur" x="-50%" y="-50%" width="200%" height="200%">
-      <feGaussianBlur stdDeviation="100" />
-    </filter>
-    
-    <filter id="glassBlur" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="16" result="blur" />
-      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-    </filter>
+    <!-- Background mesh & gradients -->
+    <radialGradient id="meshGradient1" cx="20%" cy="10%" r="60%">
+      <stop offset="0%" stop-color="#0284c7" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="meshGradient2" cx="80%" cy="20%" r="50%">
+      <stop offset="0%" stop-color="#9333ea" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="cardGlow" cx="50%" cy="0%" r="80%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+    </radialGradient>
 
-    <!-- Vibrant Gradients -->
-    <linearGradient id="gradPinkOrange" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#ff0080" />
-      <stop offset="100%" stop-color="#ff8c00" />
-    </linearGradient>
-    
-    <linearGradient id="gradCyanBlue" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#00f2fe" />
-      <stop offset="100%" stop-color="#4facfe" />
-    </linearGradient>
-
-    <linearGradient id="gradPurplePink" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#b224ef" />
-      <stop offset="100%" stop-color="#7579ff" />
-    </linearGradient>
-
-    <linearGradient id="glassFill" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.08" />
+    <!-- Glass & Card Linear Gradients -->
+    <linearGradient id="windowBorder" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.18" />
+      <stop offset="50%" stop-color="#ffffff" stop-opacity="0.06" />
       <stop offset="100%" stop-color="#ffffff" stop-opacity="0.02" />
     </linearGradient>
-
-    <!-- Chart Gradient -->
-    <linearGradient id="chartGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#00f2fe" stop-opacity="0.5" />
-      <stop offset="100%" stop-color="#4facfe" stop-opacity="0" />
+    <linearGradient id="cardBorder" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.03" />
     </linearGradient>
+    <linearGradient id="cyanAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+    <linearGradient id="greenAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#34d399" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+    <linearGradient id="purpleAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#a855f7" />
+      <stop offset="100%" stop-color="#ec4899" />
+    </linearGradient>
+
+    <filter id="shadowHeavy" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="24" stdDeviation="32" flood-color="#000000" flood-opacity="0.9" />
+    </filter>
   </defs>
 
   <style>
     text { fill: #ffffff; }
-    .text-sub { fill: rgba(255, 255, 255, 0.6); }
+    .font-mono { font-family: 'SF Mono', 'JetBrains Mono', 'Fira Code', monospace; }
     .font-bold { font-weight: 700; }
-    .font-black { font-weight: 900; letter-spacing: -1px; }
-    
-    .glass-card { 
-      fill: url(#glassFill); 
-      stroke: rgba(255, 255, 255, 0.15); 
-      stroke-width: 1.5; 
-      rx: 24; ry: 24; 
-    }
-    
-    .glass-pill { 
-      fill: rgba(255, 255, 255, 0.1); 
-      stroke: rgba(255, 255, 255, 0.2); 
-      rx: 999; ry: 999; 
-    }
+    .font-semibold { font-weight: 600; }
+    .font-black { font-weight: 900; }
+    .text-dim { fill: #71717a; }
+    .text-sub { fill: #a1a1aa; }
+    .text-sky { fill: #38bdf8; }
+    .text-emerald { fill: #34d399; }
+    .text-purple { fill: #c084fc; }
   </style>
 
-  <!-- 1. Background & Mesh Gradient -->
-  <use href="#bg" />
-  <g filter="url(#extremeBlur)" opacity="0.6">
-    <circle cx="300" cy="200" r="300" fill="#ff0080" />
-    <circle cx="1100" cy="300" r="350" fill="#00f2fe" />
-    <circle cx="700" cy="800" r="400" fill="#b224ef" />
-  </g>
+  <!-- Deep Canvas Background -->
+  <rect width="1400" height="900" fill="#040508" />
+  <rect width="1400" height="900" fill="url(#meshGradient1)" />
+  <rect width="1400" height="900" fill="url(#meshGradient2)" />
 
-  <!-- Subtle noise/grid over background -->
-  <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
-    <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#ffffff" stroke-opacity="0.05" />
+  <!-- Background Grid Pattern -->
+  <pattern id="bgGrid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#ffffff" stroke-opacity="0.025" />
   </pattern>
-  <rect width="1400" height="900" fill="url(#grid)" />
+  <rect width="1400" height="900" fill="url(#bgGrid)" />
 
-  <!-- 2. Main App Window (Glassmorphism) -->
-  <g transform="translate(40, 40)">
-    <!-- Main glass container -->
-    <rect width="1320" height="820" class="glass-card" />
-    <!-- Window controls -->
-    <circle cx="30" cy="30" r="7" fill="#ff5f56" />
-    <circle cx="55" cy="30" r="7" fill="#ffbd2e" />
-    <circle cx="80" cy="30" r="7" fill="#27c93f" />
+  <!-- ═════════════════════════════════════════════════════════════ -->
+  <!-- MAIN APPLICATION WINDOW -->
+  <!-- ═════════════════════════════════════════════════════════════ -->
+  <g transform="translate(30, 30)" filter="url(#shadowHeavy)">
+    <!-- Window Outer Shell -->
+    <rect width="1340" height="840" rx="20" fill="#0b0c12" stroke="url(#windowBorder)" stroke-width="1.5" />
 
-    <!-- ══════════════════════════════════════════════════════ -->
-    <!-- SIDEBAR -->
-    <!-- ══════════════════════════════════════════════════════ -->
-    <g transform="translate(0, 70)">
-      <line x1="260" y1="0" x2="260" y2="750" stroke="rgba(255,255,255,0.1)" stroke-width="1.5" />
-      
-      <!-- Brand -->
-      <text x="30" y="30" font-size="24" class="font-black">ai-checkpoint</text>
-      
-      <!-- Colored Badge -->
-      <rect x="30" y="50" width="80" height="24" rx="12" fill="url(#gradCyanBlue)" />
-      <text x="70" y="66" font-size="11" class="font-bold" text-anchor="middle">PRO MODE</text>
+    <!-- ───────────────────────────────────────────────────────────── -->
+    <!-- WINDOW HEADER / TITLEBAR -->
+    <!-- ───────────────────────────────────────────────────────────── -->
+    <g transform="translate(0, 0)">
+      <!-- macOS Traffic Lights -->
+      <g transform="translate(24, 20)">
+        <circle cx="0" cy="0" r="6" fill="#ff5f56" />
+        <circle cx="18" cy="0" r="6" fill="#ffbd2e" />
+        <circle cx="36" cy="0" r="6" fill="#27c93f" />
+      </g>
 
-      <g transform="translate(30, 120)">
-        <text x="0" y="0" font-size="12" class="font-bold text-sub" letter-spacing="1">DASHBOARDS</text>
-        
-        <!-- Active Nav -->
-        <rect x="-10" y="16" width="220" height="48" rx="12" fill="rgba(255,255,255,0.1)" />
-        <rect x="-10" y="26" width="4" height="28" rx="2" fill="url(#gradCyanBlue)" />
-        <text x="20" y="46" font-size="16" class="font-bold">Command Center</text>
-        
-        <text x="20" y="96" font-size="16" class="font-bold text-sub">Agent Config</text>
-        <text x="20" y="146" font-size="16" class="font-bold text-sub">System Logs</text>
-        <text x="20" y="196" font-size="16" class="font-bold text-sub">Analytics</text>
+      <!-- Brand & Project Switcher -->
+      <g transform="translate(100, 10)">
+        <rect width="210" height="34" rx="10" fill="#ffffff" fill-opacity="0.04" stroke="url(#cardBorder)" />
+        <circle cx="16" cy="17" r="4" fill="#38bdf8" />
+        <text x="28" y="22" font-size="13" class="font-bold">ai-checkpoint</text>
+        <rect x="135" y="7" width="62" height="20" rx="6" fill="#38bdf8" fill-opacity="0.15" />
+        <text x="166" y="21" font-size="10" class="font-mono font-bold text-sky" text-anchor="middle">ACTIVE</text>
+      </g>
+
+      <!-- Live Watcher Pill -->
+      <g transform="translate(330, 10)">
+        <rect width="185" height="34" rx="10" fill="#10b981" fill-opacity="0.06" stroke="#10b981" stroke-opacity="0.25" />
+        <circle cx="16" cy="17" r="4" fill="#34d399" />
+        <text x="28" y="22" font-size="12" class="font-mono text-emerald">👁️ Live Watcher (Active)</text>
+      </g>
+
+      <!-- Right Header Actions -->
+      <g transform="translate(1010, 10)">
+        <!-- Command Palette -->
+        <rect width="160" height="34" rx="10" fill="#ffffff" fill-opacity="0.04" stroke="url(#cardBorder)" />
+        <text x="16" y="22" font-size="12" class="text-sub font-mono">⌘K Commands</text>
+        <!-- AI Tier Pill -->
+        <rect x="175" y="0" width="130" height="34" rx="10" fill="#a855f7" fill-opacity="0.1" stroke="#a855f7" stroke-opacity="0.3" />
+        <text x="240" y="22" font-size="11" class="font-mono font-bold text-purple" text-anchor="middle">⚡ Small (Tier 1)</text>
+      </g>
+
+      <line x1="0" y1="56" x2="1340" y2="56" stroke="#ffffff" stroke-opacity="0.07" stroke-width="1" />
+    </g>
+
+    <!-- ───────────────────────────────────────────────────────────── -->
+    <!-- 4-TAB NAVIGATION BAR -->
+    <!-- ───────────────────────────────────────────────────────────── -->
+    <g transform="translate(30, 72)">
+      <!-- Tab 1: Cockpit Overview (ACTIVE) -->
+      <g>
+        <rect width="180" height="38" rx="10" fill="#ffffff" fill-opacity="0.08" stroke="#38bdf8" stroke-opacity="0.5" stroke-width="1.5" />
+        <circle cx="20" cy="19" r="4" fill="#38bdf8" />
+        <text x="32" y="24" font-size="13" class="font-bold text-sky">Cockpit Overview</text>
+        <rect x="150" y="9" width="18" height="20" rx="4" fill="#000000" fill-opacity="0.4" />
+        <text x="159" y="23" font-size="10" class="font-mono text-dim" text-anchor="middle">1</text>
+      </g>
+
+      <!-- Tab 2: Roadmap & Steps -->
+      <g transform="translate(195, 0)">
+        <rect width="180" height="38" rx="10" fill="#ffffff" fill-opacity="0.02" stroke="url(#cardBorder)" />
+        <text x="24" y="24" font-size="13" class="text-sub font-semibold">Roadmap &amp; Steps</text>
+        <rect x="150" y="9" width="18" height="20" rx="4" fill="#000000" fill-opacity="0.3" />
+        <text x="159" y="23" font-size="10" class="font-mono text-dim" text-anchor="middle">2</text>
+      </g>
+
+      <!-- Tab 3: Plan Blueprints -->
+      <g transform="translate(390, 0)">
+        <rect width="180" height="38" rx="10" fill="#ffffff" fill-opacity="0.02" stroke="url(#cardBorder)" />
+        <text x="24" y="24" font-size="13" class="text-sub font-semibold">Plan Blueprints</text>
+        <rect x="150" y="9" width="18" height="20" rx="4" fill="#000000" fill-opacity="0.3" />
+        <text x="159" y="23" font-size="10" class="font-mono text-dim" text-anchor="middle">3</text>
+      </g>
+
+      <!-- Tab 4: Workflows & CLI -->
+      <g transform="translate(585, 0)">
+        <rect width="180" height="38" rx="10" fill="#ffffff" fill-opacity="0.02" stroke="url(#cardBorder)" />
+        <text x="24" y="24" font-size="13" class="text-sub font-semibold">Workflows &amp; CLI</text>
+        <rect x="150" y="9" width="18" height="20" rx="4" fill="#000000" fill-opacity="0.3" />
+        <text x="159" y="23" font-size="10" class="font-mono text-dim" text-anchor="middle">4</text>
       </g>
     </g>
 
-    <!-- ══════════════════════════════════════════════════════ -->
-    <!-- MAIN CONTENT AREA -->
-    <!-- ══════════════════════════════════════════════════════ -->
-    <g transform="translate(260, 70)">
-      
-      <!-- TOP HEADER -->
-      <g transform="translate(50, 20)">
-        <text y="20" font-size="36" class="font-black">Command Center</text>
-        <text y="46" font-size="16" class="text-sub">Real-time autonomous AI execution overview.</text>
-        
-        <!-- Profile / Search Right side -->
-        <rect x="740" y="-10" width="240" height="48" class="glass-pill" />
-        <text x="760" y="19" font-size="14" class="text-sub">Search commands...</text>
+    <!-- ───────────────────────────────────────────────────────────── -->
+    <!-- 4 PULSE KPI CARDS -->
+    <!-- ───────────────────────────────────────────────────────────── -->
+    <g transform="translate(30, 126)">
+      <!-- KPI 1: Health Fortress -->
+      <g>
+        <rect width="305" height="120" rx="16" fill="#12131a" stroke="url(#cardBorder)" />
+        <text x="20" y="32" font-size="11" class="font-mono font-bold text-sub" letter-spacing="0.5">HEALTH FORTRESS</text>
+        <text x="20" y="76" font-size="36" class="font-black text-emerald">100<tspan font-size="18" class="text-dim">/100</tspan></text>
+        <rect x="20" y="90" width="150" height="18" rx="6" fill="#10b981" fill-opacity="0.12" />
+        <text x="28" y="103" font-size="10" class="font-mono text-emerald">✔ 0 Syntax • 0 Leaks</text>
       </g>
 
-      <!-- 3 VIBRANT STATS CARDS -->
-      <g transform="translate(50, 100)">
-        <!-- Pink/Orange Card -->
-        <g>
-          <rect width="300" height="140" rx="24" fill="url(#gradPinkOrange)" />
-          <text x="24" y="40" font-size="14" class="font-bold" fill="rgba(255,255,255,0.9)">Total Steps Executed</text>
-          <text x="24" y="90" font-size="48" class="font-black">1,402</text>
-          <rect x="24" y="105" width="80" height="20" rx="10" fill="rgba(255,255,255,0.2)" />
-          <text x="64" y="119" font-size="11" class="font-bold" text-anchor="middle">+12% today</text>
-        </g>
-
-        <!-- Cyan/Blue Card -->
-        <g transform="translate(330, 0)">
-          <rect width="300" height="140" rx="24" fill="url(#gradCyanBlue)" />
-          <text x="24" y="40" font-size="14" class="font-bold" fill="rgba(255,255,255,0.9)">System Accuracy</text>
-          <text x="24" y="90" font-size="48" class="font-black">99.8%</text>
-          <rect x="24" y="105" width="80" height="20" rx="10" fill="rgba(255,255,255,0.2)" />
-          <text x="64" y="119" font-size="11" class="font-bold" text-anchor="middle">Zero Bugs</text>
-        </g>
-
-        <!-- Purple/Pink Card -->
-        <g transform="translate(660, 0)">
-          <rect width="330" height="140" rx="24" fill="url(#gradPurplePink)" />
-          <text x="24" y="40" font-size="14" class="font-bold" fill="rgba(255,255,255,0.9)">Current AI Agent</text>
-          <text x="24" y="90" font-size="32" class="font-black">Gemini 3.1 Pro</text>
-          <rect x="24" y="105" width="80" height="20" rx="10" fill="rgba(255,255,255,0.2)" />
-          <text x="64" y="119" font-size="11" class="font-bold" text-anchor="middle">Active</text>
-        </g>
+      <!-- KPI 2: Code Quality -->
+      <g transform="translate(325, 0)">
+        <rect width="305" height="120" rx="16" fill="#12131a" stroke="url(#cardBorder)" />
+        <text x="20" y="32" font-size="11" class="font-mono font-bold text-sub" letter-spacing="0.5">ARCHITECTURE QUALITY</text>
+        <text x="20" y="76" font-size="36" class="font-black text-sky">85<tspan font-size="18" class="text-dim">/100</tspan></text>
+        <rect x="20" y="90" width="155" height="18" rx="6" fill="#38bdf8" fill-opacity="0.12" />
+        <text x="28" y="103" font-size="10" class="font-mono text-sky">✔ Structure OK • Clean</text>
       </g>
 
-      <!-- BOTTOM AREA: CHART & TERMINAL -->
-      <g transform="translate(50, 270)">
+      <!-- KPI 3: State Machine Velocity -->
+      <g transform="translate(650, 0)">
+        <rect width="305" height="120" rx="16" fill="#12131a" stroke="url(#cardBorder)" />
+        <text x="20" y="32" font-size="11" class="font-mono font-bold text-sub" letter-spacing="0.5">STATE MACHINE VELOCITY</text>
+        <text x="20" y="76" font-size="36" class="font-black text-purple">100<tspan font-size="22" class="font-bold text-purple">%</tspan></text>
+        <rect x="20" y="90" width="165" height="18" rx="6" fill="#a855f7" fill-opacity="0.12" />
+        <text x="28" y="103" font-size="10" class="font-mono text-purple">✔ 460/460 Steps Verified</text>
+      </g>
+
+      <!-- KPI 4: Rule 0 Guard -->
+      <g transform="translate(975, 0)">
+        <rect width="305" height="120" rx="16" fill="#12131a" stroke="url(#cardBorder)" />
+        <text x="20" y="32" font-size="11" class="font-mono font-bold text-sub" letter-spacing="0.5">RULE 0 MICRO-FILE GUARD</text>
+        <text x="20" y="76" font-size="34" class="font-black">≤ 150 <tspan font-size="14" class="text-dim">lines</tspan></text>
+        <rect x="20" y="90" width="170" height="18" rx="6" fill="#34d399" fill-opacity="0.12" />
+        <text x="28" y="103" font-size="10" class="font-mono text-emerald">✔ 0 Monolithic Files (100%)</text>
+      </g>
+    </g>
+
+    <!-- ───────────────────────────────────────────────────────────── -->
+    <!-- SPLIT CONTENT: CAD PLAN BLUEPRINT & TERMINAL STREAM -->
+    <!-- ───────────────────────────────────────────────────────────── -->
+    <g transform="translate(30, 262)">
+      <!-- LEFT: ARCHITECTURAL PLAN BLUEPRINTS -->
+      <g>
+        <rect width="680" height="530" rx="18" fill="#101118" stroke="url(#cardBorder)" />
         
-        <!-- LARGE ACTIVITY CHART -->
-        <g>
-          <rect width="630" height="450" class="glass-card" />
-          <text x="30" y="40" font-size="20" class="font-bold">Velocity Chart</text>
-          
-          <!-- Chart Grid Lines -->
-          <line x1="30" y1="120" x2="600" y2="120" stroke="rgba(255,255,255,0.1)" stroke-dasharray="6" />
-          <line x1="30" y1="220" x2="600" y2="220" stroke="rgba(255,255,255,0.1)" stroke-dasharray="6" />
-          <line x1="30" y1="320" x2="600" y2="320" stroke="rgba(255,255,255,0.1)" stroke-dasharray="6" />
-          
-          <!-- Smooth Curved Area Chart -->
-          <path d="M 30 380 C 100 380, 150 250, 220 280 C 300 310, 350 150, 420 120 C 500 90, 550 220, 600 180 L 600 420 L 30 420 Z" fill="url(#chartGrad)" />
-          <!-- Chart Line -->
-          <path d="M 30 380 C 100 380, 150 250, 220 280 C 300 310, 350 150, 420 120 C 500 90, 550 220, 600 180" fill="none" stroke="#00f2fe" stroke-width="4" stroke-linecap="round" />
-          
-          <!-- Glowing Data Point -->
-          <circle cx="420" cy="120" r="8" fill="#ffffff" stroke="#00f2fe" stroke-width="4" />
-          <rect x="380" y="70" width="80" height="30" class="glass-pill" />
-          <text x="420" y="90" font-size="12" class="font-bold" text-anchor="middle">Peak Rate</text>
+        <!-- Header -->
+        <g transform="translate(24, 24)">
+          <text font-size="16" class="font-bold">Architectural Blueprint &amp; Execution Queue</text>
+          <text y="22" font-size="12" class="text-sub font-mono">Plan: phase-71-svg-mockup-realignment.md</text>
         </g>
 
-        <!-- LIVE TASK TRACKER -->
-        <g transform="translate(660, 0)">
-          <rect width="330" height="450" class="glass-card" />
-          <text x="24" y="40" font-size="20" class="font-bold">Live Execution Queue</text>
-          
-          <g transform="translate(24, 70)">
-            <!-- Task 1 (Done) -->
-            <rect width="282" height="64" rx="16" fill="rgba(255,255,255,0.05)" />
-            <circle cx="32" cy="32" r="12" fill="#10b981" />
-            <path d="M 27 32 L 30 35 L 37 28" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
-            <text x="56" y="28" font-size="14" class="font-bold">Compile Kernel</text>
-            <text x="56" y="46" font-size="12" class="text-sub">Completed in 1.2s</text>
+        <!-- Step 71.1 (Completed) -->
+        <g transform="translate(24, 80)">
+          <rect width="632" height="96" rx="14" fill="#ffffff" fill-opacity="0.03" stroke="#10b981" stroke-opacity="0.4" stroke-width="1.5" />
+          <circle cx="32" cy="48" r="14" fill="#10b981" fill-opacity="0.2" />
+          <path d="M 26 48 L 30 52 L 38 44" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" />
+          <text x="60" y="38" font-size="14" class="font-bold">Step 71.1 — Reconstruct Hero Showcase Banner</text>
+          <text x="60" y="60" font-size="12" class="font-mono text-sub">File: ui-mockup-colorful.svg</text>
+          <rect x="60" y="70" width="80" height="18" rx="5" fill="#10b981" fill-opacity="0.15" />
+          <text x="100" y="83" font-size="10" class="font-mono font-bold text-emerald" text-anchor="middle">DONE [x]</text>
+        </g>
 
-            <!-- Task 2 (Running) -->
-            <rect y="80" width="282" height="64" rx="16" fill="rgba(255,255,255,0.1)" stroke="url(#gradPurplePink)" stroke-width="1.5" />
-            <circle cx="32" cy="112" r="12" fill="url(#gradPurplePink)" />
-            <text x="56" y="108" font-size="14" class="font-bold">Build React Components</text>
-            <text x="56" y="126" font-size="12" class="text-sub">Executing Step 1.3...</text>
-            <rect x="210" y="104" width="60" height="20" rx="10" fill="url(#gradPurplePink)" />
-            <text x="240" y="118" font-size="10" class="font-bold" text-anchor="middle">RUNNING</text>
+        <!-- Step 71.2 (Active / Running) -->
+        <g transform="translate(24, 190)">
+          <rect width="632" height="96" rx="14" fill="#ffffff" fill-opacity="0.05" stroke="#38bdf8" stroke-opacity="0.6" stroke-width="1.5" />
+          <circle cx="32" cy="48" r="14" fill="#0284c7" fill-opacity="0.3" />
+          <circle cx="32" cy="48" r="6" fill="#38bdf8" />
+          <text x="60" y="38" font-size="14" class="font-bold text-sky">Step 71.2 — Reconstruct Multi-Workspace Control Room</text>
+          <text x="60" y="60" font-size="12" class="font-mono text-sub">File: ui-mockup-multiproject.svg</text>
+          <rect x="60" y="70" width="90" height="18" rx="5" fill="#38bdf8" fill-opacity="0.2" />
+          <text x="105" y="83" font-size="10" class="font-mono font-bold text-sky" text-anchor="middle">RUNNING [/]</text>
+        </g>
 
-            <!-- Task 3 (Pending) -->
-            <rect y="160" width="282" height="64" rx="16" fill="rgba(255,255,255,0.05)" />
-            <circle cx="32" cy="192" r="12" fill="transparent" stroke="rgba(255,255,255,0.2)" stroke-width="2" />
-            <text x="56" y="188" font-size="14" class="font-bold text-sub">Database Migrations</text>
-            <text x="56" y="206" font-size="12" class="text-sub">Queued</text>
+        <!-- Step 71.3 (Pending) -->
+        <g transform="translate(24, 300)">
+          <rect width="632" height="96" rx="14" fill="#ffffff" fill-opacity="0.015" stroke="url(#cardBorder)" />
+          <circle cx="32" cy="48" r="14" fill="#ffffff" fill-opacity="0.05" />
+          <circle cx="32" cy="48" r="4" fill="#71717a" />
+          <text x="60" y="38" font-size="14" class="font-bold text-sub">Step 71.3 — Full Verification &amp; README Sync</text>
+          <text x="60" y="60" font-size="12" class="font-mono text-dim">File: .agents/PROGRESS.md</text>
+          <rect x="60" y="70" width="80" height="18" rx="5" fill="#ffffff" fill-opacity="0.05" />
+          <text x="100" y="83" font-size="10" class="font-mono text-dim" text-anchor="middle">PENDING [ ]</text>
+        </g>
+
+        <!-- CAD Mini Flow Chart -->
+        <g transform="translate(24, 415)">
+          <rect width="632" height="90" rx="12" fill="#000000" fill-opacity="0.4" stroke="url(#cardBorder)" />
+          <text x="20" y="28" font-size="11" class="font-mono text-sub">DETERMINISTIC CAD FLOW</text>
+          <g transform="translate(20, 42)">
+            <rect width="110" height="32" rx="6" fill="#10b981" fill-opacity="0.15" stroke="#10b981" stroke-opacity="0.4" />
+            <text x="55" y="20" font-size="11" class="font-mono text-emerald" text-anchor="middle">./l start</text>
             
-            <!-- Task 4 (Pending) -->
-            <rect y="240" width="282" height="64" rx="16" fill="rgba(255,255,255,0.05)" />
-            <circle cx="32" cy="272" r="12" fill="transparent" stroke="rgba(255,255,255,0.2)" stroke-width="2" />
-            <text x="56" y="268" font-size="14" class="font-bold text-sub">Deploy to Production</text>
-            <text x="56" y="286" font-size="12" class="text-sub">Queued</text>
+            <line x1="120" y1="16" x2="160" y2="16" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4" />
+            
+            <rect x="170" width="110" height="32" rx="6" fill="#38bdf8" fill-opacity="0.15" stroke="#38bdf8" stroke-opacity="0.4" />
+            <text x="225" y="20" font-size="11" class="font-mono text-sky" text-anchor="middle">./l v</text>
+            
+            <line x1="290" y1="16" x2="330" y2="16" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4" />
+            
+            <rect x="340" width="110" height="32" rx="6" fill="#a855f7" fill-opacity="0.15" stroke="#a855f7" stroke-opacity="0.4" />
+            <text x="395" y="20" font-size="11" class="font-mono text-purple" text-anchor="middle">./l c</text>
+            
+            <line x1="460" y1="16" x2="500" y2="16" stroke="#71717a" stroke-width="1.5" stroke-dasharray="4" />
+            
+            <rect x="510" width="90" height="32" rx="6" fill="#f59e0b" fill-opacity="0.15" stroke="#f59e0b" stroke-opacity="0.4" />
+            <text x="555" y="20" font-size="11" class="font-mono text-amber-400" text-anchor="middle">./l cp</text>
           </g>
         </g>
+      </g>
 
+      <!-- RIGHT: STREAMING TERMINAL LOGS & HEALTH GATE -->
+      <g transform="translate(700, 0)">
+        <rect width="580" height="530" rx="18" fill="#07080d" stroke="url(#cardBorder)" />
+        
+        <!-- Terminal Header -->
+        <g transform="translate(20, 20)">
+          <circle cx="0" cy="0" r="4" fill="#38bdf8" />
+          <text x="14" y="4" font-size="13" class="font-mono font-bold">STREAMING TERMINAL &amp; HEALTH GATE</text>
+          <line x1="0" y1="18" x2="540" y2="18" stroke="#ffffff" stroke-opacity="0.06" />
+        </g>
+
+        <!-- Terminal Output -->
+        <g transform="translate(20, 60)" class="font-mono" font-size="12">
+          <text y="0" class="text-sub">$ ./l start 71.1</text>
+          <text y="24" class="text-sky">ℹ Initializing Step 71.1...</text>
+          <text y="48" class="text-sub">✔ Step 71.1 initialized [~]</text>
+          
+          <text y="84" class="text-sub">$ ./l v</text>
+          <text y="108" class="text-emerald">✔ Validation passed: Rule 0 compliance (100%)</text>
+          <text y="132" class="text-emerald">✔ Verified: ui-mockup-colorful.svg</text>
+          
+          <text y="168" class="text-sub">$ ./l health</text>
+          <text y="192" class="text-emerald">┌────────────────────────────────────────────────┐</text>
+          <text y="212" class="text-emerald">│  🛡️  Project Health Score: 100/100 (HEALTHY)   │</text>
+          <text y="232" class="text-emerald">└────────────────────────────────────────────────┘</text>
+          <text y="252" class="text-sub">Breakdown: 0 Syntax Errors • 0 Broken Imports</text>
+          
+          <text y="288" class="text-sub">$ ./l c 71.1 "Reconstructed Hero Showcase Banner"</text>
+          <text y="312" class="text-emerald font-bold">🎉 STEP 71.1 COMPLETED! (461/462)</text>
+          <text y="336" class="text-purple">👉 NEXT: Step 71.2 — Reconstruct Multi-Workspace Control Room</text>
+          
+          <text y="372" class="text-sub">$ ./l start 71.2</text>
+          <!-- Terminal Blinking Cursor -->
+          <rect x="125" y="360" width="8" height="15" fill="#38bdf8" />
+        </g>
+
+        <!-- Dock at bottom right -->
+        <g transform="translate(20, 460)">
+          <rect width="540" height="50" rx="12" fill="#ffffff" fill-opacity="0.04" stroke="url(#cardBorder)" />
+          <text x="20" y="30" font-size="12" class="font-mono text-sub">Developer Action Dock</text>
+          
+          <g transform="translate(200, 10)">
+            <rect width="100" height="30" rx="8" fill="#38bdf8" fill-opacity="0.15" stroke="#38bdf8" stroke-opacity="0.4" />
+            <text x="50" y="19" font-size="11" class="font-mono font-bold text-sky" text-anchor="middle">Execute Next</text>
+            
+            <rect x="110" width="100" height="30" rx="8" fill="#ffffff" fill-opacity="0.06" stroke="url(#cardBorder)" />
+            <text x="160" y="19" font-size="11" class="font-mono text-sub" text-anchor="middle">Validate All</text>
+
+            <rect x="220" width="100" height="30" rx="8" fill="#ffffff" fill-opacity="0.06" stroke="url(#cardBorder)" />
+            <text x="270" y="19" font-size="11" class="font-mono text-sub" text-anchor="middle">Health Audit</text>
+          </g>
+        </g>
       </g>
     </g>
   </g>
