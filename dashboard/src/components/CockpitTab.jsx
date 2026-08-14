@@ -2,6 +2,7 @@ import React from 'react';
 import { Rocket, Target, Activity, Layers, FileText } from 'lucide-react';
 import GitVisualizer from './GitVisualizer';
 import ActivityLog from './ActivityLog';
+import CockpitHealthOverview from './cockpit/CockpitHealthOverview';
 
 export default function CockpitTab({
   selectedProject,
@@ -17,7 +18,8 @@ export default function CockpitTab({
 }) {
   const unsyncedSteps = selectedProject?.unsyncedSteps || 0;
   return (
-    <div className="flex flex-col gap-2.5">
+    <div className="flex flex-col gap-3">
+      {/* Top 4 KPI Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
         <div className="bg-cyber-card/90 border border-cyber-card-border rounded-xl p-3 flex flex-col justify-between gap-1.5 shadow-sm">
           <div className="flex items-center justify-between text-cyber-text-secondary text-xs font-mono">
@@ -96,6 +98,10 @@ export default function CockpitTab({
         </div>
       )}
 
+      {/* Embedded Live Health & Quality Fortress */}
+      <CockpitHealthOverview projectId={selectedProject.id} />
+
+      {/* Git Snapshots & Activity Stream */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 items-stretch">
         <div className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-3.5 sm:p-4 flex flex-col shadow-sm min-h-[400px]">
           <div className="flex items-center justify-between gap-2.5 mb-3 pb-2.5 border-b border-cyber-card-border shrink-0">

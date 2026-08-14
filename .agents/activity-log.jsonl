@@ -1,11 +1,3 @@
-{"ts":"2026-08-07T09:58:37.736Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/bg_NEUTER.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.736Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/en_MASCULINE.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.739Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/sw.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.740Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/en_MASCULINE.lproj/locale.pak","size":18}
-{"ts":"2026-08-07T09:58:37.740Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/bg_NEUTER.lproj/locale.pak","size":18}
-{"ts":"2026-08-07T09:58:37.745Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/sw.lproj/locale.pak","size":659415}
-{"ts":"2026-08-07T09:58:37.746Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/zh_TW.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.746Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/gu.lproj","size":262144}
 {"ts":"2026-08-07T09:58:37.752Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/zh_TW.lproj/locale.pak","size":561393}
 {"ts":"2026-08-07T09:58:37.755Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/gu.lproj/locale.pak","size":1434310}
 {"ts":"2026-08-07T09:58:37.759Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/ko_MASCULINE.lproj","size":262144}
@@ -4998,3 +4990,11 @@ TER.lproj","size":262144}
 {"ts":"2026-08-14T05:43:32.736Z","action":"CREATED","file":"dashboard/src/components/cockpit","size":262144}
 {"ts":"2026-08-14T05:43:32.742Z","action":"MODIFIED","file":"dashboard/src/components/cockpit/CockpitHealthOverview.jsx","size":39}
 {"ts":"2026-08-14T05:43:39.171Z","action":"MODIFIED","file":"dashboard/src/components/cockpit/CockpitHealthOverview.jsx","size":5897}
+{"ts":"2026-08-14T05:44:35.237Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":81303}
+{"ts":"2026-08-14T05:44:39.505Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":81303}
+{"ts":"2026-08-14T05:44:39.568Z","action":"MODIFIED","file":".agents/.integrity-snapshot.json","size":11308}
+{"ts":"2026-08-14T05:44:48.986Z","action":"MODIFIED","file":"dashboard/src/components/CockpitTab.jsx","size":6639}
+{"ts":"2026-08-14T05:45:31.549Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":81370}
+{"ts":"2026-08-14T05:45:58.411Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":81370}
+{"ts":"2026-08-14T05:45:58.462Z","action":"MODIFIED","file":".agents/.integrity-snapshot.json","size":11377}
+{"ts":"2026-08-14T05:47:29.400Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":81456}
