@@ -1,5 +1,3 @@
-{"ts":"2026-08-14T12:17:56.904Z","action":"DELETED","file":"release/win-unpacked/locales/sr.pak"}
-{"ts":"2026-08-14T12:17:56.907Z","action":"DELETED","file":"release/win-unpacked/locales/es-419.pak"}
 {"ts":"2026-08-14T12:17:56.910Z","action":"DELETED","file":"release/win-unpacked/locales/vi.pak"}
 {"ts":"2026-08-14T12:17:56.914Z","action":"DELETED","file":"release/win-unpacked/locales/fa.pak"}
 {"ts":"2026-08-14T12:17:56.917Z","action":"DELETED","file":"release/win-unpacked/locales/ko.pak"}
@@ -4998,3 +4996,5 @@
 {"ts":"2026-08-14T13:23:39.671Z","action":"MODIFIED","file":"scripts/pre-release-check.sh","size":1834}
 {"ts":"2026-08-14T13:23:39.675Z","action":"MODIFIED","file":"scripts/release.sh","size":1156}
 {"ts":"2026-08-14T13:23:39.677Z","action":"MODIFIED","file":"scripts/release.sh","size":1156}
+{"ts":"2026-08-14T13:34:31.851Z","action":"MODIFIED","file":"packages/core/validate-project.js","size":4854}
+{"ts":"2026-08-14T13:34:31.852Z","action":"MODIFIED","file":"packages/core/validate-project.js","size":4854}
