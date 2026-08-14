@@ -39,15 +39,11 @@ export default function ProjectGrid({
   }, []);
 
   const { runningStep, nextStep } = useMemo(() => {
-    let running = null;
-    let next = null;
+    let running = null, next = null;
     for (const phase of allPhases) {
       for (const step of (phase.steps || [])) {
-        if (step.status === 'running' && !running) {
-          running = { ...step, phaseNumber: phase.number, phaseName: phase.name };
-        } else if (step.status === 'pending' && !next) {
-          next = { ...step, phaseNumber: phase.number, phaseName: phase.name };
-        }
+        if (step.status === 'running' && !running) running = { ...step, phaseNumber: phase.number, phaseName: phase.name };
+        else if (step.status === 'pending' && !next) next = { ...step, phaseNumber: phase.number, phaseName: phase.name };
         if (running && next) break;
       }
       if (running && next) break;
@@ -95,13 +91,7 @@ export default function ProjectGrid({
     <div className="flex flex-col gap-4 min-h-full w-full pb-20">
       <ProjectCard project={selectedProject} onRemove={onRemove} onOpenConfig={onOpenConfig} onOpenPlans={onOpenPlans} onOpenArchitect={handleOpenArchitect} />
 
-      <ProjectTabBar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        overall={overall}
-        planStats={planStats}
-        healthScore={selectedProject?.health?.score}
-      />
+      <ProjectTabBar activeTab={activeTab} setActiveTab={setActiveTab} overall={overall} planStats={planStats} />
 
       <ProjectTabsContent
         activeTab={activeTab}
@@ -123,6 +113,7 @@ export default function ProjectGrid({
         selectedPhaseNumber={selectedPhaseNumber}
         setSelectedPhaseNumber={setSelectedPhaseNumber}
         onOpenConfig={onOpenConfig}
+        setActiveTab={setActiveTab}
       />
 
       <DeveloperActionDock
@@ -136,11 +127,7 @@ export default function ProjectGrid({
 
       <AnimatePresence>
         {isTerminalOpen && (
-          <QuickTerminalDrawer
-            isOpen={isTerminalOpen}
-            onClose={() => setIsTerminalOpen(false)}
-            projectId={selectedProject.id}
-          />
+          <QuickTerminalDrawer isOpen={isTerminalOpen} onClose={() => setIsTerminalOpen(false)} projectId={selectedProject.id} />
         )}
       </AnimatePresence>
 

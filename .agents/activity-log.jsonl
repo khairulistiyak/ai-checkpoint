@@ -1,29 +1,3 @@
-{"ts":"2026-08-07T09:58:37.752Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/zh_TW.lproj/locale.pak","size":561393}
-{"ts":"2026-08-07T09:58:37.755Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/gu.lproj/locale.pak","size":1434310}
-{"ts":"2026-08-07T09:58:37.759Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/ko_MASCULINE.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.759Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/ml_FEMININE.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.759Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/et_MASCULINE.lproj/locale.pak","size":18}
-{"ts":"2026-08-07T09:58:37.765Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/ml_FEMININE.lproj/locale.pak","size":18}
-{"ts":"2026-08-07T09:58:37.765Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/sl.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.767Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/ko_MASCULINE.lproj/locale.pak","size":18}
-{"ts":"2026-08-07T09:58:37.776Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/sl.lproj/locale.pak","size":695695}
-{"ts":"2026-08-07T09:58:37.776Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/zh_CN.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.776Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/ca_MASCULINE.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.785Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/pt_BR.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.788Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/ca_MASCULINE.lproj/locale.pak","size":18}
-{"ts":"2026-08-07T09:58:37.788Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/pt_BR.lproj/locale.pak","size":669721}
-{"ts":"2026-08-07T09:58:37.790Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/fi_NEUTER.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.796Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/fr_FEMININE.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.800Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/fi_NEUTER.lproj/locale.pak","size":18}
-{"ts":"2026-08-07T09:58:37.804Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/fr_FEMININE.lproj/locale.pak","size":18}
-{"ts":"2026-08-07T09:58:37.805Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/kn.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.810Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/da.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.811Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/kn.lproj/locale.pak","size":1652423}
-{"ts":"2026-08-07T09:58:37.815Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/pl_MASCULINE.lproj/locale.pak","size":18}
-{"ts":"2026-08-07T09:58:37.819Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/sv_NEUTER.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.821Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/da.lproj/locale.pak","size":640936}
-ts":"2026-08-07T09:58:37.824Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/zh_CN_FEMININE.lproj","size":262144}
-{"ts":"2026-08-07T09:58:37.825Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/sv_NEUTER.lproj/locale.pak","size":18}
 {"ts":"2026-08-07T09:58:37.826Z","action":"CREATED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/ar_FEMININE.lproj","size":262144}
 {"ts":"2026-08-07T09:58:37.831Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/zh_CN_FEMININE.lproj/locale.pak","size":18}
 {"ts":"2026-08-07T09:58:37.831Z","action":"MODIFIED","file":"release/mac-arm64.tmp/Electron.app/Contents/Frameworks/Electron Framework.framework/Versions/A/Resources/ar_FEMININE.lproj/locale.pak","size":18}
@@ -4998,3 +4972,29 @@ TER.lproj","size":262144}
 {"ts":"2026-08-14T05:45:58.411Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":81370}
 {"ts":"2026-08-14T05:45:58.462Z","action":"MODIFIED","file":".agents/.integrity-snapshot.json","size":11377}
 {"ts":"2026-08-14T05:47:29.400Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":81456}
+{"ts":"2026-08-14T05:59:02.823Z","action":"MODIFIED","file":"plan/phase-64-dashboard-cleanup.md","size":21231}
+{"ts":"2026-08-14T05:59:12.815Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":82227}
+{"ts":"2026-08-14T05:59:59.099Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":82231}
+{"ts":"2026-08-14T05:59:59.113Z","action":"MODIFIED","file":".agents/.integrity-snapshot.json","size":11158}
+{"ts":"2026-08-14T06:00:07.494Z","action":"MODIFIED","file":"dashboard/src/components/ProjectTabBar.jsx","size":3098}
+{"ts":"2026-08-14T06:00:26.898Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":82375}
+{"ts":"2026-08-14T06:00:32.589Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":82375}
+{"ts":"2026-08-14T06:00:32.640Z","action":"MODIFIED","file":".agents/.integrity-snapshot.json","size":11230}
+{"ts":"2026-08-14T06:00:40.706Z","action":"MODIFIED","file":"dashboard/src/components/ProjectTabsContent.jsx","size":2974}
+{"ts":"2026-08-14T06:00:51.999Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":82496}
+{"ts":"2026-08-14T06:00:58.110Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":82496}
+{"ts":"2026-08-14T06:00:58.162Z","action":"MODIFIED","file":".agents/.integrity-snapshot.json","size":11307}
+{"ts":"2026-08-14T06:01:06.508Z","action":"MODIFIED","file":"dashboard/src/components/runs/ProjectRunPanel.jsx","size":4928}
+{"ts":"2026-08-14T06:01:18.116Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":82578}
+{"ts":"2026-08-14T06:01:24.385Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":82578}
+{"ts":"2026-08-14T06:01:24.435Z","action":"MODIFIED","file":".agents/.integrity-snapshot.json","size":11386}
+{"ts":"2026-08-14T06:01:32.714Z","action":"MODIFIED","file":"dashboard/src/components/ProjectCard.jsx","size":5847}
+{"ts":"2026-08-14T06:02:17.090Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":82726}
+{"ts":"2026-08-14T06:02:22.298Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":82726}
+{"ts":"2026-08-14T06:02:22.351Z","action":"MODIFIED","file":".agents/.integrity-snapshot.json","size":11456}
+{"ts":"2026-08-14T06:02:32.892Z","action":"MODIFIED","file":"dashboard/src/components/ProjectGrid.jsx","size":5970}
+{"ts":"2026-08-14T06:02:43.018Z","action":"MODIFIED","file":"dashboard/src/components/ProjectGrid.jsx","size":5888}
+{"ts":"2026-08-14T06:02:54.897Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":82790}
+{"ts":"2026-08-14T06:03:00.716Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":82790}
+{"ts":"2026-08-14T06:03:00.766Z","action":"MODIFIED","file":".agents/.integrity-snapshot.json","size":11526}
+{"ts":"2026-08-14T06:03:19.436Z","action":"MODIFIED","file":".agents/PROGRESS.md","size":82890}

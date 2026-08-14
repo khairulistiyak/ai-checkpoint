@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ProgressRing from "./ProgressRing";
-import ProjectCardStats from "./project/ProjectCardStats";
 import ProjectCardActions from "./project/ProjectCardActions";
-import { Terminal, FolderOpen, ShieldCheck, Copy, Check, Zap } from "lucide-react";
+import { Terminal, FolderOpen, Copy, Check, Zap } from "lucide-react";
 import { motion } from "framer-motion";
-import * as api from "../utils/api";
 import { useToast } from "./ToastProvider";
 
 export default function ProjectCard({
@@ -15,22 +13,11 @@ export default function ProjectCard({
 }) {
   const { showToast } = useToast();
   const { progress } = project;
-  const [health, setHealth] = useState(null);
   const [copied, setCopied] = useState(false);
   const [copiedCd, setCopiedCd] = useState(false);
-  const [showAuditDetails, setShowAuditDetails] = useState(false);
-
-  useEffect(() => {
-    if (project.isInstalled) {
-      api.fetchProjectHealth(project.id).then(setHealth).catch(() => {});
-    }
-  }, [project.id, project.isInstalled]);
 
   const overall = progress?.overall || { percentage: 0, completed: 0, total: 0 };
   const isDone = overall.percentage === 100;
-  const passedChecks = health?.checks?.filter((c) => c.passed).length || 0;
-  const totalChecks = health?.checks?.length || 0;
-  const allPassed = totalChecks > 0 && passedChecks === totalChecks;
 
   const handleCopyPath = () => {
     if (project.path && navigator.clipboard) {
@@ -98,21 +85,6 @@ export default function ProjectCard({
               <span className="bg-white/[0.04] text-zinc-300 border border-white/10 px-2.5 py-0.5 rounded-full text-xs font-mono">
                 {overall.completed} / {overall.total} Steps
               </span>
-
-              {health && health.checks && (
-                <button
-                  onClick={() => setShowAuditDetails(!showAuditDetails)}
-                  className={`text-xs font-mono px-2.5 py-0.5 rounded-full border flex items-center gap-1.5 transition-all cursor-pointer ${
-                    allPassed
-                      ? "bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/20"
-                      : "bg-amber-500/10 text-amber-400 border-amber-500/20 hover:bg-amber-500/20"
-                  }`}
-                  title="Click to view health audit details"
-                >
-                  <ShieldCheck className="w-3 h-3" />
-                  <span>{allPassed ? "Verified" : `${passedChecks}/${totalChecks}`}</span>
-                </button>
-              )}
             </div>
 
             <div className="flex items-center gap-2 mt-1.5 text-xs font-mono text-zinc-400 flex-wrap">
@@ -151,8 +123,6 @@ export default function ProjectCard({
           onRemove={onRemove}
         />
       </div>
-
-      <ProjectCardStats health={health} showAuditDetails={showAuditDetails} />
     </motion.div>
   );
 }

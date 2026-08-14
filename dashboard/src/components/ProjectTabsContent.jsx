@@ -4,8 +4,6 @@ import CockpitTab from './CockpitTab';
 import PlanProgressTab from './plans/PlanProgressTab';
 import PlanFilesTab from './plans/PlanFilesTab';
 import ProjectRunPanel from './runs/ProjectRunPanel';
-import AuditRulesTab from './AuditRulesTab';
-import HealthCommandCenter from './HealthCommandCenter';
 
 export default function ProjectTabsContent({
   activeTab,
@@ -26,13 +24,26 @@ export default function ProjectTabsContent({
   setSearchQuery,
   selectedPhaseNumber,
   setSelectedPhaseNumber,
-  onOpenConfig
+  onOpenConfig,
+  setActiveTab
 }) {
   return (
     <AnimatePresence mode="wait">
       {activeTab === 'cockpit' && (
         <motion.div key="cockpit" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }}>
-          <CockpitTab selectedProject={selectedProject} overall={overall} allPhases={allPhases} activePhases={activePhases} remaining={remaining} planStats={planStats} totalPlanSteps={totalPlanSteps} handleOpenArchitect={handleOpenArchitect} refresh={refresh} liveActivityEntry={liveActivityEntry} />
+          <CockpitTab
+            selectedProject={selectedProject}
+            overall={overall}
+            allPhases={allPhases}
+            activePhases={activePhases}
+            remaining={remaining}
+            planStats={planStats}
+            totalPlanSteps={totalPlanSteps}
+            handleOpenArchitect={handleOpenArchitect}
+            refresh={refresh}
+            liveActivityEntry={liveActivityEntry}
+            onSelectTab={setActiveTab}
+          />
         </motion.div>
       )}
       {activeTab === 'roadmap' && (
@@ -47,17 +58,7 @@ export default function ProjectTabsContent({
       )}
       {activeTab === 'commands' && (
         <motion.div key="commands" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }} className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-2 sm:p-4 shadow-sm min-h-[450px] flex flex-col">
-          <ProjectRunPanel project={selectedProject} />
-        </motion.div>
-      )}
-      {activeTab === 'audit' && (
-        <motion.div key="audit" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }} className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-4 sm:p-5 shadow-sm space-y-4">
-          <AuditRulesTab onOpenConfig={onOpenConfig} />
-        </motion.div>
-      )}
-      {activeTab === 'health' && (
-        <motion.div key="health" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.2 }} className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-2 sm:p-4 shadow-sm min-h-[450px]">
-          <HealthCommandCenter projectId={selectedProject.id} />
+          <ProjectRunPanel project={selectedProject} onOpenConfig={onOpenConfig} />
         </motion.div>
       )}
     </AnimatePresence>
