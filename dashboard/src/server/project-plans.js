@@ -29,15 +29,14 @@ export function handleSavePlanFile(req, res) {
   if (!/^[a-zA-Z0-9_.-]+\.md$/.test(filename)) {
     return res.status(400).json({ error: 'Invalid filename' });
   }
-  const filePath = path.join(project.path, 'plan', filename);
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).json({ error: 'Plan file not found' });
-  }
+  const planDir = path.join(project.path, 'plan');
+  const filePath = path.join(planDir, filename);
   const { content } = req.body;
   if (typeof content !== 'string') {
     return res.status(400).json({ error: 'Content must be a string' });
   }
   try {
+    fs.mkdirSync(planDir, { recursive: true });
     fs.writeFileSync(filePath, content, 'utf8');
     res.json({ success: true, filename });
   } catch (e) {

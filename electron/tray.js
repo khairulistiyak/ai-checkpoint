@@ -1,6 +1,6 @@
 const { Tray, Menu, app } = require('electron');
 const path = require('path');
-const { spawn } = require('child_process');
+const { execFile } = require('child_process');
 
 let tray = null;
 
@@ -26,14 +26,14 @@ function createTray(mainWindow) {
       label: 'Run Doctor',
       click: () => {
         const rootDir = path.join(__dirname, '..');
-        spawn('./l', ['doctor'], { cwd: rootDir, stdio: 'inherit', shell: true });
+        execFile('node', ['.agents/scripts/ledger.cjs', 'doctor'], { cwd: rootDir, stdio: 'inherit' });
       },
     },
     {
       label: 'Quick Status',
       click: () => {
         const rootDir = path.join(__dirname, '..');
-        spawn('./l', ['status'], { cwd: rootDir, stdio: 'inherit', shell: true });
+        execFile('node', ['.agents/scripts/ledger.cjs', 'status'], { cwd: rootDir, stdio: 'inherit' });
       },
     },
     { type: 'separator' },

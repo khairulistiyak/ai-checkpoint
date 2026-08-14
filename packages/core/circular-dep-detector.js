@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', '.agents', 'plan'];
+const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', '.agents', 'plan', '_archive', 'release', 'tests'];
 const CODE_EXTS = ['.js', '.cjs', '.mjs', '.jsx', '.tsx', '.ts'];
 
 function getImports(filePath) {

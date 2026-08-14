@@ -54,7 +54,7 @@ router.post('/settings/projects', (req, res) => {
   const newProject = {
     id: Date.now().toString(),
     path: dirPath,
-    name: name || dirPath.split(/[/\\]/).pop(),
+    name: name || path.basename(dirPath.replace(/\/+$/, '')) || 'Untitled',
     addedAt: new Date().toISOString()
   };
 

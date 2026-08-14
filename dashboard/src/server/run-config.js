@@ -1,6 +1,9 @@
 import express from 'express';
+import { createRequire } from 'module';
 import { getSettings } from './settings.js';
-import { detectProjectRunConfig, saveCustomRunConfig } from '../../../packages/core/run-config.js';
+
+const require = createRequire(import.meta.url);
+const { detectProjectRunConfig, saveCustomRunConfig } = require('../../../packages/core/run-config.js');
 
 const router = express.Router();
 

@@ -46,9 +46,9 @@ function generateQualityReport(projectPath) {
   score -= naming.issues.length * 2;
   score -= hygiene.issues.filter(i => i.type === 'debug-log').length * 1;
   score -= hygiene.issues.filter(i => i.type === 'todo-comment').length * 1;
-  if (complexityStats) score -= complexityStats.complexFunctions * 3;
-  if (depStats) score -= allIssues.filter(i => i.category === 'dependencies').length * 2;
-  if (configChecks) score -= allIssues.filter(i => i.category === 'config').length * 1;
+  if (complexityStats) score -= Math.min(complexityStats.complexFunctions * 2, 15);
+  if (depStats) score -= Math.min(allIssues.filter(i => i.category === 'dependencies').length * 2, 10);
+  if (configChecks) score -= Math.min(allIssues.filter(i => i.category === 'config').length * 1, 10);
   if (score < 0) score = 0;
 
   return {

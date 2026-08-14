@@ -6,11 +6,15 @@ directories:
   output: release
   buildResources: build-resources
 
+asar: false
+
 files:
   - electron/**
   - dashboard/dist/**
   - dashboard/server.js
+  - dashboard/package.json
   - dashboard/src/server/**
+  - build-resources/**
   - packages/**
   - scripts/**
   - templates/**

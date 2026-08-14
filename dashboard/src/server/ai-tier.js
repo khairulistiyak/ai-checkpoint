@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { getSettings } from './settings.js';
 import { generatePlanTemplate, getAgentsTierBlock } from './plan-templates.js';
+import { getNextPhaseNum, syncPlanToProgress } from './plan-sync-server.js';
 
 const router = express.Router();
 
@@ -95,7 +96,8 @@ router.post('/projects/:id/generate-plan', (req, res) => {
     }
 
     // 2. Generate and write template
-    const templateContent = generatePlanTemplate(name, tier, description);
+    const nextPhase = getNextPhaseNum(project.path);
+    const templateContent = generatePlanTemplate(name, tier, description, nextPhase);
     fs.writeFileSync(targetPath, templateContent, 'utf8');
 
     // 3. Save tier config
@@ -129,6 +131,9 @@ router.post('/projects/:id/generate-plan', (req, res) => {
         }
       }
     }
+
+    // 5. Automatically sync newly created plan to PROGRESS.md
+    try { syncPlanToProgress(project.path); } catch {}
 
     res.json({ success: true, planFile: `${name}.md` });
   } catch (e) {

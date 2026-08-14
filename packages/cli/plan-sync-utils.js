@@ -9,13 +9,23 @@ function parsePlanFileSteps(filePath) {
   let phaseName = null;
   let phaseNum = null;
 
+  let inFence = false;
   for (const line of lines) {
-    const phaseMatch = line.match(/^##\s+Phase\s+(\d+):\s*(.+)/);
+    if (/^```/.test(line)) { inFence = !inFence; continue; }
+    if (inFence) continue;
+
+    const planTitleMatch = line.match(/^#\s+Plan:\s*(.+)/i);
+    if (planTitleMatch && !phaseName) {
+      phaseName = planTitleMatch[1].trim();
+    }
+
+    const phaseMatch = line.match(/^##\s+Phase\s+(\d+):\s*(.+)/i);
     if (phaseMatch) {
       phaseNum = parseInt(phaseMatch[1]);
       phaseName = phaseMatch[2].replace(/\s*—.*$/, '').trim();
     }
-    const stepMatch = line.match(/^###\s+Step\s+(\d+\.\d+)\s+—\s+(.+)/);
+
+    const stepMatch = line.match(/^#{2,3}\s+(?:Step\s+)?(\d+\.\d+)\s*(?:—|-|:)\s*(.+)/i);
     if (stepMatch) {
       if (!phaseNum) {
         const p = stepMatch[1].split('.')[0];

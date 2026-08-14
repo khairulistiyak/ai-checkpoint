@@ -5,9 +5,9 @@
   "bin": {
     "ai-checkpoint": "./scripts/ledger.cjs"
   },
-  "main": "packages/core/parse-progress.js",
+  "main": "packages/core/index.js",
   "exports": {
-    ".": "./packages/core/parse-progress.js",
+    ".": "./packages/core/index.js",
     "./cli": "./packages/cli/index.js",
     "./core": "./packages/core/index.js"
   },
@@ -47,8 +47,14 @@
   ],
   "homepage": "https://github.com/khairulistiyak/ai-checkpoint#readme",
   "bugs": "https://github.com/khairulistiyak/ai-checkpoint/issues",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
   "devDependencies": {
-    "bats": "^1.13.0"
+    "bats": "^1.13.0",
+    "electron": "^43.3.0",
+    "electron-builder": "^26.15.3"
   },
   "author": "Khairul Istiyak",
   "license": "MIT"

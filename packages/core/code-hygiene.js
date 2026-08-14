@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SKIP = ['node_modules', '.git', 'dist', 'build', '.agents', 'plan', 'marketing'];
+const SKIP = ['node_modules', '.git', 'dist', 'build', '.agents', 'plan', 'marketing', '_archive', 'release', 'tests'];
 const CODE_EXTS = ['.js', '.jsx', '.ts', '.tsx', '.cjs', '.mjs'];
 
 function walkCode(dir, results) {

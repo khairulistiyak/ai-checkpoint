@@ -108,36 +108,23 @@ export default function ProjectTabBar({
 
   return (
     <div className="relative w-full z-20">
-      {/* Outer Dock Container */}
-      <div className="bg-[#0e0e11]/95 backdrop-blur-2xl border border-white/[0.08] rounded-2xl p-1.5 flex items-center justify-between gap-2 shadow-2xl shadow-black/60 overflow-visible relative">
-
-        {/* Navigation Tabs List */}
-        <div className="flex items-center gap-1.5 overflow-x-auto custom-scrollbar min-w-max p-0.5">
-          {tabs.map((tab) => (
-            <ProjectTabItem
-              key={tab.id}
-              tab={tab}
-              isActive={activeTab === tab.id}
-              onClick={() => setActiveTab(tab.id)}
-            />
-          ))}
+      {/* Clean Minimal Dock Container */}
+      <div className="bg-[#0e0e11]/90 backdrop-blur-xl border border-white/10 rounded-2xl p-1.5 flex items-center justify-between gap-2 shadow-xl relative overflow-hidden">
+        {/* Navigation Tabs List Container */}
+        <div className="flex-1 overflow-x-auto overflow-y-hidden custom-scrollbar p-0.5 min-w-0 relative w-full scroll-smooth [-webkit-overflow-scrolling:touch]">
+          <div className="flex items-center gap-1 sm:gap-1.5 w-full min-w-max pr-6 sm:pr-0 pb-1 sm:pb-0">
+            {tabs.map((tab) => (
+              <ProjectTabItem
+                key={tab.id}
+                tab={tab}
+                isActive={activeTab === tab.id}
+                onClick={() => setActiveTab(tab.id)}
+              />
+            ))}
+          </div>
         </div>
-
-        {/* Right Side Live Status / Helper Utilities */}
-        <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-xl bg-white/[0.02] border border-white/[0.05] text-[11px] font-mono text-zinc-400 shrink-0">
-          <span className="flex items-center gap-1.5 text-emerald-400">
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span className="text-[10px] font-semibold tracking-wider uppercase">Live Ledger</span>
-          </span>
-          <span className="text-zinc-600">|</span>
-          <span className="text-zinc-500 text-[10px] flex items-center gap-1">
-            <span>Keys</span>
-            <kbd className="px-1 py-0.2 rounded bg-white/[0.05] border border-white/10 text-[9px] text-zinc-300 font-mono">1-6</kbd>
-          </span>
-        </div>
+        {/* Touch-friendly scroll fade indicator */}
+        <div className="absolute right-0 top-0 bottom-0 w-6 bg-gradient-to-l from-[#0e0e11] to-transparent pointer-events-none sm:hidden z-10" />
       </div>
     </div>
   );

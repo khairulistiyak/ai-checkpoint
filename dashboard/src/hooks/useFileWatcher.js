@@ -1,8 +1,10 @@
 import { useEffect, useRef, useCallback } from 'react';
 
-const BASE_URL = (window.location.port === '5173'
-  ? 'http://localhost:20226'
-  : window.location.origin) + '/api';
+const urlParams = new URLSearchParams(window.location.search);
+const electronPort = urlParams.get('port');
+const BASE_URL = electronPort 
+  ? `http://localhost:${electronPort}/api`
+  : (window.location.port === '5173' ? 'http://localhost:20226/api' : window.location.origin + '/api');
 
 /**
  * useFileWatcher — Connects to the backend SSE endpoint for real-time file change events.

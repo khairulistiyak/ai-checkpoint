@@ -49,9 +49,10 @@ const TIER_CONFIG = {
   }
 };
 
-function generatePlanTemplate(name, tier, description = '') {
+function generatePlanTemplate(name, tier, description = '', phaseNum = 1) {
   const config = TIER_CONFIG[tier] || TIER_CONFIG.medium;
   const descStr = description || `Plan description for ${name}.`;
+  const p = phaseNum;
 
   if (tier === 'small') {
     return `# Plan: ${name}
@@ -61,7 +62,9 @@ function generatePlanTemplate(name, tier, description = '') {
 
 ---
 
-## Step 1.1 — Create initial module
+## Phase ${p}: ${name}
+
+### Step ${p}.1 — Create initial module
 - **File:** \`src/index.js\`
 - **Action:** CREATE
 - **Content:**
@@ -71,7 +74,7 @@ function generatePlanTemplate(name, tier, description = '') {
 - **Done-check:** \`test -f src/index.js\`
 - **Depends:** None
 
-**Description:** Initialize the index file with a basic console log.
+**Description:** Initialize the index file with a basic export.
 `;
   }
 
@@ -83,7 +86,9 @@ function generatePlanTemplate(name, tier, description = '') {
 
 ---
 
-## 1.1 — Create file
+## Phase ${p}: ${name}
+
+### Step ${p}.1 — Create file
 - **File:** \`src/index.js\`
 - **Action:** CREATE
 - **Done-check:** \`test -f src/index.js\`
@@ -101,7 +106,9 @@ Write the complete code block or description here.
 
 ---
 
-## Step 1.1 — [Step Title]
+## Phase ${p}: ${name}
+
+### Step ${p}.1 — [Step Title]
 - **File:** \`src/index.js\`
 - **Action:** CREATE
 - **Content:**

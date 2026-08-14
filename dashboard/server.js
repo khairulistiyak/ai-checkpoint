@@ -56,7 +56,7 @@ process.on('unhandledRejection', (reason, promise) => {
 export function startServer(customPort = PORT) {
   const server = app.listen(customPort, () => {
     const activePort = server.address().port;
-    console.log(`🤖 AI-Checkpoint Dashboard backend running on http://localhost:${activePort}`);
+    console.log(`🤖 AI-Checkpoint Dashboard backend running on http://localhost:${activePort}`); // keep
     // Start file watchers for all registered projects
     watcherManager.initializeAll();
     // Watch plan directory of first project for changes

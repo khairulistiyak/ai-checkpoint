@@ -2,12 +2,13 @@
 
 const { parseProgressText } = require('./parse-progress.js');
 const { verifyTargetFileCore, validateProject, findFileRecursively } = require('./validate-project.js');
-const { detectProjectRunConfig } = require('./run-config.js');
-const { calculateHealthScore } = require('./health-score.js');
+const { detectProjectRunConfig, saveCustomRunConfig } = require('./run-config.js');
+const { calculateHealth } = require('./health-score.js');
 const { detectCircularDeps } = require('./circular-dep-detector.js');
 const { scanSecurity } = require('./security-scanner.js');
-const { scanWorkspaces } = require('./workspace-scanner.js');
+const { scanWorkspace, walkFiles, countEffectiveLines, checkImports } = require('./workspace-scanner.js');
 const { autoFix } = require('./auto-fixer.js');
+const { generateQualityReport } = require('./quality-report.js');
 
 module.exports = {
   parseProgressText,
@@ -15,9 +16,14 @@ module.exports = {
   validateProject,
   findFileRecursively,
   detectProjectRunConfig,
-  calculateHealthScore,
+  saveCustomRunConfig,
+  calculateHealth,
   detectCircularDeps,
   scanSecurity,
-  scanWorkspaces,
-  autoFix
+  scanWorkspace,
+  walkFiles,
+  countEffectiveLines,
+  checkImports,
+  autoFix,
+  generateQualityReport
 };

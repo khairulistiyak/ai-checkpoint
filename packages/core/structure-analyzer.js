@@ -13,7 +13,7 @@ const JUNK_PATTERNS = [
   /\.tmp$/i,
 ];
 
-const SKIP = ['node_modules', '.git', 'dist', 'build', '.agents', '_archive'];
+const SKIP = ['node_modules', '.git', 'dist', 'build', '.agents', '_archive', 'release', 'tests'];
 
 function walkAll(dir, depth, results) {
   if (depth === undefined) depth = 0;

@@ -1,6 +1,6 @@
-import fs from 'fs';
-import path from 'path';
-import { detectEcosystemCommands } from './run-config-detect.js';
+const fs = require('fs');
+const path = require('path');
+const { detectEcosystemCommands } = require('./run-config-detect.js');
 
 function categorizeCommand(name, script) {
   const n = name.toLowerCase();
@@ -37,7 +37,7 @@ function findWorkingDirectories(rootDir) {
   return dirs;
 }
 
-export function detectProjectRunConfig(projectPath) {
+function detectProjectRunConfig(projectPath) {
   if (!projectPath || !fs.existsSync(projectPath)) {
     return { projectPath: projectPath || '', workingDirectories: [], commands: [], customCommands: [] };
   }
@@ -92,7 +92,7 @@ export function detectProjectRunConfig(projectPath) {
   return { projectPath, workingDirectories, commands, customCommands };
 }
 
-export function saveCustomRunConfig(projectPath, config) {
+function saveCustomRunConfig(projectPath, config) {
   if (!projectPath || !fs.existsSync(projectPath)) return false;
   try {
     const agentsDir = path.join(projectPath, '.agents');
@@ -105,4 +105,4 @@ export function saveCustomRunConfig(projectPath, config) {
   }
 }
 
-export default { detectProjectRunConfig, saveCustomRunConfig };
+module.exports = { detectProjectRunConfig, saveCustomRunConfig };

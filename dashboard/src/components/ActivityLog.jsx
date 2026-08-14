@@ -11,10 +11,11 @@ import {
   getRangeCutoffMs,
 } from "./activity/activity-constants";
 
-const BASE_URL =
-  (window.location.port === "5173"
-    ? "http://localhost:20226"
-    : window.location.origin) + "/api";
+const urlParams = new URLSearchParams(window.location.search);
+const electronPort = urlParams.get('port');
+const BASE_URL = (electronPort
+  ? `http://localhost:${electronPort}`
+  : (window.location.port === '5173' ? 'http://localhost:20226' : window.location.origin)) + "/api";
 
 export default function ActivityLog({ projectId, liveEntry }) {
   const { showToast } = useToast();

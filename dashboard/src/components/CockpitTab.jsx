@@ -15,6 +15,7 @@ export default function CockpitTab({
   refresh,
   liveActivityEntry
 }) {
+  const unsyncedSteps = selectedProject?.unsyncedSteps || 0;
   return (
     <div className="flex flex-col gap-2.5">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
@@ -80,6 +81,20 @@ export default function CockpitTab({
           </div>
         </div>
       </div>
+
+      {unsyncedSteps > 0 && (
+        <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 flex items-center gap-3">
+          <span className="text-amber-400 text-sm">⚠</span>
+          <div>
+            <span className="text-xs font-bold text-amber-300 font-outfit">
+              {unsyncedSteps} plan step{unsyncedSteps > 1 ? 's' : ''} not synced to Roadmap & Steps
+            </span>
+            <p className="text-[11px] text-amber-400/70 font-mono mt-0.5">
+              Run <code className="bg-black/40 px-1.5 py-0.5 rounded text-amber-300">./l sync</code> or save plan to update execution ledger
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 items-stretch">
         <div className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-3.5 sm:p-4 flex flex-col shadow-sm min-h-[400px]">

@@ -70,6 +70,11 @@ function createWindow(port = 20226) {
 ipcMain.handle('app:version', () => app.getVersion());
 ipcMain.handle('updater:download', () => downloadUpdate());
 ipcMain.handle('updater:install', () => installUpdate());
+ipcMain.handle('shell:open-external', (_event, url) => {
+  if (typeof url === 'string' && (url.startsWith('https://') || url.startsWith('http://'))) {
+    return shell.openExternal(url);
+  }
+});
 ipcMain.on('window:minimize', () => mainWindow?.minimize());
 ipcMain.on('window:maximize', () => {
   if (mainWindow?.isMaximized()) mainWindow.unmaximize();

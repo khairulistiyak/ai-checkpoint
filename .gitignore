@@ -25,3 +25,12 @@ dashboard/.vite/
 
 # Archive
 _archive/
+
+# Build artifacts
+release/
+
+# Environment variables
+.env
+.env.*
+*.env
+

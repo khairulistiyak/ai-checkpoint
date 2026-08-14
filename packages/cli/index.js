@@ -26,7 +26,9 @@ ${colors.bright}Structure:${colors.reset}
   ${colors.dim}plan/${colors.reset}     → ${colors.green}Your .md plan files only${colors.reset} (clean!)
 
 ${colors.bright}Commands:${colors.reset}
-  ${colors.green}./l${colors.reset}                      Dashboard
+  ${colors.green}./l${colors.reset}                      Status & active step progress
+  ${colors.green}./l dash${colors.reset}                 Launch web dashboard
+  ${colors.green}./l projects${colors.reset}             List registered projects
   ${colors.green}./l start <step>${colors.reset}          Start a step
   ${colors.green}./l c <step> "note"${colors.reset}       Complete a step (with syntax check ✅)
   ${colors.green}./l v${colors.reset}                     Validate (sync + files + 150-line)

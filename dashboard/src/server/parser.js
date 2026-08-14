@@ -56,8 +56,10 @@ export function parseProgress(projectPath) {
 export function enrichProject(p) {
   try {
     if (!p || !p.path || !fs.existsSync(p.path)) {
-      return { ...p, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] } };
+      const fallbackName = p?.name || path.basename((p?.path || '').replace(/\/+$/, '')) || 'Untitled';
+      return { ...p, name: fallbackName, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] }, unsyncedSteps: 0 };
     }
+    const safeName = p.name || path.basename(p.path.replace(/\/+$/, '')) || 'Untitled';
     const isInstalled = fs.existsSync(path.join(p.path, '.agents', 'PROGRESS.md'));
     let progress = null;
     let hasPlanFiles = false;
@@ -72,9 +74,13 @@ export function enrichProject(p) {
         planStats = parsePlanFiles(p.path);
       }
     }
-    return { ...p, isInstalled, progress, hasPlanFiles, planStats };
+    const progressTotal = progress?.overall?.total || 0;
+    const planTotal = planStats?.totalSteps || 0;
+    const unsyncedSteps = Math.max(0, planTotal - progressTotal);
+    return { ...p, name: safeName, isInstalled, progress, hasPlanFiles, planStats, unsyncedSteps };
   } catch (e) {
     console.error(`⚠️ Error enriching project ${p?.path}:`, e.message);
-    return { ...p, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] } };
+    const fallbackName = p?.name || path.basename((p?.path || '').replace(/\/+$/, '')) || 'Untitled';
+    return { ...p, name: fallbackName, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] }, unsyncedSteps: 0 };
   }
 }

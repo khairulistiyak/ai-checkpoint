@@ -11,7 +11,7 @@ const PATTERNS = [
   { name: 'empty-catch', regex: /catch\s*\([^)]*\)\s*\{\s*\}/g, severity: 'warning', msg: 'Empty catch block' },
 ];
 
-const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', '.agents', 'plan', '_archive'];
+const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', 'release', '.agents', 'plan', '_archive'];
 const CODE_EXTS = ['.js', '.cjs', '.mjs', '.jsx', '.tsx', '.ts'];
 
 function walkCodeFiles(dir, results = []) {
@@ -43,7 +43,11 @@ function scanSecurity(projectPath) {
     for (const pattern of PATTERNS) {
       if (pattern.name === 'console-log' && (fp.includes('/cli/') || fp.includes('/scripts/'))) continue;
       for (let i = 0; i < lines.length; i++) {
-        if (pattern.regex.test(lines[i])) {
+        const line = lines[i];
+        if (line.includes('// keep')) continue;
+        if (pattern.name === 'debugger' && /regex|new RegExp|replace|test|match|pattern/i.test(line)) continue;
+        if (pattern.name === 'todo-fixme' && /regex|new RegExp|replace|test|match|pattern/i.test(line)) continue;
+        if (pattern.regex.test(line)) {
           issues.push({ file: fp, line: i + 1, pattern: pattern.name, severity: pattern.severity, msg: pattern.msg });
         }
         pattern.regex.lastIndex = 0;

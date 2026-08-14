@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', '.agents', 'plan', '.vscode', '.github', '_archive'];
+const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', 'release', '.agents', 'plan', '.vscode', '.github', '_archive'];
 const SCAN_EXTS = ['.js', '.cjs', '.mjs', '.jsx', '.tsx', '.ts', '.json', '.css', '.sh'];
 
 function walkFiles(dir, results = []) {

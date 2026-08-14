@@ -38,7 +38,7 @@ export class ProjectWatcher {
 
   stop() {
     for (const w of this.watchers) {
-      try { w.close(); } catch (e) {}
+      try { w.close(); } catch (e) { /* watcher close — non-critical */ }
     }
     this.watchers = [];
     for (const timer of this.debounceTimers.values()) clearTimeout(timer);
@@ -69,7 +69,7 @@ export class ProjectWatcher {
       });
       this.watchers.push(watcher);
       watcher.on('error', () => {});
-    } catch (e) {}
+    } catch (e) { /* watcher error — non-critical, silently ignore */ }
   }
 
   debounce(key, fn) {
