@@ -24,6 +24,11 @@ export default function AddProjectModal({ isOpen, onClose, onAdd }) {
   const handleBrowse = async () => {
     setIsBrowsing(true);
     try {
+      if (typeof window !== 'undefined' && window.electronAPI?.selectFolder) {
+        const folderPath = await window.electronAPI.selectFolder();
+        if (folderPath) handlePathChange(folderPath);
+        return;
+      }
       const res = await fetch('/api/browse-directory');
       const data = await res.json();
       if (data?.path) handlePathChange(data.path);
@@ -123,18 +128,8 @@ export default function AddProjectModal({ isOpen, onClose, onAdd }) {
             )}
 
             <div className="flex items-center justify-end gap-2.5 pt-3 border-t border-white/[0.08]">
-              <button
-                type="button"
-                onClick={onClose}
-                className="px-4 py-2 rounded-xl text-xs font-mono font-semibold text-zinc-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={!path.trim() || isSubmitting}
-                className="px-5 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white text-xs font-mono font-bold flex items-center gap-2 shadow-lg shadow-sky-500/20 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed active:scale-95"
-              >
+              <button type="button" onClick={onClose} className="px-4 py-2 rounded-xl text-xs font-mono font-semibold text-zinc-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer">Cancel</button>
+              <button type="submit" disabled={!path.trim() || isSubmitting} className="px-5 py-2 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white text-xs font-mono font-bold flex items-center gap-2 shadow-lg shadow-sky-500/20 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed active:scale-95">
                 {isSubmitting ? <Loader2 size={13} className="animate-spin" /> : <ArrowRight size={13} />}
                 <span>{isSubmitting ? 'Tracking...' : 'Track Project'}</span>
               </button>

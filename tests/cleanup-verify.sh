@@ -2,8 +2,8 @@
 set -e
 
 echo "=== 1. Checking README assets exist ==="
-test -f ui-mockup-colorful.svg
-test -f ui-mockup-multiproject.svg
+test -f assets/ui-cockpit.png
+test -f assets/ui-multiproject.png
 echo "✔ README assets present"
 
 echo "=== 2. Checking No Dead Component Imports ==="

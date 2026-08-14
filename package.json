@@ -25,6 +25,8 @@
     "test": "bats tests",
     "doctor": "./l doctor",
     "validate": "./l v",
+    "live": "node scripts/live-hud.cjs",
+    "hud": "node scripts/live-hud.cjs",
     "electron:dev": "electron electron/main.js",
     "electron:build": "bash scripts/build-desktop.sh",
     "electron:build:mac": "bash scripts/build-desktop.sh mac",

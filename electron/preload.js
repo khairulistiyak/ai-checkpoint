@@ -3,6 +3,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 contextBridge.exposeInMainWorld('electronAPI', {
   getAppVersion: () => ipcRenderer.invoke('app:version'),
   getPlatform: () => process.platform,
+  selectFolder: () => ipcRenderer.invoke('dialog:open-directory'),
   openExternal: (url) => ipcRenderer.invoke('shell:open-external', url),
   minimize: () => ipcRenderer.send('window:minimize'),
   maximize: () => ipcRenderer.send('window:maximize'),

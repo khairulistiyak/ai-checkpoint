@@ -7,27 +7,27 @@
 
 ## Phase 71: High-Fidelity SVG Brand Mockup Studio Alignment
 
-### Step 71.1 — Reconstruct Hero Showcase Banner (`ui-mockup-colorful.svg`)
-- **File:** `ui-mockup-colorful.svg`
+### Step 71.1 — Reconstruct Hero Showcase Banner (`assets/ui-cockpit.png`)
+- **File:** `assets/ui-cockpit.png`
 - **Action:** MODIFY
 - **Depends:** None
 
 **কী করতে হবে:**
-আমাদের আসল **Cockpit Overview**, **Health Fortress (100/100)**, **Architecture Quality (85/100)**, **State Machine (100%)** এবং **CAD Blueprint** ভিউ সহ ড্যাশবোর্ডটিকে একটি আল্ট্রা-প্রিমিয়াম ১৪০০x৯০০ ভেক্টর গ্রাফিকে রূপান্তর করো।
+আমাদের আসল **Cockpit Overview**, **Health Fortress (100/100)**, **Architecture Quality (85/100)**, **State Machine (100%)** এবং **CAD Blueprint** ভিউ সহ ড্যাশবোর্ডটিকে একটি আল্ট্রা-প্রিমিয়াম ১৪০০x৯০০ ভিজ্যুয়াল গ্রাফিকে রূপান্তর করো।
 
-- **Done-check:** `test -f ui-mockup-colorful.svg`
+- **Done-check:** `test -f assets/ui-cockpit.png`
 
 ---
 
-### Step 71.2 — Reconstruct Multi-Workspace Control Room Mockup (`ui-mockup-multiproject.svg`)
-- **File:** `ui-mockup-multiproject.svg`
+### Step 71.2 — Reconstruct Multi-Workspace Control Room Mockup (`assets/ui-multiproject.png`)
+- **File:** `assets/ui-multiproject.png`
 - **Action:** MODIFY
 - **Depends:** Step 71.1
 
 **কী করতে হবে:**
-মাল্টি-প্রজেক্ট সাইডবার, লাইভ টার্মিনাল স্ট্রিমিং (`./l start`, `./l v`, `./l c`) এবং ওয়ার্কস্পেস স্টেট লেজার সম্বলিত আসল UI-এর সাথে মিলিয়ে `ui-mockup-multiproject.svg` তৈরি করো।
+মাল্টি-প্রজেক্ট সাইডবার, লাইভ টার্মিনাল স্ট্রিমিং (`./l start`, `./l v`, `./l c`) এবং ওয়ার্কস্পেস স্টেট লেজার সম্বলিত আসল UI-এর সাথে মিলিয়ে `assets/ui-multiproject.png` তৈরি করো।
 
-- **Done-check:** `test -f ui-mockup-multiproject.svg`
+- **Done-check:** `test -f assets/ui-multiproject.png`
 
 ---
 

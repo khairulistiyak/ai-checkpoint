@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell, dialog } = require('electron');
 const path = require('path');
 const { createTray } = require('./tray.js');
 const { initAutoUpdater, downloadUpdate, installUpdate } = require('./updater.js');
@@ -84,6 +84,14 @@ if (!gotTheLock) {
     }
   });
 
+  ipcMain.handle('dialog:open-directory', async () => {
+    if (!mainWindow) return null;
+    const res = await dialog.showOpenDialog(mainWindow, {
+      title: 'Select Project Directory',
+      properties: ['openDirectory', 'createDirectory']
+    });
+    return (!res.canceled && res.filePaths && res.filePaths[0]) || null;
+  });
   ipcMain.handle('app:version', () => app.getVersion());
   ipcMain.handle('updater:download', () => downloadUpdate());
   ipcMain.handle('updater:install', () => installUpdate());

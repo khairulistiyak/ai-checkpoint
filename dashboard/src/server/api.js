@@ -13,22 +13,37 @@ router.get('/settings', (req, res) => {
   res.json(getSettings());
 });
 
+function pickDirectoryLinux() {
+  const cmds = [
+    'zenity --file-selection --directory --title="Select Project Folder" 2>/dev/null',
+    'kdialog --getexistingdirectory "$HOME" 2>/dev/null',
+    'yad --file --directory --title="Select Project Folder" 2>/dev/null',
+    'python3 -c "import tkinter, tkinter.filedialog as fd; r=tkinter.Tk(); r.withdraw(); p=fd.askdirectory(); print(p or \'\')" 2>/dev/null'
+  ];
+  for (const cmd of cmds) {
+    try {
+      const out = execSync(cmd, { encoding: 'utf8', timeout: 60000 }).trim();
+      if (out && fs.existsSync(out)) return out;
+    } catch {}
+  }
+  return null;
+}
+
 router.get('/browse-directory', (req, res) => {
   try {
-    let cmd = '';
     const platform = os.platform();
+    let result = '';
     if (platform === 'darwin') {
-      cmd = `osascript -e 'tell application (path to frontmost application as text) to set myFolder to choose folder with prompt "Select Project Folder"' -e 'POSIX path of myFolder'`;
+      const cmd = `osascript -e 'tell application (path to frontmost application as text) to set myFolder to choose folder with prompt "Select Project Folder"' -e 'POSIX path of myFolder'`;
+      result = execSync(cmd, { encoding: 'utf8', timeout: 60000 }).trim();
     } else if (platform === 'win32') {
-      cmd = `powershell -NoProfile -Command "(new-object -COM 'Shell.Application').BrowseForFolder(0,'Select Project Folder',0,0).self.path"`;
+      const cmd = `powershell -NoProfile -Command "(new-object -COM 'Shell.Application').BrowseForFolder(0,'Select Project Folder',0,0).self.path"`;
+      result = execSync(cmd, { encoding: 'utf8', timeout: 60000 }).trim();
     } else {
-      cmd = `zenity --file-selection --directory --title="Select Project Folder"`;
+      result = pickDirectoryLinux() || '';
     }
-    
-    const result = execSync(cmd, { encoding: 'utf8' }).trim();
-    res.json({ path: result });
-  } catch (err) {
-    // User cancelled dialog or error occurred
+    res.json({ path: result && fs.existsSync(result) ? result : null });
+  } catch {
     res.json({ path: null });
   }
 });
