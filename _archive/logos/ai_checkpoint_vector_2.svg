@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0a0a0c" />
+      <stop offset="100%" stop-color="#101012" />
+    </linearGradient>
+
+    <!-- Sky Blue Accent -->
+    <linearGradient id="accent-grad" x1="100%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="100%" stop-color="#0ea5e9" />
+    </linearGradient>
+
+    <linearGradient id="white-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="100%" stop-color="#d4d4d8" />
+    </linearGradient>
+
+    <!-- Intense Neon Glow -->
+    <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="25" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Base App Icon -->
+  <rect width="512" height="512" rx="112" fill="url(#bg-grad)" />
+  <rect width="510" height="510" x="1" y="1" rx="112" fill="none" stroke="#ffffff" stroke-opacity="0.04" stroke-width="2" />
+
+  <!-- Code Brackets symbolizing AI Code -->
+  <path d="M190 160 L90 256 L190 352" fill="none" stroke="url(#white-grad)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" opacity="0.9" />
+  <path d="M322 160 L422 256 L322 352" fill="none" stroke="url(#white-grad)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" opacity="0.9" />
+
+  <!-- Checkpoint / Git Node Timeline connecting through the brackets -->
+  <path d="M256 120 L256 392" fill="none" stroke="#38bdf8" stroke-opacity="0.2" stroke-width="12" stroke-linecap="round" />
+  
+  <!-- Central Glowing Checkpoint -->
+  <circle cx="256" cy="256" r="44" fill="url(#accent-grad)" />
+  <circle cx="256" cy="256" r="44" fill="#38bdf8" filter="url(#neon-glow)" opacity="0.6" />
+  
+  <!-- Inner pure white core of the checkpoint -->
+  <circle cx="256" cy="256" r="16" fill="#ffffff" />
+</svg>

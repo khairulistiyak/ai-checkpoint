@@ -87,7 +87,8 @@ function validateProject(phases, planFilesContents, cwd) {
       return;
     }
     const target = path.join(cwd, planStep.file);
-    if (step.status === 'done' && planStep.action !== 'DELETE' && !fs.existsSync(target)) {
+    const isBuildArtifact = /^(release\/|dist\/|dashboard\/dist\/)/i.test(planStep.file);
+    if (step.status === 'done' && planStep.action !== 'DELETE' && !isBuildArtifact && !fs.existsSync(target)) {
       const inArchive = fs.existsSync(path.join(cwd, '_archive', planStep.file)) ||
         (fs.existsSync(path.join(cwd, '_archive')) && findFileRecursively(path.join(cwd, '_archive'), path.basename(planStep.file)));
       if (!inArchive) {

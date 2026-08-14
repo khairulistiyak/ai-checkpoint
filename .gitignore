@@ -23,8 +23,6 @@ dashboard/node_modules/
 dashboard/dist/
 dashboard/.vite/
 
-# Archive
-_archive/
 
 # Build artifacts
 release/

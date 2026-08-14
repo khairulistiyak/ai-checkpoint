@@ -1,0 +1,28 @@
+## Facebook Marketing Post
+
+**Target Audience:** Developers, Tech Leads, Solopreneurs
+**Objective:** Drive awareness and get users to try AI Checkpoint for their next AI coding session.
+
+---
+
+**Post Copy:**
+
+Ever felt like your AI coding assistant completely lost the plot after a few prompts? 🤯 
+
+We’ve all been there:
+❌ AI forgets what it was doing.
+❌ Overwrites working code.
+❌ Goes down a rabbit hole of endless hallucinations.
+
+Enter **AI Checkpoint** 🛠️🤖 
+
+It’s a local, open-source task ledger that forces your AI to work in atomic, step-by-step chunks. 
+✅ One step = One file edited.
+✅ Auto-verifies every step before moving on.
+✅ Beautiful local dashboard to track exactly what the AI is doing in real-time.
+
+Stop babysitting your AI. Start building faster with structure.
+
+👉 Check it out on our GitHub now! [Link to Repo]
+
+#AICoding #DeveloperTools #OpenSource #SoftwareEngineering #WebDev #Productivity #AI

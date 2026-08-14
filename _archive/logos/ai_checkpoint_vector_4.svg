@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" width="100%" height="100%">
+  <defs>
+    <!-- Background -->
+    <radialGradient id="space" cx="50%" cy="0%" r="100%">
+      <stop offset="0%" stop-color="#101012" />
+      <stop offset="100%" stop-color="#000000" />
+    </radialGradient>
+
+    <!-- Glassmorphism Shield Fill -->
+    <linearGradient id="shield-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.3" />
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.0" />
+    </linearGradient>
+
+    <!-- Glassmorphism Border -->
+    <linearGradient id="border-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.1" />
+    </linearGradient>
+
+    <!-- Cyber Cyan Glow -->
+    <filter id="cyan-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="25" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Canvas -->
+  <rect width="800" height="800" rx="160" fill="url(#space)" />
+
+  <!-- The Shield Body (Glassmorphism look) -->
+  <path d="M400 150 L620 220 L620 450 C 620 600, 400 720, 400 720 C 400 720, 180 600, 180 450 L180 220 Z" 
+        fill="url(#shield-grad)" 
+        stroke="url(#border-grad)" 
+        stroke-width="8" 
+        stroke-linejoin="round" />
+
+  <!-- AI 'A' Inside the Shield -->
+  <path d="M400 280 L280 540 M400 280 L520 540 M320 460 L480 460" 
+        fill="none" 
+        stroke="#ffffff" 
+        stroke-width="36" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        filter="url(#cyan-glow)" />
+
+  <!-- The Perfect Checkmark for Checkpoint -->
+  <path d="M350 410 L430 490 L570 310" 
+        fill="none" 
+        stroke="#38bdf8" 
+        stroke-width="40" 
+        stroke-linecap="round" 
+        stroke-linejoin="round" 
+        filter="url(#cyan-glow)" />
+
+  <!-- Glowing core dot at the peak of A -->
+  <circle cx="400" cy="280" r="24" fill="#ffffff" filter="url(#cyan-glow)" />
+</svg>

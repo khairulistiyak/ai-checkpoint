@@ -1,0 +1,21 @@
+## Product Hunt Launch Content
+
+**Tagline:** AI Checkpoint - The strict local task ledger for your AI coding agents.
+
+**Description:**
+Are your AI coding agents moving fast but breaking things? AI Checkpoint is an open-source, local task ledger that forces your AI to work with engineering discipline. 
+
+🔹 1 Step = 1 File edited. 
+🔹 Auto-verifies steps before moving forward.
+🔹 Local React dashboard to visualize progress and block rogue steps.
+
+Stop babysitting your AI. Start building with structure.
+
+**First Comment (Maker's Comment):**
+Hey Product Hunt! 👋
+
+I built AI Checkpoint because I was exhausted from AI coding assistants hallucinating, editing 10 files at once, and completely breaking my apps. I realized AI doesn't need to be smarter—it needs structure.
+
+With AI Checkpoint, you constrain the AI to atomic steps. It verifies its work before proceeding, and you get a beautiful local dashboard to monitor everything. It's completely open-source.
+
+Would love to hear your feedback and answer any questions!
