@@ -14,78 +14,79 @@ export default function CockpitTab({
   totalPlanSteps,
   handleOpenArchitect,
   refresh,
-  liveActivityEntry
+  liveActivityEntry,
+  onSelectTab
 }) {
   const unsyncedSteps = selectedProject?.unsyncedSteps || 0;
   return (
     <div className="flex flex-col gap-3">
-      {/* Top 4 KPI Metrics */}
+      {/* Top 4 Compact Executive KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
-        <div className="bg-cyber-card/90 border border-cyber-card-border rounded-xl p-3 flex flex-col justify-between gap-1.5 shadow-sm">
-          <div className="flex items-center justify-between text-cyber-text-secondary text-xs font-mono">
-            <span>Completion</span>
-            <div className="w-6 h-6 rounded-lg bg-cyber-accent/10 border border-cyber-accent/20 flex items-center justify-center">
-              <Target className="w-3.5 h-3.5 text-cyber-accent" />
+        <div className="bg-[#121214]/90 border border-white/[0.08] hover:border-white/15 rounded-2xl p-3.5 flex flex-col justify-between gap-1.5 shadow-sm transition-all">
+          <div className="flex items-center justify-between text-zinc-400 text-xs font-mono">
+            <span className="font-medium">Completion</span>
+            <div className="w-6 h-6 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
+              <Target className="w-3.5 h-3.5 text-sky-400" />
             </div>
           </div>
-          <div className="text-xl font-bold font-outfit text-cyber-text-primary">{overall.percentage}%</div>
-          <div className="w-full bg-cyber-dark h-1.5 rounded-full overflow-hidden">
-            <div className="bg-gradient-to-r from-cyber-accent to-blue-500 h-full rounded-full transition-all duration-500" style={{ width: `${overall.percentage}%` }} />
+          <div className="text-xl font-bold font-outfit text-white tracking-tight">{overall.percentage}%</div>
+          <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
+            <div className="bg-gradient-to-r from-sky-400 to-indigo-500 h-full rounded-full transition-all duration-500" style={{ width: `${overall.percentage}%` }} />
           </div>
         </div>
 
-        <div className="bg-cyber-card/90 border border-cyber-card-border rounded-xl p-3 flex flex-col justify-between gap-1.5 shadow-sm">
-          <div className="flex items-center justify-between text-cyber-text-secondary text-xs font-mono">
-            <span>Steps Done</span>
+        <div className="bg-[#121214]/90 border border-white/[0.08] hover:border-white/15 rounded-2xl p-3.5 flex flex-col justify-between gap-1.5 shadow-sm transition-all">
+          <div className="flex items-center justify-between text-zinc-400 text-xs font-mono">
+            <span className="font-medium">Steps Done</span>
             <div className="w-6 h-6 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
               <Activity className="w-3.5 h-3.5 text-emerald-400" />
             </div>
           </div>
-          <div className="text-xl font-bold font-outfit text-cyber-text-primary">
-            {overall.completed} <span className="text-xs font-mono text-cyber-text-muted">/ {overall.total}</span>
+          <div className="text-xl font-bold font-outfit text-white tracking-tight">
+            {overall.completed} <span className="text-xs font-mono text-zinc-500 font-normal">/ {overall.total}</span>
           </div>
-          <div className="text-[11px] font-mono text-cyber-text-muted truncate">{remaining} steps remaining</div>
+          <div className="text-[11px] font-mono text-zinc-500 truncate">{remaining} steps remaining</div>
         </div>
 
-        <div className="bg-cyber-card/90 border border-cyber-card-border rounded-xl p-3 flex flex-col justify-between gap-1.5 shadow-sm">
-          <div className="flex items-center justify-between text-cyber-text-secondary text-xs font-mono">
-            <span>Phases</span>
+        <div className="bg-[#121214]/90 border border-white/[0.08] hover:border-white/15 rounded-2xl p-3.5 flex flex-col justify-between gap-1.5 shadow-sm transition-all">
+          <div className="flex items-center justify-between text-zinc-400 text-xs font-mono">
+            <span className="font-medium">Phases</span>
             <div className="w-6 h-6 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
               <Layers className="w-3.5 h-3.5 text-purple-400" />
             </div>
           </div>
-          <div className="text-xl font-bold font-outfit text-cyber-text-primary">
-            {allPhases.length} <span className="text-xs font-mono text-cyber-text-muted">Total</span>
+          <div className="text-xl font-bold font-outfit text-white tracking-tight">
+            {allPhases.length} <span className="text-xs font-mono text-zinc-500 font-normal">Phases</span>
           </div>
-          <div className="text-[11px] font-mono text-cyber-text-muted truncate">
+          <div className="text-[11px] font-mono text-zinc-500 truncate">
             {activePhases} active • {allPhases.filter(p => p.percentage === 100).length} done
           </div>
         </div>
 
         <div
-          onClick={() => handleOpenArchitect()}
-          className="bg-cyber-card/90 border border-cyber-card-border rounded-xl p-3 flex flex-col justify-between gap-1.5 shadow-sm hover:border-cyber-accent/30 hover:bg-cyber-accent/5 transition-all cursor-pointer group"
+          onClick={() => onSelectTab ? onSelectTab('files') : handleOpenArchitect()}
+          className="bg-[#121214]/90 border border-white/[0.08] hover:border-sky-500/30 hover:bg-sky-500/5 rounded-2xl p-3.5 flex flex-col justify-between gap-1.5 shadow-sm transition-all cursor-pointer group"
         >
-          <div className="flex items-center justify-between text-cyber-text-secondary group-hover:text-cyber-text-primary text-xs font-mono">
+          <div className="flex items-center justify-between text-zinc-400 group-hover:text-white text-xs font-mono">
             <span className="flex items-center gap-1.5 font-bold">
               <span>Blueprints</span>
-              <span className="text-[9px] px-1.5 py-0.2 rounded bg-cyber-accent/10 text-cyber-accent font-mono">CAD</span>
+              <span className="text-[9px] px-1.5 py-0.2 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20 font-mono">CAD</span>
             </span>
             <div className="w-6 h-6 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
               <FileText className="w-3.5 h-3.5 text-amber-400" />
             </div>
           </div>
-          <div className="text-xl font-bold font-outfit text-cyber-text-primary">
-            {planStats?.files?.length || 0} <span className="text-xs font-mono text-cyber-text-muted">Files</span>
+          <div className="text-xl font-bold font-outfit text-white tracking-tight">
+            {planStats?.files?.length || 0} <span className="text-xs font-mono text-zinc-500 font-normal">Files</span>
           </div>
-          <div className="text-[11px] font-mono text-cyber-text-muted group-hover:text-cyber-text-secondary truncate">
+          <div className="text-[11px] font-mono text-zinc-500 group-hover:text-zinc-300 truncate">
             {totalPlanSteps} planned steps • Open →
           </div>
         </div>
       </div>
 
       {unsyncedSteps > 0 && (
-        <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 flex items-center gap-3">
+        <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-3 flex items-center gap-3">
           <span className="text-amber-400 text-sm">⚠</span>
           <div>
             <span className="text-xs font-bold text-amber-300 font-outfit">
@@ -102,14 +103,14 @@ export default function CockpitTab({
       <CockpitHealthOverview projectId={selectedProject.id} />
 
       {/* Git Snapshots & Activity Stream */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 items-stretch">
-        <div className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-3.5 sm:p-4 flex flex-col shadow-sm min-h-[400px]">
-          <div className="flex items-center justify-between gap-2.5 mb-3 pb-2.5 border-b border-cyber-card-border shrink-0">
-            <h2 className="text-sm font-bold text-cyber-text-primary flex items-center gap-2 font-outfit">
-              <Rocket className="w-3.5 h-3.5 text-cyber-text-primary" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 items-stretch">
+        <div className="bg-[#121214]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-3.5 sm:p-4 flex flex-col shadow-sm min-h-[400px]">
+          <div className="flex items-center justify-between gap-2.5 mb-3 pb-2.5 border-b border-white/[0.08] shrink-0">
+            <h2 className="text-xs font-bold text-white flex items-center gap-2 font-outfit uppercase tracking-wider">
+              <Rocket className="w-3.5 h-3.5 text-sky-400" />
               <span>Git Snapshots & Checkpoints</span>
             </h2>
-            <span className="text-[10px] font-mono text-cyber-text-secondary">Live Rollback Tree</span>
+            <span className="text-[10px] font-mono text-zinc-500">Live Rollback Tree</span>
           </div>
           <div className="flex-1 min-h-0 overflow-hidden">
             <GitVisualizer projectId={selectedProject.id} onRefresh={refresh} />

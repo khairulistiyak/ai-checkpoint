@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FileCode, Maximize2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from './ToastProvider';
@@ -32,8 +32,12 @@ export default function DeveloperActionDock({
     handleQuickHealth
   } = useDeveloperDock({ project, nextStep, runningStep, onRefresh, showToast });
 
+  useEffect(() => {
+    if (isAllComplete) setIsMinimized(true);
+  }, [isAllComplete, setIsMinimized]);
+
   return (
-    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-40 max-w-4xl w-[94%] sm:w-auto min-w-[320px] transition-all duration-300 pointer-events-auto select-none">
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 max-w-4xl w-[94%] sm:w-auto min-w-[300px] transition-all duration-300 pointer-events-auto select-none">
       <AnimatePresence mode="wait">
         {isMinimized ? (
           <motion.div
@@ -41,16 +45,16 @@ export default function DeveloperActionDock({
             initial={{ opacity: 0, scale: 0.9, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 10 }}
-            className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#0c0d14]/95 backdrop-blur-2xl border border-white/[0.12] shadow-2xl shadow-black/80 cursor-pointer hover:border-white/20 transition-all group mx-auto"
+            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#0c0d14]/95 backdrop-blur-2xl border border-white/[0.12] shadow-2xl shadow-black/80 cursor-pointer hover:border-white/20 transition-all group mx-auto"
             onClick={() => setIsMinimized(false)}
           >
-            <span className="relative flex h-2.5 w-2.5">
+            <span className="relative flex h-2 w-2">
               <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isAllComplete ? 'bg-emerald-400' : isRunning ? 'bg-amber-400' : 'bg-sky-400'} opacity-75`}></span>
-              <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isAllComplete ? 'bg-emerald-500' : isRunning ? 'bg-amber-500' : 'bg-sky-500'}`}></span>
+              <span className={`relative inline-flex rounded-full h-2 w-2 ${isAllComplete ? 'bg-emerald-500' : isRunning ? 'bg-amber-500' : 'bg-sky-500'}`}></span>
             </span>
             <span className="text-xs font-mono font-bold text-zinc-200">{isAllComplete ? '100% Done' : `#${stepNumber}`}</span>
-            <span className="text-xs text-zinc-400 max-w-[180px] sm:max-w-[240px] truncate font-medium">{isAllComplete ? 'All Steps Complete • Quick Tools' : cleanTitle}</span>
-            <button className="p-1 rounded-full text-zinc-400 hover:text-zinc-100 hover:bg-white/10 transition-colors" title="Expand Action Deck"><Maximize2 size={12} /></button>
+            <span className="text-xs text-zinc-400 max-w-[180px] sm:max-w-[220px] truncate font-medium">{isAllComplete ? 'System Verified' : cleanTitle}</span>
+            <button className="p-1 rounded-full text-zinc-400 hover:text-zinc-100 hover:bg-white/10 transition-colors" title="Expand Action Deck"><Maximize2 size={11} /></button>
           </motion.div>
         ) : (
           <motion.div
@@ -64,9 +68,9 @@ export default function DeveloperActionDock({
             <div className="bg-[#0b0c12]/95 backdrop-blur-3xl rounded-[15px] p-2 sm:p-2.5 flex flex-wrap md:flex-nowrap items-center justify-between gap-3 border border-white/[0.08]">
               <div className="flex items-center gap-2.5 min-w-0 flex-1 px-1">
                 <div className="relative flex items-center justify-center shrink-0">
-                  <span className="relative flex h-3 w-3">
+                  <span className="relative flex h-2.5 w-2.5">
                     <span className={`animate-ping absolute inline-flex h-full w-full rounded-full ${isAllComplete ? 'bg-emerald-400' : isRunning ? 'bg-amber-400' : 'bg-sky-400'} opacity-75`}></span>
-                    <span className={`relative inline-flex rounded-full h-3 w-3 ${isAllComplete ? 'bg-emerald-500' : isRunning ? 'bg-amber-500' : 'bg-sky-500'}`}></span>
+                    <span className={`relative inline-flex rounded-full h-2.5 w-2.5 ${isAllComplete ? 'bg-emerald-500' : isRunning ? 'bg-amber-500' : 'bg-sky-500'}`}></span>
                   </span>
                 </div>
                 <div className="flex flex-col min-w-0">
