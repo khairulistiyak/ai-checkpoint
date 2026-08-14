@@ -26,6 +26,17 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
+      - name: Make scripts executable
+        run: chmod +x ./l scripts/*.sh 2>/dev/null || true
+
+      - name: Install Bats Testing Framework
+        run: |
+          if [ "${{ runner.os }}" = "Linux" ]; then
+            sudo apt-get update && sudo apt-get install -y bats
+          else
+            brew install bats-core || npm install -g bats
+          fi
+
       - name: Run Validation Checks
         run: ./l v
 
