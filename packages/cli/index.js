@@ -58,7 +58,7 @@ function run() {
     case 'help': case '--help': case '-h': case 'h': showHelp(); break;
     case 'status': case 's': statusCommand(); break;
     case 'projects': case 'p': projectsCommand(); break;
-    case 'lint-plan': case 'lp': lintPlanCommand(); break;
+    case 'lint-plan': case 'lp': lintPlanCommand(args[1]); break;
     case 'sync': syncCommand(); break;
     case 'watch': case 'w': watchCommand(); break;
     case 'run': case 'r': runProjectCommand(args[1], args.slice(2)); break;

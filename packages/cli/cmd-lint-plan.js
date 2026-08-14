@@ -4,8 +4,38 @@ const { log, colors } = require('./colors.js');
 const { getPlanFiles, getPlanFilePath } = require('./parse-progress.js');
 const { PLAN_DIR } = require('./paths.js');
 
-function lintPlanCommand() {
-  const planFiles = getPlanFiles();
+function stripCodeBlocks(text) {
+  return text.replace(/```[\s\S]*?```/g, '');
+}
+
+function getActivePlanFiles() {
+  if (!fs.existsSync(PLAN_DIR)) return [];
+  return fs.readdirSync(PLAN_DIR)
+    .filter(f => f.endsWith('.md') && !f.startsWith('.') && fs.statSync(path.join(PLAN_DIR, f)).isFile());
+}
+
+function lintPlanCommand(targetArg) {
+  let planFiles = [];
+  if (targetArg && targetArg !== '--all') {
+    const rawName = path.basename(targetArg);
+    const resolvedPath = getPlanFilePath(rawName);
+    if (fs.existsSync(resolvedPath)) {
+      planFiles = [rawName];
+    } else {
+      log.error(`Plan file not found: ${targetArg}`);
+      process.exit(1);
+    }
+  } else if (targetArg === '--all') {
+    planFiles = getPlanFiles();
+  } else {
+    planFiles = getActivePlanFiles();
+  }
+
+  if (planFiles.length === 0) {
+    log.info('No active plan files to lint.');
+    return;
+  }
+
   let errors = 0;
 
   planFiles.forEach(pf => {
@@ -17,7 +47,8 @@ function lintPlanCommand() {
       if (!titleMatch) return;
       const stepNum = titleMatch[1];
       
-      const fileCount = (stepBlock.match(/-\s+\*\*File:?\*\*/g) || []).length;
+      const cleanBlock = stripCodeBlocks(stepBlock);
+      const fileCount = (cleanBlock.match(/-\s+\*\*File:?\*\*/g) || []).length;
       if (fileCount > 1) {
         log.error(`[${pf}] Step ${stepNum} modifies multiple files.`);
         errors++;
@@ -26,12 +57,12 @@ function lintPlanCommand() {
         errors++;
       }
 
-      if (!/-\s+\*\*Done-check:?\*\*/i.test(stepBlock)) {
+      if (!/-\s+\*\*Done-check:?\*\*/i.test(cleanBlock)) {
         log.error(`[${pf}] Step ${stepNum} is missing **Done-check:**`);
         errors++;
       }
       
-      if (!/-\s+\*\*Depends:?\*\*/i.test(stepBlock)) {
+      if (!/-\s+\*\*Depends:?\*\*/i.test(cleanBlock)) {
         log.error(`[${pf}] Step ${stepNum} is missing **Depends:**`);
         errors++;
       }
@@ -46,4 +77,4 @@ function lintPlanCommand() {
   }
 }
 
-module.exports = { lintPlanCommand };
+module.exports = { lintPlanCommand, stripCodeBlocks };

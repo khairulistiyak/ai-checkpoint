@@ -2,6 +2,7 @@
   "name": "ai-checkpoint",
   "version": "1.0.0",
   "description": "The Deterministic State Ledger & Execution Framework for AI Coding Agents",
+  "desktopName": "ai-checkpoint.desktop",
   "bin": {
     "ai-checkpoint": "./scripts/ledger.cjs"
   },
