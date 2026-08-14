@@ -1,3 +1,21 @@
+# Phase 67: Single Instance Lock & Multi-Launch Prevention
+
+> অ্যাপটি যাতে একসাথে একাধিকবার রান না হয়ে সবসময় একটাই ইনস্ট্যান্স চালু থাকে এবং নতুন করে রান করতে গেলে বিদ্যমান উইন্ডোটি সামনে চলে আসে তার জন্য Electron Single Instance Lock যুক্ত করা।
+> (AI Tier: Small — Granular, step-by-step instructions with full code blocks)
+
+---
+
+## Phase 67: Single Instance Lock & Multi-Launch Prevention
+
+### Step 67.1 — Enforce Single Instance Lock in Electron (`electron/main.js`)
+- **File:** `electron/main.js`
+- **Action:** MODIFY
+- **Depends:** None
+
+**কী করতে হবে:**
+`app.requestSingleInstanceLock()` এবং `app.on('second-instance')` হ্যান্ডলার যোগ করো যাতে ডুপ্লিকেট প্রসেস সাথে সাথে বন্ধ হয়ে মূল উইন্ডো ফোকাস হয়।
+
+```javascript
 const { app, BrowserWindow, ipcMain, shell } = require('electron');
 const path = require('path');
 const { createTray } = require('./tray.js');
@@ -27,17 +45,12 @@ if (!gotTheLock) {
   }
 
   function createWindow(port = 20226) {
-    const iconPath = process.platform === 'win32'
-      ? path.join(__dirname, '..', 'build-resources', 'icon.ico')
-      : path.join(__dirname, '..', 'build-resources', 'icon.png');
-
     mainWindow = new BrowserWindow({
       width: 1280,
       height: 800,
       minWidth: 900,
       minHeight: 600,
       title: 'AI Checkpoint',
-      icon: iconPath,
       titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
       backgroundColor: '#09090b',
       show: false,
@@ -76,6 +89,7 @@ if (!gotTheLock) {
     initAutoUpdater(mainWindow);
   }
 
+  // Handle second instance launch
   app.on('second-instance', () => {
     if (mainWindow) {
       if (mainWindow.isMinimized()) mainWindow.restore();
@@ -84,6 +98,7 @@ if (!gotTheLock) {
     }
   });
 
+  // IPC Handlers
   ipcMain.handle('app:version', () => app.getVersion());
   ipcMain.handle('updater:download', () => downloadUpdate());
   ipcMain.handle('updater:install', () => installUpdate());
@@ -128,3 +143,24 @@ if (!gotTheLock) {
     }
   });
 }
+```
+
+- **Done-check:** `test -f electron/main.js`
+
+---
+
+### Step 67.2 — Verify and Rebuild macOS DMG (`.agents/PROGRESS.md`)
+- **File:** `.agents/PROGRESS.md`
+- **Action:** VERIFY
+- **Depends:** Step 67.1
+
+**কী করতে হবে:**
+```bash
+./l v
+./l health
+./l quality
+cd dashboard && npm run build
+npx electron-builder --mac dmg --publish never
+```
+
+- **Done-check:** `test -f release/*.dmg`

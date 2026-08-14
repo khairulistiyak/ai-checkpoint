@@ -27,19 +27,21 @@ mac:
   target:
     - target: dmg
       arch:
-        - x64
         - arm64
+        - x64
     - target: zip
       arch:
-        - x64
         - arm64
+        - x64
   category: public.app-category.developer-tools
   darkModeSupport: true
   hardenedRuntime: true
   gatekeeperAssess: false
-  icon: build-resources/icon.png
+  icon: build-resources/icon.icns
 
 dmg:
+  title: AI Checkpoint Installer
+  icon: build-resources/icon.icns
   contents:
     - x: 130
       y: 220
@@ -56,19 +58,26 @@ win:
     - target: portable
       arch:
         - x64
-  icon: build-resources/icon.png
+  icon: build-resources/icon.ico
 
 nsis:
   oneClick: false
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: always
   createStartMenuShortcut: true
+  shortcutName: AI Checkpoint
 
 linux:
   target:
     - target: AppImage
+      arch:
+        - x64
     - target: deb
+      arch:
+        - x64
   category: Development
+  synopsis: Deterministic State Ledger & Execution Framework for AI Agents
+  description: State ledger, execution engine, and real-time dashboard for autonomous AI coding agents.
   icon: build-resources/icon.png
 
 publish:

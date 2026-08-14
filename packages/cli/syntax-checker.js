@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 const { execFileSync } = require('child_process');
 
 function checkBalanced(content, openChars, closeChars, label) {
@@ -41,6 +42,15 @@ function checkImportTargets(filePath) {
   return warnings;
 }
 
+let cachedEsbuild = null;
+function getEsbuild() {
+  if (cachedEsbuild !== null) return cachedEsbuild;
+  try { cachedEsbuild = require('esbuild'); return cachedEsbuild; } catch {}
+  try { cachedEsbuild = require(path.resolve(__dirname, '..', '..', 'dashboard', 'node_modules', 'esbuild')); return cachedEsbuild; } catch {}
+  cachedEsbuild = false;
+  return cachedEsbuild;
+}
+
 const EXT_MAP = {
   '.js': 'node', '.cjs': 'node', '.mjs': 'node',
   '.jsx': 'jsx', '.ts': 'tsx', '.tsx': 'tsx',
@@ -59,15 +69,32 @@ function syntaxCheck(filePath) {
 
   const warnings = [];
   try {
-    if (type === 'node') {
-      execFileSync(process.execPath, ['-c', filePath], { stdio: 'pipe' });
+    if (type === 'node' || type === 'jsx' || type === 'tsx') {
+      const content = fs.readFileSync(filePath, 'utf8');
+      const esbuild = getEsbuild();
+      if (esbuild) {
+        try {
+          const loader = (ext === '.jsx' || ext === '.tsx' || ext === '.ts') ? ext.slice(1) : 'js';
+          esbuild.transformSync(content, { loader });
+        } catch (e) {
+          return { ok: false, warnings, error: `${path.basename(filePath)}: ${e.message.split('\n')[0]}` };
+        }
+      } else {
+        try {
+          new vm.Script(content, { filename: filePath });
+        } catch (e) {
+          if (e.message.includes('Cannot use import') || e.message.includes('Unexpected token \'export\'') || e.message.includes('Unexpected identifier \'import\'')) {
+            const r = checkSyntax(filePath);
+            if (!r.ok) return { ok: false, warnings, error: `${path.basename(filePath)}: ${r.error}` };
+          } else {
+            return { ok: false, warnings, error: `${path.basename(filePath)}: ${e.message.split('\n')[0]}` };
+          }
+        }
+      }
     } else if (type === 'json') {
       JSON.parse(fs.readFileSync(filePath, 'utf8'));
     } else if (type === 'bash') {
       execFileSync('bash', ['-n', filePath], { stdio: 'pipe' });
-    } else if (type === 'jsx' || type === 'tsx') {
-      const r = checkSyntax(filePath);
-      if (!r.ok) return { ok: false, warnings, error: r.error };
     } else if (type === 'css') {
       const r = checkCss(filePath);
       if (!r.ok) return { ok: false, warnings, error: r.error };

@@ -2,18 +2,9 @@
 
 load test_helper
 
-setup() {
-  create_test_project
-}
-
-teardown() {
-  cleanup_test_project
-}
-
 @test "complexity analyzer runs without error" {
-  cd "$TEST_PROJECT"
   run node -e "
-    const { analyzeComplexity } = require('../../packages/core/complexity-analyzer.js');
+    const { analyzeComplexity } = require(process.env.REPO_DIR + '/packages/core/complexity-analyzer.js');
     const r = analyzeComplexity('.');
     console.log(JSON.stringify(r));
   "
@@ -21,9 +12,8 @@ teardown() {
 }
 
 @test "dep-hygiene scanner runs without error" {
-  cd "$TEST_PROJECT"
   run node -e "
-    const { scanDependencyHygiene } = require('../../packages/core/dep-hygiene.js');
+    const { scanDependencyHygiene } = require(process.env.REPO_DIR + '/packages/core/dep-hygiene.js');
     const r = scanDependencyHygiene('.');
     console.log(JSON.stringify(r));
   "
@@ -31,9 +21,8 @@ teardown() {
 }
 
 @test "project-config checker runs without error" {
-  cd "$TEST_PROJECT"
   run node -e "
-    const { checkProjectConfig } = require('../../packages/core/project-config-checker.js');
+    const { checkProjectConfig } = require(process.env.REPO_DIR + '/packages/core/project-config-checker.js');
     const r = checkProjectConfig('.');
     console.log(JSON.stringify(r));
   "
@@ -41,9 +30,8 @@ teardown() {
 }
 
 @test "quality report includes deep scanner data" {
-  cd "$TEST_PROJECT"
   run node -e "
-    const { generateQualityReport } = require('../../packages/core/quality-report.js');
+    const { generateQualityReport } = require(process.env.REPO_DIR + '/packages/core/quality-report.js');
     const r = generateQualityReport('.');
     if (typeof r.breakdown.complexityIssues !== 'number') process.exit(1);
     if (typeof r.breakdown.dependencyIssues !== 'number') process.exit(1);
@@ -55,10 +43,9 @@ teardown() {
 }
 
 @test "structure cleaner dry-run works" {
-  cd "$TEST_PROJECT"
   touch .DS_Store
   run node -e "
-    const { cleanStructure } = require('../../packages/core/structure-cleaner.js');
+    const { cleanStructure } = require(process.env.REPO_DIR + '/packages/core/structure-cleaner.js');
     const r = cleanStructure('.', { dryRun: true });
     console.log(JSON.stringify(r));
   "
@@ -67,11 +54,9 @@ teardown() {
 }
 
 @test "hygiene fixer dry-run works" {
-  cd "$TEST_PROJECT"
-  # Create a file with trailing whitespace
   printf 'const x = 1;   \nconst y = 2;\n' > test-hygiene.js
   run node -e "
-    const { fixHygiene } = require('../../packages/core/hygiene-fixer.js');
+    const { fixHygiene } = require(process.env.REPO_DIR + '/packages/core/hygiene-fixer.js');
     const r = fixHygiene('.', { dryRun: true });
     console.log(JSON.stringify(r));
   "

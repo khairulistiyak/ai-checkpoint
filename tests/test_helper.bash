@@ -20,6 +20,15 @@ setup() {
   echo "## Project" >> .agents/PROGRESS.md
   echo "## 🔷 Phase 1: Test — PENDING" >> .agents/PROGRESS.md
   echo "  - [ ] **Step 1.1** — Test" >> .agents/PROGRESS.md
+  export TEST_PROJECT="$PROJECT_DIR"
+}
+
+create_test_project() {
+  export TEST_PROJECT="$PROJECT_DIR"
+}
+
+cleanup_test_project() {
+  :
 }
 
 setup_test_env() {
@@ -30,3 +39,4 @@ teardown() {
   cd "$ORIGINAL_PWD"
   rm -rf "$PROJECT_DIR"
 }
+

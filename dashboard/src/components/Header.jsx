@@ -3,14 +3,22 @@ import { Brain, Settings, Search, Menu } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleMenu }) {
+  const isElectron = typeof window !== 'undefined' && (
+    window.navigator?.userAgent?.includes('Electron') ||
+    new URLSearchParams(window.location.search).has('port')
+  );
+
   return (
     <motion.header
       initial={{ y: -15, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.35, ease: 'easeOut' }}
-      className="w-full h-14 bg-[#09090b] border-b border-white/10 flex items-center justify-between px-4 md:px-6 z-20 shrink-0 select-none"
+      style={{ WebkitAppRegion: 'drag' }}
+      className={`w-full h-14 bg-[#09090b] border-b border-white/10 flex items-center justify-between px-4 md:px-6 z-20 shrink-0 select-none ${
+        isElectron ? 'pl-20 md:pl-24' : ''
+      }`}
     >
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4" style={{ WebkitAppRegion: 'no-drag' }}>
         <button
           onClick={onToggleMenu}
           className="md:hidden p-2 -ml-2 text-zinc-400 hover:text-white rounded-lg transition-colors cursor-pointer"
@@ -36,7 +44,7 @@ export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleM
         </span>
       </div>
 
-      <div className="flex items-center gap-2.5">
+      <div className="flex items-center gap-2.5" style={{ WebkitAppRegion: 'no-drag' }}>
         <div
           className="relative group hidden md:block cursor-pointer"
           onClick={onOpenCommandPalette}

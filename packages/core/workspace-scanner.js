@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 const { execFileSync } = require('child_process');
 
 const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', 'release', '.agents', 'plan', '.vscode', '.github', '_archive'];
@@ -9,17 +10,14 @@ function walkFiles(dir, results = []) {
   let entries;
   try { entries = fs.readdirSync(dir); } catch { return results; }
   for (const name of entries) {
-    if (name.startsWith('.') || name.startsWith('._')) continue;
-    if (SKIP_DIRS.includes(name)) continue;
+    if (name.startsWith('.') || name.startsWith('._') || SKIP_DIRS.includes(name)) continue;
     const full = path.join(dir, name);
     let stat;
     try { stat = fs.lstatSync(full); } catch { continue; }
     if (stat.isSymbolicLink()) continue;
     if (stat.isDirectory()) { walkFiles(full, results); continue; }
     const ext = path.extname(name).toLowerCase();
-    if (SCAN_EXTS.includes(ext) && stat.size > 0) {
-      results.push({ path: full, ext });
-    }
+    if (SCAN_EXTS.includes(ext) && stat.size > 0) results.push({ path: full, ext });
   }
   return results;
 }
@@ -30,8 +28,7 @@ function checkBalanced(content, open, close, label) {
     const ch = content[i];
     if (open.includes(ch)) stack.push(ch);
     else if (close.includes(ch)) {
-      const expected = open[close.indexOf(ch)];
-      if (stack.pop() !== expected) return `Unbalanced ${label} at position ${i}`;
+      if (stack.pop() !== open[close.indexOf(ch)]) return `Unbalanced ${label} at position ${i}`;
     }
   }
   return stack.length > 0 ? `${label} has ${stack.length} unclosed pair(s)` : null;
@@ -39,13 +36,9 @@ function checkBalanced(content, open, close, label) {
 
 function checkImports(filePath) {
   const warnings = [];
-  let content = fs.readFileSync(filePath, 'utf8');
-  // Strip comments and template string literal contents to avoid false positives in templates/examples
-  content = content
-    .replace(/\/\*[\s\S]*?\*\//g, '')
-    .replace(/\/\/.*/g, '')
-    .replace(/\\?`[\s\S]*?\\?`/g, '""')
-    .replace(/\\"[^"]*\\"/g, '""');
+  let content = fs.readFileSync(filePath, 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*/g, '')
+    .replace(/\\?`[\s\S]*?\\?`/g, '""').replace(/\\"[^"]*\\"/g, '""');
 
   const re = /^\s*(?:import\s+(?:[\w*\s{},]*\s+from\s+)?|(?:const|let|var)\s+[\w*\s{},:]+\s*=\s*require\(\s*|require\(\s*)['"]([^'"]+)['"]/gm;
   let m;
@@ -60,39 +53,45 @@ function checkImports(filePath) {
   return warnings;
 }
 
+let cachedEsbuild = null;
+function getEsbuild() {
+  if (cachedEsbuild !== null) return cachedEsbuild;
+  try { cachedEsbuild = require('esbuild'); return cachedEsbuild; } catch {}
+  try { cachedEsbuild = require(path.resolve(__dirname, '..', '..', 'dashboard', 'node_modules', 'esbuild')); return cachedEsbuild; } catch {}
+  cachedEsbuild = false;
+  return cachedEsbuild;
+}
+
+function checkJsSyntaxInMemory(fp, content, ext) {
+  const esbuild = getEsbuild();
+  if (esbuild) {
+    try {
+      const loader = (ext === '.jsx' || ext === '.tsx' || ext === '.ts') ? ext.slice(1) : 'js';
+      esbuild.transformSync(content, { loader });
+      return null;
+    } catch (e) {
+      return { error: e.message.split('\n')[0], type: 'syntax' };
+    }
+  }
+  try {
+    new vm.Script(content, { filename: fp });
+    return null;
+  } catch (e) {
+    if (e.message.includes('Cannot use import') || e.message.includes('Unexpected token \'export\'') || e.message.includes('Unexpected identifier \'import\'')) {
+      return null;
+    }
+    return { error: e.message.split('\n')[0], type: 'syntax' };
+  }
+}
+
 function scanFile(fileInfo) {
   const { path: fp, ext } = fileInfo;
   const errors = [];
   try {
-    if (ext === '.js' || ext === '.cjs' || ext === '.mjs') {
-      try { execFileSync(process.execPath, ['-c', fp], { stdio: 'pipe' }); }
-      catch (e) { errors.push({ file: fp, error: (e.stderr || e.message).toString().split('\n')[0], type: 'syntax' }); }
-      errors.push(...checkImports(fp));
-    } else if (ext === '.jsx' || ext === '.tsx' || ext === '.ts') {
-      let esbuild = null;
-      try { esbuild = require('esbuild'); } catch {
-        try { esbuild = require(path.resolve(__dirname, '..', '..', 'dashboard', 'node_modules', 'esbuild')); } catch { esbuild = null; }
-      }
-      if (esbuild) {
-        try {
-          const loader = ext.slice(1);
-          esbuild.transformSync(fs.readFileSync(fp, 'utf8'), { loader });
-        } catch (e) {
-          errors.push({ file: fp, error: e.message.split('\n')[0], type: 'syntax' });
-        }
-      } else {
-        const raw = fs.readFileSync(fp, 'utf8');
-        const sanitized = raw
-          .replace(/\/\*[\s\S]*?\*\//g, '')
-          .replace(/\/\/.*/g, '')
-          .replace(/<[^>]*>/g, '')
-          .replace(/\/(?![*+?])(?:[^\r\n\[/\\]|\\.|\[(?:[^\r\n\]\\]|\\.)*\])+\/[gimyus]*/g, '""')
-          .replace(/`[\s\S]*?`/g, '""')
-          .replace(/'(?:\\.|[^'\\])*'/g, '""')
-          .replace(/"(?:\\.|[^"\\])*"/g, '""');
-        const err = checkBalanced(sanitized, '([{', ')]}', 'bracket');
-        if (err) errors.push({ file: fp, error: err, type: 'syntax' });
-      }
+    if (['.js', '.cjs', '.mjs', '.jsx', '.tsx', '.ts'].includes(ext)) {
+      const content = fs.readFileSync(fp, 'utf8');
+      const syntaxErr = checkJsSyntaxInMemory(fp, content, ext);
+      if (syntaxErr) errors.push({ file: fp, error: syntaxErr.error, type: syntaxErr.type });
       errors.push(...checkImports(fp));
     } else if (ext === '.json') {
       try { JSON.parse(fs.readFileSync(fp, 'utf8')); }
@@ -105,7 +104,7 @@ function scanFile(fileInfo) {
       try { execFileSync('bash', ['-n', fp], { stdio: 'pipe' }); }
       catch (e) { errors.push({ file: fp, error: (e.stderr || e.message).toString().split('\n')[0], type: 'syntax' }); }
     }
-  } catch (e) { /* skip unreadable files */ }
+  } catch (e) { /* skip */ }
   return errors;
 }
 
@@ -135,4 +134,4 @@ function scanWorkspace(projectPath) {
   return { filesScanned: files.length, issues };
 }
 
-module.exports = { scanWorkspace, walkFiles, countEffectiveLines, checkImports };
+module.exports = { scanWorkspace, walkFiles, countEffectiveLines, checkImports, checkJsSyntaxInMemory };

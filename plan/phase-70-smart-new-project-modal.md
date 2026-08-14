@@ -1,5 +1,23 @@
+# Phase 70: Smart Workspace Tracker Modal Studio Overhaul
+
+> সাধারণ ও পুরনো "New Project" মডালটিকে AI Checkpoint-এর থিমের সাথে মিলিয়ে আল্ট্রা-ক্লিন, স্মার্ট অটো-নেমিং, লাইভ ডিরেক্টরি ডিটেকশন এবং ওএস নেটিভ ব্রাউজ বোতামসহ স্টুডিও মডালে রূপান্তর করা।
+> (AI Tier: Small — Granular, step-by-step instructions with full code blocks)
+
+---
+
+## Phase 70: Smart Workspace Tracker Modal Studio Overhaul
+
+### Step 70.1 — Redesign AddProjectModal with Pro-Tier Studio UI (`dashboard/src/components/AddProjectModal.jsx`)
+- **File:** `dashboard/src/components/AddProjectModal.jsx`
+- **Action:** MODIFY
+- **Depends:** None
+
+**কী করতে হবে:**
+`AddProjectModal.jsx`-কে একটি প্রিমিয়াম ডার্ক গ্লাস স্টুডিও কার্ডে রূপান্তর করো যাতে কাস্টম প্রজেক্ট নাম, ওএস ফাইল পিকার ও লাইভ পাথ ডিটেকশন থাকে।
+
+```jsx
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { FolderPlus, Folder, Tag, X, Sparkles, Loader2, ArrowRight } from 'lucide-react';
 
 export default function AddProjectModal({ isOpen, onClose, onAdd }) {
@@ -9,7 +27,11 @@ export default function AddProjectModal({ isOpen, onClose, onAdd }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    if (isOpen) { setPath(''); setName(''); setIsSubmitting(false); }
+    if (isOpen) {
+      setPath('');
+      setName('');
+      setIsSubmitting(false);
+    }
   }, [isOpen]);
 
   const handlePathChange = (val) => {
@@ -29,15 +51,20 @@ export default function AddProjectModal({ isOpen, onClose, onAdd }) {
       if (data?.path) handlePathChange(data.path);
     } catch (err) {
       console.error('Failed to browse directory', err);
-    } finally { setIsBrowsing(false); }
+    } finally {
+      setIsBrowsing(false);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!path.trim() || isSubmitting) return;
     setIsSubmitting(true);
-    try { await onAdd(path.trim(), name.trim() || undefined); }
-    finally { setIsSubmitting(false); }
+    try {
+      await onAdd(path.trim(), name.trim() || undefined);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (!isOpen) return null;
@@ -145,3 +172,24 @@ export default function AddProjectModal({ isOpen, onClose, onAdd }) {
     </div>
   );
 }
+```
+
+- **Done-check:** `test -f dashboard/src/components/AddProjectModal.jsx`
+
+---
+
+### Step 70.2 — Full Verification & Build (`.agents/PROGRESS.md`)
+- **File:** `.agents/PROGRESS.md`
+- **Action:** VERIFY
+- **Depends:** Step 70.1
+
+**কী করতে হবে:**
+```bash
+npm test
+./l v
+./l health
+./l quality
+cd dashboard && npm run build
+```
+
+- **Done-check:** exit code 0 for all validation commands
