@@ -40,10 +40,10 @@ export function useHashRoute() {
     const target = toUrl.startsWith('#') ? toUrl : `#${toUrl.startsWith('/') ? '' : '/'}${toUrl}`;
     if (replace && window.history?.replaceState) {
       window.history.replaceState(null, '', target);
-      setRouteInfo(parseHash(target));
     } else {
       window.location.hash = target;
     }
+    setRouteInfo(parseHash(target));
   }, []);
 
   return {

@@ -92,6 +92,11 @@ copy_if_new "$SCRIPT_DIR/templates/PROGRESS.md" "$PROJECT_DIR/.agents/PROGRESS.m
 copy_if_new "$SCRIPT_DIR/templates/RULES.md" "$PROJECT_DIR/.agents/RULES.md"
 copy_if_new "$SCRIPT_DIR/templates/SYSTEM_GUIDE.md" "$PROJECT_DIR/.agents/SYSTEM_GUIDE.md"
 
+if [ ! -e "$PROJECT_DIR/AGENTS.md" ]; then
+  ln -sf .agents/AGENTS.md "$PROJECT_DIR/AGENTS.md" 2>/dev/null || cp "$SCRIPT_DIR/templates/AGENTS.md" "$PROJECT_DIR/AGENTS.md"
+  echo -e "  ${GREEN}✔ Created root AGENTS.md -> .agents/AGENTS.md${NC}"
+fi
+
 echo -e "${YELLOW}Setting up plan/ folder...${NC}"
 copy_if_new "$SCRIPT_DIR/templates/drafts-README.md" "$PROJECT_DIR/plan/drafts/README.md"
 

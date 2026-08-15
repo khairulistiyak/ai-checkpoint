@@ -71,31 +71,22 @@ class WatcherManager {
     }
   }
 
-  // Generate pointer files for all AI tools
+  // Generate root AGENTS.md bridge (clean single-file standard)
   generatePointerFiles(projectPath) {
-    const copilotDir = path.join(projectPath, '.github');
-
-    for (const file of POINTER_FILES) {
-      const destPath = path.join(projectPath, file);
-      if (!fs.existsSync(destPath)) {
-        try {
-          fs.writeFileSync(destPath, POINTER_CONTENT, 'utf8');
-          console.log(`  ✔ Created pointer: ${file}`); // keep
-        } catch (e) {
-          console.error(`  ⚠️ Failed to create ${file}:`, e.message);
-        }
-      }
-    }
-
-    // GitHub Copilot special path
-    const copilotFile = path.join(copilotDir, 'copilot-instructions.md');
-    if (!fs.existsSync(copilotFile)) {
+    const rootAgents = path.join(projectPath, 'AGENTS.md');
+    const targetAgents = path.join('.agents', 'AGENTS.md');
+    if (!fs.existsSync(rootAgents)) {
       try {
-        fs.mkdirSync(copilotDir, { recursive: true });
-        fs.writeFileSync(copilotFile, POINTER_CONTENT, 'utf8');
-        console.log(`  ✔ Created pointer: .github/copilot-instructions.md`); // keep
-      } catch (e) {
-        console.error(`  ⚠️ Failed to create copilot-instructions.md:`, e.message);
+        fs.symlinkSync(targetAgents, rootAgents);
+        console.log(`  ✔ Created root AGENTS.md symlink`); // keep
+      } catch {
+        try {
+          const tmpl = path.join(this.templatesDir, 'AGENTS.md');
+          if (fs.existsSync(tmpl)) fs.copyFileSync(tmpl, rootAgents);
+          console.log(`  ✔ Created root AGENTS.md`); // keep
+        } catch (e) {
+          console.error(`  ⚠️ Failed to create root AGENTS.md:`, e.message);
+        }
       }
     }
   }

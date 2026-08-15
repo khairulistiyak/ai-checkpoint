@@ -13,7 +13,7 @@ export const TEMPLATE_RESTORABLE = {
   [path.join('.agents', 'SYSTEM_GUIDE.md')]: 'SYSTEM_GUIDE.md',
 };
 
-export const POINTER_FILES = ['CLAUDE.md', 'GEMINI.md', '.cursorrules', '.windsurfrules', '.clinerules'];
+export const POINTER_FILES = ['AGENTS.md'];
 export const WARN_ONLY_FILES = [path.join('.agents', 'PROGRESS.md')];
 
 export class ProjectWatcher {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { GripVertical } from 'lucide-react';
-import { Reorder } from 'framer-motion';
+import { Reorder, useDragControls } from 'framer-motion';
 
 const itemVariants = {
   hidden: { opacity: 0, x: -10 },
@@ -10,6 +10,7 @@ const itemVariants = {
 export default function SidebarItem({ p, selectedId, onSelect, isSearching, isCollapsed }) {
   const isSelected = selectedId === p.id;
   const progress = p.progress?.overall?.percentage || 0;
+  const dragControls = useDragControls();
 
   let statusColor = 'bg-emerald-400';
   if (!p.isInstalled) statusColor = 'bg-rose-400';
@@ -80,10 +81,12 @@ export default function SidebarItem({ p, selectedId, onSelect, isSearching, isCo
       variants={itemVariants}
       whileHover={{ scale: 1.01 }}
       whileTap={{ scale: 0.99 }}
-      dragListener={!isSearching}
+      dragListener={false}
+      dragControls={dragControls}
     >
       <div
-        className={`w-full text-left px-3.5 py-3 rounded-xl flex items-center justify-between transition-all duration-200 relative overflow-hidden group cursor-pointer select-none min-h-[44px] ${
+        onClick={() => onSelect(p.id)}
+        className={`w-full text-left px-3.5 py-3 rounded-xl flex items-center justify-between transition-all duration-200 relative overflow-hidden group cursor-pointer select-none min-h-[44px] active:scale-[0.99] ${
           isSelected
             ? 'bg-gradient-to-r from-white/[0.12] to-white/[0.04] border border-white/20 text-white font-semibold shadow-md ring-1 ring-white/10'
             : 'hover:bg-white/[0.05] text-zinc-400 hover:text-white border border-transparent hover:border-white/10'
@@ -92,15 +95,16 @@ export default function SidebarItem({ p, selectedId, onSelect, isSearching, isCo
         {isSelected && (
           <div className="absolute left-0 top-1/2 -translate-y-1/2 h-5 w-1 bg-white rounded-r-full shadow-[0_0_8px_rgba(255,255,255,0.8)]" />
         )}
-        <div
-          className="flex items-center gap-3 overflow-hidden flex-1 py-0.5"
-          onClick={() => onSelect(p.id)}
-        >
+        <div className="flex items-center gap-3 overflow-hidden flex-1 py-0.5 pointer-events-auto">
           {!isSearching && (
             <div
-              className="cursor-grab active:cursor-grabbing text-zinc-600 hover:text-zinc-300 p-1 -ml-1 rounded shrink-0 transition-colors"
-              onPointerDown={(e) => e.stopPropagation()}
+              className="cursor-grab active:cursor-grabbing text-zinc-600 hover:text-zinc-300 p-1 -ml-1 rounded shrink-0 transition-colors touch-none"
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                dragControls.start(e);
+              }}
               onClick={(e) => e.stopPropagation()}
+              title="Drag to reorder"
             >
               <GripVertical className="w-3.5 h-3.5" />
             </div>

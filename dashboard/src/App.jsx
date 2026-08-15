@@ -62,7 +62,7 @@ export default function App() {
   }, [isAddModalOpen, isSettingsOpen, configProject, route, projectId, navigate]);
 
   const selectedProject = projects.find((p) => p.id === selectedId);
-  const handleSelectSidebar = (id) => { id ? navigate(`#/project/${id}`) : navigate('#/'); setIsMobileMenuOpen(false); };
+  const handleSelectSidebar = (id) => { setSelectedId(id || null); id ? navigate(`#/project/${id}`) : navigate('#/'); setIsMobileMenuOpen(false); };
   const handleAddProject = async (path) => { try { await addProject(path); setIsAddModalOpen(false); showToast('Added!', 'success'); } catch (err) { showToast(err.message, 'error'); } };
   const doRemoveProject = async () => { try { await removeProject(selectedId); navigate('#/'); showToast('Removed', 'info'); } catch (err) { showToast(err.message, 'error'); } finally { setConfirmRemove(false); } };
   const handleInstallProject = async () => { setInstalling(true); try { await api.installProject(selectedProject.id); refresh(); showToast('Success', 'success'); } catch (e) { showToast(e.message, 'error'); } finally { setInstalling(false); } };
