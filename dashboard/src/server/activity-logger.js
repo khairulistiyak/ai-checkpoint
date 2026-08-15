@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { shouldIgnore } from './activity-ignore.js';
 import { rotateLogFile, clearLogEntries } from './activity-log-rotate.js';
+import { getSettings } from './settings.js';
 
 class ActivityLogger {
   constructor(projectPath) {
@@ -91,7 +92,11 @@ class ActivityLogger {
   }
 
   _rotate() {
-    rotateLogFile(this.logFile, this.maxEntries);
+    let max = this.maxEntries;
+    try {
+      max = getSettings()?.preferences?.logRetention || this.maxEntries;
+    } catch {}
+    rotateLogFile(this.logFile, max);
   }
 }
 

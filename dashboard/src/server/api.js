@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import os from 'os';
 import { execSync } from 'child_process';
-import { getSettings, saveSettings } from './settings.js';
+import { getSettings, saveSettings, updatePreferences } from './settings.js';
 import projectsRouter from './projects.js';
 import configRouter from './config.js';
 
@@ -11,6 +11,15 @@ const router = express.Router();
 
 router.get('/settings', (req, res) => {
   res.json(getSettings());
+});
+
+router.put('/settings', (req, res) => {
+  try {
+    const preferences = updatePreferences(req.body.preferences || req.body);
+    res.json({ success: true, preferences });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 function pickDirectoryLinux() {

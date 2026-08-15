@@ -1,13 +1,17 @@
 import fs from 'fs';
 import path from 'path';
 import { POINTER_CONTENT, TEMPLATE_RESTORABLE, POINTER_FILES, WARN_ONLY_FILES } from './watcher-events.js';
+import { getSettings } from './settings.js';
 
 export function handleDeletion(relativePath, ctx) {
   const { sseManager, projectId } = ctx;
+  const prefs = getSettings()?.preferences || {};
 
   const templateName = TEMPLATE_RESTORABLE[relativePath];
   if (templateName) {
-    restoreFromTemplate(relativePath, templateName, ctx);
+    if (prefs.autoRestoreFiles !== false) {
+      restoreFromTemplate(relativePath, templateName, ctx);
+    }
     return;
   }
 

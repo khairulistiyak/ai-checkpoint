@@ -57,10 +57,16 @@ export function useHealthCommandCenter({ projectId, showToast }) {
     setTimeout(() => setCopiedReport(false), 2200);
   };
 
-  const handleOpenInIde = (filePath, line = 1) => {
+  const handleOpenInIde = async (filePath, line = 1) => {
     if (!filePath) return;
-    window.location.href = `vscode://file/${filePath}${line ? `:${line}` : ''}`;
-    showToast(`Opening ${filePath.split('/').pop()} in IDE...`, 'info');
+    try {
+      const res = await fetch('/api/settings').then((r) => r.json()).catch(() => ({}));
+      const ide = res.preferences?.preferredIde || 'vscode';
+      window.location.href = `${ide}://file/${filePath}${line ? `:${line}` : ''}`;
+      showToast(`Opening in ${ide.toUpperCase()}...`, 'info');
+    } catch {
+      window.location.href = `vscode://file/${filePath}${line ? `:${line}` : ''}`;
+    }
   };
 
   const score = health?.score ?? 100;
