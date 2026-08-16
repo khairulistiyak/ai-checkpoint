@@ -3,8 +3,9 @@ const path = require('path');
 const vm = require('vm');
 const { execFileSync } = require('child_process');
 
-const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', 'release', '.agents', 'plan', '.vscode', '.github', '_archive'];
-const SCAN_EXTS = ['.js', '.cjs', '.mjs', '.jsx', '.tsx', '.ts', '.json', '.css', '.sh'];
+const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', 'release', '.agents', 'plan', '.vscode', '.github', '_archive', 'vendor'];
+const CODE_EXTS = ['.js', '.cjs', '.mjs', '.jsx', '.tsx', '.ts', '.php', '.py', '.rs', '.go', '.dart', '.java', '.c', '.cpp', '.h', '.rb', '.swift', '.kt', '.cs', '.vue', '.svelte'];
+const SCAN_EXTS = [...CODE_EXTS, '.json', '.css', '.sh', '.yaml', '.yml', '.toml', '.sql'];
 
 function walkFiles(dir, results = []) {
   let entries;
@@ -27,9 +28,7 @@ function checkBalanced(content, open, close, label) {
   for (let i = 0; i < content.length; i++) {
     const ch = content[i];
     if (open.includes(ch)) stack.push(ch);
-    else if (close.includes(ch)) {
-      if (stack.pop() !== open[close.indexOf(ch)]) return `Unbalanced ${label} at position ${i}`;
-    }
+    else if (close.includes(ch) && stack.pop() !== open[close.indexOf(ch)]) return `Unbalanced ${label} at position ${i}`;
   }
   return stack.length > 0 ? `${label} has ${stack.length} unclosed pair(s)` : null;
 }
@@ -77,9 +76,7 @@ function checkJsSyntaxInMemory(fp, content, ext) {
     new vm.Script(content, { filename: fp });
     return null;
   } catch (e) {
-    if (e.message.includes('Cannot use import') || e.message.includes('Unexpected token \'export\'') || e.message.includes('Unexpected identifier \'import\'')) {
-      return null;
-    }
+    if (e.message.includes('Cannot use import') || e.message.includes('Unexpected token \'export\'') || e.message.includes('Unexpected identifier \'import\'')) return null;
     return { error: e.message.split('\n')[0], type: 'syntax' };
   }
 }
@@ -111,15 +108,14 @@ function scanFile(fileInfo) {
 function countEffectiveLines(filePath) {
   try {
     return fs.readFileSync(filePath, 'utf8').split(/\r?\n/)
-      .filter(l => l.trim() && !/^\s*(\/\/|#(?!!)|\/\*|\*|<!--)/.test(l)).length;
+      .filter(l => l.trim() && !/^\s*(\/\/|#(?!!)|\/\*|\*|<!--|--)/.test(l)).length;
   } catch { return 0; }
 }
 
 function checkRule0(files) {
   const violations = [];
-  const codeExts = ['.js', '.cjs', '.mjs', '.jsx', '.tsx', '.ts'];
   for (const f of files) {
-    if (!codeExts.includes(f.ext)) continue;
+    if (!CODE_EXTS.includes(f.ext)) continue;
     const lines = countEffectiveLines(f.path);
     if (lines > 150) violations.push({ file: f.path, error: `${lines} effective lines (limit: 150)`, type: 'rule0' });
   }
@@ -134,4 +130,4 @@ function scanWorkspace(projectPath) {
   return { filesScanned: files.length, issues };
 }
 
-module.exports = { scanWorkspace, walkFiles, countEffectiveLines, checkImports, checkJsSyntaxInMemory };
+module.exports = { scanWorkspace, walkFiles, countEffectiveLines, checkImports, checkJsSyntaxInMemory, CODE_EXTS, SCAN_EXTS };

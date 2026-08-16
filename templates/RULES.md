@@ -59,79 +59,33 @@ Every step in `plan/*.md` must use this format:
 ### Forbidden Words
 Do not use: "appropriately", "as needed", "properly", "etc.", "and so on", "refactor nicely", "improve", "optimize".
 
-### Step Requirements
-1. One step = one file = one action.
-2. Done-check must be runnable and verifiable.
-3. Content is full code or has only one interpretation.
-4. If two people could implement it differently, split the step.
-5. Dependencies form a straight chain: 1.1 → 1.2 → 1.3.
-
 ---
 
 ## RULE 2 — Project Execution & Run Environment
 
-Every project must declare its execution location and standard runnable commands:
-
-1. **Run Location**: Commands must run in their declared directory (e.g. root `.`, `./dashboard`, `./frontend`).
-2. **Directory Switching**: For commands outside root, explicitly switch directory (e.g. `cd dashboard && npm run dev`).
-3. **Standard Command Matrix**:
+1. **Run Location**: Commands must run in their declared directory.
+2. **Standard Command Matrix**:
    - `dev`: Local development server (e.g. `npm run dev`)
-   - `build`: Production build/bundle (e.g. `npm run build`)
+   - `build`: Production bundle (e.g. `npm run build`)
    - `test`: Test suite runner (e.g. `npm test`, `bats tests/`)
-   - `lint` / `verify`: Validation & linting (e.g. `./l v`, `npm run lint`)
-   - `checkpoint`: Checkpoint management (e.g. `./l cp save`, `./l start X.Y`)
+   - `lint` / `verify`: Validation & linting (e.g. `./l v`, `./l dry`)
 
 ---
 
-## RULE 3 — Zero-Error Health Gate
+## RULE 3 — Dynamic DRY & Code Reuse Protocol
 
-1. **Health Score**: Every project must maintain a health score of 60+ at all times.
-2. **Syntax Gate**: `./l c` (complete) blocks if workspace has syntax errors.
-3. **Security Gate**: `./l cp save` blocks if workspace has critical security issues.
-4. **Monitoring**: Run `./l health` regularly to track project health.
-5. **Auto-Fix**: Use `./l health --json` for programmatic checks in CI/CD.
-
----
-
-## RULE 4 — Clean Code Policy
-
-1. **No Junk Files**: Remove `.DS_Store`, `.bak`, `.tmp`, `backup.js`, `old.js` and similar garbage.
-2. **No Generic Names**: Never name files `utils.js`, `helpers.js`, or `misc.js`. Use descriptive names like `format-date.js`.
-3. **No Debug Leftovers**: Remove `console.log` and `debugger` before completing a step.
-4. **No TODO in Production**: Resolve all `TODO`, `FIXME`, `HACK`, `XXX` comments before release.
-5. **Quality Gate**: Run `./l quality` to check. Score must be 80+ for release.
+1. Before writing any new helper/utility, search existing registry: `./l utils <keyword>`.
+2. Do not duplicate function logic across multiple files.
+3. If identical logic exists elsewhere, import it from canonical module.
+4. Shared utilities must be extracted to canonical module in `packages/core/` or `utils/`.
+5. Enforce with `./l dry` and `./l health` before completing steps.
 
 ---
-
-## Project Settings
-
-| Key | Value |
-|-----|-------|
-| Language | [YOUR_LANGUAGE] |
-| Framework | [YOUR_FRAMEWORK] |
-| Styling | [YOUR_STYLING] |
-
-## Import Order
-
-1. External packages
-2. Internal barrels
-3. Styles
-
-## Naming
-
-- Components: `PascalCase`
-- Functions: `camelCase`
-- Files: `kebab-case` or `PascalCase`
-
-## Safety
-
-- Do not delete code without an explicit plan step.
-- Do not add dependencies without an explicit plan step.
-- Do not leave debug logging in production code.
 
 ## Verify
 
 | Command | Purpose |
-|---------|---------|
+|---|---|
 | `./l v` | Plan, file, and size validation |
-| [YOUR_TEST_COMMAND] | Build, lint, typecheck, or test |
+| `./l dry` | DRY code redundancy scan |
+| `./l health` | Project health & AST integrity |

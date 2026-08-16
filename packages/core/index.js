@@ -9,6 +9,9 @@ const { scanSecurity } = require('./security-scanner.js');
 const { scanWorkspace, walkFiles, countEffectiveLines, checkImports } = require('./workspace-scanner.js');
 const { autoFix } = require('./auto-fixer.js');
 const { generateQualityReport } = require('./quality-report.js');
+const { detectDuplicates } = require('./duplicate-detector.js');
+const { buildUtilityIndex, searchUtility } = require('./utility-index.js');
+const { generateRefactorProposal } = require('./dry-refactor-engine.js');
 
 module.exports = {
   parseProgressText,
@@ -25,5 +28,9 @@ module.exports = {
   countEffectiveLines,
   checkImports,
   autoFix,
-  generateQualityReport
+  generateQualityReport,
+  detectDuplicates,
+  buildUtilityIndex,
+  searchUtility,
+  generateRefactorProposal
 };

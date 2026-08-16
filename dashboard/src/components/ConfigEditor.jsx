@@ -1,32 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { Save, FileText, Code2, Loader2, X } from 'lucide-react';
+import { Save, FileText, Code2, Sliders, Loader2, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as api from '../utils/api';
 import { useToast } from './ToastProvider';
-import { GlassButton } from './ui/GlassButton';
+import { GeneralTab, RulesTab, AgentsTab } from './config/ProjectSettingsTabs';
 
 export default function ConfigEditor({ projectId, onClose }) {
   const { showToast } = useToast();
-  const [config, setConfig] = useState(null);
+  const [project, setProject] = useState(null);
+  const [stackInfo, setStackInfo] = useState(null);
+  const [compliance, setCompliance] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState('rules'); // 'rules' or 'agents'
-  const [rulesContent, setRulesContent] = useState('');
-  const [agentsContent, setAgentsContent] = useState('');
-  const [originalRules, setOriginalRules] = useState('');
-  const [originalAgents, setOriginalAgents] = useState('');
+  const [activeTab, setActiveTab] = useState('general');
+  const [rules, setRules] = useState('');
+  const [agents, setAgents] = useState('');
+  const [origRules, setOrigRules] = useState('');
+  const [origAgents, setOrigAgents] = useState('');
 
   useEffect(() => {
     async function load() {
       try {
-        const data = await api.fetchConfig(projectId);
-        setConfig(data);
-        setRulesContent(data.rules || '');
-        setAgentsContent(data.agents || '');
-        setOriginalRules(data.rules || '');
-        setOriginalAgents(data.agents || '');
+        const [pData, cData, sData, rfcData] = await Promise.all([
+          api.fetchProject(projectId),
+          api.fetchConfig(projectId),
+          api.fetchProjectStack(projectId).catch(() => null),
+          api.fetchProjectCompliance(projectId).catch(() => null)
+        ]);
+        setProject(pData);
+        setStackInfo(sData);
+        setCompliance(rfcData);
+        setRules(cData.rules || '');
+        setAgents(cData.agents || '');
+        setOrigRules(cData.rules || '');
+        setOrigAgents(cData.agents || '');
       } catch (err) {
-        console.error(err);
+        showToast(`Failed to load: ${err.message}`, 'error');
       } finally {
         setLoading(false);
       }
@@ -37,19 +46,39 @@ export default function ConfigEditor({ projectId, onClose }) {
   const handleSave = async () => {
     setSaving(true);
     try {
-      await api.updateConfig(projectId, { rules: rulesContent, agents: agentsContent });
-      setOriginalRules(rulesContent);
-      setOriginalAgents(agentsContent);
-      showToast('Config saved successfully!', 'success');
+      await api.updateConfig(projectId, { rules, agents });
+      setOrigRules(rules);
+      setOrigAgents(agents);
+      showToast('Project configuration saved!', 'success');
     } catch (err) {
-      showToast(`Failed to save: ${err.message}`, 'error');
+      showToast(`Save failed: ${err.message}`, 'error');
     } finally {
       setSaving(false);
     }
   };
 
-  const isDirty = rulesContent !== originalRules || agentsContent !== originalAgents;
+  const handleUpdateName = async (newName) => {
+    try {
+      const res = await api.updateProjectName(projectId, newName);
+      if (res.project) setProject(res.project);
+      showToast('Project name updated!', 'success');
+    } catch {
+      showToast('Failed to update name', 'error');
+    }
+  };
 
+  const handleOpenIde = async () => {
+    try {
+      const res = await fetch('/api/settings').then((r) => r.json()).catch(() => ({}));
+      const ide = res.preferences?.preferredIde || 'vscode';
+      window.location.href = `${ide}://file/${project?.path}`;
+      showToast(`Opening in ${ide.toUpperCase()}...`, 'info');
+    } catch {
+      window.location.href = `vscode://file/${project?.path}`;
+    }
+  };
+
+  const isDirty = rules !== origRules || agents !== origAgents;
   const handleClose = () => {
     if (isDirty && !window.confirm('You have unsaved changes. Close anyway?')) return;
     onClose();
@@ -58,55 +87,45 @@ export default function ConfigEditor({ projectId, onClose }) {
   if (loading) return null;
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-8"
-    >
-      <div className="absolute inset-0 bg-slate-950/80 backdrop-blur-md" onClick={handleClose}></div>
-      <div className="glass-card w-[95vw] sm:w-[85vw] max-w-5xl h-full max-h-[90vh] sm:max-h-[85vh] md:h-[80vh] flex flex-col shadow-2xl border border-slate-600/50 rounded-2xl z-10 relative overflow-hidden">
-        <div className="flex flex-wrap items-center justify-between p-4 border-b border-slate-700/50 bg-slate-900/50 gap-2">
-          <div className="flex gap-2 sm:gap-4">
-            <GlassButton
-              variant={activeTab === 'rules' ? 'primary' : 'ghost'}
-              onClick={() => setActiveTab('rules')}
-              className="flex items-center gap-2"
-            >
-              <FileText className="w-4 h-4" /> RULES.md
-            </GlassButton>
-            <GlassButton
-              variant={activeTab === 'agents' ? 'primary' : 'ghost'}
-              onClick={() => setActiveTab('agents')}
-              className="flex items-center gap-2"
-            >
-              <Code2 className="w-4 h-4" /> AGENTS.md
-            </GlassButton>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
+      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={handleClose} />
+      <div className="bg-[#101013] w-full max-w-4xl h-full max-h-[85vh] flex flex-col shadow-2xl border border-white/[0.08] rounded-3xl z-10 relative overflow-hidden">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-white/[0.08] bg-black/40 gap-2 shrink-0">
+          <div className="flex items-center gap-2 overflow-x-auto custom-scrollbar">
+            {[
+              { id: 'general', label: 'General & Radar', icon: Sliders },
+              { id: 'rules', label: 'RULES.md', icon: FileText },
+              { id: 'agents', label: 'AGENTS.md', icon: Code2 }
+            ].map((t) => {
+              const Icon = t.icon;
+              const isSel = activeTab === t.id;
+              return (
+                <button key={t.id} onClick={() => setActiveTab(t.id)} className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 transition-all cursor-pointer ${isSel ? 'bg-white/10 text-white border border-white/15' : 'text-zinc-400 hover:text-white'}`}>
+                  <Icon size={14} className={isSel ? 'text-zinc-200' : ''} /> {t.label}
+                </button>
+              );
+            })}
           </div>
-          
-          <div className="flex items-center gap-2 sm:gap-4">
-            <GlassButton
-              variant="primary"
-              onClick={handleSave}
-              disabled={saving}
-              className="flex items-center gap-2"
-            >
-              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
-              Save Changes
-            </GlassButton>
-            <GlassButton variant="ghost" onClick={handleClose} className="!p-2.5 flex items-center justify-center">
-              <X className="w-5 h-5" />
-            </GlassButton>
+          <div className="flex items-center gap-2 shrink-0">
+            {isDirty && (
+              <button onClick={handleSave} disabled={saving} className="px-3.5 py-1.5 bg-white/15 hover:bg-white/25 border border-white/20 text-white rounded-xl text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer">
+                {saving ? <Loader2 size={13} className="animate-spin" /> : <Save size={13} />} Save
+              </button>
+            )}
+            <button onClick={handleClose} className="p-1.5 rounded-lg text-zinc-500 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+              <X size={16} />
+            </button>
           </div>
         </div>
-        
-        <div className="flex-1 p-4 bg-slate-950/50 relative">
-          <textarea
-            value={activeTab === 'rules' ? rulesContent : agentsContent}
-            onChange={(e) => activeTab === 'rules' ? setRulesContent(e.target.value) : setAgentsContent(e.target.value)}
-            className="w-full h-full bg-transparent text-slate-300 font-mono text-sm resize-none focus:outline-none custom-scrollbar p-2"
-            spellCheck={false}
-          />
+
+        <div className="flex-1 p-4 sm:p-6 overflow-y-auto custom-scrollbar">
+          <AnimatePresence mode="wait">
+            <motion.div key={activeTab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} className="h-full">
+              {activeTab === 'general' && <GeneralTab project={project} stackInfo={stackInfo} compliance={compliance} onUpdateName={handleUpdateName} onSyncPlans={() => api.syncProjectPlans(projectId).then(() => showToast('Plans synced!', 'success'))} onRelinkBridge={() => api.relinkProjectBridge(projectId).then(() => showToast('Bridge relinked!', 'success'))} onClearLogs={() => api.deleteActivityLog(projectId).then(() => showToast('Logs cleared!', 'info'))} onOpenIde={handleOpenIde} />}
+              {activeTab === 'rules' && <RulesTab content={rules} onChange={setRules} onInjectPreset={(txt) => setRules((prev) => prev ? prev + '\n' + txt : txt)} />}
+              {activeTab === 'agents' && <AgentsTab content={agents} onChange={setAgents} onInjectPreset={(txt) => setAgents((prev) => prev ? prev + '\n' + txt : txt)} />}
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </motion.div>

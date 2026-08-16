@@ -2,10 +2,11 @@ const { analyzeStructure } = require('./structure-analyzer.js');
 const { checkNaming } = require('./naming-checker.js');
 const { scanHygiene } = require('./code-hygiene.js');
 
-let analyzeComplexity, scanDependencyHygiene, checkProjectConfig;
+let analyzeComplexity, scanDependencyHygiene, checkProjectConfig, detectDuplicates;
 try { analyzeComplexity = require('./complexity-analyzer.js').analyzeComplexity; } catch { analyzeComplexity = null; }
 try { scanDependencyHygiene = require('./dep-hygiene.js').scanDependencyHygiene; } catch { scanDependencyHygiene = null; }
 try { checkProjectConfig = require('./project-config-checker.js').checkProjectConfig; } catch { checkProjectConfig = null; }
+try { detectDuplicates = require('./duplicate-detector.js').detectDuplicates; } catch { detectDuplicates = null; }
 
 function generateQualityReport(projectPath) {
   const structure = analyzeStructure(projectPath);
@@ -18,7 +19,6 @@ function generateQualityReport(projectPath) {
     ...hygiene.issues.map(i => ({ ...i, category: 'hygiene' })),
   ];
 
-  // Deep scanners (optional — fail gracefully)
   let complexityStats = null;
   if (analyzeComplexity) {
     const c = analyzeComplexity(projectPath);
@@ -40,6 +40,21 @@ function generateQualityReport(projectPath) {
     allIssues.push(...p.issues.map(i => ({ ...i, category: 'config' })));
   }
 
+  let dryStats = null;
+  if (detectDuplicates) {
+    const dry = detectDuplicates(projectPath);
+    dryStats = { dryScore: dry.dryScore, duplicatesCount: dry.duplicatesCount };
+    allIssues.push(...dry.duplicates.map(dup => ({
+      file: dup.funcA.file,
+      line: dup.funcA.line,
+      type: `duplicate-${dup.type}`,
+      msg: `DRY Violation: ${dup.msg}`,
+      category: 'duplicates',
+      severity: dup.type === 'exact' ? 'critical' : 'warning',
+      funcB: { file: dup.funcB.file, line: dup.funcB.line, name: dup.funcB.name }
+    })));
+  }
+
   let score = 100;
   score -= structure.issues.filter(i => i.type === 'junk-file').length * 3;
   score -= structure.issues.filter(i => i.type === 'empty-file').length * 5;
@@ -49,6 +64,7 @@ function generateQualityReport(projectPath) {
   if (complexityStats) score -= Math.min(complexityStats.complexFunctions * 2, 15);
   if (depStats) score -= Math.min(allIssues.filter(i => i.category === 'dependencies').length * 2, 10);
   if (configChecks) score -= Math.min(allIssues.filter(i => i.category === 'config').length * 1, 10);
+  if (dryStats) score -= Math.min(Math.round((100 - dryStats.dryScore) * 0.15), 15);
   if (score < 0) score = 0;
 
   return {
@@ -62,6 +78,8 @@ function generateQualityReport(projectPath) {
       complexityIssues: complexityStats ? complexityStats.complexFunctions : 0,
       dependencyIssues: allIssues.filter(i => i.category === 'dependencies').length,
       configIssues: allIssues.filter(i => i.category === 'config').length,
+      duplicateIssues: dryStats ? dryStats.duplicatesCount : 0,
+      dryScore: dryStats ? dryStats.dryScore : 100,
       totalFiles: structure.totalFiles,
       totalDirs: structure.totalDirs,
     },

@@ -5,6 +5,7 @@ import HealthScoreGauge from './health/HealthScoreGauge';
 import HealthPillarGrid from './health/HealthPillarGrid';
 import HealthCoreChecklist from './health/HealthCoreChecklist';
 import HealthIssueExplorer from './health/HealthIssueExplorer';
+import DryGuardianPanel from './health/DryGuardianPanel';
 import { useHealthCommandCenter } from './health/useHealthCommandCenter';
 
 export default function HealthCommandCenter({ projectId }) {
@@ -74,6 +75,8 @@ export default function HealthCommandCenter({ projectId }) {
             />
             <HealthPillarGrid breakdown={breakdown} />
           </div>
+
+          <DryGuardianPanel projectId={projectId} />
 
           <HealthCoreChecklist checks={checks} />
 
