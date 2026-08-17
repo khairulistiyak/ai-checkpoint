@@ -11,29 +11,10 @@ const PATTERNS = [
   { name: 'empty-catch', regex: /catch\s*\([^)]*\)\s*\{\s*\}/g, severity: 'warning', msg: 'Empty catch block' },
 ];
 
-const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', 'release', '.agents', 'plan', '_archive'];
-const CODE_EXTS = ['.js', '.cjs', '.mjs', '.jsx', '.tsx', '.ts'];
-
-function walkCodeFiles(dir, results = []) {
-  let entries;
-  try { entries = fs.readdirSync(dir); } catch { return results; }
-  for (const name of entries) {
-    if (name.startsWith('.') || name.startsWith('._')) continue;
-    if (SKIP_DIRS.includes(name)) continue;
-    const full = path.join(dir, name);
-    let stat;
-    try { stat = fs.lstatSync(full); } catch { continue; }
-    if (stat.isSymbolicLink()) continue;
-    if (stat.isDirectory()) { walkCodeFiles(full, results); continue; }
-    if (CODE_EXTS.includes(path.extname(name).toLowerCase()) && stat.size > 0) {
-      results.push(full);
-    }
-  }
-  return results;
-}
+const { walkCodeFiles } = require('./file-walker.js');
 
 function scanSecurity(projectPath) {
-  const files = walkCodeFiles(projectPath);
+  const files = walkCodeFiles(projectPath).map(f => f.path);
   const issues = [];
   for (const fp of files) {
     if (path.basename(fp) === 'security-scanner.js') continue;

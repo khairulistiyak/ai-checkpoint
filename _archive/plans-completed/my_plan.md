@@ -4,8 +4,9 @@
 
 * jodii kuno running project a amader project install kore tokhon kemon kivabe handel korba taw jana dorkar 
 
+* jokhon kuno design kora hobe tokhon obosshoi shob kichu resposive korei korei korbe chuto button theke shuru kore shob kichu responsive kora lagbe , and prottecta chuto jinisho jeno akdom daynamic sheta cuto kuno icon ba button ba boro kuno kichu all about res and daynamic , idea dew , and reusebol , 
 
-* amder project jokhon kuno jikhon kuthai use korbe tokhon oi project garbase code thaka jabena akdom. foldar stacher theke sdshuru kore code stacher arom joto stacher ache shob shundor and and shob thke modran stacher thakbe allwes jate , prottecta line theke prottecta word theke shuru kore shob stachared thakte hobe .  r ki ki ache idea dorkar 
+* amder project jokhon kuno jikhon kuthai use korbe tokhon oi project garbase code thaka jabena akdom. foldar stacher theke sdshuru kore code stacher arom joto stacher ache shob shundor and and shob thke modran stacher thakbe allwes jate , prottecta line theke prottecta word theke shuru kore shob stachared thakte hobe .  r ki ki ache idea dorkar , amader project abortomane ki ki ache and amara ki ki korte pari shamne shob idea dew, 
 
 * akhono amon ki ki ache jegula dainamic kora dorkar ? and project jotota dainamic kora jai . best dainamic amader ai project er jonne best idea dew . 
 

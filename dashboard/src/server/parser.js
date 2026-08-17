@@ -1,42 +1,49 @@
 import fs from 'fs';
 import path from 'path';
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
 import coreParser from '../../../packages/core/parse-progress.js';
+
+const require = createRequire(import.meta.url);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+function getSyncUtils() {
+  try {
+    const rootCli = path.resolve(__dirname, '..', '..', '..', 'packages', 'cli');
+    return require(path.join(rootCli, 'plan-sync-utils.js'));
+  } catch { return null; }
+}
 
 export function parsePlanFiles(projectPath) {
   try {
     const planDir = path.join(projectPath, 'plan');
-    if (!fs.existsSync(planDir)) {
-      return { totalFiles: 0, totalSteps: 0, fileNames: [], files: [] };
-    }
+    if (!fs.existsSync(planDir)) return { totalFiles: 0, totalSteps: 0, fileNames: [], files: [], parsedPhases: [] };
     const files = fs.readdirSync(planDir).filter(f => f.endsWith('.md') && !f.startsWith('.') && fs.statSync(path.join(planDir, f)).isFile());
     let totalSteps = 0;
-    const filesData = [];
+    const filesData = [], parsedPhases = [];
+    const utils = getSyncUtils();
 
     for (const file of files) {
       const filePath = path.join(planDir, file);
-      const fileStat = fs.statSync(filePath);
-      const createdAt = fileStat.birthtime || fileStat.mtime;
-      const content = fs.readFileSync(filePath, 'utf8');
-      const lines = content.split(/\r?\n/);
-      let stepCount = 0;
-      for (const line of lines) {
-        if (/^(?:##|###)\s*(?:Step\s+)?\d+\.\d+/i.test(line.trim())) {
-          stepCount++;
+      const createdAt = fs.statSync(filePath).birthtime || fs.statSync(filePath).mtime;
+      let stepCount = 0, parsed = null;
+
+      if (utils?.parsePlanFileSteps) {
+        parsed = utils.parsePlanFileSteps(filePath);
+        stepCount = parsed.steps.length;
+        if (parsed.phaseNum && parsed.steps.length > 0) parsedPhases.push(parsed);
+      } else {
+        const content = fs.readFileSync(filePath, 'utf8');
+        for (const line of content.split(/\r?\n/)) {
+          if (/(?:##|###|\s*-\s*\[[ x!/~]\])\s*(?:Step\s+)?\d+\.\d+/i.test(line.trim())) stepCount++;
         }
       }
       totalSteps += stepCount;
-      filesData.push({ name: file, steps: stepCount, createdAt });
+      filesData.push({ name: file, steps: stepCount, createdAt, phaseNum: parsed?.phaseNum });
     }
-
-    return {
-      totalFiles: files.length,
-      totalSteps,
-      fileNames: filesData,
-      files: filesData
-    };
+    return { totalFiles: files.length, totalSteps, fileNames: filesData, files: filesData, parsedPhases };
   } catch (e) {
-    console.error(`⚠️ Exception parsing plan files for ${projectPath}:`, e.message);
-    return { totalFiles: 0, totalSteps: 0, fileNames: [], files: [] };
+    return { totalFiles: 0, totalSteps: 0, fileNames: [], files: [], parsedPhases: [] };
   }
 }
 
@@ -44,43 +51,72 @@ export function parseProgress(projectPath) {
   try {
     const progressFile = path.join(projectPath, '.agents', 'PROGRESS.md');
     if (!fs.existsSync(progressFile)) return null;
+    return coreParser.parseProgressText(fs.readFileSync(progressFile, 'utf8'));
+  } catch { return null; }
+}
 
-    const content = fs.readFileSync(progressFile, 'utf8');
-    return coreParser.parseProgressText(content);
-  } catch (e) {
-    console.error(`⚠️ Exception parsing PROGRESS.md for ${projectPath}:`, e.message);
-    return null;
+function mergeUnsyncedPhases(progress, parsedPhases) {
+  if (!progress?.phases) return progress;
+  const existing = new Set(progress.phases.map(p => String(p.number)));
+  const merged = [...progress.phases];
+
+  for (const pp of parsedPhases) {
+    if (!existing.has(String(pp.phaseNum))) {
+      merged.push({
+        number: pp.phaseNum,
+        name: pp.phaseName || `Phase ${pp.phaseNum}`,
+        statusText: '🔴 0% PENDING',
+        steps: pp.steps.map(s => ({
+          status: 'pending', number: s.number, title: s.title, lineIndex: -1,
+          lineContent: `- [ ] **Step ${s.number}** — ${s.title}`
+        })),
+        percentage: 0, headerIndex: -1, headerLine: `## 🔷 Phase ${pp.phaseNum}: ${pp.phaseName}`
+      });
+      existing.add(String(pp.phaseNum));
+    }
   }
+
+  let total = 0, completed = 0;
+  merged.forEach(p => {
+    total += p.steps.length;
+    completed += p.steps.filter(s => s.status === 'done').length;
+  });
+
+  return {
+    ...progress,
+    phases: merged,
+    overall: { percentage: total > 0 ? Math.round((completed / total) * 100) : 0, completed, total }
+  };
 }
 
 export function enrichProject(p) {
   try {
-    if (!p || !p.path || !fs.existsSync(p.path)) {
-      const fallbackName = p?.name || path.basename((p?.path || '').replace(/\/+$/, '')) || 'Untitled';
-      return { ...p, name: fallbackName, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] }, unsyncedSteps: 0 };
+    if (!p?.path || !fs.existsSync(p.path)) {
+      const fallback = p?.name || path.basename((p?.path || '').replace(/\/+$/, '')) || 'Untitled';
+      return { ...p, name: fallback, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] }, unsyncedSteps: 0 };
     }
     const safeName = p.name || path.basename(p.path.replace(/\/+$/, '')) || 'Untitled';
     const isInstalled = fs.existsSync(path.join(p.path, '.agents', 'PROGRESS.md'));
-    let progress = null;
+    let progress = isInstalled ? parseProgress(p.path) : null;
     let hasPlanFiles = false;
-    let planStats = { totalFiles: 0, totalSteps: 0, fileNames: [] };
-    if (isInstalled) {
-      progress = parseProgress(p.path);
-    }
+    let planStats = { totalFiles: 0, totalSteps: 0, fileNames: [], parsedPhases: [] };
+
     const planDir = path.join(p.path, 'plan');
     if (fs.existsSync(planDir)) {
       hasPlanFiles = fs.readdirSync(planDir).some(f => f.endsWith('.md') && !f.startsWith('.') && fs.statSync(path.join(planDir, f)).isFile());
-      if (hasPlanFiles) {
-        planStats = parsePlanFiles(p.path);
-      }
+      if (hasPlanFiles) planStats = parsePlanFiles(p.path);
     }
+
+    if (progress && planStats.parsedPhases?.length > 0) {
+      progress = mergeUnsyncedPhases(progress, planStats.parsedPhases);
+    }
+
     const progressTotal = progress?.overall?.total || 0;
     const planTotal = planStats?.totalSteps || 0;
     const unsyncedSteps = Math.max(0, planTotal - progressTotal);
     return { ...p, name: safeName, isInstalled, progress, hasPlanFiles, planStats, unsyncedSteps };
   } catch (e) {
-    console.error(`⚠️ Error enriching project ${p?.path}:`, e.message);
-    const fallbackName = p?.name || path.basename((p?.path || '').replace(/\/+$/, '')) || 'Untitled';
-    return { ...p, name: fallbackName, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] }, unsyncedSteps: 0 };
+    const fallback = p?.name || path.basename((p?.path || '').replace(/\/+$/, '')) || 'Untitled';
+    return { ...p, name: fallback, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] }, unsyncedSteps: 0 };
   }
 }

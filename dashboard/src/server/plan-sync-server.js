@@ -1,8 +1,11 @@
 import { createRequire } from 'module';
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 const require = createRequire(import.meta.url);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export function getNextPhaseNum(projectPath) {
   const progressPath = path.join(projectPath, '.agents', 'PROGRESS.md');
@@ -18,23 +21,24 @@ export function getNextPhaseNum(projectPath) {
 }
 
 export function syncPlanToProgress(projectPath) {
+  if (!projectPath || !fs.existsSync(projectPath)) return null;
+
   try {
-    const cliDir = path.resolve(projectPath, '.agents', 'packages', 'cli');
-    if (!fs.existsSync(path.join(cliDir, 'plan-sync.js'))) {
-      const srcDir = path.resolve(
-        path.dirname(new URL(import.meta.url).pathname),
-        '..', '..', '..', 'packages', 'cli'
-      );
-      if (!fs.existsSync(path.join(srcDir, 'plan-sync.js'))) return null;
-      const { syncPlansToProgress } = require(path.join(srcDir, 'plan-sync.js'));
-      const origCwd = process.cwd();
-      process.chdir(projectPath);
-      try { return syncPlansToProgress(); } finally { process.chdir(origCwd); }
-    }
-    const { syncPlansToProgress } = require(path.join(cliDir, 'plan-sync.js'));
+    const rootCliDir = path.resolve(__dirname, '..', '..', '..', 'packages', 'cli');
+    const syncModulePath = fs.existsSync(path.join(rootCliDir, 'plan-sync.js'))
+      ? path.join(rootCliDir, 'plan-sync.js')
+      : path.join(projectPath, '.agents', 'packages', 'cli', 'plan-sync.js');
+
+    if (!fs.existsSync(syncModulePath)) return null;
+
+    const { syncPlansToProgress } = require(syncModulePath);
     const origCwd = process.cwd();
     process.chdir(projectPath);
-    try { return syncPlansToProgress(); } finally { process.chdir(origCwd); }
+    try {
+      return syncPlansToProgress();
+    } finally {
+      process.chdir(origCwd);
+    }
   } catch (e) {
     console.error('Plan sync error:', e.message);
     return null;

@@ -1,27 +1,9 @@
 const fs = require('fs');
-const path = require('path');
 
-const SKIP = ['node_modules', '.git', 'dist', 'build', '.agents', 'plan', 'marketing', 'tests', '_archive', 'release'];
-const CODE_EXTS = ['.js', '.jsx', '.cjs', '.mjs'];
-
-function walkCode(dir, results = []) {
-  let entries;
-  try { entries = fs.readdirSync(dir); } catch { return results; }
-  for (const name of entries) {
-    if (name.startsWith('.') || name.startsWith('._') || SKIP.includes(name)) continue;
-    const full = path.join(dir, name);
-    let stat;
-    try { stat = fs.lstatSync(full); } catch { continue; }
-    if (stat.isSymbolicLink()) continue;
-    if (stat.isDirectory()) { walkCode(full, results); continue; }
-    const ext = path.extname(name).toLowerCase();
-    if (CODE_EXTS.includes(ext) && stat.size > 0) results.push(full);
-  }
-  return results;
-}
+const { walkCodeFiles } = require('./file-walker.js');
 
 function analyzeComplexity(projectPath) {
-  const files = walkCode(projectPath);
+  const files = walkCodeFiles(projectPath).map(f => f.path);
   const issues = [];
   const stats = { totalFunctions: 0, complexFunctions: 0 };
 

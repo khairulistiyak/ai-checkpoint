@@ -1,20 +1,16 @@
+/**
+ * syntax-checker.js — CLI syntax checking command.
+ *
+ * Uses canonical syntax-utils from packages/core for shared functions.
+ * Provides syntaxCheck for individual file validation.
+ */
+
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 const { execFileSync } = require('child_process');
 
-function checkBalanced(content, openChars, closeChars, label) {
-  const stack = [];
-  for (let i = 0; i < content.length; i++) {
-    const ch = content[i];
-    if (openChars.includes(ch)) stack.push(ch);
-    else if (closeChars.includes(ch)) {
-      const open = openChars[closeChars.indexOf(ch)];
-      if (stack.pop() !== open) return { ok: false, error: `Unbalanced ${label} at position ${i}` };
-    }
-  }
-  return stack.length === 0 ? { ok: true } : { ok: false, error: `${label} has ${stack.length} unclosed pair(s)` };
-}
+const { checkBalanced, getEsbuild, checkImportTargets } = require('../core/syntax-utils.js');
 
 function checkSyntax(filePath) {
   const content = fs.readFileSync(filePath, 'utf8');
@@ -24,31 +20,6 @@ function checkSyntax(filePath) {
 function checkCss(filePath) {
   const content = fs.readFileSync(filePath, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/["'][^"']*["']/g, '""');
   return checkBalanced(content, '{', '}', 'brace');
-}
-
-function checkImportTargets(filePath) {
-  const content = fs.readFileSync(filePath, 'utf8');
-  const warnings = [];
-  const re = /(?:from\s+|require\(\s*)['"]([^'"]+)['"]/g;
-  let m;
-  while ((m = re.exec(content)) !== null) {
-    const spec = m[1];
-    if (!spec.startsWith('.')) continue;
-    const target = path.resolve(path.dirname(filePath), spec);
-    const exts = ['.js', '.jsx', '.ts', '.tsx', '.json'];
-    const exists = fs.existsSync(target) || exts.some(e => fs.existsSync(target + e)) || fs.existsSync(path.join(target, 'index.js'));
-    if (!exists) warnings.push(`⚠ Possibly missing import "${spec}" in ${path.basename(filePath)}`);
-  }
-  return warnings;
-}
-
-let cachedEsbuild = null;
-function getEsbuild() {
-  if (cachedEsbuild !== null) return cachedEsbuild;
-  try { cachedEsbuild = require('esbuild'); return cachedEsbuild; } catch {}
-  try { cachedEsbuild = require(path.resolve(__dirname, '..', '..', 'dashboard', 'node_modules', 'esbuild')); return cachedEsbuild; } catch {}
-  cachedEsbuild = false;
-  return cachedEsbuild;
 }
 
 const EXT_MAP = {
@@ -83,7 +54,7 @@ function syntaxCheck(filePath) {
         try {
           new vm.Script(content, { filename: filePath });
         } catch (e) {
-          if (e.message.includes('Cannot use import') || e.message.includes('Unexpected token \'export\'') || e.message.includes('Unexpected identifier \'import\'')) {
+          if (e.message.includes('Cannot use import') || e.message.includes("Unexpected token 'export'") || e.message.includes("Unexpected identifier 'import'")) {
             const r = checkSyntax(filePath);
             if (!r.ok) return { ok: false, warnings, error: `${path.basename(filePath)}: ${r.error}` };
           } else {

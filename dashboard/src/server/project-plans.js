@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { getSettings } from './settings.js';
 import { watcherManager } from './watcher.js';
+import { syncPlanToProgress } from './plan-sync-server.js';
 
 export function handleGetPlanFile(req, res) {
   const project = getSettings().projects.find(p => p.id === req.params.id);
@@ -38,7 +39,12 @@ export function handleSavePlanFile(req, res) {
   try {
     fs.mkdirSync(planDir, { recursive: true });
     fs.writeFileSync(filePath, content, 'utf8');
-    res.json({ success: true, filename });
+    let syncResult = null;
+    try {
+      syncResult = syncPlanToProgress(project.path);
+      watcherManager.sseManager?.broadcast(project.id, 'progress-updated', { file: 'plan/' + filename });
+    } catch {}
+    res.json({ success: true, filename, syncResult });
   } catch (e) {
     res.status(500).json({ error: 'Failed to save plan file' });
   }

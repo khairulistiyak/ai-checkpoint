@@ -1,8 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', '.agents', 'plan', '_archive', 'release', 'tests'];
-const CODE_EXTS = ['.js', '.cjs', '.mjs', '.jsx', '.tsx', '.ts'];
+const { walkCodeFiles } = require('./file-walker.js');
 
 function getImports(filePath) {
   let content;
@@ -21,23 +20,8 @@ function getImports(filePath) {
   return imports;
 }
 
-function walkCodeFiles(dir, results = []) {
-  let entries;
-  try { entries = fs.readdirSync(dir); } catch { return results; }
-  for (const name of entries) {
-    if (name.startsWith('.') || name.startsWith('._') || SKIP_DIRS.includes(name)) continue;
-    const full = path.join(dir, name);
-    let stat;
-    try { stat = fs.lstatSync(full); } catch { continue; }
-    if (stat.isSymbolicLink()) continue;
-    if (stat.isDirectory()) { walkCodeFiles(full, results); continue; }
-    if (CODE_EXTS.includes(path.extname(name).toLowerCase())) results.push(full);
-  }
-  return results;
-}
-
 function detectCircularDeps(projectPath) {
-  const files = walkCodeFiles(projectPath);
+  const files = walkCodeFiles(projectPath).map(f => f.path);
   const graph = new Map();
   for (const f of files) graph.set(f, getImports(f));
 

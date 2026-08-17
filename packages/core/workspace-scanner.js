@@ -1,66 +1,25 @@
+/**
+ * workspace-scanner.js — Project workspace scanner.
+ *
+ * Uses canonical modules for walking, constants, and syntax checks.
+ * Public API preserved for backward compatibility.
+ */
+
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
 const { execFileSync } = require('child_process');
 
-const SKIP_DIRS = ['node_modules', '.git', 'dist', 'build', 'release', '.agents', 'plan', '.vscode', '.github', '_archive', 'vendor'];
-const CODE_EXTS = ['.js', '.cjs', '.mjs', '.jsx', '.tsx', '.ts', '.php', '.py', '.rs', '.go', '.dart', '.java', '.c', '.cpp', '.h', '.rb', '.swift', '.kt', '.cs', '.vue', '.svelte'];
-const SCAN_EXTS = [...CODE_EXTS, '.json', '.css', '.sh', '.yaml', '.yml', '.toml', '.sql'];
+const { CODE_EXTS, SCAN_EXTS, JS_EXTS } = require('./scan-constants.js');
+const { walkCodeFiles } = require('./file-walker.js');
+const { getEsbuild, checkImportsStructured } = require('./syntax-utils.js');
 
-function walkFiles(dir, results = []) {
-  let entries;
-  try { entries = fs.readdirSync(dir); } catch { return results; }
-  for (const name of entries) {
-    if (name.startsWith('.') || name.startsWith('._') || SKIP_DIRS.includes(name)) continue;
-    const full = path.join(dir, name);
-    let stat;
-    try { stat = fs.lstatSync(full); } catch { continue; }
-    if (stat.isSymbolicLink()) continue;
-    if (stat.isDirectory()) { walkFiles(full, results); continue; }
-    const ext = path.extname(name).toLowerCase();
-    if (SCAN_EXTS.includes(ext) && stat.size > 0) results.push({ path: full, ext });
-  }
-  return results;
+/** Walk all scannable files (code + config). Backward-compatible wrapper. */
+function walkFiles(dir) {
+  return walkCodeFiles(dir, { extensions: SCAN_EXTS });
 }
 
-function checkBalanced(content, open, close, label) {
-  const stack = [];
-  for (let i = 0; i < content.length; i++) {
-    const ch = content[i];
-    if (open.includes(ch)) stack.push(ch);
-    else if (close.includes(ch) && stack.pop() !== open[close.indexOf(ch)]) return `Unbalanced ${label} at position ${i}`;
-  }
-  return stack.length > 0 ? `${label} has ${stack.length} unclosed pair(s)` : null;
-}
-
-function checkImports(filePath) {
-  const warnings = [];
-  let content = fs.readFileSync(filePath, 'utf8')
-    .replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*/g, '')
-    .replace(/\\?`[\s\S]*?\\?`/g, '""').replace(/\\"[^"]*\\"/g, '""');
-
-  const re = /^\s*(?:import\s+(?:[\w*\s{},]*\s+from\s+)?|(?:const|let|var)\s+[\w*\s{},:]+\s*=\s*require\(\s*|require\(\s*)['"]([^'"]+)['"]/gm;
-  let m;
-  while ((m = re.exec(content)) !== null) {
-    const spec = m[1];
-    if (!spec.startsWith('.')) continue;
-    const target = path.resolve(path.dirname(filePath), spec);
-    const exts = ['', '.js', '.jsx', '.ts', '.tsx', '.json', '.cjs', '.mjs'];
-    const found = exts.some(e => fs.existsSync(target + e)) || fs.existsSync(path.join(target, 'index.js'));
-    if (!found) warnings.push({ file: filePath, error: `Missing import: "${spec}"`, type: 'broken-import' });
-  }
-  return warnings;
-}
-
-let cachedEsbuild = null;
-function getEsbuild() {
-  if (cachedEsbuild !== null) return cachedEsbuild;
-  try { cachedEsbuild = require('esbuild'); return cachedEsbuild; } catch {}
-  try { cachedEsbuild = require(path.resolve(__dirname, '..', '..', 'dashboard', 'node_modules', 'esbuild')); return cachedEsbuild; } catch {}
-  cachedEsbuild = false;
-  return cachedEsbuild;
-}
-
+/** In-memory JS/JSX/TSX syntax check via esbuild or vm.Script fallback. */
 function checkJsSyntaxInMemory(fp, content, ext) {
   const esbuild = getEsbuild();
   if (esbuild) {
@@ -76,16 +35,32 @@ function checkJsSyntaxInMemory(fp, content, ext) {
     new vm.Script(content, { filename: fp });
     return null;
   } catch (e) {
-    if (e.message.includes('Cannot use import') || e.message.includes('Unexpected token \'export\'') || e.message.includes('Unexpected identifier \'import\'')) return null;
+    if (e.message.includes('Cannot use import') || e.message.includes("Unexpected token 'export'") || e.message.includes("Unexpected identifier 'import'")) return null;
     return { error: e.message.split('\n')[0], type: 'syntax' };
   }
 }
 
+/** Backward-compatible wrapper for checkImportsStructured. */
+function checkImports(filePath) {
+  return checkImportsStructured(filePath);
+}
+
+/** Check balanced brackets in CSS content. */
+function checkBalancedCss(content) {
+  let depth = 0;
+  for (let i = 0; i < content.length; i++) {
+    if (content[i] === '{') depth++;
+    else if (content[i] === '}') { depth--; if (depth < 0) return `Unbalanced brace at position ${i}`; }
+  }
+  return depth > 0 ? `brace has ${depth} unclosed pair(s)` : null;
+}
+
+/** Scan a single file for syntax and import errors. */
 function scanFile(fileInfo) {
   const { path: fp, ext } = fileInfo;
   const errors = [];
   try {
-    if (['.js', '.cjs', '.mjs', '.jsx', '.tsx', '.ts'].includes(ext)) {
+    if (JS_EXTS.includes(ext)) {
       const content = fs.readFileSync(fp, 'utf8');
       const syntaxErr = checkJsSyntaxInMemory(fp, content, ext);
       if (syntaxErr) errors.push({ file: fp, error: syntaxErr.error, type: syntaxErr.type });
@@ -95,23 +70,25 @@ function scanFile(fileInfo) {
       catch (e) { errors.push({ file: fp, error: e.message.split('\n')[0], type: 'syntax' }); }
     } else if (ext === '.css') {
       const content = fs.readFileSync(fp, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '').replace(/['"][^'"]*['"]/g, '""');
-      const err = checkBalanced(content, '{', '}', 'brace');
+      const err = checkBalancedCss(content);
       if (err) errors.push({ file: fp, error: err, type: 'syntax' });
     } else if (ext === '.sh') {
       try { execFileSync('bash', ['-n', fp], { stdio: 'pipe' }); }
       catch (e) { errors.push({ file: fp, error: (e.stderr || e.message).toString().split('\n')[0], type: 'syntax' }); }
     }
-  } catch (e) { /* skip */ }
+  } catch (e) { /* skip unreadable files */ }
   return errors;
 }
 
+/** Count effective (non-blank, non-comment) lines. */
 function countEffectiveLines(filePath) {
   try {
     return fs.readFileSync(filePath, 'utf8').split(/\r?\n/)
-      .filter(l => l.trim() && !/^\s*(\/\/|#(?!!)|\/\*|\*|<!--|--)/.test(l)).length;
+      .filter(l => l.trim() && !/^\s*(\/\/|#(?!!)|\/\*|\*|<!--|--)\s*/.test(l)).length;
   } catch { return 0; }
 }
 
+/** Check Rule 0: 150-line limit on code files. */
 function checkRule0(files) {
   const violations = [];
   for (const f of files) {
@@ -122,6 +99,7 @@ function checkRule0(files) {
   return violations;
 }
 
+/** Full workspace scan: syntax + imports + Rule 0. */
 function scanWorkspace(projectPath) {
   const files = walkFiles(projectPath);
   const issues = [];

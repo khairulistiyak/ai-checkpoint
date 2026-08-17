@@ -13,14 +13,14 @@
 
 ---
 
-## 📊 Overall Progress: 98% (515/525 steps complete)
+## 📊 Overall Progress: 93% (531/572 steps complete)
 
 ```
-[████████████████████] 98% (515/525 steps complete)
+[███████████████████░] 93% (531/572 steps complete)
 ```
 
-## 👉 NEXT: Step 81.1 — Create Canonical Scan Constants (`packages/core/scan-constants.js`)
-> 📋 Details → `plan/` → Phase 81 → Step 81.1
+## 👉 NEXT: Step 83.1 — Create `packages/core/responsive-scanner.js`
+> 📋 Details → `plan/` → Phase 83 → Step 83.1
 
 ---J
 
@@ -865,6 +865,22 @@ UPDATE LOG:
 [2026-08-16 13:16] Step 80.13 completed — Mounted Dry Guardian Panel into Health Command Center | Agent: CLI
 [2026-08-16 13:16] Step 80.14 completed — Updated RULES.md with Dynamic DRY Policy | Agent: CLI
 [2026-08-16 13:18] Step 80.15 completed — Full Dynamic DRY Guardian Suite Verified & Completed | Agent: CLI
+[2026-08-17 01:21] Step 81.1 completed — Created canonical scan-constants.js — SSOT for SKIP_DIRS, CODE_EXTS, JS_EXTS, SCAN_EXTS, JUNK patterns | Agent: CLI
+[2026-08-17 01:23] Step 81.2 completed — Created canonical file-walker.js — replaces 8 duplicate walkers with walkCodeFiles and walkAllFiles | Agent: CLI
+[2026-08-17 01:23] Step 81.3 completed — Created canonical syntax-utils.js — unifies checkBalanced, getEsbuild, checkImportTargets | Agent: CLI
+[2026-08-17 01:24] Step 81.4 completed — Refactored workspace-scanner.js to use canonical modules — removed local walkFiles, SKIP_DIRS, checkBalanced, getEsbuild, checkImports | Agent: CLI
+[2026-08-17 01:27] Step 81.5 completed — Refactored code-hygiene, complexity-analyzer, hygiene-fixer — removed 3 duplicate walkCode/SKIP/CODE_EXTS | Agent: CLI
+[2026-08-17 01:29] Step 81.6 completed — Refactored naming-checker, security-scanner, circular-dep-detector — removed 3 duplicate walkCodeFiles/SKIP_DIRS/CODE_EXTS | Agent: CLI
+[2026-08-17 01:30] Step 81.7 completed — Refactored structure-analyzer.js — removed local walkAll, SKIP, JUNK_FILES, JUNK_PATTERNS — uses canonical modules | Agent: CLI
+[2026-08-17 02:44] Step 81.8 completed — Refactored cli/syntax-checker.js to use canonical core/syntax-utils | Agent: CLI
+[2026-08-17 02:58] Step 81.9 completed — Updated core barrel exports and documented in SYSTEM_GUIDE.md | Agent: CLI
+[2026-08-17 02:59] Step 81.10 completed — Full consolidation verification passed with 100 health score | Agent: CLI
+[2026-08-17 03:09] Step 86.1 completed — Enhanced plan-sync-utils with universal markdown heading, checklist, and table parser | Agent: CLI
+[2026-08-17 03:09] Step 86.2 completed — Updated dashboard plan-sync-server.js to use canonical CLI plan sync | Agent: CLI
+[2026-08-17 03:10] Step 86.3 completed — Trigger plan-to-progress auto-sync and emit progress-updated on plan file changes | Agent: CLI
+[2026-08-17 03:10] Step 86.4 completed — Auto-sync plan to progress and notify SSE clients on plan file save | Agent: CLI
+[2026-08-17 03:11] Step 86.5 completed — Add universal plan parsing and on-the-fly phase merger in dashboard parser | Agent: CLI
+[2026-08-17 03:12] Step 86.6 completed — Full verification and live test passed — instant plan-to-roadmap sync is 100% operational | Agent: CLI
 -->
 
 
@@ -1413,15 +1429,86 @@ UPDATE LOG:
 
 ---
 
-## 🔷 Phase 81: Canonical Architecture & Total Codebase Consolidation — 🔴 0% PENDING
+## 🔷 Phase 81: Canonical Architecture & Total Codebase Consolidation — ✅ 100% COMPLETE
 
-- [ ] **Step 81.1** — Create Canonical Scan Constants (`packages/core/scan-constants.js`)
-- [ ] **Step 81.2** — Create Canonical File Walker (`packages/core/file-walker.js`)
-- [ ] **Step 81.3** — Create Canonical Syntax Utilities (`packages/core/syntax-utils.js`)
-- [ ] **Step 81.4** — Refactor workspace-scanner.js to Use Canonical Modules
-- [ ] **Step 81.5** — Refactor code-hygiene, complexity-analyzer, hygiene-fixer
-- [ ] **Step 81.6** — Refactor naming-checker, security-scanner, circular-dep-detector
-- [ ] **Step 81.7** — Refactor structure-analyzer to Use Canonical Walker
-- [ ] **Step 81.8** — Refactor syntax-checker.js to Use Canonical Syntax Utils
-- [ ] **Step 81.9** — Update Core Barrel & SYSTEM_GUIDE.md
-- [ ] **Step 81.10** — Full Consolidation Verification & DRY Audit
+- [x] **Step 81.1** — Create Canonical Scan Constants (`packages/core/scan-constants.js`)
+- [x] **Step 81.2** — Create Canonical File Walker (`packages/core/file-walker.js`)
+- [x] **Step 81.3** — Create Canonical Syntax Utilities (`packages/core/syntax-utils.js`)
+- [x] **Step 81.4** — Refactor workspace-scanner.js to Use Canonical Modules
+- [x] **Step 81.5** — Refactor code-hygiene, complexity-analyzer, hygiene-fixer
+- [x] **Step 81.6** — Refactor naming-checker, security-scanner, circular-dep-detector
+- [x] **Step 81.7** — Refactor structure-analyzer to Use Canonical Walker
+- [x] **Step 81.8** — Refactor syntax-checker.js to Use Canonical Syntax Utils
+- [x] **Step 81.9** — Update Core Barrel & SYSTEM_GUIDE.md
+- [x] **Step 81.10** — Full Consolidation Verification & DRY Audit
+
+
+---
+
+## 🔷 Phase 83: Project AI Intelligence System — 🔴 0% PENDING
+
+- [ ] **Step 83.1** — Create `packages/core/responsive-scanner.js`
+- [ ] **Step 83.2** — Create `packages/core/dynamic-scanner.js`
+- [ ] **Step 83.3** — Create `packages/core/ai-scaffolder.js`
+- [ ] **Step 83.4** — Create `packages/core/intelligence-report.js`
+- [ ] **Step 83.5** — Create `dashboard/src/server/intelligence.js`
+- [ ] **Step 83.6** — Edit `dashboard/src/server/projects.js`
+- [ ] **Step 83.7** — Edit `dashboard/src/components/AddProjectModal.jsx`
+- [ ] **Step 83.8** — Edit `dashboard/src/components/ProjectCard.jsx`
+- [ ] **Step 83.9** — Create `dashboard/src/components/intelligence/IntelligenceHub.jsx`
+- [ ] **Step 83.10** — Edit `dashboard/src/components/ProjectTabsContent.jsx`
+- [ ] **Step 83.11** — Create `dashboard/src/hooks/useIntelligence.js`
+- [ ] **Step 83.12** — Edit `dashboard/src/utils/api.js`
+- [ ] **Step 83.13** — Full Verification
+
+
+---
+
+## 🔷 Phase 84: 🌍 Phase 84: Standalone Live Analytics System — 🔴 0% PENDING
+
+- [ ] **Step 84.1** — Express server on port 4100. CORS enabled for any origin. Mount all routes. (`server/index.js`)
+- [ ] **Step 84.2** — In-memory `Map` for live sessions. Add/update/remove/cleanup methods. SSE broadcast on change. (`server/lib/session-manager.js`)
+- [ ] **Step 84.3** — IP → Country/City via `ip-api.com`. Cache results in-memory (LRU, max 1000). (`server/lib/geo-resolver.js`)
+- [ ] **Step 84.4** — User-Agent string → `{ device, browser, os }`. Lightweight regex-based (no npm dependency). (`server/lib/ua-parser.js`)
+- [ ] **Step 84.5** — JSON file persistence. Daily event logs (JSONL). Aggregate summaries. 30-day auto-cleanup. (`server/lib/store.js`)
+- [ ] **Step 84.6** — Compute: totalUsers, todayUsers, liveUsers, countryBreakdown, deviceBreakdown, browserBreakdown, hourlyTrend. (`server/lib/aggregator.js`)
+- [ ] **Step 84.7** — `POST /api/event` — process incoming visit. `POST /api/heartbeat` — keep session alive. (`server/routes/events.js`)
+- [ ] **Step 84.8** — `GET /api/stats` — full analytics JSON. `GET /api/live-stream` — SSE endpoint for real-time. (`server/routes/stats.js`)
+- [ ] **Step 84.9** — `GET /api/embed-script` — serves minified tracker.js with correct server URL injected. (`server/routes/embed.js`)
+- [ ] **Step 84.10** — Full tracking script. SessionId, heartbeat, visibility API, event dispatch. (`tracker/tracker.js`)
+- [ ] **Step 84.11** — Minify with esbuild → `tracker.min.js` (< 2KB). (`Build step`)
+- [ ] **Step 84.12** — `npx create-vite` → dark premium dashboard with Inter/Outfit fonts. Port 4200. (`Vite + React scaffold`)
+- [ ] **Step 84.13** — SSE hook → connects to `:4100/api/live-stream`. Auto-reconnect. Exposes all metrics. (`src/hooks/useLiveStream.js`)
+- [ ] **Step 84.14** — 4 animated cards: Total / Today / Live / Avg Duration. (`src/components/StatsCards.jsx`)
+- [ ] **Step 84.15** — Custom SVG world map (Mercator projection). Dots placed via lat/lon → SVG coordinate formula. Size = user count. Color = traffic intensity. Pulse animation on new arrivals. Hover tooltip per dot. Zero dependency, no API key. (`src/components/WorldMapSvg.jsx`)
+- [ ] **Step 84.16** — Top 10 countries with flag emojis + animated percentage bars. (`src/components/CountryRanking.jsx`)
+- [ ] **Step 84.17** — Mobile/Desktop/Tablet donut chart or bars. (`src/components/DeviceBreakdown.jsx`)
+- [ ] **Step 84.18** — Chrome/Firefox/Safari/Edge bars with icons. (`src/components/BrowserBreakdown.jsx`)
+- [ ] **Step 84.19** — Real-time auto-scrolling feed. Flag + City + Device + "just now". (`src/components/ActivityFeed.jsx`)
+- [ ] **Step 84.20** — Canvas/SVG line chart — hourly visitors trend. (`src/components/TrendChart.jsx`)
+- [ ] **Step 84.21** — Compose all components into single-page analytics dashboard. (`src/App.jsx`)
+
+
+---
+
+## 🔷 Phase 85: 🔄 Phase 85: Simple Update Notifier — 🔴 0% PENDING
+
+- [ ] **Step 85.1** — Fetch `version.json` from URL. Compare with `app.getVersion()`. Send `update:available` IPC if newer. Retry silently on failure. Check on startup (5s delay) + every 1 hour. (`electron/version-checker.js`)
+- [ ] **Step 85.2** — Import version-checker. Register IPC handler: `shell:open-url` → `shell.openExternal(url)`. Register `app:version` → return `app.getVersion()`. (`electron/main.js (edit)`)
+- [ ] **Step 85.3** — Expose via contextBridge: `onUpdateAvailable(cb)`, `openDownloadPage(url)`, `getCurrentVersion()`, `checkForUpdates()`. (`electron/preload.js (edit)`)
+- [ ] **Step 85.4** — Listen to `window.electronAPI.onUpdateAvailable`. Store: `updateInfo`, `isDismissed`. Methods: `dismiss()`, `openDownload()`. Persist dismissed version in localStorage so it doesn't reappear. (`dashboard/src/hooks/useUpdateNotifier.js`)
+- [ ] **Step 85.5** — Animated slide-down banner at top of app. Shows version, changelog bullets, download button, dismiss button. Critical mode: no dismiss. (`dashboard/src/components/UpdateBanner.jsx`)
+- [ ] **Step 85.6** — Mount `<UpdateBanner>` globally. (`dashboard/src/App.jsx (edit)`)
+- [ ] **Step 85.7** — Static JSON file on website. We manually update this on each release. Must be HTTPS, CORS-enabled. (`public/version.json`)
+
+
+---
+
+## 🔷 Phase 86: Instant Plan-to-Roadmap & Steps Live Synchronization — ✅ 100% COMPLETE
+
+- [x] **Step 86.1** — Enhance `packages/cli/plan-sync-utils.js`
+- [x] **Step 86.2** — Update `dashboard/src/server/plan-sync-server.js`
+- [x] **Step 86.3** — Update `dashboard/src/server/watcher-events.js`
+- [x] **Step 86.4** — Update `dashboard/src/server/project-plans.js`
+- [x] **Step 86.5** — Update `dashboard/src/server/parser.js`
+- [x] **Step 86.6** — Full Verification & Live Test

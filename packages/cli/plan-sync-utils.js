@@ -5,36 +5,74 @@ const { PROGRESS_PATH, PLAN_DIR } = require('./paths.js');
 function parsePlanFileSteps(filePath) {
   const content = fs.readFileSync(filePath, 'utf8');
   const lines = content.split(/\r?\n/);
-  const steps = [];
+  const stepsMap = new Map();
   let phaseName = null;
   let phaseNum = null;
+
+  const baseName = path.basename(filePath);
+  const filePhaseMatch = baseName.match(/phase-(\d+)/i);
+  if (filePhaseMatch) phaseNum = parseInt(filePhaseMatch[1], 10);
 
   let inFence = false;
   for (const line of lines) {
     if (/^```/.test(line)) { inFence = !inFence; continue; }
     if (inFence) continue;
 
-    const planTitleMatch = line.match(/^#\s+Plan:\s*(.+)/i);
-    if (planTitleMatch && !phaseName) {
-      phaseName = planTitleMatch[1].trim();
-    }
-
-    const phaseMatch = line.match(/^##\s+Phase\s+(\d+):\s*(.+)/i);
-    if (phaseMatch) {
-      phaseNum = parseInt(phaseMatch[1]);
-      phaseName = phaseMatch[2].replace(/\s*—.*$/, '').trim();
-    }
-
-    const stepMatch = line.match(/^#{2,3}\s+(?:Step\s+)?(\d+\.\d+)\s*(?:—|-|:)\s*(.+)/i);
-    if (stepMatch) {
-      if (!phaseNum) {
-        const p = stepMatch[1].split('.')[0];
-        phaseNum = parseInt(p);
+    if (!phaseName) {
+      const h1Match = line.match(/^#\s+(?:Phase\s+(\d+)[:\s—-]*)?(.*)/i);
+      if (h1Match && h1Match[2]) {
+        if (h1Match[1] && !phaseNum) phaseNum = parseInt(h1Match[1], 10);
+        const candidate = h1Match[2].replace(/^[:\s—-]+/, '').trim();
+        if (candidate) phaseName = candidate;
       }
-      steps.push({ number: stepMatch[1], title: stepMatch[2].trim() });
+    }
+
+    const phaseHeader = line.match(/^#{1,3}\s+(?:\[?Phase\s+(\d+)\]?|Phase\s+(\d+))[:\s—-]*(.*)/i);
+    if (phaseHeader) {
+      const p = phaseHeader[1] || phaseHeader[2];
+      if (p) phaseNum = parseInt(p, 10);
+      if (phaseHeader[3] && phaseHeader[3].trim()) {
+        phaseName = phaseHeader[3].replace(/\s*—.*$/, '').trim();
+      }
+    }
+
+    let stepNum = null;
+    let stepTitle = null;
+
+    const headMatch = line.match(/^#{2,4}\s+(?:\[?[A-Z]+\]?\s*)?(?:Step\s+)?(\d+\.\d+)\s*(?:—|-|:|\.|\s)\s*(.+)/i);
+    const checkMatch = line.match(/^\s*-\s*\[[ x!/~]\]\s*(?:(?:\*\*Step\s+|\*\*|\bStep\s+))?(\d+\.\d+)\*?\*?\s*(?:—|-|:|\.|\s)\s*(.+)/i);
+    const tableMatch = line.match(/^\s*\|\s*(?:Step\s+)?(\d+\.\d+)\s*\|\s*([^|]+)\s*\|\s*([^|]+)/i);
+
+    if (headMatch) {
+      stepNum = headMatch[1];
+      stepTitle = headMatch[2].trim();
+    } else if (checkMatch) {
+      stepNum = checkMatch[1];
+      stepTitle = checkMatch[2].trim();
+    } else if (tableMatch) {
+      stepNum = tableMatch[1];
+      const col1 = tableMatch[2].trim().replace(/`/g, '');
+      const col2 = tableMatch[3].trim();
+      stepTitle = col1 ? (col2 ? col2 + ' (`' + col1 + '`)' : col1) : col2;
+    }
+
+    if (stepNum && stepTitle) {
+      if (!phaseNum) phaseNum = parseInt(stepNum.split('.')[0], 10);
+      if (!stepsMap.has(stepNum)) {
+        stepsMap.set(stepNum, { number: stepNum, title: stepTitle });
+      }
     }
   }
 
+  const steps = Array.from(stepsMap.values()).sort((a, b) => {
+    const [pA, sA] = a.number.split('.').map(Number);
+    const [pB, sB] = b.number.split('.').map(Number);
+    return pA !== pB ? pA - pB : sA - sB;
+  });
+
+  if (!phaseName) {
+    phaseName = baseName.replace(/\.md$/, '').replace(/^phase-\d+-?/, '').replace(/-/g, ' ');
+  }
   return { phaseNum, phaseName, steps };
 }
 

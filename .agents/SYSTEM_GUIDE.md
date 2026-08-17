@@ -102,6 +102,9 @@ ai-checkpoint/
 │   │
 │   └── core/                   ← Shared library (CommonJS)
 │       ├── index.js            ← Barrel export (use this to import)
+│       ├── scan-constants.js   ← Canonical scan constants (SKIP_DIRS, CODE_EXTS)
+│       ├── file-walker.js      ← Canonical file walker (walkCodeFiles, walkAllFiles)
+│       ├── syntax-utils.js     ← Canonical syntax utils (checkBalanced, getEsbuild)
 │       ├── health-score.js     ← Health score calculator
 │       ├── quality-report.js   ← Quality report generator
 │       ├── security-scanner.js ← Security pattern scanner

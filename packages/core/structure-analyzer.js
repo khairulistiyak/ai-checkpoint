@@ -1,42 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-
-const JUNK_FILES = [
-  '.DS_Store', 'Thumbs.db', 'desktop.ini', '._.DS_Store',
-  'npm-debug.log', 'yarn-error.log', 'yarn-debug.log',
-  'temp.js', 'test.js', 'untitled.js', 'copy.js',
-  'old.js', 'backup.js',
-];
-
-const JUNK_PATTERNS = [
-  /^\.\_/, /\.bak$/i, /\.orig$/i, /\.swp$/i, /~$/,
-  /\.tmp$/i,
-];
-
-const SKIP = ['node_modules', '.git', 'dist', 'build', '.agents', '_archive', 'release', 'tests'];
-
-function walkAll(dir, depth, results) {
-  if (depth === undefined) depth = 0;
-  if (results === undefined) results = [];
-  if (depth > 15) return results;
-  let entries;
-  try { entries = fs.readdirSync(dir); } catch { return results; }
-  for (let i = 0; i < entries.length; i++) {
-    const name = entries[i];
-    if (SKIP.indexOf(name) >= 0) continue;
-    const full = path.join(dir, name);
-    let stat;
-    try { stat = fs.lstatSync(full); } catch { continue; }
-    if (stat.isSymbolicLink()) continue;
-    const isDir = stat.isDirectory();
-    results.push({ path: full, name: name, isDir: isDir, size: stat.size, depth: depth });
-    if (isDir) walkAll(full, depth + 1, results);
-  }
-  return results;
-}
+const { JUNK_FILES, JUNK_PATTERNS } = require('./scan-constants.js');
+const { walkAllFiles } = require('./file-walker.js');
 
 function analyzeStructure(projectPath) {
-  const all = walkAll(projectPath);
+  const all = walkAllFiles(projectPath, { withDepth: true });
   const issues = [];
 
   for (const item of all) {

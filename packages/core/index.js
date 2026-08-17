@@ -12,6 +12,9 @@ const { generateQualityReport } = require('./quality-report.js');
 const { detectDuplicates } = require('./duplicate-detector.js');
 const { buildUtilityIndex, searchUtility } = require('./utility-index.js');
 const { generateRefactorProposal } = require('./dry-refactor-engine.js');
+const { SKIP_DIRS, CODE_EXTS, JS_EXTS, SCAN_EXTS, JUNK_FILES, JUNK_PATTERNS } = require('./scan-constants.js');
+const { walkCodeFiles, walkAllFiles } = require('./file-walker.js');
+const { checkBalanced, getEsbuild, checkImportTargets } = require('./syntax-utils.js');
 
 module.exports = {
   parseProgressText,
@@ -32,5 +35,16 @@ module.exports = {
   detectDuplicates,
   buildUtilityIndex,
   searchUtility,
-  generateRefactorProposal
+  generateRefactorProposal,
+  SKIP_DIRS,
+  CODE_EXTS,
+  JS_EXTS,
+  SCAN_EXTS,
+  JUNK_FILES,
+  JUNK_PATTERNS,
+  walkCodeFiles,
+  walkAllFiles,
+  checkBalanced,
+  getEsbuild,
+  checkImportTargets
 };
