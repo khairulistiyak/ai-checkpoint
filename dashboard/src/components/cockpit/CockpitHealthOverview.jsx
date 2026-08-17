@@ -1,118 +1,118 @@
-import React, { useState } from 'react';
-import { Shield, RefreshCw, AlertTriangle, Sparkles, Check, ChevronDown, ChevronUp } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { RefreshCw } from 'lucide-react';
 import { useToast } from '../ToastProvider';
 import HealthScoreGauge from '../health/HealthScoreGauge';
-import HealthPillarGrid from '../health/HealthPillarGrid';
-import HealthCoreChecklist from '../health/HealthCoreChecklist';
-import HealthIssueExplorer from '../health/HealthIssueExplorer';
 import { useHealthCommandCenter } from '../health/useHealthCommandCenter';
+import AdvancedHUDV1 from '../intelligence/AdvancedHUDV1';
+import CockpitHealthModal from './CockpitHealthModal';
 
-export default function CockpitHealthOverview({ projectId }) {
+export default function CockpitHealthOverview({ projectId, onOpenIntelligence }) {
   const { showToast } = useToast();
-  const [isIssuesExpanded, setIsIssuesExpanded] = useState(false);
-  const {
-    health, loading, copiedReport, error, activeCategory, setActiveCategory,
-    searchQuery, setSearchQuery, fetchHealth, handleCopyDiagnosticReport,
-    handleOpenInIde, score, healthScore, qualityScore, scoreColor, breakdown,
-    issues, checks, filteredIssues, categoryCounts
-  } = useHealthCommandCenter({ projectId, showToast });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [intelligenceData, setIntelligenceData] = useState(null);
+  const [isIntelligenceScanning, setIsIntelligenceScanning] = useState(false);
+
+  const healthCenter = useHealthCommandCenter({ projectId, showToast });
+  const { health, score, healthScore, qualityScore, scoreColor, breakdown, loading: isHealthScanning, fetchHealth } = healthCenter;
+
+  const fetchIntelligence = useCallback(async (isManual = false) => {
+    if (isManual) setIsIntelligenceScanning(true);
+    try {
+      const res = await fetch(`/api/projects/${projectId}/intelligence`).then(r => r.json());
+      if (res?.success) {
+        setIntelligenceData(res.report);
+        if (isManual) showToast("Intelligence radar re-scanned!", "success");
+      }
+    } catch {
+      if (isManual) showToast("Failed to re-scan intelligence", "error");
+    } finally {
+      setIsIntelligenceScanning(false);
+    }
+  }, [projectId, showToast]);
+
+  useEffect(() => {
+    fetchIntelligence();
+  }, [fetchIntelligence]);
+
+  const scores = intelligenceData?.scores || {
+    performance: healthScore || 92,
+    dynamic: qualityScore || 85,
+    responsive: score || 88,
+    a11y: 98,
+    security: 100 - (breakdown?.criticalSecurity || 0) * 10
+  };
 
   return (
-    <div className="bg-cyber-card/90 backdrop-blur-xl border border-cyber-card-border rounded-2xl p-3.5 sm:p-5 shadow-sm space-y-4">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-cyber-card-border">
-        <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-white/[0.05] border border-white/10 flex items-center justify-center shrink-0">
-            <Shield className="w-4 h-4" style={{ color: scoreColor }} />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-sm sm:text-base font-bold text-white font-outfit tracking-tight">Health & Quality Overview</h2>
-              <span className="px-2 py-0.2 rounded-full text-[9px] font-mono font-bold uppercase tracking-wider bg-white/5 border border-white/10 text-zinc-300">Live Fortress</span>
+    <>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-stretch">
+        {/* Card 1: Health Fortress with Dedicated Re-scan */}
+        <div 
+          onClick={() => setIsModalOpen(true)}
+          className="group cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99] h-full relative"
+          title="Click to view detailed Health breakdown"
+        >
+          <HealthScoreGauge
+            score={score}
+            scoreColor={scoreColor}
+            healthScore={healthScore}
+            qualityScore={qualityScore}
+            filesScanned={health?.filesScanned || 0}
+            passed={health?.passed || false}
+            onRescan={(e) => {
+              e?.stopPropagation();
+              fetchHealth();
+            }}
+            isScanning={isHealthScanning}
+          />
+        </div>
+
+        {/* Card 2: Intelligence Hub with Dedicated Re-scan */}
+        {onOpenIntelligence && (
+          <div 
+            onClick={onOpenIntelligence}
+            className="group cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99] h-full bg-gradient-to-b from-[#16161a] to-[#0e0e11] border border-white/[0.08] rounded-3xl p-6 flex flex-col items-center justify-center text-center shadow-lg relative overflow-hidden min-h-[220px]"
+            title="Click to open Full Intelligence Hub"
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(6,182,212,0.03),transparent_60%)] pointer-events-none" />
+            
+            {/* Dedicated Re-scan button for Intelligence Hub */}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                fetchIntelligence(true);
+              }}
+              disabled={isIntelligenceScanning}
+              className="absolute top-4 right-4 z-20 px-2.5 py-1.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] text-zinc-400 hover:text-white transition-all flex items-center gap-1.5 text-[11px] font-mono shadow-sm cursor-pointer active:scale-95 disabled:opacity-50"
+              title="Re-scan Intelligence Hub"
+            >
+              <RefreshCw size={12} className={isIntelligenceScanning ? 'animate-spin text-cyan-400' : ''} />
+              <span className="hidden sm:inline">Re-scan</span>
+            </button>
+
+            <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-center">
+              <AdvancedHUDV1 
+                isFullWidth={false} 
+                scores={scores}
+              />
             </div>
-            <p className="text-[11px] font-mono text-zinc-400">AST integrity, Rule 0 guard, security auditing & code hygiene.</p>
+            
+            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-white/5 w-full justify-center">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+              <span className="text-sm font-bold text-white font-outfit">
+                Intelligence Hub
+              </span>
+            </div>
           </div>
-        </div>
-
-        <div className="flex items-center gap-2 shrink-0">
-          <button
-            onClick={handleCopyDiagnosticReport}
-            disabled={!health || loading}
-            className="bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-xl px-3 py-1.5 text-xs font-mono font-semibold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 active:scale-95"
-            title="Copy structured diagnostic prompt for AI to fix issues"
-          >
-            {copiedReport ? <Check size={12} className="text-purple-300" /> : <Sparkles size={12} className="text-purple-400" />}
-            <span>{copiedReport ? 'Copied!' : 'Fix Prompt'}</span>
-          </button>
-
-          <button
-            onClick={fetchHealth}
-            disabled={loading}
-            className="bg-white/[0.06] hover:bg-white/[0.1] text-zinc-200 border border-white/10 rounded-xl px-3 py-1.5 text-xs font-mono font-semibold transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 active:scale-95"
-          >
-            <RefreshCw size={12} className={loading ? 'animate-spin' : ''} />
-            <span>{loading ? 'Scanning...' : 'Re-scan'}</span>
-          </button>
-        </div>
+        )}
       </div>
 
-      {error && (
-        <div className="p-3 bg-rose-500/10 border border-rose-500/20 rounded-xl text-rose-300 text-xs font-mono flex items-center gap-2.5">
-          <AlertTriangle size={14} className="shrink-0 text-rose-400" />
-          <span>{error}</span>
-        </div>
-      )}
-
-      {health && (
-        <div className="space-y-3.5">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
-            <HealthScoreGauge
-              score={score}
-              scoreColor={scoreColor}
-              healthScore={healthScore}
-              qualityScore={qualityScore}
-              filesScanned={health.filesScanned}
-              passed={health.passed}
-            />
-            <HealthPillarGrid breakdown={breakdown} />
-          </div>
-
-          <HealthCoreChecklist checks={checks} />
-
-          {issues.length > 0 && (
-            <div className="pt-1">
-              <button
-                onClick={() => setIsIssuesExpanded(prev => !prev)}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.06] text-xs font-mono text-zinc-300 transition-all cursor-pointer"
-              >
-                <span className="font-bold flex items-center gap-2">
-                  <span>Detected Diagnostics & Issues ({issues.length})</span>
-                  {issues.length > 0 && (
-                    <span className="px-1.5 py-0.2 rounded text-[10px] bg-amber-500/20 text-amber-300 font-mono">
-                      {categoryCounts.security > 0 ? `${categoryCounts.security} security` : `${issues.length} items`}
-                    </span>
-                  )}
-                </span>
-                {isIssuesExpanded ? <ChevronUp className="w-4 h-4 text-zinc-400" /> : <ChevronDown className="w-4 h-4 text-zinc-400" />}
-              </button>
-
-              {isIssuesExpanded && (
-                <div className="mt-3">
-                  <HealthIssueExplorer
-                    issues={issues}
-                    filteredIssues={filteredIssues}
-                    categoryCounts={categoryCounts}
-                    activeCategory={activeCategory}
-                    setActiveCategory={setActiveCategory}
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                    onOpenInIde={handleOpenInIde}
-                  />
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+      {/* Detailed Modal */}
+      <CockpitHealthModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        {...healthCenter}
+      />
+    </>
   );
 }

@@ -60,10 +60,16 @@ export function useHealthCommandCenter({ projectId, showToast }) {
   const handleOpenInIde = async (filePath, line = 1) => {
     if (!filePath) return;
     try {
-      const res = await fetch('/api/settings').then((r) => r.json()).catch(() => ({}));
-      const ide = res.preferences?.preferredIde || 'vscode';
-      window.location.href = `${ide}://file/${filePath}${line ? `:${line}` : ''}`;
-      showToast(`Opening in ${ide.toUpperCase()}...`, 'info');
+      showToast(`Opening ${filePath.split('/').pop()} in IDE...`, 'info');
+      const res = await fetch('/api/open-in-ide', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filePath, line, projectId })
+      }).then(r => r.json()).catch(() => null);
+
+      if (!res?.opened && res?.url) {
+        window.location.href = res.url;
+      }
     } catch {
       window.location.href = `vscode://file/${filePath}${line ? `:${line}` : ''}`;
     }

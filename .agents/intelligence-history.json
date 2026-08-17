@@ -1,70 +1,10 @@
 [
   {
-    "timestamp": 1786997693052,
+    "timestamp": 1787008366259,
     "grade": "A+",
     "averageScore": 95,
     "scores": {
-      "responsive": 88,
-      "dynamic": 92,
-      "performance": 95,
-      "a11y": 99,
-      "security": 100
-    }
-  },
-  {
-    "timestamp": 1786997693167,
-    "grade": "A+",
-    "averageScore": 95,
-    "scores": {
-      "responsive": 88,
-      "dynamic": 92,
-      "performance": 95,
-      "a11y": 99,
-      "security": 100
-    }
-  },
-  {
-    "timestamp": 1787000382475,
-    "grade": "A+",
-    "averageScore": 95,
-    "scores": {
-      "responsive": 88,
-      "dynamic": 93,
-      "performance": 94,
-      "a11y": 99,
-      "security": 100
-    }
-  },
-  {
-    "timestamp": 1787000382564,
-    "grade": "A+",
-    "averageScore": 95,
-    "scores": {
-      "responsive": 88,
-      "dynamic": 93,
-      "performance": 94,
-      "a11y": 99,
-      "security": 100
-    }
-  },
-  {
-    "timestamp": 1787000434389,
-    "grade": "A+",
-    "averageScore": 95,
-    "scores": {
-      "responsive": 88,
-      "dynamic": 93,
-      "performance": 94,
-      "a11y": 99,
-      "security": 100
-    }
-  },
-  {
-    "timestamp": 1787001047944,
-    "grade": "A+",
-    "averageScore": 95,
-    "scores": {
-      "responsive": 88,
+      "responsive": 89,
       "dynamic": 93,
       "performance": 95,
       "a11y": 99,
@@ -72,11 +12,11 @@
     }
   },
   {
-    "timestamp": 1787001048035,
+    "timestamp": 1787008366327,
     "grade": "A+",
     "averageScore": 95,
     "scores": {
-      "responsive": 88,
+      "responsive": 89,
       "dynamic": 93,
       "performance": 95,
       "a11y": 99,
@@ -84,11 +24,11 @@
     }
   },
   {
-    "timestamp": 1787001145204,
+    "timestamp": 1787008491774,
     "grade": "A+",
     "averageScore": 95,
     "scores": {
-      "responsive": 88,
+      "responsive": 89,
       "dynamic": 93,
       "performance": 95,
       "a11y": 99,
@@ -96,11 +36,11 @@
     }
   },
   {
-    "timestamp": 1787001145337,
+    "timestamp": 1787008491846,
     "grade": "A+",
     "averageScore": 95,
     "scores": {
-      "responsive": 88,
+      "responsive": 89,
       "dynamic": 93,
       "performance": 95,
       "a11y": 99,
@@ -108,11 +48,311 @@
     }
   },
   {
-    "timestamp": 1787001158964,
+    "timestamp": 1787008494581,
     "grade": "A+",
     "averageScore": 95,
     "scores": {
-      "responsive": 88,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008496261,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008497943,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008508926,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008508995,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008548437,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008548512,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008558016,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008558168,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008564639,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008565767,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008566399,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008566627,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008566885,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008567102,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008567312,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008567508,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008568369,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008575193,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008575419,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008575610,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008575824,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008577167,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008577407,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008577623,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787008582893,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 89,
       "dynamic": 93,
       "performance": 95,
       "a11y": 99,

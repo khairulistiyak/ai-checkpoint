@@ -19,8 +19,8 @@ export default function CleanMinimalistBars({ scores }) {
   ];
 
   return (
-    <div className="w-full h-full flex flex-col justify-center p-8 bg-[#09090b] rounded-xl border border-white/[0.05]">
-      <div className="flex flex-col gap-5 w-full max-w-[300px] mx-auto">
+    <div className="w-full h-full flex flex-col justify-center py-2">
+      <div className="flex flex-col gap-6 w-full max-w-[300px] mx-auto">
         {metrics.map((m, i) => {
           const isHovered = hoveredIndex === i;
           const isFaded = hoveredIndex !== null && hoveredIndex !== i;
@@ -32,11 +32,11 @@ export default function CleanMinimalistBars({ scores }) {
               onMouseEnter={() => setHoveredIndex(i)}
               onMouseLeave={() => setHoveredIndex(null)}
             >
-              <div className="flex justify-between items-end font-sans">
-                <span className="text-zinc-300 text-xs font-medium tracking-wide">{m.id}</span>
-                <span className="text-white text-sm font-bold">{m.val}%</span>
+              <div className="flex justify-between items-end font-mono">
+                <span className="text-zinc-400 text-[10px] uppercase tracking-widest">{m.id}</span>
+                <span className="text-zinc-100 text-xs font-bold">{m.val}%</span>
               </div>
-              <div className="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+              <div className="w-full h-1 bg-white/[0.03] rounded-full overflow-hidden">
                 <motion.div 
                   className="h-full rounded-full"
                   style={{ backgroundColor: m.color }}

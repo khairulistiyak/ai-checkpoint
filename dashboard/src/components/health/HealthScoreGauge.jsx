@@ -1,14 +1,37 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { RefreshCw } from 'lucide-react';
 
-export default function HealthScoreGauge({ score, scoreColor, healthScore, qualityScore, filesScanned, passed }) {
+export default function HealthScoreGauge({
+  score,
+  scoreColor,
+  healthScore,
+  qualityScore,
+  filesScanned,
+  passed,
+  onRescan,
+  isScanning
+}) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.98 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="lg:col-span-4 bg-gradient-to-b from-[#16161a] to-[#0e0e11] border border-white/[0.08] rounded-3xl p-6 flex flex-col items-center justify-center text-center shadow-lg relative overflow-hidden"
+      className="bg-gradient-to-b from-[#16161a] to-[#0e0e11] border border-white/[0.08] rounded-3xl p-6 flex flex-col items-center justify-center text-center shadow-lg relative overflow-hidden h-full"
     >
       <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+
+      {/* Dedicated Health Re-scan button */}
+      {onRescan && (
+        <button
+          onClick={onRescan}
+          disabled={isScanning}
+          className="absolute top-4 right-4 z-20 px-2.5 py-1.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] text-zinc-400 hover:text-white transition-all flex items-center gap-1.5 text-[11px] font-mono shadow-sm cursor-pointer active:scale-95 disabled:opacity-50"
+          title="Re-scan Health & Code Fortress"
+        >
+          <RefreshCw size={12} className={isScanning ? 'animate-spin text-emerald-400' : ''} />
+          <span className="hidden sm:inline">Re-scan</span>
+        </button>
+      )}
 
       <div className="relative mb-3 flex items-center justify-center">
         <div

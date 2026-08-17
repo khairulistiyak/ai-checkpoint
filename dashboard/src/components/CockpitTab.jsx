@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Rocket, Target, Activity, Layers, FileText } from 'lucide-react';
 import GitVisualizer from './GitVisualizer';
 import ActivityLog from './ActivityLog';
 import CockpitHealthOverview from './cockpit/CockpitHealthOverview';
+import IntelligenceModal from './intelligence/IntelligenceModal';
 
 export default function CockpitTab({
   selectedProject,
@@ -17,6 +18,7 @@ export default function CockpitTab({
   liveActivityEntry,
   onSelectTab
 }) {
+  const [isIntelligenceModalOpen, setIsIntelligenceModalOpen] = useState(false);
   const unsyncedSteps = selectedProject?.unsyncedSteps || 0;
   return (
     <div className="flex flex-col gap-3">
@@ -100,7 +102,7 @@ export default function CockpitTab({
       )}
 
       {/* Embedded Live Health & Quality Fortress */}
-      <CockpitHealthOverview projectId={selectedProject.id} />
+      <CockpitHealthOverview projectId={selectedProject.id} onOpenIntelligence={() => setIsIntelligenceModalOpen(true)} />
 
       {/* Git Snapshots & Activity Stream */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 items-stretch">
@@ -121,6 +123,12 @@ export default function CockpitTab({
           <ActivityLog projectId={selectedProject.id} liveEntry={liveActivityEntry} />
         </div>
       </div>
+
+      <IntelligenceModal 
+        isOpen={isIntelligenceModalOpen} 
+        onClose={() => setIsIntelligenceModalOpen(false)} 
+        project={selectedProject} 
+      />
     </div>
   );
 }

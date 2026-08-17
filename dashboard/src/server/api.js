@@ -22,6 +22,72 @@ router.put('/settings', (req, res) => {
   }
 });
 
+router.post('/open-in-ide', (req, res) => {
+  try {
+    const { filePath, line = 1, projectId } = req.body;
+    if (!filePath) {
+      return res.status(400).json({ error: 'filePath is required' });
+    }
+
+    const settings = getSettings();
+    const preferredIde = settings.preferences?.preferredIde || 'vscode';
+
+    let fullPath = filePath;
+    if (!path.isAbsolute(filePath)) {
+      if (projectId) {
+        const project = settings.projects?.find(p => p.id === projectId);
+        if (project?.path) {
+          fullPath = path.resolve(project.path, filePath);
+        }
+      }
+      if (!fs.existsSync(fullPath)) {
+        for (const proj of settings.projects || []) {
+          const testPath = path.resolve(proj.path, filePath);
+          if (fs.existsSync(testPath)) {
+            fullPath = testPath;
+            break;
+          }
+        }
+      }
+      if (!fs.existsSync(fullPath)) {
+        fullPath = path.resolve(process.cwd(), '..', filePath);
+        if (!fs.existsSync(fullPath)) {
+          fullPath = path.resolve(process.cwd(), filePath);
+        }
+      }
+    }
+
+    const platform = os.platform();
+    let opened = false;
+    const ideCommands = {
+      vscode: [`code -g "${fullPath}:${line}"`, `open "vscode://file/${fullPath}:${line}"`],
+      cursor: [`cursor -g "${fullPath}:${line}"`, `open "cursor://file/${fullPath}:${line}"`],
+      windsurf: [`windsurf -g "${fullPath}:${line}"`, `open "windsurf://file/${fullPath}:${line}"`],
+      idea: [`idea --line ${line} "${fullPath}"`, `open "idea://open?file=${fullPath}&line=${line}"`]
+    };
+
+    const targetList = ideCommands[preferredIde] || ideCommands.vscode;
+    for (const cmd of targetList) {
+      try {
+        execSync(cmd, { stdio: 'ignore', timeout: 5000 });
+        opened = true;
+        break;
+      } catch {}
+    }
+
+    if (!opened && platform === 'darwin') {
+      try {
+        execSync(`open "${fullPath}"`, { stdio: 'ignore', timeout: 5000 });
+        opened = true;
+      } catch {}
+    }
+
+    res.json({ success: true, opened, fullPath, ide: preferredIde, url: `${preferredIde}://file/${fullPath}:${line}` });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 function pickDirectoryLinux() {
   const cmds = [
     'zenity --file-selection --directory --title="Select Project Folder" 2>/dev/null',

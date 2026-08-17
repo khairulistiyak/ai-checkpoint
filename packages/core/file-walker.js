@@ -88,7 +88,9 @@ function walkAllFiles(dir, options) {
   try { entries = fs.readdirSync(dir); } catch { return results; }
 
   for (const name of entries) {
-    if (skip.includes(name)) continue;
+    // Completely ignore macOS AppleDouble files across all scanners
+    if (skip.includes(name) || name.startsWith('._')) continue;
+    
     const full = path.join(dir, name);
     let stat;
     try { stat = fs.lstatSync(full); } catch { continue; }
