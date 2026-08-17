@@ -35,7 +35,14 @@ function scanSecurity(projectPath) {
       }
     }
   }
-  return { filesScanned: files.length, issues };
+  let score = 100;
+  for (const issue of issues) {
+    if (issue.severity === 'critical') score -= 20;
+    else if (issue.severity === 'warning') score -= 5;
+  }
+  score = Math.max(0, Math.min(100, score));
+
+  return { filesScanned: files.length, score, issues };
 }
 
 module.exports = { scanSecurity };

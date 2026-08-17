@@ -10,6 +10,7 @@ export default function ProjectCard({
   onRemove,
   onOpenConfig,
   onOpenArchitect,
+  onOpenIntelligence,
 }) {
   const { showToast } = useToast();
   const { progress } = project;
@@ -18,6 +19,10 @@ export default function ProjectCard({
 
   const overall = progress?.overall || { percentage: 0, completed: 0, total: 0 };
   const isDone = overall.percentage === 100;
+  
+  const intelligence = project.intelligence;
+  const grade = intelligence?.grade || '?';
+  const score = intelligence?.averageScore || 0;
 
   const handleCopyPath = () => {
     if (project.path && navigator.clipboard) {
@@ -82,6 +87,13 @@ export default function ProjectCard({
                 </span>
               )}
 
+              {intelligence && (
+                <span className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold flex items-center gap-1.5 shadow-sm" title={`AI Intelligence Score: ${score}/100`}>
+                  <span>🥇</span>
+                  <span>{grade}</span>
+                </span>
+              )}
+
               <span className="bg-white/[0.04] text-zinc-300 border border-white/10 px-2.5 py-0.5 rounded-full text-xs font-mono">
                 {overall.completed} / {overall.total} Steps
               </span>
@@ -120,6 +132,7 @@ export default function ProjectCard({
           onOpenArchitect={onOpenArchitect}
           handleQuickCheckpoint={handleQuickCheckpoint}
           onOpenConfig={onOpenConfig}
+          onOpenIntelligence={onOpenIntelligence}
           onRemove={onRemove}
         />
       </div>

@@ -55,6 +55,15 @@ export function parseProgress(projectPath) {
   } catch { return null; }
 }
 
+export function parseIntelligence(projectPath) {
+  try {
+    const histFile = path.join(projectPath, '.agents', 'intelligence-history.json');
+    if (!fs.existsSync(histFile)) return null;
+    const history = JSON.parse(fs.readFileSync(histFile, 'utf8'));
+    return history.length > 0 ? history[history.length - 1] : null;
+  } catch { return null; }
+}
+
 function mergeUnsyncedPhases(progress, parsedPhases) {
   if (!progress?.phases) return progress;
   const existing = new Set(progress.phases.map(p => String(p.number)));
@@ -111,12 +120,14 @@ export function enrichProject(p) {
       progress = mergeUnsyncedPhases(progress, planStats.parsedPhases);
     }
 
+    const intelligence = isInstalled ? parseIntelligence(p.path) : null;
+
     const progressTotal = progress?.overall?.total || 0;
     const planTotal = planStats?.totalSteps || 0;
     const unsyncedSteps = Math.max(0, planTotal - progressTotal);
-    return { ...p, name: safeName, isInstalled, progress, hasPlanFiles, planStats, unsyncedSteps };
+    return { ...p, name: safeName, isInstalled, progress, hasPlanFiles, planStats, unsyncedSteps, intelligence };
   } catch (e) {
     const fallback = p?.name || path.basename((p?.path || '').replace(/\/+$/, '')) || 'Untitled';
-    return { ...p, name: fallback, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] }, unsyncedSteps: 0 };
+    return { ...p, name: fallback, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] }, unsyncedSteps: 0, intelligence: null };
   }
 }

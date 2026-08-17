@@ -1,0 +1,122 @@
+[
+  {
+    "timestamp": 1786997693052,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 88,
+      "dynamic": 92,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1786997693167,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 88,
+      "dynamic": 92,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787000382475,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 88,
+      "dynamic": 93,
+      "performance": 94,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787000382564,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 88,
+      "dynamic": 93,
+      "performance": 94,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787000434389,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 88,
+      "dynamic": 93,
+      "performance": 94,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787001047944,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 88,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787001048035,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 88,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787001145204,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 88,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787001145337,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 88,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787001158964,
+    "grade": "A+",
+    "averageScore": 95,
+    "scores": {
+      "responsive": 88,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 100
+    }
+  }
+]

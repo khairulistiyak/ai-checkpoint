@@ -1,5 +1,5 @@
 import React from "react";
-import { Layers, BookmarkPlus, Settings, Trash2 } from "lucide-react";
+import { Layers, BookmarkPlus, Settings, Trash2, BrainCircuit } from "lucide-react";
 import ExportButton from "../ExportButton";
 
 export default function ProjectCardActions({
@@ -7,6 +7,7 @@ export default function ProjectCardActions({
   onOpenArchitect,
   handleQuickCheckpoint,
   onOpenConfig,
+  onOpenIntelligence,
   onRemove,
 }) {
   return (
@@ -29,6 +30,15 @@ export default function ProjectCardActions({
       >
         <BookmarkPlus className="w-3.5 h-3.5 text-zinc-400" />
         <span className="hidden sm:inline">Save Snapshot</span>
+      </button>
+
+      <button
+        onClick={() => onOpenIntelligence && onOpenIntelligence()}
+        className="px-3 py-1.5 rounded-xl bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 text-indigo-300 hover:text-white transition-all text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer shadow-sm"
+        title="Open AI Intelligence Hub"
+      >
+        <BrainCircuit className="w-3.5 h-3.5 text-indigo-400" />
+        <span className="hidden sm:inline">Intelligence Hub</span>
       </button>
 
       <ExportButton project={project} />

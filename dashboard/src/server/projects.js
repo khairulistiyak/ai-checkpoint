@@ -12,9 +12,12 @@ import { handleGetPlanFile, handleSavePlanFile, handleRestoreProgress } from './
 import { handleWatch, handleGetActivityLog, handleDeleteActivityLog } from './project-activity.js';
 import { handleUpdateProject, handleRelinkBridge, handleSyncPlans } from './project-actions.js';
 import { handleDetectStack } from './stack-detector.js';
+import aiScaffolder from '../../../packages/core/ai-scaffolder.js';
+const { scaffoldStrictRules } = aiScaffolder;
 import { handleGetCompliance } from './project-compliance.js';
 import { handleScaffoldCleanArch, handleGetBoundaryLeaks } from './clean-arch-routes.js';
 import { handleGetDryAnalysis, handleGetUtilityIndex, handleGetRefactorProposal } from './dry-analysis.js';
+import { handleGetIntelligence } from './intelligence.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -47,6 +50,7 @@ router.post('/:id/scaffold-clean-arch', handleScaffoldCleanArch);
 router.get('/:id/dry-analysis', handleGetDryAnalysis);
 router.get('/:id/utility-index', handleGetUtilityIndex);
 router.post('/:id/refactor-proposal', handleGetRefactorProposal);
+router.get('/:id/intelligence', handleGetIntelligence);
 router.put('/:id', handleUpdateProject);
 router.post('/:id/relink-bridge', handleRelinkBridge);
 router.post('/:id/sync-plans', handleSyncPlans);
@@ -94,6 +98,8 @@ router.post('/:id/install', (req, res) => {
       const srcPath = path.join(templatesDir, f.src);
       if (!fs.existsSync(destPath) && fs.existsSync(srcPath)) fs.copyFileSync(srcPath, destPath);
     }
+
+    scaffoldStrictRules(projectDir);
 
     watcherManager.generatePointerFiles(projectDir);
     watcherManager.getOrCreateWatcher(project.id, projectDir);
