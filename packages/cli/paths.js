@@ -12,11 +12,19 @@ function detectProjectId() {
   } catch { return null; }
 }
 
-const PROJECT_ID = detectProjectId();
-const AGENTS_DIR = PROJECT_ID
-  ? path.join(os.homedir(), '.ai-checkpoint', 'projects', PROJECT_ID)
-  : path.join(process.cwd(), '.agents');
+function getAgentsDir() {
+  const localAgents = path.join(process.cwd(), '.agents');
+  const projectId = detectProjectId();
+  if (projectId) {
+    const globalAgents = path.join(os.homedir(), '.ai-checkpoint', 'projects', projectId);
+    if (fs.existsSync(path.join(globalAgents, 'PROGRESS.md'))) {
+      return globalAgents;
+    }
+  }
+  return localAgents;
+}
 
+const AGENTS_DIR = getAgentsDir();
 const PROGRESS_PATH = path.join(AGENTS_DIR, 'PROGRESS.md');
 const PLAN_DIR = path.join(process.cwd(), 'plan');
 const DRAFTS_DIR = path.join(PLAN_DIR, 'drafts');
