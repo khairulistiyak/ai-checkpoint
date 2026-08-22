@@ -6,6 +6,8 @@ import AppModals from './components/AppModals';
 import PageSkeleton from './components/ui/PageSkeleton';
 import UpdateNotification from './components/UpdateNotification';
 import ProgressDeleteWarningModal from './components/ProgressDeleteWarningModal';
+import ErrorBoundary from './components/ErrorBoundary';
+import { UpdateBanner } from './components/UpdateBanner';
 
 import { useProjects } from './hooks/useProjects';
 import { useHashRoute } from './hooks/useHashRoute';
@@ -47,6 +49,31 @@ export default function App() {
     else setSelectedId(null);
   }, [route, projectId]);
 
+  // Standalone Analytics Telemetry Reporter (Port 4100)
+  useEffect(() => {
+    let sid = sessionStorage.getItem('__ac_telemetry_sid');
+    if (!sid) {
+      sid = 'client_' + Math.random().toString(36).substring(2, 9) + Date.now();
+      sessionStorage.setItem('__ac_telemetry_sid', sid);
+    }
+    const reportEvent = () => {
+      fetch('http://localhost:4100/api/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId: sid, page: route || 'home' })
+      }).catch(() => {});
+    };
+    reportEvent();
+    const timer = setInterval(() => {
+      fetch('http://localhost:4100/api/heartbeat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionId: sid })
+      }).catch(() => {});
+    }, 25000);
+    return () => clearInterval(timer);
+  }, [route]);
+
   useEffect(() => {
     const onKey = (e) => {
       if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setIsCommandPaletteOpen(true); }
@@ -72,6 +99,7 @@ export default function App() {
 
   return (
     <div className="h-screen w-screen overflow-hidden flex flex-col font-outfit bg-[#09090b] text-white/90 relative">
+      <UpdateBanner />
       <UpdateNotification />
       {error && (
         <div className="mx-4 md:mx-6 mt-2 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-xl flex items-center gap-3 text-sm text-red-300">

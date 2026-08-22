@@ -28,6 +28,7 @@ function walkCodeFiles(dir, options) {
   const skip = opts.skipDirs || SKIP_DIRS;
   const withMeta = opts.withMeta || false;
   const maxDepth = opts.maxDepth !== undefined ? opts.maxDepth : Infinity;
+  const maxFiles = opts.maxFiles !== undefined ? opts.maxFiles : 2000;
   const results = opts._results || [];
   const depth = opts._depth || 0;
 
@@ -37,6 +38,7 @@ function walkCodeFiles(dir, options) {
   try { entries = fs.readdirSync(dir); } catch { return results; }
 
   for (const name of entries) {
+    if (results.length >= maxFiles) return results;
     if (name.startsWith('.') || name.startsWith('._') || skip.includes(name)) continue;
     const full = path.join(dir, name);
     let stat;
@@ -79,6 +81,7 @@ function walkAllFiles(dir, options) {
   const skip = opts.skipDirs || SKIP_DIRS;
   const withDepth = opts.withDepth || false;
   const maxDepth = opts.maxDepth !== undefined ? opts.maxDepth : 15;
+  const maxFiles = opts.maxFiles !== undefined ? opts.maxFiles : 5000;
   const results = opts._results || [];
   const depth = opts._depth || 0;
 
@@ -88,6 +91,7 @@ function walkAllFiles(dir, options) {
   try { entries = fs.readdirSync(dir); } catch { return results; }
 
   for (const name of entries) {
+    if (results.length >= maxFiles) return results;
     // Completely ignore macOS AppleDouble files across all scanners
     if (skip.includes(name) || name.startsWith('._')) continue;
     

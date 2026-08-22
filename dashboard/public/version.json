@@ -1,0 +1,7 @@
+{
+  "version": "1.1.0",
+  "releaseDate": "2026-08-22",
+  "releaseNotes": "Phase 94 Worker Thread performance fix & Phase 84 Live Analytics integration.",
+  "downloadUrl": "https://github.com/khairulistiyak/ai-checkpoint/releases",
+  "mandatory": false
+}

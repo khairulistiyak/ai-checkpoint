@@ -22,13 +22,14 @@
     "node": ">=18.0.0"
   },
   "scripts": {
+    "dev": "npm --prefix dashboard run dev",
     "build:engine": "node scripts/build-engine.js",
     "test": "bats tests",
     "doctor": "./l doctor",
     "validate": "./l v",
     "live": "node scripts/live-hud.cjs",
     "hud": "node scripts/live-hud.cjs",
-    "electron:dev": "electron electron/main.js",
+    "electron:dev": "electron electron/main.js --no-sandbox",
     "electron:build": "bash scripts/build-desktop.sh",
     "electron:build:mac": "bash scripts/build-desktop.sh mac",
     "electron:build:win": "bash scripts/build-desktop.sh win",

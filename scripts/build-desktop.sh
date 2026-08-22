@@ -73,8 +73,8 @@ dot_clean -m . 2>/dev/null || true
 find . -name "._*" -delete 2>/dev/null || true
 find . -name ".DS_Store" -delete 2>/dev/null || true
 
-echo "🔧 Building encrypted engine..."
-npm run build:engine
+echo "🔧 Building encrypted engine (scripts/build-engine.js)..."
+node scripts/build-engine.js || npm run build:engine
 
 echo "📦 Backing up source for obfuscation..."
 cp -r dashboard/src/server dashboard/src/server.bak

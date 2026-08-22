@@ -4,6 +4,7 @@ const { createTray } = require('./tray.js');
 const { initAutoUpdater, downloadUpdate, installUpdate } = require('./updater.js');
 
 process.env.ELECTRON = '1';
+app.commandLine.appendSwitch('no-sandbox');
 
 const gotTheLock = app.requestSingleInstanceLock();
 
@@ -106,6 +107,15 @@ if (!gotTheLock) {
     else mainWindow?.maximize();
   });
   ipcMain.on('window:close', () => mainWindow?.close());
+  ipcMain.handle('check-for-updates', async () => {
+    try {
+      const { checkAppUpdate } = await import('./version-checker.js');
+      const version = app.getVersion() || '1.0.0';
+      return await checkAppUpdate(version);
+    } catch (e) {
+      return { success: false, updateAvailable: false, error: e.message };
+    }
+  });
 
   app.whenReady().then(async () => {
     const server = await startEmbeddedServer();

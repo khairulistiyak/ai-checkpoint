@@ -1,0 +1,26 @@
+{
+  "name": "pulse-live-analytics",
+  "version": "1.0.0",
+  "description": "Standalone, Privacy-First, Zero-DB Real-Time Live Telemetry Analytics System",
+  "main": "server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "concurrently \"npm --prefix server start\" \"npm --prefix dashboard dev\"",
+    "server": "npm --prefix server start",
+    "dashboard": "npm --prefix dashboard dev",
+    "install:all": "npm --prefix server install && npm --prefix dashboard install"
+  },
+  "keywords": [
+    "analytics",
+    "live-telemetry",
+    "sse",
+    "realtime",
+    "privacy-first",
+    "world-map"
+  ],
+  "author": "Khairul Istiyak <khairulistiyak@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

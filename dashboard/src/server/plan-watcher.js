@@ -16,7 +16,7 @@ export function watchPlanDirectory(projectId, projectPath, onChange) {
       if (debounceTimer) clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
         try { onChange({ eventType, filename }); } catch {}
-      }, 500);
+      }, 300);
     });
     activeWatcher.on('error', () => { stopWatching(); });
   } catch {}

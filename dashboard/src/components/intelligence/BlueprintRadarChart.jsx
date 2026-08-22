@@ -28,13 +28,22 @@ export default function BlueprintRadarChart({ scores }) {
 
   return (
     <div className="w-full h-full flex items-center justify-center relative font-mono">
-      {/* Graph Paper Background */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{
-        backgroundImage: 'linear-gradient(rgba(255,255,255,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px)',
-        backgroundSize: '10px 10px'
+      <div className="absolute inset-0 opacity-[0.04]" style={{
+        backgroundImage: 'linear-gradient(rgba(99,102,241,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(99,102,241,0.5) 1px, transparent 1px)',
+        backgroundSize: '12px 12px'
       }} />
       
-      <svg viewBox="0 0 100 100" className="w-full h-full max-w-[240px] overflow-visible relative z-10">
+      <svg viewBox="0 0 100 100" className="w-full h-full max-w-[260px] overflow-visible relative z-10">
+        <defs>
+          <linearGradient id="radarFill" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#6366f1" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#a855f7" stopOpacity="0.1" />
+          </linearGradient>
+          <filter id="radarGlow" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="0.8" result="blur" />
+            <feComposite in="SourceGraphic" in2="blur" operator="over" />
+          </filter>
+        </defs>
         
         {/* Architect Grid Rings */}
         {[0.25, 0.5, 0.75, 1.0].map((scale, i) => (
@@ -45,8 +54,8 @@ export default function BlueprintRadarChart({ scores }) {
               return `${p.x},${p.y}`;
             }).join(' ')}
             fill="none"
-            stroke="rgba(255,255,255,0.15)"
-            strokeWidth="0.2"
+            stroke="rgba(255,255,255,0.12)"
+            strokeWidth="0.3"
             strokeDasharray="1 1"
           />
         ))}
@@ -55,49 +64,51 @@ export default function BlueprintRadarChart({ scores }) {
         {metrics.map((_, i) => {
           const p = getCoordinates(100, i);
           return (
-            <line key={i} x1={center} y1={center} x2={p.x} y2={p.y} stroke="rgba(255,255,255,0.15)" strokeWidth="0.2" />
+            <line key={i} x1={center} y1={center} x2={p.x} y2={p.y} stroke="rgba(255,255,255,0.12)" strokeWidth="0.3" />
           );
         })}
 
         {/* Data Polygon */}
         <motion.path
           d={pathData}
-          fill="rgba(255,255,255,0.02)"
-          stroke="#fff"
-          strokeWidth="0.5"
-          strokeLinejoin="miter"
+          fill="url(#radarFill)"
+          stroke="#818cf8"
+          strokeWidth="0.8"
+          filter="url(#radarGlow)"
+          strokeLinejoin="round"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ pathLength: 1, opacity: 1 }}
-          transition={{ duration: 1.5, ease: "easeInOut" }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
         />
 
         {/* Data Points & Labels */}
         {points.map((p, i) => {
-          const labelPos = getCoordinates(115, i);
+          const labelPos = getCoordinates(118, i);
           return (
             <g key={i}>
-              <circle cx={p.x} cy={p.y} r="0.8" fill="#fff" />
+              <circle cx={p.x} cy={p.y} r="1.2" fill="#818cf8" filter="url(#radarGlow)" />
               <text
                 x={labelPos.x}
                 y={labelPos.y}
-                fill="#a1a1aa"
-                fontSize="3"
+                fill="#c4b5fd"
+                fontSize="3.2"
+                fontWeight="bold"
                 textAnchor="middle"
                 alignmentBaseline="middle"
-                className="tracking-widest"
+                className="tracking-wider"
               >
                 {metrics[i].label}
               </text>
               <text
                 x={p.x + (p.x > center ? 2 : -2)}
                 y={p.y + (p.y > center ? 2 : -2)}
-                fill="#fff"
-                fontSize="2.5"
+                fill="#a7f3d0"
+                fontSize="2.6"
+                fontWeight="bold"
                 textAnchor={p.x > center ? "start" : "end"}
                 alignmentBaseline="middle"
-                opacity="0.5"
               >
-                {metrics[i].value}
+                {metrics[i].value}%
               </text>
             </g>
           );
