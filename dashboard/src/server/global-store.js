@@ -174,17 +174,18 @@ export function recoverProgressFromPlans(projectId, projectPath) {
 
   try {
     ensureProjectDataDir(projectId);
-    const skeleton = `# Project Progress
+    const skeleton = `# Progress Tracker
 
 [░░░░░░░░░░░░░░░░░░░░] 0% (0/0 steps complete)
 
-## 👉 NEXT: None
+## 👉 NEXT: Create your first plan file in \`plan/\`
 
 ---
 
-## 🔷 Phase 1: Core Hardening — 🔴 0% PENDING
-
-- [ ] **Step 1.1** — Initial setup
+<!--
+No phases yet. Add plan files to the plan/ directory,
+then click "Sync Plans" to populate this tracker.
+-->
 `;
     fs.writeFileSync(progressPath, skeleton, 'utf8');
     

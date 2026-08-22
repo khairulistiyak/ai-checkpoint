@@ -96,21 +96,22 @@ class WatcherManager {
     }
   }
 
-  // Initialize watchers for all registered projects
-  // BUG FIX: Removed .agents dir check — migrated projects won't have it
+  // Initialize watchers for all registered projects asynchronously to prevent event loop freeze
   initializeAll() {
-    try {
-      const settings = getSettings();
-      if (settings.projects && settings.projects.length > 0) {
-        for (const p of settings.projects) {
-          if (p.path && fs.existsSync(p.path)) {
-            this.getOrCreateWatcher(p.id, p.path);
+    setTimeout(() => {
+      try {
+        const settings = getSettings();
+        if (settings.projects && settings.projects.length > 0) {
+          for (const p of settings.projects) {
+            if (p.path && fs.existsSync(p.path)) {
+              this.getOrCreateWatcher(p.id, p.path);
+            }
           }
         }
+      } catch (e) {
+        console.error('⚠️ Failed to initialize watchers:', e.message);
       }
-    } catch (e) {
-      console.error('⚠️ Failed to initialize watchers:', e.message);
-    }
+    }, 500);
   }
 }
 

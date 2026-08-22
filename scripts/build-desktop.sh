@@ -91,7 +91,10 @@ for f in electron/*.js; do
 done
 
 echo "🧹 Cleaning stale release directory..."
-rm -rf release 2>/dev/null || sudo rm -rf release 2>/dev/null || true
+pkill -f ai-checkpoint 2>/dev/null || true
+pkill -f electron 2>/dev/null || true
+sudo rm -rf release 2>/dev/null || rm -rf release 2>/dev/null || true
+mkdir -p release
 
 echo "🚀 Step 3: Packaging Desktop App with Electron Builder..."
 case "$PLATFORM" in
