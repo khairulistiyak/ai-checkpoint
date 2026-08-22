@@ -21,8 +21,8 @@ export function handleWatch(req, res) {
   // Send initial connection event
   res.write(`event: connected\ndata: ${JSON.stringify({ projectId: project.id })}\n\n`);
 
-  // Ensure watcher is running and register this SSE client
-  if (fs.existsSync(project.path) && fs.existsSync(path.join(project.path, '.agents'))) {
+  // Ensure watcher is running — no longer requires .agents/ dir
+  if (fs.existsSync(project.path)) {
     watcherManager.getOrCreateWatcher(project.id, project.path);
   }
   watcherManager.sseManager.addClient(project.id, res);
@@ -53,7 +53,7 @@ export function handleGetActivityLog(req, res) {
     if (watcher && watcher.logger) {
       logger = watcher.logger;
     } else {
-      logger = new ActivityLogger(project.path);
+      logger = new ActivityLogger(project.path, project.id);
     }
     const result = logger.read(limit, offset);
     res.json({
@@ -79,7 +79,7 @@ export function handleDeleteActivityLog(req, res) {
     if (watcher && watcher.logger) {
       logger = watcher.logger;
     } else {
-      logger = new ActivityLogger(project.path);
+      logger = new ActivityLogger(project.path, project.id);
     }
 
     const result = logger.clear(range);

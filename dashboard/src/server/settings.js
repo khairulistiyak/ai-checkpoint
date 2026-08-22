@@ -15,7 +15,7 @@ export const DEFAULT_PREFERENCES = {
   telemetryPulse: 3,
   logRetention: 1000,
   preferredIde: 'vscode',
-  preferredShell: '/bin/zsh',
+  preferredShell: process.env.SHELL || '/bin/bash',
   soundEffects: false,
   compactView: false,
   language: 'en'

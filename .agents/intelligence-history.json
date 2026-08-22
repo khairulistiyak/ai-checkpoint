@@ -1,330 +1,366 @@
 [
   {
-    "timestamp": 1787009259388,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787373361626,
+    "grade": "B",
+    "averageScore": 89,
     "scores": {
-      "responsive": 99,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 70
     }
   },
   {
-    "timestamp": 1787009259446,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787373350438,
+    "grade": "B",
+    "averageScore": 89,
     "scores": {
-      "responsive": 99,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 70
     }
   },
   {
-    "timestamp": 1787009273581,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787373283461,
+    "grade": "B",
+    "averageScore": 89,
     "scores": {
-      "responsive": 99,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 70
     }
   },
   {
-    "timestamp": 1787009273646,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787373271800,
+    "grade": "B",
+    "averageScore": 89,
     "scores": {
-      "responsive": 99,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 70
     }
   },
   {
-    "timestamp": 1787009279826,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787196563529,
+    "grade": "C",
+    "averageScore": 75,
     "scores": {
-      "responsive": 99,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 0
     }
   },
   {
-    "timestamp": 1787009279871,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787196563390,
+    "grade": "C",
+    "averageScore": 75,
     "scores": {
-      "responsive": 99,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 0
     }
   },
   {
-    "timestamp": 1787009288027,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787196269134,
+    "grade": "C",
+    "averageScore": 75,
     "scores": {
-      "responsive": 99,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 0
     }
   },
   {
-    "timestamp": 1787009288081,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787196268939,
+    "grade": "C",
+    "averageScore": 75,
     "scores": {
-      "responsive": 99,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 0
     }
   },
   {
-    "timestamp": 1787009299644,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787196262163,
+    "grade": "C",
+    "averageScore": 75,
     "scores": {
-      "responsive": 99,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 0
     }
   },
   {
-    "timestamp": 1787009299712,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787196246344,
+    "grade": "C",
+    "averageScore": 75,
     "scores": {
-      "responsive": 99,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 0
     }
   },
   {
-    "timestamp": 1787009318695,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195860483,
+    "grade": "B",
+    "averageScore": 83,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 40
     }
   },
   {
-    "timestamp": 1787009318743,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195860347,
+    "grade": "B",
+    "averageScore": 83,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 40
     }
   },
   {
-    "timestamp": 1787009329682,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195849657,
+    "grade": "B",
+    "averageScore": 83,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 40
     }
   },
   {
-    "timestamp": 1787009331343,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195833020,
+    "grade": "B",
+    "averageScore": 83,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 40
     }
   },
   {
-    "timestamp": 1787009334885,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195820701,
+    "grade": "B",
+    "averageScore": 83,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 40
     }
   },
   {
-    "timestamp": 1787009334935,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195812269,
+    "grade": "B",
+    "averageScore": 83,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 40
     }
   },
   {
-    "timestamp": 1787009391526,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195565857,
+    "grade": "B",
+    "averageScore": 87,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 60
     }
   },
   {
-    "timestamp": 1787009392957,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195565667,
+    "grade": "B",
+    "averageScore": 87,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 60
     }
   },
   {
-    "timestamp": 1787009393003,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195528000,
+    "grade": "B",
+    "averageScore": 89,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 70
     }
   },
   {
-    "timestamp": 1787009393054,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195527762,
+    "grade": "B",
+    "averageScore": 89,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 70
     }
   },
   {
-    "timestamp": 1787009515366,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195527482,
+    "grade": "B",
+    "averageScore": 89,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 70
     }
   },
   {
-    "timestamp": 1787009515419,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195505503,
+    "grade": "B",
+    "averageScore": 89,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 70
     }
   },
   {
-    "timestamp": 1787009535318,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195505369,
+    "grade": "B",
+    "averageScore": 89,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 70
     }
   },
   {
-    "timestamp": 1787009536609,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195505259,
+    "grade": "B",
+    "averageScore": 89,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 70
     }
   },
   {
-    "timestamp": 1787009537408,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195497008,
+    "grade": "B",
+    "averageScore": 89,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 70
     }
   },
   {
-    "timestamp": 1787009539417,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195296798,
+    "grade": "B",
+    "averageScore": 89,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 70
     }
   },
   {
-    "timestamp": 1787009556166,
-    "grade": "A+",
-    "averageScore": 99,
+    "timestamp": 1787195296633,
+    "grade": "B",
+    "averageScore": 89,
     "scores": {
-      "responsive": 100,
-      "dynamic": 99,
-      "performance": 97,
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
       "a11y": 99,
-      "security": 100
+      "security": 70
     }
   },
   {
-    "timestamp": 1787009556242,
+    "timestamp": 1787195254922,
+    "grade": "B",
+    "averageScore": 89,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 70
+    }
+  },
+  {
+    "timestamp": 1787195254752,
+    "grade": "B",
+    "averageScore": 89,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 70
+    }
+  },
+  {
+    "timestamp": 1787195246223,
+    "grade": "B",
+    "averageScore": 89,
+    "scores": {
+      "responsive": 89,
+      "dynamic": 93,
+      "performance": 95,
+      "a11y": 99,
+      "security": 70
+    }
+  },
+  {
+    "timestamp": 1787009561110,
     "grade": "A+",
     "averageScore": 99,
     "scores": {
@@ -348,11 +384,335 @@
     }
   },
   {
-    "timestamp": 1787009561110,
+    "timestamp": 1787009556242,
     "grade": "A+",
     "averageScore": 99,
     "scores": {
       "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009556166,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009539417,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009537408,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009536609,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009535318,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009515419,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009515366,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009393054,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009393003,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009392957,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009391526,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009334935,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009334885,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009331343,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009329682,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009318743,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009318695,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 100,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009299712,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 99,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009299644,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 99,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009288081,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 99,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009288027,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 99,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009279871,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 99,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009279826,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 99,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009273646,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 99,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009273581,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 99,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009259446,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 99,
+      "dynamic": 99,
+      "performance": 97,
+      "a11y": 99,
+      "security": 100
+    }
+  },
+  {
+    "timestamp": 1787009259388,
+    "grade": "A+",
+    "averageScore": 99,
+    "scores": {
+      "responsive": 99,
       "dynamic": 99,
       "performance": 97,
       "a11y": 99,

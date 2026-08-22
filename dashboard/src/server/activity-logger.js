@@ -3,11 +3,13 @@ import path from 'path';
 import { shouldIgnore } from './activity-ignore.js';
 import { rotateLogFile, clearLogEntries } from './activity-log-rotate.js';
 import { getSettings } from './settings.js';
+import * as globalStore from './global-store.js';
 
 class ActivityLogger {
-  constructor(projectPath) {
+  constructor(projectPath, projectId) {
     this.projectPath = projectPath;
-    this.logFile = path.join(projectPath, '.agents', 'activity-log.jsonl');
+    this.projectId = projectId;
+    this.logFile = globalStore.getActivityLogPath(projectId);
     this.maxEntries = 5000;
     this.writeQueue = [];
     this.isWriting = false;

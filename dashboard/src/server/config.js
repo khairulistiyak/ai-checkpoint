@@ -2,6 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { getSettings } from './settings.js';
+import * as globalStore from './global-store.js';
 
 const router = express.Router();
 
@@ -10,8 +11,8 @@ router.get('/projects/:id/config', (req, res) => {
   const project = settings.projects.find(p => p.id === req.params.id);
   if (!project) return res.status(404).json({ error: 'Not found' });
 
-  const rulesPath = path.join(project.path, '.agents', 'RULES.md');
-  const agentsPath = path.join(project.path, '.agents', 'AGENTS.md');
+  const rulesPath = globalStore.getRulesPath(project.id);
+  const agentsPath = globalStore.getAgentsPath(project.id);
 
   const rules = fs.existsSync(rulesPath) ? fs.readFileSync(rulesPath, 'utf8') : '';
   const agents = fs.existsSync(agentsPath) ? fs.readFileSync(agentsPath, 'utf8') : '';
@@ -29,11 +30,11 @@ router.post('/projects/:id/config', (req, res) => {
   if (rules !== undefined && (typeof rules !== 'string' || rules.length > MAX_SIZE)) return res.status(400).json({ error: 'Rules must be a string under 50KB' });
   if (agents !== undefined && (typeof agents !== 'string' || agents.length > MAX_SIZE)) return res.status(400).json({ error: 'Agents must be a string under 50KB' });
 
-  const agentsDir = path.join(project.path, '.agents');
-  if (!fs.existsSync(agentsDir)) return res.status(400).json({ error: '.agents directory not found' });
+  const agentsDir = globalStore.getProjectDataDir(project.id);
+  if (!fs.existsSync(agentsDir)) return res.status(400).json({ error: 'Global project data directory not found' });
 
-  const rulesPath = path.join(agentsDir, 'RULES.md');
-  const agentsPath = path.join(agentsDir, 'AGENTS.md');
+  const rulesPath = globalStore.getRulesPath(project.id);
+  const agentsPath = globalStore.getAgentsPath(project.id);
 
   try {
     if (rules !== undefined) fs.writeFileSync(rulesPath, rules);

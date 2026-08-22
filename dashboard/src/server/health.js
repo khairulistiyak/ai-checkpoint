@@ -3,6 +3,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
+import { getSettings } from './settings.js';
 
 const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
@@ -17,9 +18,8 @@ function loadHealthModule() {
 
 router.get('/projects/:id/health', (req, res) => {
   try {
-    const configPath = path.resolve(process.cwd(), '.agents', 'config.json');
-    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-    const project = (config.projects || []).find(p => p.id === req.params.id);
+    const settings = getSettings();
+    const project = settings.projects.find(p => p.id === req.params.id);
     if (!project) return res.status(404).json({ error: 'Project not found' });
 
     const mod = loadHealthModule();

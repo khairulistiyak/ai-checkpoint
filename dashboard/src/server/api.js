@@ -2,7 +2,7 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { execSync } from 'child_process';
+import { execSync, execFileSync } from 'child_process';
 import { getSettings, saveSettings, updatePreferences } from './settings.js';
 import projectsRouter from './projects.js';
 import configRouter from './config.js';
@@ -59,17 +59,17 @@ router.post('/open-in-ide', (req, res) => {
 
     const platform = os.platform();
     let opened = false;
-    const ideCommands = {
-      vscode: [`code -g "${fullPath}:${line}"`, `open "vscode://file/${fullPath}:${line}"`],
-      cursor: [`cursor -g "${fullPath}:${line}"`, `open "cursor://file/${fullPath}:${line}"`],
-      windsurf: [`windsurf -g "${fullPath}:${line}"`, `open "windsurf://file/${fullPath}:${line}"`],
-      idea: [`idea --line ${line} "${fullPath}"`, `open "idea://open?file=${fullPath}&line=${line}"`]
+    const ideExecutables = {
+      vscode: ['code', 'cursor', 'windsurf'],
+      cursor: ['cursor', 'code'],
+      windsurf: ['windsurf', 'code'],
+      idea: ['idea', 'code']
     };
 
-    const targetList = ideCommands[preferredIde] || ideCommands.vscode;
-    for (const cmd of targetList) {
+    const targetBinaries = ideExecutables[preferredIde] || ['code'];
+    for (const bin of targetBinaries) {
       try {
-        execSync(cmd, { stdio: 'ignore', timeout: 5000 });
+        execFileSync(bin, ['-g', `${fullPath}:${line}`], { stdio: 'ignore', timeout: 5000 });
         opened = true;
         break;
       } catch {}
@@ -77,7 +77,7 @@ router.post('/open-in-ide', (req, res) => {
 
     if (!opened && platform === 'darwin') {
       try {
-        execSync(`open "${fullPath}"`, { stdio: 'ignore', timeout: 5000 });
+        execFileSync('open', [fullPath], { stdio: 'ignore', timeout: 5000 });
         opened = true;
       } catch {}
     }

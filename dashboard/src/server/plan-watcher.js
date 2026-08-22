@@ -3,7 +3,7 @@ import path from 'path';
 
 let activeWatcher = null;
 
-export function watchPlanDirectory(projectPath, onChange) {
+export function watchPlanDirectory(projectId, projectPath, onChange) {
   stopWatching();
   const planDir = path.join(projectPath, 'plan');
   if (!fs.existsSync(planDir)) return;
@@ -16,7 +16,7 @@ export function watchPlanDirectory(projectPath, onChange) {
       if (debounceTimer) clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => {
         try { onChange({ eventType, filename }); } catch {}
-      }, 500);
+      }, 300);
     });
     activeWatcher.on('error', () => { stopWatching(); });
   } catch {}

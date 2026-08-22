@@ -2,54 +2,71 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
+import { Worker } from 'worker_threads';
 import { getSettings } from './settings.js';
+import * as globalStore from './global-store.js';
+import { scanCache } from './scanner-cache.js';
 
 const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export function handleHealthCheck(req, res) {
+function runWorkerScan(projectPath, scanType) {
+  return new Promise((resolve, reject) => {
+    const workerPath = new URL('./scanner-worker.js', import.meta.url);
+    const worker = new Worker(workerPath, {
+      workerData: { projectPath, scanType }
+    });
+    const timeout = setTimeout(() => {
+      worker.terminate();
+      reject(new Error('Scanner timeout (30s)'));
+    }, 30000);
+    worker.on('message', (msg) => {
+      clearTimeout(timeout);
+      if (msg.success) resolve(msg.result);
+      else reject(new Error(msg.error));
+    });
+    worker.on('error', (err) => {
+      clearTimeout(timeout);
+      reject(err);
+    });
+  });
+}
+
+export async function handleHealthCheck(req, res) {
   try {
     const settings = getSettings();
     const project = settings.projects.find(p => p.id === req.params.id);
     if (!project) return res.status(404).json({ error: 'Not found' });
 
     const cwd = project.path;
+    const cacheKey = `health:${project.id}`;
+    const cached = scanCache.get(cacheKey);
+    if (cached) return res.json(cached);
+
     const checks = [
-      { name: '.agents directory', passed: fs.existsSync(path.join(cwd, '.agents')) },
-      { name: 'PROGRESS.md', passed: fs.existsSync(path.join(cwd, '.agents', 'PROGRESS.md')) },
-      { name: 'RULES.md', passed: fs.existsSync(path.join(cwd, '.agents', 'RULES.md')) },
-      { name: 'AGENTS.md', passed: fs.existsSync(path.join(cwd, '.agents', 'AGENTS.md')) },
-      { name: 'CLI scripts', passed: fs.existsSync(path.join(cwd, '.agents', 'scripts', 'ledger.cjs')) },
-      { name: 'plan directory', passed: fs.existsSync(path.join(cwd, 'plan')) },
-      { name: 'git repository', passed: fs.existsSync(path.join(cwd, '.git')) }
+      { name: 'Project Data Directory', passed: fs.existsSync(globalStore.getProjectDataDir(project.id)) },
+      { name: 'PROGRESS.md', passed: fs.existsSync(globalStore.getProgressPath(project.id)) },
+      { name: 'RULES.md', passed: fs.existsSync(globalStore.getRulesPath(project.id)) },
+      { name: 'AGENTS.md', passed: fs.existsSync(globalStore.getAgentsPath(project.id)) },
+      { name: 'Global Engine', passed: fs.existsSync(globalStore.getGlobalEnginePath()) },
+      { name: 'plan directory', passed: fs.existsSync(path.join(cwd, 'plan')), optional: true },
+      { name: 'git repository', passed: fs.existsSync(path.join(cwd, '.git')), optional: true }
     ];
 
     let fullHealth = null;
     let qualityReport = null;
 
     try {
-      const healthPath = path.resolve(__dirname, '..', '..', '..', 'packages', 'core', 'health-score.js');
-      if (fs.existsSync(healthPath)) {
-        const { calculateHealth } = require(healthPath);
-        if (typeof calculateHealth === 'function') {
-          fullHealth = calculateHealth(cwd);
-        }
-      }
+      fullHealth = await runWorkerScan(cwd, 'health');
     } catch (e) {
-      console.warn('⚠️ Could not run calculateHealth in projects router:', e.message);
+      console.warn('⚠️ Health worker failed:', e.message);
     }
 
     try {
-      const qualityPath = path.resolve(__dirname, '..', '..', '..', 'packages', 'core', 'quality-report.js');
-      if (fs.existsSync(qualityPath)) {
-        const { generateQualityReport } = require(qualityPath);
-        if (typeof generateQualityReport === 'function') {
-          qualityReport = generateQualityReport(cwd);
-        }
-      }
+      qualityReport = await runWorkerScan(cwd, 'quality');
     } catch (e) {
-      console.warn('⚠️ Could not run generateQualityReport in projects router:', e.message);
+      console.warn('⚠️ Quality worker failed:', e.message);
     }
 
     const allChecksPassed = checks.every(c => c.passed);
@@ -57,7 +74,6 @@ export function handleHealthCheck(req, res) {
     const qualityScore = qualityReport?.score ?? 100;
     const combinedScore = Math.round((healthScore * 0.6) + (qualityScore * 0.4));
 
-    // Combine & categorize all issues cleanly
     const issues = [
       ...(fullHealth?.issues || []).map(i => ({
         ...i,
@@ -74,7 +90,7 @@ export function handleHealthCheck(req, res) {
       }))
     ];
 
-    res.json({
+    const responseData = {
       score: combinedScore,
       healthScore,
       qualityScore,
@@ -97,7 +113,10 @@ export function handleHealthCheck(req, res) {
       issues,
       checks,
       allPassed: allChecksPassed
-    });
+    };
+
+    scanCache.set(cacheKey, responseData);
+    res.json(responseData);
   } catch (e) {
     res.status(500).json({ error: e.message });
   }

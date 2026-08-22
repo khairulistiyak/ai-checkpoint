@@ -20,8 +20,31 @@ export default function CockpitTab({
 }) {
   const [isIntelligenceModalOpen, setIsIntelligenceModalOpen] = useState(false);
   const unsyncedSteps = selectedProject?.unsyncedSteps || 0;
+  const hasNoSteps = totalPlanSteps === 0 && allPhases.length === 0;
+
   return (
     <div className="flex flex-col gap-3">
+      {hasNoSteps && (
+        <div className="bg-sky-500/10 border border-sky-500/20 rounded-2xl p-4 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-500/30 flex items-center justify-center shrink-0">
+              <Rocket className="w-5 h-5 text-sky-400" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-white font-outfit">Create your first plan file</h3>
+              <p className="text-xs font-mono text-zinc-400 mt-0.5">
+                Add a markdown plan file (e.g. <code className="text-sky-300">plan/phase-1.md</code>) to get started with execution tracking.
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => onSelectTab ? onSelectTab('files') : handleOpenArchitect()}
+            className="px-3.5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs font-outfit transition-all shrink-0"
+          >
+            Open Plan Blueprints →
+          </button>
+        </div>
+      )}
       {/* Top 4 Compact Executive KPI Cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
         <div className="bg-[#121214]/90 border border-white/[0.08] hover:border-white/15 rounded-2xl p-3.5 flex flex-col justify-between gap-1.5 shadow-sm transition-all">

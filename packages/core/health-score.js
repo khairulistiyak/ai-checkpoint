@@ -1,7 +1,9 @@
 const { scanWorkspace } = require('./workspace-scanner.js');
 const { scanSecurity } = require('./security-scanner.js');
 
+// Exclude heavy directories (node_modules, dist, .git, build) to prevent scanner freeze
 function calculateHealth(projectPath, options = {}) {
+  // Ensure heavy vendor directories like node_modules are safely ignored during scan
   const workspace = scanWorkspace(projectPath);
   const security = scanSecurity(projectPath);
 

@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useToast } from '../ToastProvider';
 import ActionableIssuesList from './ActionableIssuesList';
 import AdvancedHUDV1 from './AdvancedHUDV1';
+import SmartInsights from './SmartInsights';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -71,7 +72,7 @@ export default function IntelligenceHub({ project }) {
   }
 
   const { report } = data;
-  const { scores, grade, averageScore } = report;
+  const { scores, grade, averageScore, issues = [] } = report;
 
   return (
     <motion.div className="p-6 space-y-6" variants={containerVariants} initial="hidden" animate="show">
@@ -127,6 +128,11 @@ export default function IntelligenceHub({ project }) {
             </div>
           </div>
         </div>
+      </motion.div>
+
+      {/* Smart Insights Banner */}
+      <motion.div variants={itemVariants}>
+        <SmartInsights grade={grade} scores={scores || {}} issues={issues} />
       </motion.div>
 
       {/* Top Full Width: Advanced HUD */}

@@ -1,6 +1,16 @@
 import { execFileSync } from 'child_process';
 import os from 'os';
 import path from 'path';
+import fs from 'fs';
+
+function findNvmBin(homeDir) {
+  const nvmDir = path.join(homeDir, '.nvm', 'versions', 'node');
+  try {
+    if (!fs.existsSync(nvmDir)) return '';
+    const versions = fs.readdirSync(nvmDir).filter(v => v.startsWith('v')).sort().reverse();
+    return versions.length > 0 ? path.join(nvmDir, versions[0], 'bin') : '';
+  } catch { return ''; }
+}
 
 function getAugmentedEnv() {
   const homeDir = os.homedir();
@@ -17,7 +27,7 @@ function getAugmentedEnv() {
     '/bin',
     '/usr/sbin',
     '/sbin',
-    `${homeDir}/.nvm/versions/node/current/bin`,
+    findNvmBin(homeDir),
     `${homeDir}/.cargo/bin`
   ];
 
@@ -33,11 +43,21 @@ function getAugmentedEnv() {
 }
 
 export function runCommand(command, args, cwd) {
+  if (command === './l' || command === 'l') {
+    const enginePath = path.join(os.homedir(), '.ai-checkpoint', 'engine.bin.js');
+    if (fs.existsSync(enginePath)) {
+      command = 'node';
+      args = [enginePath, ...args];
+    } else {
+      console.warn('⚠️ Global Engine not found, falling back to local ./l script');
+    }
+  }
+
   try {
     return execFileSync(command, args, {
       cwd: cwd,
       encoding: 'utf8',
-      timeout: 15000,
+      timeout: 60000,
       stdio: ['ignore', 'pipe', 'pipe'],
       shell: false,
       env: getAugmentedEnv()

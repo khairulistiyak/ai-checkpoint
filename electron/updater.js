@@ -24,7 +24,8 @@ function initAutoUpdater(mainWindow) {
     }
   });
 
-  if (process.env.NODE_ENV === 'production') {
+  const { app } = require('electron');
+  if (app.isPackaged) {
     autoUpdater.checkForUpdatesAndNotify().catch(() => {});
   }
 }

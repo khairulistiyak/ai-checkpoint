@@ -38,45 +38,23 @@ echo ""
 echo -e "${CYAN}Project:${NC} $PROJECT_DIR"
 echo ""
 
-# 1. Create folders
-echo -e "${YELLOW}Creating folders...${NC}"
-mkdir -p "$PROJECT_DIR/.agents/scripts"
-mkdir -p "$PROJECT_DIR/plan/drafts"
-
-# 2. Install CLI
-echo -e "${YELLOW}Installing CLI...${NC}"
-cp "$SCRIPT_DIR/scripts/ledger.cjs" "$PROJECT_DIR/.agents/scripts/ledger.cjs"
-mkdir -p "$PROJECT_DIR/.agents/packages/cli"
-mkdir -p "$PROJECT_DIR/.agents/packages/core"
-find "$SCRIPT_DIR/packages/cli" -maxdepth 1 -name '*.js' -not -name '._*' -exec cp {} "$PROJECT_DIR/.agents/packages/cli/" \;
-find "$SCRIPT_DIR/packages/core" -maxdepth 1 -name '*.js' -not -name '._*' -exec cp {} "$PROJECT_DIR/.agents/packages/core/" \;
-find "$PROJECT_DIR/.agents" -name '._*' -delete 2>/dev/null || true
-
-# 3. Create default config.json for dashboard
-CONFIG_FILE="$PROJECT_DIR/.agents/config.json"
-if [ ! -f "$CONFIG_FILE" ]; then
-  PROJECT_NAME=$(basename "$PROJECT_DIR")
-  cat > "$CONFIG_FILE" << EOFCONFIG
-{
-  "projects": [
-    {
-      "name": "$PROJECT_NAME",
-      "path": "$PROJECT_DIR"
-    }
-  ]
-}
-EOFCONFIG
-  echo -e "  ${GREEN}✔ Created config.json${NC}"
+# 1. Global Engine Deploy
+echo -e "${YELLOW}Deploying Global Engine...${NC}"
+GLOBAL_DIR="$HOME/.ai-checkpoint"
+mkdir -p "$GLOBAL_DIR"
+if [ -f "$SCRIPT_DIR/assets/engine.bin.js" ]; then
+  cp "$SCRIPT_DIR/assets/engine.bin.js" "$GLOBAL_DIR/engine.bin.js"
+  echo -e "  ${GREEN}✔ Global Engine deployed${NC}"
+else
+  echo -e "  ${YELLOW}⚠ engine.bin.js not found in assets. Please run 'npm run build:engine' first.${NC}"
 fi
 
-# 4. Create ./l shortcut
-cat > "$PROJECT_DIR/l" << 'EOF'
-#!/bin/bash
-node .agents/scripts/ledger.cjs "$@"
-EOF
-chmod +x "$PROJECT_DIR/l"
+# 2. Create folders
+echo -e "${YELLOW}Creating project folders...${NC}"
+mkdir -p "$PROJECT_DIR/.agents"
+mkdir -p "$PROJECT_DIR/plan/drafts"
 
-# 5. Copy system files to .agents/ (NOT plan/)
+# 3. Copy files
 copy_if_new() {
   if [ -f "$2" ]; then
     echo -e "  ${YELLOW}⚠ $(basename "$2") already exists — skip${NC}"
@@ -86,38 +64,28 @@ copy_if_new() {
   fi
 }
 
-echo -e "${YELLOW}Installing system files to .agents/...${NC}"
-copy_if_new "$SCRIPT_DIR/templates/AGENTS.md" "$PROJECT_DIR/.agents/AGENTS.md"
-copy_if_new "$SCRIPT_DIR/templates/PROGRESS.md" "$PROJECT_DIR/.agents/PROGRESS.md"
+echo -e "${YELLOW}Setting up configuration files...${NC}"
 copy_if_new "$SCRIPT_DIR/templates/RULES.md" "$PROJECT_DIR/.agents/RULES.md"
 copy_if_new "$SCRIPT_DIR/templates/SYSTEM_GUIDE.md" "$PROJECT_DIR/.agents/SYSTEM_GUIDE.md"
-
-if [ ! -e "$PROJECT_DIR/AGENTS.md" ]; then
-  ln -sf .agents/AGENTS.md "$PROJECT_DIR/AGENTS.md" 2>/dev/null || cp "$SCRIPT_DIR/templates/AGENTS.md" "$PROJECT_DIR/AGENTS.md"
-  echo -e "  ${GREEN}✔ Created root AGENTS.md -> .agents/AGENTS.md${NC}"
-fi
-
-echo -e "${YELLOW}Setting up plan/ folder...${NC}"
+copy_if_new "$SCRIPT_DIR/templates/AGENTS.md" "$PROJECT_DIR/AGENTS.md"
 copy_if_new "$SCRIPT_DIR/templates/drafts-README.md" "$PROJECT_DIR/plan/drafts/README.md"
 
-# 6. Done!
+# 4. Done!
 echo ""
 echo -e "${BOLD}${GREEN}┌──────────────────────────────────────────────────────┐${NC}"
 echo -e "${BOLD}${GREEN}│   ✅ Installed Successfully!                         │${NC}"
 echo -e "${BOLD}${GREEN}└──────────────────────────────────────────────────────┘${NC}"
 echo ""
 echo -e "  ${BOLD}.agents/${NC}                       ← System (don't touch)"
-echo -e "  ├── AGENTS.md                ← Agent rules"
-echo -e "  ├── PROGRESS.md              ← Tracker"
 echo -e "  ├── RULES.md                 ← Code rules"
-echo -e "  ├── SYSTEM_GUIDE.md          ← Guide"
-echo -e "  └── scripts/ledger.cjs       ← CLI"
+echo -e "  └── SYSTEM_GUIDE.md          ← Guide"
+echo ""
+echo -e "  ${BOLD}AGENTS.md${NC}                      ← Root rules file"
 echo ""
 echo -e "  ${BOLD}plan/${NC}                          ← ${GREEN}Your .md plan files (clean!)${NC}"
 echo -e "  └── drafts/                  ← R&D notes"
 echo ""
 echo -e "${CYAN}Next:${NC}"
 echo "  1. Create your plan:   plan/my-plan.md"
-echo "  2. Add steps:          .agents/PROGRESS.md"
-echo "  3. View dashboard:     ./l"
+echo "  2. Use Dashboard:      Launch AI Checkpoint app"
 echo ""

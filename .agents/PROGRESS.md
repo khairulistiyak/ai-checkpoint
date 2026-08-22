@@ -13,16 +13,16 @@
 
 ---
 
-## 📊 Overall Progress: 94% (561/594 steps complete)
+## 📊 Overall Progress: 95% (585/615 steps complete)
 
 ```
-[███████████████████░] 94% (561/594 steps complete)
+[███████████████████░] 95% (585/615 steps complete)
 ```
 
-## 👉 NEXT: Step 84.1 — Express server on port 4100. CORS enabled for any origin. Mount all routes.
-> 📋 Details → `plan/` → Phase 84 → Step 84.1
+## 👉 NEXT: Step 90.1 — Health Issue Explorer Decomposition
+> 📋 Details → `plan/` → Phase 90 → Step 90.1
 
----J
+---
 
 ## 🔷 Phase 1: Core Hardening — ✅ 100% COMPLETE
 
@@ -196,9 +196,6 @@
 - [x] **Step 16.1** — Create Global Overview Component (`dashboard/src/components/GlobalOverview.jsx`)
 - [x] **Step 16.2** — Add Sidebar Search & Filters (`dashboard/src/components/Sidebar.jsx`)
 - [x] **Step 16.3** — Mount Global Overview in App.jsx (`dashboard/src/App.jsx`)
-
----
-
 
 ---
 
@@ -912,8 +909,9 @@ UPDATE LOG:
 [2026-08-18 05:30] Step 89.5 completed — Verified 100% responsive score with 0 remaining responsive issues | Agent: CLI
 -->
 
+---
 
-## 🔴 Phase 29: Cyber Design System Overhaul
+## 🔴 Phase 29: Cyber Design System Overhaul — ✅ 100% COMPLETE
 
 - [x] **Step 29.1** — Update tailwind.config.js with cyber colors and fonts.
 - [x] **Step 29.2** — Update index.css with global CSS rules and animations.
@@ -926,8 +924,9 @@ UPDATE LOG:
 - [x] **Step 29.9** — Overhaul CommandPalette.jsx and search bars.
 - [x] **Step 29.10** — Overhaul PlansCenter.jsx and other stray modals.
 
+---
 
-## 🔴 Phase 30: UI Component Integration
+## 🔴 Phase 30: UI Component Integration — ✅ 100% COMPLETE
 
 - [x] **Step 30.1** — Update GlassButton.jsx to Cyber Theme.
 - [x] **Step 30.2** — Update InputField.jsx to Cyber Theme.
@@ -939,6 +938,8 @@ UPDATE LOG:
 - [x] **Step 30.8** — Refactor ConfigEditor.jsx to use UI components.
 - [x] **Step 30.9** — Refactor ConfirmModal.jsx to use UI components.
 - [x] **Step 30.10** — Refactor PlansCenter generator to use UI components.
+
+---
 
 ## 🔷 Phase 31: Plans Center Full Page — ✅ 100% COMPLETE
 
@@ -1028,7 +1029,6 @@ UPDATE LOG:
 - [x] **Step 38.7** — Mount plan watcher in server.js (`dashboard/server.js`)
 - [x] **Step 38.8** — Add sync tests (`tests/plan-sync.bats`)
 
-
 ---
 
 ## 🔷 Phase 39: Project Run Location & Commands Panel System — ✅ 100% COMPLETE
@@ -1043,7 +1043,6 @@ UPDATE LOG:
 - [x] **Step 39.8** — ProjectGrid-এ রান প্যানেল ও ককপিট উইজেট ইন্টিগ্রেট করা (`dashboard/src/components/ProjectGrid.jsx`)
 - [x] **Step 39.9** — CLI রান কমান্ড তৈরি ও রাউটারে রেজিস্টার করা (`packages/cli/cmd-run.js`)
 - [x] **Step 39.10** — রান কনফিগ ও CLI রানের অটোমেটেড টেস্ট লেখা (`tests/run-config.bats`)
-
 
 ---
 
@@ -1092,7 +1091,6 @@ UPDATE LOG:
 
 - [x] **Step 45.1** — Health System Tests (`tests/health.bats`)
 - [x] **Step 45.2** — Full Validation Run (`tests/health.bats`)
-
 
 ---
 
@@ -1178,10 +1176,9 @@ UPDATE LOG:
 - [x] **Step 55.12** — Verify no broken imports or references (`tests/cleanup-verify.sh`)
 - [x] **Step 55.13** — Update PROGRESS.md with Phase 55 completion (`.agents/PROGRESS.md`)
 
-
 ---
 
-## 🔷 Phase 56: Plan from phase-56-code-health.md — ✅ 100% COMPLETE
+## 🔷 Phase 56: Code Health Fixes — ✅ 100% COMPLETE
 
 - [x] **Step 56.1** — Delete macOS junk file
 - [x] **Step 56.2** — Remove debug console.log from server.js
@@ -1202,28 +1199,27 @@ UPDATE LOG:
 - [x] **Step 56.17** — Create HealthCoreChecklist.jsx
 - [x] **Step 56.18** — Rewrite HealthCommandCenter.jsx as orchestrator
 - [x] **Step 56.19** — Build verification after HealthCommandCenter split
-- [x] **Step 56.20** — Split ActivityLog.jsx (497 lines)
-- [x] **Step 56.21** — Split QuickTerminalDrawer.jsx (427 lines)
-- [x] **Step 56.22** — Split DeveloperActionDock.jsx (331 lines)
-- [x] **Step 56.23** — Split GitVisualizer.jsx (279 lines)
-- [x] **Step 56.24** — Split ProjectCard.jsx (259 lines)
-- [x] **Step 56.25** — Split ArchitecturalPlanViewer.jsx (794 lines)
-- [x] **Step 56.26** — Split FilePreviewDrawer.jsx (430 lines)
-- [x] **Step 56.27** — Trim ProjectTabBar.jsx (204 lines)
-- [x] **Step 56.28** — Trim PlanFilesTab.jsx (196 lines)
-- [x] **Step 56.29** — Trim PlanMarkdownEditor.jsx (208 lines)
-- [x] **Step 56.30** — Trim ProjectGrid.jsx (183 lines → ~150 lines)
-- [x] **Step 56.31** — Split projects.js (486 lines → 4 files)
-- [x] **Step 56.32** — Split watcher.js (448 lines → 3 files)
-- [x] **Step 56.33** — Split activity-logger.js (241 lines → 2 files)
+- [x] **Step 56.20** — Split ActivityLog.jsx
+- [x] **Step 56.21** — Split QuickTerminalDrawer.jsx
+- [x] **Step 56.22** — Split DeveloperActionDock.jsx
+- [x] **Step 56.23** — Split GitVisualizer.jsx
+- [x] **Step 56.24** — Split ProjectCard.jsx
+- [x] **Step 56.25** — Split ArchitecturalPlanViewer.jsx
+- [x] **Step 56.26** — Split FilePreviewDrawer.jsx
+- [x] **Step 56.27** — Trim ProjectTabBar.jsx
+- [x] **Step 56.28** — Trim PlanFilesTab.jsx
+- [x] **Step 56.29** — Trim PlanMarkdownEditor.jsx
+- [x] **Step 56.30** — Trim ProjectGrid.jsx
+- [x] **Step 56.31** — Split projects.js
+- [x] **Step 56.32** — Split watcher.js
+- [x] **Step 56.33** — Split activity-logger.js
 - [x] **Step 56.34** — Full build verification
 - [x] **Step 56.35** — Health score re-scan
 - [x] **Step 56.36** — Update PROGRESS.md
 
-
 ---
 
-## 🔷 Phase 57: Plan from phase-57-health-remediation.md — ✅ 100% COMPLETE
+## 🔷 Phase 57: Health Remediation — ✅ 100% COMPLETE
 
 - [x] **Step 57.1** — Delete all macOS `._*` junk files
 - [x] **Step 57.2** — Remove debug log from server.js
@@ -1240,14 +1236,12 @@ UPDATE LOG:
 - [x] **Step 57.13** — Health score re-scan
 - [x] **Step 57.14** — Update PROGRESS.md
 
-
 ---
 
-## 🔷 Phase 58: Plan from phase-58-responsive-tabbar.md — ✅ 100% COMPLETE
+## 🔷 Phase 58: Responsive TabBar — ✅ 100% COMPLETE
 
 - [x] **Step 58.1** — Update ProjectTabItem responsiveness
 - [x] **Step 58.2** — Update ProjectTabBar responsive scrolling
-
 
 ---
 
@@ -1258,12 +1252,11 @@ UPDATE LOG:
 - [x] **Step 59.3** — Update ai-tier.js to use smart sync (`dashboard/src/server/ai-tier.js`)
 - [x] **Step 60.1** — Fix empty name in api.js add-project (`dashboard/src/server/api.js`)
 - [x] **Step 60.2** — Fix empty name fallback in parser.js (`dashboard/src/server/parser.js`)
-- [x] **Step 60.3** — Add "In Progress" filter to HomePage (`dashboard/src/pages/HomePage.jsx`)
+- [x] **Step 60.3** — Add 'In Progress' filter to HomePage (`dashboard/src/pages/HomePage.jsx`)
 - [x] **Step 61.1** — Add unsyncedSteps to enrichProject (`dashboard/src/server/parser.js`)
 - [x] **Step 61.2** — Show unsynced badge on HomeProjectCard (`dashboard/src/components/home/HomeProjectCard.jsx`)
 - [x] **Step 61.3** — Show unsynced indicator in CockpitTab (`dashboard/src/components/CockpitTab.jsx`)
 - [x] **Step 62.1** — Run full verification suite (`.agents/PROGRESS.md`)
-
 
 ---
 
@@ -1272,7 +1265,6 @@ UPDATE LOG:
 - [x] **Step 63.1** — Create CockpitHealthOverview component (`dashboard/src/components/cockpit/CockpitHealthOverview.jsx`)
 - [x] **Step 63.2** — Embed CockpitHealthOverview in CockpitTab (`dashboard/src/components/CockpitTab.jsx`)
 - [x] **Step 63.3** — Run full verification suite (`.agents/PROGRESS.md`)
-
 
 ---
 
@@ -1285,7 +1277,6 @@ UPDATE LOG:
 - [x] **Step 64.5** — Update ProjectGrid and CockpitTab Tab Switching (`dashboard/src/components/ProjectGrid.jsx`)
 - [x] **Step 64.6** — Run full verification suite (`.agents/PROGRESS.md`)
 
-
 ---
 
 ## 🔷 Phase 65: Pro-Tier Clean UI/UX Studio Overhaul — ✅ 100% COMPLETE
@@ -1294,7 +1285,6 @@ UPDATE LOG:
 - [x] **Step 65.2** — Upgrade Roadmap with Linear-Style Micro-Filter Pills (`dashboard/src/components/plans/PlanProgressTab.jsx`)
 - [x] **Step 65.3** — Smart Auto-Minimizing Developer Action Dock (`dashboard/src/components/DeveloperActionDock.jsx`)
 - [x] **Step 65.4** — Run full verification suite (`.agents/PROGRESS.md`)
-
 
 ---
 
@@ -1305,14 +1295,12 @@ UPDATE LOG:
 - [x] **Step 66.3** — Harden electron-builder.yml for macOS DMG Packaging (`electron-builder.yml`)
 - [x] **Step 66.4** — Verify and Build DMG Installer (`.agents/PROGRESS.md`)
 
-
 ---
 
 ## 🔷 Phase 67: Single Instance Lock & Multi-Launch Prevention — ✅ 100% COMPLETE
 
 - [x] **Step 67.1** — Enforce Single Instance Lock in Electron (`electron/main.js`)
 - [x] **Step 67.2** — Verify and Rebuild macOS DMG (`.agents/PROGRESS.md`)
-
 
 ---
 
@@ -1324,7 +1312,6 @@ UPDATE LOG:
 - [x] **Step 68.4** — Cross-Platform Build Configuration (`electron-builder.yml`)
 - [x] **Step 68.5** — Full Verification and Cross-Platform Package Build (`.agents/PROGRESS.md`)
 
-
 ---
 
 ## 🔷 Phase 69: In-Memory Syntax Scanner Engine — ✅ 100% COMPLETE
@@ -1333,14 +1320,12 @@ UPDATE LOG:
 - [x] **Step 69.2** — In-Memory JS Syntax Validation in CLI (`packages/cli/syntax-checker.js`)
 - [x] **Step 69.3** — Full Verification and DMG Rebuild (`.agents/PROGRESS.md`)
 
-
 ---
 
 ## 🔷 Phase 70: Smart Workspace Tracker Modal Studio Overhaul — ✅ 100% COMPLETE
 
 - [x] **Step 70.1** — Redesign AddProjectModal with Pro-Tier Studio UI (`dashboard/src/components/AddProjectModal.jsx`)
 - [x] **Step 70.2** — Full Verification & Build (`.agents/PROGRESS.md`)
-
 
 ---
 
@@ -1350,7 +1335,6 @@ UPDATE LOG:
 - [x] **Step 71.2** — Reconstruct Multi-Workspace Control Room Mockup (`ui-mockup-multiproject.svg`)
 - [x] **Step 71.3** — Full Verification Suite (`.agents/PROGRESS.md`)
 
-
 ---
 
 ## 🔷 Phase 72: Hyper-Attractive Real-Time CLI Telemetry Stream Engine — ✅ 100% COMPLETE
@@ -1358,7 +1342,6 @@ UPDATE LOG:
 - [x] **Step 72.1** — Implement TrueColor Palette & Live Activity Sparklines (`scripts/live-hud.cjs`)
 - [x] **Step 72.2** — Implement In-Memory AST Integrity Scanner & Interactive Filters (`scripts/live-hud.cjs`)
 - [x] **Step 72.3** — Full Verification Suite (`.agents/PROGRESS.md`)
-
 
 ---
 
@@ -1370,7 +1353,6 @@ UPDATE LOG:
 - [x] **Step 73.4** — Linux Multi-Tool Dialog Fallback (`dashboard/src/server/api.js`)
 - [x] **Step 73.5** — Full Verification & Build Suite (`.agents/PROGRESS.md`)
 
-
 ---
 
 ## 🔷 Phase 74: Instant Sidebar Navigation & Drag Gesture Decoupling — ✅ 100% COMPLETE
@@ -1379,7 +1361,6 @@ UPDATE LOG:
 - [x] **Step 74.2** — Synchronous Zero-Latency Hash Navigation (`dashboard/src/hooks/useHashRoute.js`)
 - [x] **Step 74.3** — Direct State Synchronization in App Navigation (`dashboard/src/App.jsx`)
 - [x] **Step 74.4** — Verification & Build Suite (`.agents/PROGRESS.md`)
-
 
 ---
 
@@ -1391,7 +1372,6 @@ UPDATE LOG:
 - [x] **Step 75.4** — Connect Dynamic IDE Protocol in Diagnostic Tools (`dashboard/src/components/health/useHealthCommandCenter.js`)
 - [x] **Step 75.5** — Full Verification & Build Suite (`.agents/PROGRESS.md`)
 
-
 ---
 
 ## 🔷 Phase 76: Project-Specific Settings Hub & Workspace Control Center — ✅ 100% COMPLETE
@@ -1401,7 +1381,6 @@ UPDATE LOG:
 - [x] **Step 76.3** — Rebuild ConfigEditor into Studio Project Settings Modal (`dashboard/src/components/ConfigEditor.jsx`)
 - [x] **Step 76.4** — Add Frontend API Functions for Project Actions (`dashboard/src/utils/api.js`)
 - [x] **Step 76.5** — Full Verification & Build Suite (`.agents/PROGRESS.md`)
-
 
 ---
 
@@ -1413,7 +1392,6 @@ UPDATE LOG:
 - [x] **Step 77.4** — Connect Stack Detection API & Live Sync in Frontend (`dashboard/src/utils/api.js`)
 - [x] **Step 77.5** — Full Verification & Build Suite (`.agents/PROGRESS.md`)
 
-
 ---
 
 ## 🔷 Phase 78: World-Class Architecture RFC Specification & Live Compliance Engine — ✅ 100% COMPLETE
@@ -1424,7 +1402,6 @@ UPDATE LOG:
 - [x] **Step 78.4** — Integrate Architecture Radar into Settings Hub (`dashboard/src/components/config/ProjectSettingsTabs.jsx`)
 - [x] **Step 78.5** — Full Verification & Build Suite (`.agents/PROGRESS.md`)
 
-
 ---
 
 ## 🔷 Phase 79: Advanced Clean Architecture Scaffold Engine & Boundary Leak Detector — ✅ 100% COMPLETE
@@ -1434,7 +1411,6 @@ UPDATE LOG:
 - [x] **Step 79.3** — Mount Clean Architecture API Routes in Dashboard Server (`dashboard/src/server/clean-arch-routes.js`)
 - [x] **Step 79.4** — Create Clean Architecture Scaffolder & Leak Monitor UI (`dashboard/src/components/config/CleanArchScaffoldModal.jsx`)
 - [x] **Step 79.5** — Full Verification & Build Suite (`.agents/PROGRESS.md`)
-
 
 ---
 
@@ -1471,65 +1447,61 @@ UPDATE LOG:
 - [x] **Step 81.9** — Update Core Barrel & SYSTEM_GUIDE.md
 - [x] **Step 81.10** — Full Consolidation Verification & DRY Audit
 
+---
+
+## 🔷 Phase 83: Project AI Intelligence System — 🔴 0% PENDING
+
+- [ ] **Step 83.1** — Create `packages/core/responsive-scanner.js`
+- [ ] **Step 83.2** — Create `packages/core/dynamic-scanner.js`
+- [ ] **Step 83.3** — Create `packages/core/ai-scaffolder.js`
+- [ ] **Step 83.4** — Create `packages/core/intelligence-report.js`
+- [ ] **Step 83.5** — Create `dashboard/src/server/intelligence.js`
+- [ ] **Step 83.6** — Edit `dashboard/src/server/projects.js`
+- [ ] **Step 83.7** — Edit `dashboard/src/components/AddProjectModal.jsx`
+- [ ] **Step 83.8** — Edit `dashboard/src/components/ProjectCard.jsx`
+- [ ] **Step 83.9** — Create `dashboard/src/components/intelligence/IntelligenceHub.jsx`
+- [ ] **Step 83.10** — Edit `dashboard/src/components/ProjectTabsContent.jsx`
+- [ ] **Step 83.11** — Create `dashboard/src/hooks/useIntelligence.js`
+- [ ] **Step 83.12** — Edit `dashboard/src/utils/api.js`
+- [ ] **Step 83.13** — Full Verification
 
 ---
 
-## 🔷 Phase 83: Project AI Intelligence System — ✅ 100% COMPLETE
+## 🔷 Phase 84: 🌍 Standalone Live Analytics System — 🔴 0% PENDING
 
-- [x] **Step 83.1** — Create `packages/core/ai-scaffolder.js`
-- [x] **Step 83.2** — Edit `packages/core/responsive-scanner.js`
-- [x] **Step 83.3** — Edit `packages/core/dynamic-scanner.js`
-- [x] **Step 83.4** — Create `packages/core/performance-scanner.js`
-- [x] **Step 83.5** — Create `packages/core/security-scanner.js`
-- [x] **Step 83.6** — Create `packages/core/a11y-scanner.js`
-- [x] **Step 83.7** — Edit `packages/core/intelligence-report.js`
-- [x] **Step 83.8** — Create `packages/core/intelligence-history.js`
-- [x] **Step 83.9** — Edit `dashboard/src/server/intelligence.js`
-- [x] **Step 83.10** — Edit `dashboard/src/components/ProjectCard.jsx`
-- [x] **Step 83.11** — Create `dashboard/src/components/intelligence/RadarChart.jsx`
-- [x] **Step 83.12** — Create `dashboard/src/components/intelligence/TrendLineChart.jsx`
-- [x] **Step 83.13** — Edit `dashboard/src/components/intelligence/IntelligenceHub.jsx`
-- [x] **Step 83.14** — Verify Advanced AI Intelligence System
-
----
-
-## 🔷 Phase 84: 🌍 Phase 84: Standalone Live Analytics System — 🔴 0% PENDING
-
-- [ ] **Step 84.1** — Express server on port 4100. CORS enabled for any origin. Mount all routes. (`server/index.js`)
-- [ ] **Step 84.2** — In-memory `Map` for live sessions. Add/update/remove/cleanup methods. SSE broadcast on change. (`server/lib/session-manager.js`)
-- [ ] **Step 84.3** — IP → Country/City via `ip-api.com`. Cache results in-memory (LRU, max 1000). (`server/lib/geo-resolver.js`)
-- [ ] **Step 84.4** — User-Agent string → `{ device, browser, os }`. Lightweight regex-based (no npm dependency). (`server/lib/ua-parser.js`)
-- [ ] **Step 84.5** — JSON file persistence. Daily event logs (JSONL). Aggregate summaries. 30-day auto-cleanup. (`server/lib/store.js`)
-- [ ] **Step 84.6** — Compute: totalUsers, todayUsers, liveUsers, countryBreakdown, deviceBreakdown, browserBreakdown, hourlyTrend. (`server/lib/aggregator.js`)
-- [ ] **Step 84.7** — `POST /api/event` — process incoming visit. `POST /api/heartbeat` — keep session alive. (`server/routes/events.js`)
-- [ ] **Step 84.8** — `GET /api/stats` — full analytics JSON. `GET /api/live-stream` — SSE endpoint for real-time. (`server/routes/stats.js`)
-- [ ] **Step 84.9** — `GET /api/embed-script` — serves minified tracker.js with correct server URL injected. (`server/routes/embed.js`)
-- [ ] **Step 84.10** — Full tracking script. SessionId, heartbeat, visibility API, event dispatch. (`tracker/tracker.js`)
-- [ ] **Step 84.11** — Minify with esbuild → `tracker.min.js` (< 2KB). (`Build step`)
-- [ ] **Step 84.12** — `npx create-vite` → dark premium dashboard with Inter/Outfit fonts. Port 4200. (`Vite + React scaffold`)
-- [ ] **Step 84.13** — SSE hook → connects to `:4100/api/live-stream`. Auto-reconnect. Exposes all metrics. (`src/hooks/useLiveStream.js`)
-- [ ] **Step 84.14** — 4 animated cards: Total / Today / Live / Avg Duration. (`src/components/StatsCards.jsx`)
-- [ ] **Step 84.15** — Custom SVG world map (Mercator projection). Dots placed via lat/lon → SVG coordinate formula. Size = user count. Color = traffic intensity. Pulse animation on new arrivals. Hover tooltip per dot. Zero dependency, no API key. (`src/components/WorldMapSvg.jsx`)
-- [ ] **Step 84.16** — Top 10 countries with flag emojis + animated percentage bars. (`src/components/CountryRanking.jsx`)
-- [ ] **Step 84.17** — Mobile/Desktop/Tablet donut chart or bars. (`src/components/DeviceBreakdown.jsx`)
-- [ ] **Step 84.18** — Chrome/Firefox/Safari/Edge bars with icons. (`src/components/BrowserBreakdown.jsx`)
-- [ ] **Step 84.19** — Real-time auto-scrolling feed. Flag + City + Device + "just now". (`src/components/ActivityFeed.jsx`)
-- [ ] **Step 84.20** — Canvas/SVG line chart — hourly visitors trend. (`src/components/TrendChart.jsx`)
-- [ ] **Step 84.21** — Compose all components into single-page analytics dashboard. (`src/App.jsx`)
-
+- [ ] **Step 84.1** — Express server on port 4100. CORS enabled. Mount all routes. (`server/index.js`)
+- [ ] **Step 84.2** — In-memory Map for live sessions. Add/update/remove/cleanup methods. (`server/lib/session-manager.js`)
+- [ ] **Step 84.3** — IP → Country/City via ip-api.com. Cache results in-memory. (`server/lib/geo-resolver.js`)
+- [ ] **Step 84.4** — User-Agent string parser. Lightweight regex-based. (`server/lib/ua-parser.js`)
+- [ ] **Step 84.5** — JSON file persistence. Daily event logs. 30-day auto-cleanup. (`server/lib/store.js`)
+- [ ] **Step 84.6** — Compute metrics. (`server/lib/aggregator.js`)
+- [ ] **Step 84.7** — Process incoming visit & heartbeat routes. (`server/routes/events.js`)
+- [ ] **Step 84.8** — Full analytics JSON & SSE endpoint for real-time. (`server/routes/stats.js`)
+- [ ] **Step 84.9** — Serve minified tracker.js with injected server URL. (`server/routes/embed.js`)
+- [ ] **Step 84.10** — Full tracking script. SessionId, heartbeat, visibility API. (`tracker/tracker.js`)
+- [ ] **Step 84.11** — Minify with esbuild. (`Build step`)
+- [ ] **Step 84.12** — Scaffold dashboard. (`Vite + React scaffold`)
+- [ ] **Step 84.13** — Connect SSE hook. (`src/hooks/useLiveStream.js`)
+- [ ] **Step 84.14** — Animated cards component. (`src/components/StatsCards.jsx`)
+- [ ] **Step 84.15** — Custom SVG world map. (`src/components/WorldMapSvg.jsx`)
+- [ ] **Step 84.16** — Top 10 countries with flag emojis. (`src/components/CountryRanking.jsx`)
+- [ ] **Step 84.17** — Mobile/Desktop/Tablet chart. (`src/components/DeviceBreakdown.jsx`)
+- [ ] **Step 84.18** — Chrome/Firefox/Safari chart. (`src/components/BrowserBreakdown.jsx`)
+- [ ] **Step 84.19** — Real-time auto-scrolling feed. (`src/components/ActivityFeed.jsx`)
+- [ ] **Step 84.20** — Hourly visitors trend chart. (`src/components/TrendChart.jsx`)
+- [ ] **Step 84.21** — Compose single-page analytics dashboard. (`src/App.jsx`)
 
 ---
 
-## 🔷 Phase 85: 🔄 Phase 85: Simple Update Notifier — 🔴 0% PENDING
+## 🔷 Phase 85: 🔄 Simple Update Notifier — 🔴 0% PENDING
 
-- [ ] **Step 85.1** — Fetch `version.json` from URL. Compare with `app.getVersion()`. Send `update:available` IPC if newer. Retry silently on failure. Check on startup (5s delay) + every 1 hour. (`electron/version-checker.js`)
-- [ ] **Step 85.2** — Import version-checker. Register IPC handler: `shell:open-url` → `shell.openExternal(url)`. Register `app:version` → return `app.getVersion()`. (`electron/main.js (edit)`)
-- [ ] **Step 85.3** — Expose via contextBridge: `onUpdateAvailable(cb)`, `openDownloadPage(url)`, `getCurrentVersion()`, `checkForUpdates()`. (`electron/preload.js (edit)`)
-- [ ] **Step 85.4** — Listen to `window.electronAPI.onUpdateAvailable`. Store: `updateInfo`, `isDismissed`. Methods: `dismiss()`, `openDownload()`. Persist dismissed version in localStorage so it doesn't reappear. (`dashboard/src/hooks/useUpdateNotifier.js`)
-- [ ] **Step 85.5** — Animated slide-down banner at top of app. Shows version, changelog bullets, download button, dismiss button. Critical mode: no dismiss. (`dashboard/src/components/UpdateBanner.jsx`)
-- [ ] **Step 85.6** — Mount `<UpdateBanner>` globally. (`dashboard/src/App.jsx (edit)`)
-- [ ] **Step 85.7** — Static JSON file on website. We manually update this on each release. Must be HTTPS, CORS-enabled. (`public/version.json`)
-
+- [ ] **Step 85.1** — Fetch version.json from URL. Compare versions. (`electron/version-checker.js`)
+- [ ] **Step 85.2** — Import version-checker and register IPC handlers. (`electron/main.js`)
+- [ ] **Step 85.3** — Expose via contextBridge. (`electron/preload.js`)
+- [ ] **Step 85.4** — Listen to updates and persist dismissed version. (`dashboard/src/hooks/useUpdateNotifier.js`)
+- [ ] **Step 85.5** — Animated slide-down banner component. (`dashboard/src/components/UpdateBanner.jsx`)
+- [ ] **Step 85.6** — Mount UpdateBanner globally. (`dashboard/src/App.jsx`)
+- [ ] **Step 85.7** — Static JSON file on website. (`public/version.json`)
 
 ---
 
@@ -1542,30 +1514,42 @@ UPDATE LOG:
 - [x] **Step 86.5** — Update `dashboard/src/server/parser.js`
 - [x] **Step 86.6** — Full Verification & Live Test
 
+---
+
+## 🔷 Phase 88: Global Engine Architecture — ✅ 100% COMPLETE
+
+- [x] **Step 88.1** — Install Build Dependencies
+- [x] **Step 88.2** — Create Build Engine Script
+- [x] **Step 88.3** — Create Global Store Module
+- [x] **Step 88.4** — Verify Build Engine
 
 ---
 
-## 🔷 Phase 87: Intelligence Hub - UI/UX Modern Redesign — ✅ 100% COMPLETE
+## 🔷 Phase 89: Dashboard Backend — Global Store Migration — ✅ 100% COMPLETE
 
-- [x] **Step 87.1** — Create SmartInsights Component
-- [x] **Step 87.2** — Create IssueFilterTabs Component
-- [x] **Step 87.3** — Upgrade Radar Chart (Glowing & Animated SVG)
-- [x] **Step 87.4** — Upgrade Trend Line Chart (Curved & Glowing SVG)
-- [x] **Step 87.5** — Redesign Intelligence Hub (Bento Grid)
-- [x] **Step 87.6** — Verify Modern Design
-
-## Phase 87: Intelligence Hub - UI/UX Modern Redesign [0%]
-- [ ] 87.1 Create SmartInsights Component (`dashboard/src/components/intelligence/SmartInsights.jsx`)
-- [ ] 87.2 Create IssueFilterTabs Component (`dashboard/src/components/intelligence/IssueFilterTabs.jsx`)
-- [ ] 87.3 Upgrade Radar Chart (`dashboard/src/components/intelligence/RadarChart.jsx`)
-- [ ] 87.4 Upgrade Trend Line Chart (`dashboard/src/components/intelligence/TrendLineChart.jsx`)
-- [ ] 87.5 Redesign Intelligence Hub (`dashboard/src/components/intelligence/IntelligenceHub.jsx`)
-- [ ] 87.6 Verify Modern Design
-
+- [x] **Step 89.1** — Update projects.js — Install Route
+- [x] **Step 89.2** — Update parser.js
+- [x] **Step 89.3** — Update config.js
+- [x] **Step 89.4** — Update ai-tier.js
+- [x] **Step 89.5** — Update activity-logger.js
+- [x] **Step 89.6** — Update project-health.js
+- [x] **Step 89.7** — Update project-actions.js
+- [x] **Step 89.8** — Update plan-sync-server.js
+- [x] **Step 89.9** — Update Remaining Files
+- [x] **Step 89.10** — Update watcher-events.js — Plan Backup
+- [x] **Step 89.11** — Update server.js — Engine Deploy
+- [x] **Step 89.12** — Verify Dashboard Backend
 
 ---
 
-## 🔷 Phase 88: Scanner Precision & UI Fluidity Overhaul — ✅ 100% COMPLETE
+## 🔷 Phase 88 (A): Global Engine Architecture — ✅ 100% COMPLETE
+
+- [x] **Step 88.1** — Global Engine Scaffold
+- [x] **Step 88.2** — Verification
+
+---
+
+## 🔷 Phase 88 (B): Scanner Precision & UI Fluidity Overhaul — ✅ 100% COMPLETE
 
 - [x] **Step 88.1** — Precision Scanner Filtering & Tailwind Fluid Recognition
 - [x] **Step 88.2** — Dynamic & Performance Scanner Tuning
@@ -1573,10 +1557,9 @@ UPDATE LOG:
 - [x] **Step 88.4** — Fluid Rem Scaling for Issues List & Modals
 - [x] **Step 88.5** — Verification & Grade A+ Milestone Audit
 
-
 ---
 
-## 🔷 Phase 89: 100% Fluid UI Responsive Refactoring — ✅ 100% COMPLETE
+## 🔷 Phase 89 (B): 100% Fluid UI Responsive Refactoring — ✅ 100% COMPLETE
 
 - [x] **Step 89.1** — Intelligence Charts Fluid Scaling
 - [x] **Step 89.2** — Plan & Blueprint Viewers Fluid Scaling
@@ -1584,13 +1567,37 @@ UPDATE LOG:
 - [x] **Step 89.4** — Core Docks, Drawers & UI Feedback Fluid Scaling
 - [x] **Step 89.5** — Full System Verification (100% Responsive & Zero Issues)
 
+---
+
+## 🔷 Phase 90: CLI Engine, Electron & Build Pipeline Update — ✅ 100% COMPLETE
+
+- [x] **Step 90.1** — Update CLI paths.js
+- [x] **Step 90.2** — Update CLI doctor.js
+- [x] **Step 90.3** — Update Electron tray.js
+- [x] **Step 90.4** — Update electron-builder.yml
+- [x] **Step 90.5** — Update build-desktop.sh — Obfuscation Pipeline
+- [x] **Step 90.6** — Update setup.sh
+- [x] **Step 90.7** — Full Build Test
 
 ---
 
-## 🔷 Phase 90: Deep Code Health & Rule 0 Remediation — 🟡 0% IN PROGRESS
+## 🔷 Phase 91: Data Recovery System & Migration Safety — ✅ 100% COMPLETE
 
-- [~] **Step 90.1** — Health Issue Explorer Decomposition
-- [ ] **Step 90.2** — AdvancedHUDV1 Modularization & Hygiene
-- [ ] **Step 90.3** — Server API Micro-Router Split
-- [ ] **Step 90.4** — Code Hygiene & Complexity Polish
-- [ ] **Step 90.5** — Full System Health & Validation Verification
+- [x] **Step 91.1** — Implement migrateFromDotAgents Logic
+- [x] **Step 91.2** — Implement recoverProgressFromPlans Logic
+- [x] **Step 91.3** — Auto-Recovery Flow in Projects Route
+- [x] **Step 91.4** — Snapshot System
+- [x] **Step 91.5** — Plan Backup Watcher
+- [x] **Step 91.6** — Export/Import API Routes
+- [x] **Step 91.7** — Verify Recovery System
+
+---
+
+<!--
+UPDATE LOG:
+[2026-08-20 08:00] Phase 88 completed — Global Engine Architecture | Agent: CLI
+[2026-08-20 08:00] Phase 89 completed — Dashboard Backend — Global Store Migration | Agent: CLI
+[2026-08-20 08:00] Phase 90 completed — CLI Engine, Electron & Build Pipeline Update | Agent: CLI
+[2026-08-20 08:00] Phase 91 completed — Data Recovery System & Migration Safety | Agent: CLI
+-->
+

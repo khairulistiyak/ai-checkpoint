@@ -43,32 +43,38 @@ export default function SmartInsights({ grade, scores, issues }) {
   }, [grade, scores, issues]);
 
   return (
-    <div className="relative overflow-hidden rounded-2xl bg-white/[0.02] border border-white/5 p-6 backdrop-blur-xl group">
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+      className="relative overflow-hidden rounded-2xl bg-white/[0.03] border border-white/10 p-6 backdrop-blur-xl group hover:border-indigo-500/30 transition-all duration-300 shadow-2xl"
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-pink-500/10 opacity-30 group-hover:opacity-100 transition-opacity duration-700" />
       
       {/* Decorative Blur */}
       <div className="absolute -top-10 -right-10 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl" />
+      <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl" />
       
-      <div className="relative z-10 flex gap-4">
-        <div className="shrink-0 mt-1">
-          <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
-            <Sparkles className="w-5 h-5 text-indigo-400" />
+      <div className="relative z-10 flex gap-4 items-start">
+        <div className="shrink-0 mt-0.5">
+          <div className="w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center shadow-inner">
+            <Sparkles className="w-5 h-5 text-indigo-400 animate-pulse" />
           </div>
         </div>
         
         <div>
-          <h3 className="text-sm font-bold text-white uppercase tracking-wider mb-2 flex items-center gap-2">
-            AI Insights
+          <h3 className="text-xs font-bold text-indigo-300 uppercase tracking-widest mb-1.5 flex items-center gap-2">
+            AI Smart Insights
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
             </span>
           </h3>
-          <p className="text-zinc-300 leading-relaxed text-sm md:text-base font-medium">
+          <p className="text-zinc-200 leading-relaxed text-sm font-medium">
             {insights}
           </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

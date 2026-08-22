@@ -3,6 +3,7 @@ import path from 'path';
 import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 import coreParser from '../../../packages/core/parse-progress.js';
+import * as globalStore from './global-store.js';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -14,7 +15,7 @@ function getSyncUtils() {
   } catch { return null; }
 }
 
-export function parsePlanFiles(projectPath) {
+export function parsePlanFiles(projectId, projectPath) {
   try {
     const planDir = path.join(projectPath, 'plan');
     if (!fs.existsSync(planDir)) return { totalFiles: 0, totalSteps: 0, fileNames: [], files: [], parsedPhases: [] };
@@ -47,17 +48,17 @@ export function parsePlanFiles(projectPath) {
   }
 }
 
-export function parseProgress(projectPath) {
+export function parseProgress(projectId) {
   try {
-    const progressFile = path.join(projectPath, '.agents', 'PROGRESS.md');
+    const progressFile = globalStore.getProgressPath(projectId);
     if (!fs.existsSync(progressFile)) return null;
     return coreParser.parseProgressText(fs.readFileSync(progressFile, 'utf8'));
   } catch { return null; }
 }
 
-export function parseIntelligence(projectPath) {
+export function parseIntelligence(projectId) {
   try {
-    const histFile = path.join(projectPath, '.agents', 'intelligence-history.json');
+    const histFile = globalStore.getIntelligenceHistoryPath(projectId);
     if (!fs.existsSync(histFile)) return null;
     const history = JSON.parse(fs.readFileSync(histFile, 'utf8'));
     return history.length > 0 ? history[history.length - 1] : null;
@@ -105,22 +106,22 @@ export function enrichProject(p) {
       return { ...p, name: fallback, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] }, unsyncedSteps: 0 };
     }
     const safeName = p.name || path.basename(p.path.replace(/\/+$/, '')) || 'Untitled';
-    const isInstalled = fs.existsSync(path.join(p.path, '.agents', 'PROGRESS.md'));
-    let progress = isInstalled ? parseProgress(p.path) : null;
+    const isInstalled = fs.existsSync(globalStore.getProgressPath(p.id));
+    let progress = isInstalled ? parseProgress(p.id) : null;
     let hasPlanFiles = false;
     let planStats = { totalFiles: 0, totalSteps: 0, fileNames: [], parsedPhases: [] };
 
     const planDir = path.join(p.path, 'plan');
     if (fs.existsSync(planDir)) {
       hasPlanFiles = fs.readdirSync(planDir).some(f => f.endsWith('.md') && !f.startsWith('.') && fs.statSync(path.join(planDir, f)).isFile());
-      if (hasPlanFiles) planStats = parsePlanFiles(p.path);
+      if (hasPlanFiles) planStats = parsePlanFiles(p.id, p.path);
     }
 
     if (progress && planStats.parsedPhases?.length > 0) {
       progress = mergeUnsyncedPhases(progress, planStats.parsedPhases);
     }
 
-    const intelligence = isInstalled ? parseIntelligence(p.path) : null;
+    const intelligence = isInstalled ? parseIntelligence(p.id) : null;
 
     const progressTotal = progress?.overall?.total || 0;
     const planTotal = planStats?.totalSteps || 0;
