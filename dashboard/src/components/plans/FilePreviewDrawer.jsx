@@ -46,7 +46,7 @@ export default function FilePreviewDrawer({
         className={`w-full flex flex-col bg-[#08080b]/98 border border-white/20 shadow-[0_0_90px_rgba(0,0,0,0.95)] overflow-hidden transition-all duration-300 ${
           isFullscreen
             ? 'fixed inset-0 h-screen w-screen rounded-none border-0 z-[100000]'
-            : 'h-[95vh] max-w-[1680px] rounded-2xl'
+            : 'h-[95vh] max-w-[105rem] rounded-2xl'
         }`}
         onClick={(e) => e.stopPropagation()}
       >

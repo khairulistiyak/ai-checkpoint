@@ -96,7 +96,7 @@ Please provide the corrected code or explain how to resolve this.`;
             </p>
           </div>
         ) : (
-          <div className="space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar pr-2 pb-2">
+          <div className="space-y-3 max-h-[37.5rem] overflow-y-auto custom-scrollbar pr-2 pb-2">
             {filteredIssues.map((issue, idx) => {
               const isCrit = issue.severity === 'critical' || issue.type === 'syntax';
               const isRule0 = issue.type === 'rule0' || issue.category === 'rule0';

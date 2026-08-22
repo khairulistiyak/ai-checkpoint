@@ -115,7 +115,7 @@ export default function ActionableIssuesList({
             </p>
           </div>
         ) : (
-          <div className="space-y-3 max-h-[600px] overflow-y-auto custom-scrollbar pr-2 pb-2">
+          <div className="space-y-3 max-h-[37.5rem] overflow-y-auto custom-scrollbar pr-2 pb-2">
             {filteredIssues.map((issue, idx) => (
               <ActionableIssueCard
                 key={`${issue.type || 'issue'}-${idx}`}

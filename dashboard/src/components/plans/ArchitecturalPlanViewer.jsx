@@ -16,7 +16,7 @@ export default function ArchitecturalPlanViewer({ content, filename }) {
   } = useArchitecturalPlan({ content, filename });
 
   return (
-    <div className="space-y-6 pb-16 font-outfit text-white/90 relative">
+    <div className="space-y-6 pb-16 font-outfit text-white/90 text-sm md:text-base relative">
       <PlanSpecHeader
         title={title}
         stats={stats}

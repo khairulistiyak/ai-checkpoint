@@ -15,7 +15,7 @@ export default function ActivityLogList({
   return (
     <div
       ref={scrollRef}
-      className="flex-1 max-h-[340px] overflow-y-auto custom-scrollbar -mr-1.5 pr-1.5 space-y-3"
+      className="flex-1 max-h-[21.25rem] overflow-y-auto custom-scrollbar -mr-1.5 pr-1.5 space-y-3"
     >
       {entries.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-10 text-cyber-text-muted">

@@ -58,7 +58,7 @@ export default function PlanSpecTopology({
                       {mod.number}
                     </span>
                     <div className="flex flex-col">
-                      <span className="text-xs font-bold truncate max-w-[140px]">{mod.title}</span>
+                      <span className="text-xs font-bold truncate max-w-[8.75rem]">{mod.title}</span>
                       <span className="text-[10px] font-mono text-white/40">
                         {mod.tasksDone}/{mod.tasksTotal} ({modPercent}%)
                       </span>

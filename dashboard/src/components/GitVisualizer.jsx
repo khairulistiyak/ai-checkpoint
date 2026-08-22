@@ -109,8 +109,8 @@ export default function GitVisualizer({ projectId, onRefresh }) {
         </span>
       </div>
 
-      <div className="relative flex-1 py-1 pr-1 overflow-y-auto custom-scrollbar max-h-[340px]">
-        <div className="absolute left-[9px] top-4 bottom-2 w-px bg-cyber-card-border" />
+      <div className="relative flex-1 py-1 pr-1 overflow-y-auto custom-scrollbar max-h-[21.25rem]">
+        <div className="absolute left-2.5 top-4 bottom-2 w-px bg-cyber-card-border" />
         <div className="space-y-2">
           {filteredCheckpoints.map((cp, idx) => (
             <GitCommitCard

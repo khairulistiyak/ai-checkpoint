@@ -34,7 +34,7 @@ export default function BlueprintRadarChart({ scores }) {
         backgroundSize: '10px 10px'
       }} />
       
-      <svg viewBox="0 0 100 100" className="w-full h-full max-w-[240px] overflow-visible relative z-10">
+      <svg viewBox="0 0 100 100" className="w-full h-full max-w-[15rem] overflow-visible relative z-10">
         
         {/* Architect Grid Rings */}
         {[0.25, 0.5, 0.75, 1.0].map((scale, i) => (

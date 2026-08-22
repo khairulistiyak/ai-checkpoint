@@ -20,7 +20,7 @@ export default function CleanMinimalistBars({ scores }) {
 
   return (
     <div className="w-full h-full flex flex-col justify-center py-2">
-      <div className="flex flex-col gap-6 w-full max-w-[300px] mx-auto">
+      <div className="flex flex-col gap-6 w-full max-w-[18.75rem] mx-auto">
         {metrics.map((m, i) => {
           const isHovered = hoveredIndex === i;
           const isFaded = hoveredIndex !== null && hoveredIndex !== i;

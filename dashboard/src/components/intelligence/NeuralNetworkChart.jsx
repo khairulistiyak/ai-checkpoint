@@ -37,7 +37,7 @@ export default function NeuralNetworkChart({ scores, averageScore }) {
 
   return (
     <div className="w-full h-full flex items-center justify-center relative group">
-      <svg viewBox="0 0 100 100" className="w-full h-full max-w-[240px] overflow-visible">
+      <svg viewBox="0 0 100 100" className="w-full h-full max-w-[15rem] overflow-visible">
         <defs>
           <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="1.5" result="blur" />

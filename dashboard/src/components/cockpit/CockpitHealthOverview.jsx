@@ -70,7 +70,7 @@ export default function CockpitHealthOverview({ projectId, onOpenIntelligence })
         {onOpenIntelligence && (
           <div 
             onClick={onOpenIntelligence}
-            className="group cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99] h-full bg-gradient-to-b from-[#16161a] to-[#0e0e11] border border-white/[0.08] rounded-3xl p-6 flex flex-col items-center justify-center text-center shadow-lg relative overflow-hidden min-h-[220px]"
+            className="group cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99] h-full bg-gradient-to-b from-[#16161a] to-[#0e0e11] border border-white/[0.08] rounded-3xl p-6 flex flex-col items-center justify-center text-center shadow-lg relative overflow-hidden min-h-[14rem]"
             title="Click to open Full Intelligence Hub"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl pointer-events-none" />

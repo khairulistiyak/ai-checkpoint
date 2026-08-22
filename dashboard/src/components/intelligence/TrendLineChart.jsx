@@ -40,7 +40,7 @@ export default function TrendLineChart({ history }) {
   }, [history]);
 
   return (
-    <div className="h-full w-full relative">
+    <div className="h-full w-full relative font-mono text-xs md:text-sm">
       <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full overflow-visible">
         <defs>
           <linearGradient id="trendArea" x1="0" y1="0" x2="0" y2="100%">
@@ -103,7 +103,7 @@ export default function TrendLineChart({ history }) {
                 fill="#ffffff"
                 stroke="#4f46e5"
                 strokeWidth="0.5"
-                className="hover:r-[3px] transition-all cursor-pointer shadow-xl"
+                className="hover:scale-125 transition-transform cursor-pointer shadow-xl"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 1 + i * 0.1, type: "spring" }}

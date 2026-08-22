@@ -88,7 +88,7 @@ export default function PlanSpecHeader({
                 title="Click to copy file path"
               >
                 <span className="text-white/40 group-hover:text-white/60">📄</span>
-                <span className="truncate max-w-[200px]">{filePath}</span>
+                <span className="truncate max-w-[12.5rem]">{filePath}</span>
                 {copiedFilePath === filePath ? (
                   <Check className="w-3 h-3 text-emerald-400 shrink-0" />
                 ) : (

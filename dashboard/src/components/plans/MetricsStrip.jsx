@@ -16,7 +16,7 @@ export default function MetricsStrip({ project }) {
   return (
     <div className="px-6 py-3 bg-[#121214] border-b border-white/10 flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
       {/* Overall Progress Bar & Text */}
-      <div className="flex items-center gap-4 min-w-[240px]">
+      <div className="flex items-center gap-4 min-w-[15rem]">
         <div className="flex items-center gap-2 text-white font-bold">
           <Target className="w-4 h-4 text-zinc-400" />
           <span>PROGRESS</span>

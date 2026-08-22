@@ -20,7 +20,7 @@ export default function SwissGridMatrix({ scores }) {
 
   return (
     <div className="w-full h-full p-2 font-mono flex items-center justify-center">
-      <div className="grid grid-cols-3 gap-px bg-white/10 p-px w-full max-w-[200px] aspect-[3/2]">
+      <div className="grid grid-cols-3 gap-px bg-white/10 p-px w-full max-w-[12.5rem] aspect-[3/2]">
         {metrics.map((m, i) => (
           <div key={i} className="bg-[#09090b] flex flex-col items-center justify-center relative overflow-hidden group">
             {/* Value */}
@@ -34,7 +34,7 @@ export default function SwissGridMatrix({ scores }) {
             
             {/* Progress Bar (Bottom) - Except for Average */}
             {i !== 5 && (
-              <div className="absolute bottom-0 left-0 h-[2px] w-full bg-white/5">
+              <div className="absolute bottom-0 left-0 h-0.5 w-full bg-white/5">
                 <motion.div
                   className="h-full bg-zinc-400"
                   initial={{ width: 0 }}

@@ -89,7 +89,7 @@ Rules to follow:
             title={`Click to open ${filePath} in VS Code / Cursor`}
           >
             <FileCode2 className="w-2.5 h-2.5 opacity-60" />
-            <span className="truncate max-w-[180px]">{filePath}</span>
+            <span className="truncate max-w-[11.25rem]">{filePath}</span>
           </button>
         )}
       </div>
@@ -111,7 +111,7 @@ Rules to follow:
             className="md:hidden inline-flex items-center gap-1 text-[10px] font-mono text-zinc-300 bg-white/5 px-1.5 py-0.2 rounded border border-white/10"
           >
             <FileCode2 className="w-2.5 h-2.5 opacity-60" />
-            <span className="truncate max-w-[120px]">{filePath}</span>
+            <span className="truncate max-w-[7.5rem]">{filePath}</span>
           </button>
         )}
         {isDone && step.completedAt && <span className="text-[10px] font-mono text-white/40">{formatCompletedAt(step.completedAt)}</span>}

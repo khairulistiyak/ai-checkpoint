@@ -82,7 +82,7 @@ function Toast({ toast, onRemove }) {
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 15, scale: 0.95 }}
       layout
-      className={`flex items-center gap-3.5 p-4 pr-12 rounded-2xl border shadow-xl relative overflow-hidden min-w-[300px] ${bg}`}
+      className={`flex items-center gap-3.5 p-4 pr-12 rounded-2xl border shadow-xl relative overflow-hidden min-w-[18.75rem] ${bg}`}
     >
       <Icon className={`w-5 h-5 shrink-0 ${iconColor}`} />
       <p className="text-xs font-mono text-zinc-200 flex-1">{toast.message}</p>

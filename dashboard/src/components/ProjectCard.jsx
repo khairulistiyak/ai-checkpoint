@@ -102,7 +102,7 @@ export default function ProjectCard({
             <div className="flex items-center gap-2 mt-1.5 text-xs font-mono text-zinc-400 flex-wrap">
               <div className="flex items-center gap-2 bg-black/50 px-2.5 py-1 rounded-lg border border-white/10 min-w-0 max-w-full">
                 <FolderOpen className="w-3.5 h-3.5 shrink-0 text-zinc-400" />
-                <span className="truncate max-w-[220px] sm:max-w-xs md:max-w-md lg:max-w-lg text-xs text-zinc-300 font-mono">{project.path}</span>
+                <span className="truncate max-w-[13.75rem] sm:max-w-xs md:max-w-md lg:max-w-lg text-xs text-zinc-300 font-mono">{project.path}</span>
                 
                 <button
                   onClick={handleCopyPath}
@@ -112,7 +112,7 @@ export default function ProjectCard({
                   {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
                 </button>
 
-                <div className="w-[1px] h-3 bg-white/10 shrink-0" />
+                <div className="w-px h-3 bg-white/10 shrink-0" />
 
                 <button
                   onClick={handleCopyCd}

@@ -29,7 +29,7 @@ export default function PrecisionLinearScale({ scores }) {
             {/* Markers */}
             <div className="absolute inset-0 flex justify-between">
               {[0, 25, 50, 75, 100].map((tick) => (
-                <div key={tick} className="w-[1px] h-1.5 bg-white/10 -mt-[2px]" />
+                <div key={tick} className="w-px h-1.5 bg-white/10 -mt-0.5" />
               ))}
             </div>
             {/* Progress */}

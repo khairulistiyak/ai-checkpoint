@@ -86,7 +86,7 @@ export default function SidebarItem({ p, selectedId, onSelect, isSearching, isCo
     >
       <div
         onClick={() => onSelect(p.id)}
-        className={`w-full text-left px-3.5 py-3 rounded-xl flex items-center justify-between transition-all duration-200 relative overflow-hidden group cursor-pointer select-none min-h-[44px] active:scale-[0.99] ${
+        className={`w-full text-left px-3.5 py-3 rounded-xl flex items-center justify-between transition-all duration-200 relative overflow-hidden group cursor-pointer select-none min-h-[2.75rem] active:scale-[0.99] ${
           isSelected
             ? 'bg-gradient-to-r from-white/[0.12] to-white/[0.04] border border-white/20 text-white font-semibold shadow-md ring-1 ring-white/10'
             : 'hover:bg-white/[0.05] text-zinc-400 hover:text-white border border-transparent hover:border-white/10'

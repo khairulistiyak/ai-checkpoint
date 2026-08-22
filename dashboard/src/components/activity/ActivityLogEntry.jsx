@@ -14,7 +14,7 @@ export default function ActivityLogEntry({ entry, config, formatTime }) {
         {formatTime(entry.ts)}
       </span>
       <div
-        className={`flex items-center gap-1.5 w-[76px] py-1 px-2 rounded-md ${config.bg} border border-cyber-card-border group-hover:border-transparent shrink-0`}
+        className={`flex items-center gap-1.5 w-[4.75rem] py-1 px-2 rounded-md ${config.bg} border border-cyber-card-border group-hover:border-transparent shrink-0`}
         title={config.label}
       >
         <Icon className={`w-3 h-3 ${config.color}`} />

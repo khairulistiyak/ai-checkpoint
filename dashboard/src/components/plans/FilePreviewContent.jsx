@@ -14,7 +14,7 @@ export default function FilePreviewContent({
   return (
     <div className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto custom-scrollbar">
       {loading ? (
-        <div className="flex flex-col items-center justify-center h-full min-h-[300px] gap-3 text-white/50">
+        <div className="flex flex-col items-center justify-center h-full min-h-[18.75rem] gap-3 text-white/50">
           <Loader2 className="w-8 h-8 animate-spin text-white" />
           <span className="text-xs font-mono text-white/60">Loading architectural specification blueprint...</span>
         </div>
@@ -23,7 +23,7 @@ export default function FilePreviewContent({
           <ArchitecturalPlanViewer content={content} filename={filename} />
         </div>
       ) : viewMode === 'edit' ? (
-        <div className="h-full w-full max-w-6xl mx-auto min-h-[500px]">
+        <div className="h-full w-full max-w-6xl mx-auto min-h-[31.25rem]">
           <PlanMarkdownEditor
             initialContent={content}
             filename={filename}
@@ -32,7 +32,7 @@ export default function FilePreviewContent({
           />
         </div>
       ) : (
-        <div className="flex font-mono text-sm leading-relaxed max-w-6xl mx-auto bg-[#0d0d12]/95 backdrop-blur-3xl rounded-2xl border border-white/[0.08] shadow-[0_10px_40px_rgba(0,0,0,0.8)] overflow-hidden min-h-[500px]">
+        <div className="flex font-mono text-sm leading-relaxed max-w-6xl mx-auto bg-[#0d0d12]/95 backdrop-blur-3xl rounded-2xl border border-white/[0.08] shadow-[0_10px_40px_rgba(0,0,0,0.8)] overflow-hidden min-h-[31.25rem]">
           <div className="select-none text-white/30 text-right font-mono text-xs bg-black/40 py-6 px-3 min-w-[3.5rem] border-r border-white/5 space-y-0.5">
             {content.split('\n').map((_, i) => (
               <div key={i} className="h-6 leading-6 opacity-70 hover:opacity-100 transition-opacity">

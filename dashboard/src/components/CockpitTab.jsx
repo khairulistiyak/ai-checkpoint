@@ -106,7 +106,7 @@ export default function CockpitTab({
 
       {/* Git Snapshots & Activity Stream */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 items-stretch">
-        <div className="bg-[#121214]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-3.5 sm:p-4 flex flex-col shadow-sm min-h-[400px]">
+        <div className="bg-[#121214]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-3.5 sm:p-4 flex flex-col shadow-sm min-h-[25rem]">
           <div className="flex items-center justify-between gap-2.5 mb-3 pb-2.5 border-b border-white/[0.08] shrink-0">
             <h2 className="text-xs font-bold text-white flex items-center gap-2 font-outfit uppercase tracking-wider">
               <Rocket className="w-3.5 h-3.5 text-sky-400" />
@@ -119,7 +119,7 @@ export default function CockpitTab({
           </div>
         </div>
 
-        <div className="flex flex-col min-h-[400px]">
+        <div className="flex flex-col min-h-[25rem]">
           <ActivityLog projectId={selectedProject.id} liveEntry={liveActivityEntry} />
         </div>
       </div>

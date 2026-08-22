@@ -33,7 +33,7 @@ export default function QuickTerminalDrawer({ isOpen, onClose, projectId }) {
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 28, stiffness: 300 }}
             className={`relative pointer-events-auto bg-[#090a0f] border-l border-white/10 flex flex-col shadow-2xl font-mono transition-all duration-200 z-10 ${
-              isMaximized ? 'w-full md:w-[92vw]' : 'w-full sm:w-[560px] md:w-[680px]'
+              isMaximized ? 'w-full md:w-[92vw]' : 'w-full sm:w-[35rem] md:w-[42.5rem]'
             }`}
           >
             {/* Header */}

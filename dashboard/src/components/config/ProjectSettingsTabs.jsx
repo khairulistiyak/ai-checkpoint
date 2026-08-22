@@ -73,7 +73,7 @@ export function RulesTab({ content, onChange, onInjectPreset }) {
       {mode === 'visual' ? (
         <div className="bg-black/40 border border-white/10 rounded-2xl p-4 flex-1 overflow-y-auto custom-scrollbar"><VisualRuleBuilder onGenerate={onChange} /></div>
       ) : (
-        <textarea value={content} onChange={(e) => onChange(e.target.value)} className="w-full flex-1 min-h-[260px] bg-black/60 border border-white/10 rounded-2xl p-4 font-mono text-xs text-zinc-200 resize-none focus:outline-none focus:border-white/30 custom-scrollbar leading-relaxed" placeholder="# Project Rules..." spellCheck={false} />
+        <textarea value={content} onChange={(e) => onChange(e.target.value)} className="w-full flex-1 min-h-[16.25rem] bg-black/60 border border-white/10 rounded-2xl p-4 font-mono text-xs text-zinc-200 resize-none focus:outline-none focus:border-white/30 custom-scrollbar leading-relaxed" placeholder="# Project Rules..." spellCheck={false} />
       )}
     </div>
   );
@@ -102,7 +102,7 @@ export function AgentsTab({ content, onChange, onInjectPreset }) {
           })}
         </div>
       </div>
-      <textarea value={content} onChange={(e) => onChange(e.target.value)} className="w-full flex-1 min-h-[260px] bg-black/60 border border-white/10 rounded-2xl p-4 font-mono text-xs text-zinc-200 resize-none focus:outline-none focus:border-white/30 custom-scrollbar leading-relaxed" placeholder="# Agent Workflow..." spellCheck={false} />
+      <textarea value={content} onChange={(e) => onChange(e.target.value)} className="w-full flex-1 min-h-[16.25rem] bg-black/60 border border-white/10 rounded-2xl p-4 font-mono text-xs text-zinc-200 resize-none focus:outline-none focus:border-white/30 custom-scrollbar leading-relaxed" placeholder="# Agent Workflow..." spellCheck={false} />
     </div>
   );
 }

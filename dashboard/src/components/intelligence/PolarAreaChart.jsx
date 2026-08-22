@@ -34,7 +34,7 @@ export default function PolarAreaChart({ scores }) {
 
   return (
     <div className="w-full h-full flex items-center justify-center relative group">
-      <svg viewBox="0 0 100 100" className="w-full h-full max-w-[240px] overflow-visible">
+      <svg viewBox="0 0 100 100" className="w-full h-full max-w-[15rem] overflow-visible">
         <defs>
           <filter id="polarGlow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="2" result="blur" />
