@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 import { getSettings } from './settings.js';
+import * as globalStore from './global-store.js';
 
 const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
@@ -16,11 +17,11 @@ export function handleHealthCheck(req, res) {
 
     const cwd = project.path;
     const checks = [
-      { name: '.agents directory', passed: fs.existsSync(path.join(cwd, '.agents')) },
-      { name: 'PROGRESS.md', passed: fs.existsSync(path.join(cwd, '.agents', 'PROGRESS.md')) },
-      { name: 'RULES.md', passed: fs.existsSync(path.join(cwd, '.agents', 'RULES.md')) },
-      { name: 'AGENTS.md', passed: fs.existsSync(path.join(cwd, '.agents', 'AGENTS.md')) },
-      { name: 'CLI scripts', passed: fs.existsSync(path.join(cwd, '.agents', 'scripts', 'ledger.cjs')) },
+      { name: 'Project Data Directory', passed: fs.existsSync(globalStore.getProjectDataDir(project.id)) },
+      { name: 'PROGRESS.md', passed: fs.existsSync(globalStore.getProgressPath(project.id)) },
+      { name: 'RULES.md', passed: fs.existsSync(globalStore.getRulesPath(project.id)) },
+      { name: 'AGENTS.md', passed: fs.existsSync(globalStore.getAgentsPath(project.id)) },
+      { name: 'Global Engine', passed: fs.existsSync(globalStore.getGlobalEnginePath()) },
       { name: 'plan directory', passed: fs.existsSync(path.join(cwd, 'plan')) },
       { name: 'git repository', passed: fs.existsSync(path.join(cwd, '.git')) }
     ];

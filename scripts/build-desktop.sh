@@ -6,6 +6,21 @@ set -euo pipefail
 
 export COPYFILE_DISABLE=1
 
+restore_source() {
+  echo "🔄 Restoring original source if backups exist..."
+  if [ -d "dashboard/src/server.bak" ]; then
+    rm -rf dashboard/src/server && mv dashboard/src/server.bak dashboard/src/server
+  fi
+  if [ -f "dashboard/server.js.bak" ]; then
+    mv dashboard/server.js.bak dashboard/server.js
+  fi
+  if [ -d "electron.bak" ]; then
+    rm -rf electron && mv electron.bak electron
+  fi
+  echo "✅ Source restored safely."
+}
+trap restore_source EXIT
+
 show_help() {
   echo "AI Checkpoint Desktop Builder"
   echo ""
@@ -57,6 +72,26 @@ echo "🧹 Pre-package cleanup..."
 dot_clean -m . 2>/dev/null || true
 find . -name "._*" -delete 2>/dev/null || true
 find . -name ".DS_Store" -delete 2>/dev/null || true
+
+echo "🔧 Building encrypted engine..."
+npm run build:engine
+
+echo "📦 Backing up source for obfuscation..."
+cp -r dashboard/src/server dashboard/src/server.bak
+cp dashboard/server.js dashboard/server.js.bak
+cp -r electron electron.bak
+
+echo "🔒 Obfuscating backend code..."
+npx javascript-obfuscator dashboard/server.js --output dashboard/server.js --compact true --string-array true
+for f in dashboard/src/server/*.js; do
+  npx javascript-obfuscator "$f" --output "$f" --compact true --string-array true
+done
+for f in electron/*.js; do
+  npx javascript-obfuscator "$f" --output "$f" --compact true --string-array true
+done
+
+echo "🧹 Cleaning stale release directory..."
+rm -rf release 2>/dev/null || sudo rm -rf release 2>/dev/null || true
 
 echo "🚀 Step 3: Packaging Desktop App with Electron Builder..."
 case "$PLATFORM" in

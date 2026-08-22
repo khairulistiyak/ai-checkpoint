@@ -4,6 +4,7 @@ import path from 'path';
 import { getSettings } from './settings.js';
 import { generatePlanTemplate, getAgentsTierBlock } from './plan-templates.js';
 import { getNextPhaseNum, syncPlanToProgress } from './plan-sync-server.js';
+import * as globalStore from './global-store.js';
 
 const router = express.Router();
 
@@ -23,7 +24,7 @@ router.get('/projects/:id/ai-tier', (req, res) => {
   const project = getProject(req.params.id, res);
   if (!project) return;
 
-  const configPath = path.join(project.path, '.agents', 'ai-config.json');
+  const configPath = globalStore.getAiConfigPath(project.id);
   let tier = 'medium';
 
   try {
@@ -48,12 +49,8 @@ router.post('/projects/:id/ai-tier', (req, res) => {
     return res.status(400).json({ error: 'Invalid tier. Expected small, medium, or high.' });
   }
 
-  const agentsDir = path.join(project.path, '.agents');
-  if (!fs.existsSync(agentsDir)) {
-    return res.status(400).json({ error: '.agents directory not found. Please install project first.' });
-  }
-
-  const configPath = path.join(agentsDir, 'ai-config.json');
+  const agentsDir = globalStore.ensureProjectDataDir(project.id);
+  const configPath = globalStore.getAiConfigPath(project.id);
   try {
     let config = {};
     if (fs.existsSync(configPath)) {
@@ -96,26 +93,25 @@ router.post('/projects/:id/generate-plan', (req, res) => {
     }
 
     // 2. Generate and write template
-    const nextPhase = getNextPhaseNum(project.path);
+    const nextPhase = getNextPhaseNum(project.id);
     const templateContent = generatePlanTemplate(name, tier, description, nextPhase);
     fs.writeFileSync(targetPath, templateContent, 'utf8');
 
     // 3. Save tier config
-    const agentsDir = path.join(project.path, '.agents');
-    if (fs.existsSync(agentsDir)) {
-      const configPath = path.join(agentsDir, 'ai-config.json');
-      let config = {};
-      if (fs.existsSync(configPath)) {
-        try { config = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch (e) { /* tier file write error */ }
-      }
-      config.tier = tier;
-      fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf8');
+    const agentsDir = globalStore.ensureProjectDataDir(project.id);
+    const configPath = globalStore.getAiConfigPath(project.id);
+    let config = {};
+    if (fs.existsSync(configPath)) {
+      try { config = JSON.parse(fs.readFileSync(configPath, 'utf8')); } catch (e) { /* tier file write error */ }
+    }
+    config.tier = tier;
+    fs.writeFileSync(configPath, JSON.stringify(config, null, 2), 'utf8');
 
-      // 4. Update AGENTS.md rules with marker block
-      if (updateAgents) {
-        const agentsPath = path.join(agentsDir, 'AGENTS.md');
-        if (fs.existsSync(agentsPath)) {
-          let agentsContent = fs.readFileSync(agentsPath, 'utf8');
+    // 4. Update AGENTS.md rules with marker block
+    if (updateAgents) {
+      const agentsPath = globalStore.getAgentsPath(project.id);
+      if (fs.existsSync(agentsPath)) {
+        let agentsContent = fs.readFileSync(agentsPath, 'utf8');
           const tierBlock = getAgentsTierBlock(tier);
 
           if (agentsContent.includes('<!-- AI-TIER-START -->')) {
@@ -127,13 +123,12 @@ router.post('/projects/:id/generate-plan', (req, res) => {
               agentsContent = agentsContent + '\n\n' + tierBlock;
             }
           }
-          fs.writeFileSync(agentsPath, agentsContent, 'utf8');
-        }
+        fs.writeFileSync(agentsPath, agentsContent, 'utf8');
       }
     }
 
     // 5. Automatically sync newly created plan to PROGRESS.md
-    try { syncPlanToProgress(project.path); } catch {}
+    try { syncPlanToProgress(project.id, project.path); } catch {}
 
     res.json({ success: true, planFile: `${name}.md` });
   } catch (e) {

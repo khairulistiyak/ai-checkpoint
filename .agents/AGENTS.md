@@ -1,59 +1,69 @@
 # Agent Workflow Rules
 
-> Auto-loaded every session. Tells the AI agent how to work.
+> Auto-loaded every session. Follow this order exactly.
 
 ---
 
-## Before Starting Any Work
+## Before Starting
 
-1. Read `.agents/SYSTEM_GUIDE.md` — **পুরো প্রজেক্ট বোঝো** (structure, rules, module system)
-2. Read `.agents/PROGRESS.md` — know what's done and what's next
-3. Read `.agents/RULES.md` — know the coding conventions
-4. Find the next pending step in `plan/*.md`
-5. Start working
+1. Read `.agents/PROGRESS.md`.
+2. Read `.agents/RULES.md`.
+3. Find the next pending step in `plan/*.md`.
+4. Confirm the step has File, Action, Content, Done-check, and Depends.
+5. Run `./l start X.Y`.
 
----
+## Strict Loop
 
-## Critical Rules (সবচেয়ে গুরুত্বপূর্ণ)
+1. Read one step only.
+2. Change the one declared file only.
+3. Run the declared Done-check.
+4. If it fails, fix the same file and run it once more.
+5. If it fails twice, mark the step BLOCKED and stop.
+6. Run `./l v`.
+7. Fix validation failures without changing step scope.
+8. Run `./l c X.Y "note"`.
+9. Report completion and stop before the next step.
 
-- **packages/ = CommonJS** → `require()` / `module.exports` ব্যবহার করো
-- **dashboard/ = ESM** → `import` / `export` ব্যবহার করো
-- **electron/ = CommonJS** → `require()` / `module.exports` ব্যবহার করো
-- **কখনো মেশাবে না!** CommonJS ফাইলে `import` লিখলে crash করবে
-- প্রতি ফাইল সর্বোচ্চ **150 lines**
+## Rules
 
----
+- One step = one file = one action.
+- Never skip or redo completed steps.
+- Never execute `plan/drafts/`.
+- Never guess missing requirements; mark BLOCKED.
+- Never add features or refactors outside the step.
+- Never complete a step when Done-check or `./l v` fails.
 
-## Step Workflow Rules
+## Zero-Error Protocol
 
-- **1 step = 1 file** — finish one before starting the next
-- **Start**: `./l start X.Y` — creates files, marks running
-- **Complete**: `./l c X.Y "note"` — verifies, marks done
-- **Never skip** steps or redo completed ones
-- **Never auto-execute** files in `plan/drafts/`
-- **On error**: fix in the same step, don't create new ones
+- Before completing any step, the health gate must pass.
+- If `./l health` shows syntax errors or critical security issues, fix them first.
+- Never complete a step with health score below 60.
+- Run `./l health` after every 3 completed steps to catch regressions.
 
----
+## Checkpoints
 
-## After Each Step
+- Before risky changes: `./l cp save "description"`.
+- After a complex verified step: `./l cp save "description"`.
+- On failure: `./l cp back --force <tag>`.
+- Checkpoint save requires `./l v` to pass.
 
-Report to the user:
+## Completion Report
+
+```text
+Step X.Y complete — [title]
+File: [path]
+Done-check: passed
+Validation: passed
+Progress: X/Y
+Next: Step X.Y — [title]
 ```
-✅ Step X.Y Complete — [title]
-📁 File: [path]
-📊 Progress: X/Y steps
-👉 Next: Step X.Y — [title]
+
+## Blocked Report
+
+```text
+Step X.Y BLOCKED — [title]
+File: [path]
+Done-check failed twice: [command]
+Error: [exact output]
+Required clarification: [one precise requirement]
 ```
-
----
-
-## Quick Reference
-
-| কাজ | কমান্ড |
-|---|---|
-| Status দেখো | `./l` |
-| Step শুরু করো | `./l start X.Y` |
-| Step complete করো | `./l c X.Y "note"` |
-| Validate করো | `./l v` |
-| Health check | `./l doctor` |
-| Dashboard চালাও | `cd dashboard && npm run dev` |

@@ -1,13 +1,15 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { AGENTS_DIR, PROGRESS_PATH, PLAN_DIR } = require('./paths.js');
 
 function doctorCommand() {
   const required = [
-    ['.agents/', AGENTS_DIR, 'directory'],
-    ['.agents/PROGRESS.md', PROGRESS_PATH, 'file'],
-    ['.agents/RULES.md', path.join(AGENTS_DIR, 'RULES.md'), 'file'],
-    ['.agents/AGENTS.md', path.join(AGENTS_DIR, 'AGENTS.md'), 'file'],
+    ['Project Data Directory', AGENTS_DIR, 'directory'],
+    ['PROGRESS.md', PROGRESS_PATH, 'file'],
+    ['RULES.md', path.join(AGENTS_DIR, 'RULES.md'), 'file'],
+    ['AGENTS.md', path.join(AGENTS_DIR, 'AGENTS.md'), 'file'],
+    ['Global Engine', path.join(os.homedir(), '.ai-checkpoint', 'engine.bin.js'), 'file'],
     ['plan/', PLAN_DIR, 'directory'],
     ['.git/', path.join(process.cwd(), '.git'), 'directory']
   ];
@@ -18,7 +20,7 @@ function doctorCommand() {
   });
   if (fs.existsSync(PROGRESS_PATH)) {
     const progress = fs.readFileSync(PROGRESS_PATH, 'utf8');
-    if (!/^#\s+.+/m.test(progress) || !/^##\s+Project/m.test(progress)) errors.push('❌ Invalid .agents/PROGRESS.md');
+    if (!/^#\s+.+/m.test(progress) || !/^##\s+Project/m.test(progress)) errors.push('❌ Invalid PROGRESS.md');
   }
   const isJson = process.argv.includes('--json');
   if (isJson) {

@@ -3,6 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { getSettings } from './settings.js';
 import { ActivityLogger, shouldIgnore } from './activity-logger.js';
+import * as globalStore from './global-store.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -18,7 +19,10 @@ class WatcherManager {
   constructor() {
     this.sseManager = new SSEClientManager();
     this.watchers = new Map(); // projectId → ProjectWatcher
-    this.templatesDir = path.resolve(__dirname, '..', '..', '..', 'templates');
+    const resolvedTemplates = path.resolve(__dirname, '..', '..', '..', 'templates');
+    this.templatesDir = fs.existsSync(resolvedTemplates)
+      ? resolvedTemplates
+      : path.join(process.resourcesPath || __dirname, 'templates');
   }
 
   getOrCreateWatcher(projectId, projectPath) {
@@ -47,21 +51,22 @@ class WatcherManager {
   }
 
   // Restore PROGRESS.md from template (called when user accepts warning)
+  // BUG FIX: Now writes to global store instead of .agents/
   restoreProgressFromTemplate(projectId) {
     const watcher = this.watchers.get(projectId);
     if (!watcher) return false;
 
     const templatePath = path.join(this.templatesDir, 'PROGRESS.md');
-    const destPath = path.join(watcher.projectPath, '.agents', 'PROGRESS.md');
+    const destPath = globalStore.getProgressPath(projectId);
 
     if (!fs.existsSync(templatePath)) return false;
 
     try {
-      fs.mkdirSync(path.dirname(destPath), { recursive: true });
+      globalStore.ensureProjectDataDir(projectId);
       fs.copyFileSync(templatePath, destPath);
       console.log(`🔄 PROGRESS.md restored for project ${projectId}`); // keep
       this.sseManager.broadcast(projectId, 'file-restored', {
-        file: '.agents/PROGRESS.md',
+        file: 'PROGRESS.md',
         message: '🔄 PROGRESS.md recreated from template',
       });
       return true;
@@ -92,12 +97,13 @@ class WatcherManager {
   }
 
   // Initialize watchers for all registered projects
+  // BUG FIX: Removed .agents dir check — migrated projects won't have it
   initializeAll() {
     try {
       const settings = getSettings();
       if (settings.projects && settings.projects.length > 0) {
         for (const p of settings.projects) {
-          if (p.path && fs.existsSync(p.path) && fs.existsSync(path.join(p.path, '.agents'))) {
+          if (p.path && fs.existsSync(p.path)) {
             this.getOrCreateWatcher(p.id, p.path);
           }
         }

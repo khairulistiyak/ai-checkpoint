@@ -41,7 +41,7 @@ export function handleSavePlanFile(req, res) {
     fs.writeFileSync(filePath, content, 'utf8');
     let syncResult = null;
     try {
-      syncResult = syncPlanToProgress(project.path);
+      syncResult = syncPlanToProgress(project.id, project.path);
       watcherManager.sseManager?.broadcast(project.id, 'progress-updated', { file: 'plan/' + filename });
     } catch {}
     res.json({ success: true, filename, syncResult });

@@ -109,7 +109,15 @@ if (!gotTheLock) {
 
   app.whenReady().then(async () => {
     const server = await startEmbeddedServer();
-    const port = server ? server.address().port : 20226;
+    if (!server) {
+      dialog.showErrorBox(
+        'AI Checkpoint — Server Failed',
+        'The backend server could not start.\n\nPlease try running from terminal:\n  ai-checkpoint --no-sandbox\n\nOr check the logs for details.'
+      );
+      app.quit();
+      return;
+    }
+    const port = server.address().port;
     createWindow(port);
 
     app.on('activate', () => {

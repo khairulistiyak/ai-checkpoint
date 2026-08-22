@@ -10,7 +10,7 @@ import { handleHealthCheck, handleAutofix } from './project-health.js';
 import { handleCommand } from './project-commands.js';
 import { handleGetPlanFile, handleSavePlanFile, handleRestoreProgress } from './project-plans.js';
 import { handleWatch, handleGetActivityLog, handleDeleteActivityLog } from './project-activity.js';
-import { handleUpdateProject, handleRelinkBridge, handleSyncPlans } from './project-actions.js';
+import { handleUpdateProject, handleRelinkBridge, handleSyncPlans, handleExportProject, handleImportProject } from './project-actions.js';
 import { handleDetectStack } from './stack-detector.js';
 import aiScaffolder from '../../../packages/core/ai-scaffolder.js';
 const { scaffoldStrictRules } = aiScaffolder;
@@ -18,6 +18,7 @@ import { handleGetCompliance } from './project-compliance.js';
 import { handleScaffoldCleanArch, handleGetBoundaryLeaks } from './clean-arch-routes.js';
 import { handleGetDryAnalysis, handleGetUtilityIndex, handleGetRefactorProposal } from './dry-analysis.js';
 import { handleGetIntelligence } from './intelligence.js';
+import * as globalStore from './global-store.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,7 +27,15 @@ const router = express.Router();
 router.get('/', (req, res) => {
   try {
     const settings = getSettings();
-    res.json(settings.projects.map(enrichProject));
+    const projects = settings.projects.map(p => {
+      let enriched = enrichProject(p);
+      if (!enriched.isInstalled && enriched.hasPlanFiles) {
+        globalStore.recoverProgressFromPlans(p.id, p.path);
+        enriched = enrichProject(p); // Re-enrich after recovery
+      }
+      return enriched;
+    });
+    res.json(projects);
   } catch (e) {
     res.json([]);
   }
@@ -37,7 +46,14 @@ router.get('/:id', (req, res) => {
     const settings = getSettings();
     const project = settings.projects.find(p => p.id === req.params.id);
     if (!project) return res.status(404).json({ error: 'Not found' });
-    res.json(enrichProject(project));
+    
+    let enriched = enrichProject(project);
+    if (!enriched.isInstalled && enriched.hasPlanFiles) {
+      globalStore.recoverProgressFromPlans(project.id, project.path);
+      enriched = enrichProject(project); // Re-enrich after recovery
+    }
+    
+    res.json(enriched);
   } catch (e) {
     res.status(500).json({ error: 'Failed to fetch project' });
   }
@@ -54,6 +70,8 @@ router.get('/:id/intelligence', handleGetIntelligence);
 router.put('/:id', handleUpdateProject);
 router.post('/:id/relink-bridge', handleRelinkBridge);
 router.post('/:id/sync-plans', handleSyncPlans);
+router.get('/:id/export', handleExportProject);
+router.post('/:id/import', handleImportProject);
 
 router.post('/:id/install', (req, res) => {
   const settings = getSettings();
@@ -66,37 +84,32 @@ router.post('/:id/install', (req, res) => {
   const projectDir = project.path;
 
   try {
-    fs.mkdirSync(path.join(projectDir, '.agents', 'scripts'), { recursive: true });
-    fs.mkdirSync(path.join(projectDir, '.agents', 'packages', 'cli'), { recursive: true });
-    fs.mkdirSync(path.join(projectDir, '.agents', 'packages', 'core'), { recursive: true });
+    const projectDataDir = globalStore.ensureProjectDataDir(project.id);
+    fs.mkdirSync(path.join(projectDir, '.agents'), { recursive: true });
     fs.mkdirSync(path.join(projectDir, 'plan', 'drafts'), { recursive: true });
 
-    const ledgerSrc = path.join(scriptsDir, 'ledger.cjs');
-    if (fs.existsSync(ledgerSrc)) {
-      fs.copyFileSync(ledgerSrc, path.join(projectDir, '.agents', 'scripts', 'ledger.cjs'));
-    }
-
-    for (const srcDir of [path.join(aiCheckpointRoot, 'packages', 'cli'), path.join(aiCheckpointRoot, 'packages', 'core')]) {
-      if (fs.existsSync(srcDir)) {
-        const destDir = path.join(projectDir, '.agents', 'packages', path.basename(srcDir));
-        fs.readdirSync(srcDir).filter(f => f.endsWith('.js')).forEach(f => fs.copyFileSync(path.join(srcDir, f), path.join(destDir, f)));
-      }
-    }
-
-    fs.writeFileSync(path.join(projectDir, 'l'), '#!/bin/bash\nnode .agents/scripts/ledger.cjs "$@"\n', { mode: 0o755 });
-
-    const filesToCopy = [
-      { src: 'AGENTS.md', dest: path.join('.agents', 'AGENTS.md') },
-      { src: 'PROGRESS.md', dest: path.join('.agents', 'PROGRESS.md') },
-      { src: 'RULES.md', dest: path.join('.agents', 'RULES.md') },
-      { src: 'SYSTEM_GUIDE.md', dest: path.join('.agents', 'SYSTEM_GUIDE.md') },
-      { src: 'drafts-README.md', dest: path.join('plan', 'drafts', 'README.md') },
+    const globalFilesToCopy = [
+      { src: 'AGENTS.md', dest: globalStore.getAgentsPath(project.id) },
+      { src: 'PROGRESS.md', dest: globalStore.getProgressPath(project.id) },
+      { src: 'RULES.md', dest: globalStore.getRulesPath(project.id) },
+      { src: 'SYSTEM_GUIDE.md', dest: globalStore.getSystemGuidePath(project.id) },
     ];
 
-    for (const f of filesToCopy) {
-      const destPath = path.join(projectDir, f.dest);
+    for (const f of globalFilesToCopy) {
       const srcPath = path.join(templatesDir, f.src);
-      if (!fs.existsSync(destPath) && fs.existsSync(srcPath)) fs.copyFileSync(srcPath, destPath);
+      if (!fs.existsSync(f.dest) && fs.existsSync(srcPath)) fs.copyFileSync(srcPath, f.dest);
+    }
+
+    const localFilesToCopy = [
+      { src: 'AGENTS.md', dest: path.join(projectDir, 'AGENTS.md') },
+      { src: 'RULES.md', dest: path.join(projectDir, '.agents', 'RULES.md') },
+      { src: 'SYSTEM_GUIDE.md', dest: path.join(projectDir, '.agents', 'SYSTEM_GUIDE.md') },
+      { src: 'drafts-README.md', dest: path.join(projectDir, 'plan', 'drafts', 'README.md') },
+    ];
+
+    for (const f of localFilesToCopy) {
+      const srcPath = path.join(templatesDir, f.src);
+      if (!fs.existsSync(f.dest) && fs.existsSync(srcPath)) fs.copyFileSync(srcPath, f.dest);
     }
 
     scaffoldStrictRules(projectDir);

@@ -2,6 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
+import { getSettings } from './settings.js';
 
 const require = createRequire(import.meta.url);
 const __filename = fileURLToPath(import.meta.url);
@@ -14,12 +15,9 @@ function getCore() {
 
 function resolveProjectPath(id) {
   try {
-    const configPath = path.resolve(process.cwd(), '.agents', 'config.json');
-    if (fs.existsSync(configPath)) {
-      const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-      const project = (config.projects || []).find(p => p.id === id);
-      if (project && fs.existsSync(project.path)) return project.path;
-    }
+    const settings = getSettings();
+    const project = settings.projects.find(p => p.id === id);
+    if (project && fs.existsSync(project.path)) return project.path;
   } catch {}
   return process.cwd();
 }

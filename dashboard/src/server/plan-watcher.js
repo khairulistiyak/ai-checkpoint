@@ -3,7 +3,7 @@ import path from 'path';
 
 let activeWatcher = null;
 
-export function watchPlanDirectory(projectPath, onChange) {
+export function watchPlanDirectory(projectId, projectPath, onChange) {
   stopWatching();
   const planDir = path.join(projectPath, 'plan');
   if (!fs.existsSync(planDir)) return;

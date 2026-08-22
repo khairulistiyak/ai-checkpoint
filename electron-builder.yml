@@ -7,7 +7,7 @@ directories:
   output: release
   buildResources: build-resources
 
-asar: false
+asar: true
 
 files:
   - "!**/._*"
@@ -19,9 +19,11 @@ files:
   - dashboard/server.js
   - dashboard/package.json
   - dashboard/src/server/**
-  - build-resources/**
+  - dashboard/node_modules/**
   - packages/**
   - scripts/**
+  - build-resources/**
+  - assets/engine.bin.js
   - templates/**
   - package.json
 
@@ -74,7 +76,13 @@ nsis:
 
 linux:
   executableName: ai-checkpoint
+  executableArgs:
+    - "--no-sandbox"
   target:
+    - target: AppImage
+      arch:
+        - x64
+        - arm64
     - target: deb
       arch:
         - x64

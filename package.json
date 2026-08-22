@@ -1,6 +1,6 @@
 {
   "name": "ai-checkpoint",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The Deterministic State Ledger & Execution Framework for AI Coding Agents",
   "desktopName": "ai-checkpoint.desktop",
   "bin": {
@@ -22,6 +22,7 @@
     "node": ">=18.0.0"
   },
   "scripts": {
+    "build:engine": "node scripts/build-engine.js",
     "test": "bats tests",
     "doctor": "./l doctor",
     "validate": "./l v",
@@ -57,7 +58,9 @@
   "devDependencies": {
     "bats": "^1.13.0",
     "electron": "^43.3.0",
-    "electron-builder": "^26.15.3"
+    "electron-builder": "^26.15.3",
+    "esbuild": "^0.23.0",
+    "javascript-obfuscator": "^4.1.0"
   },
   "author": "Khairul Istiyak <khairulistiyak@gmail.com>",
   "license": "MIT"

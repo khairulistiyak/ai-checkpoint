@@ -1,7 +1,19 @@
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 function getHistoryPath(projectPath) {
+  try {
+    const settingsPath = path.join(os.homedir(), '.ai-checkpoint-dashboard', 'settings.json');
+    if (fs.existsSync(settingsPath)) {
+      const settings = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+      const proj = (settings.projects || []).find(p => p.path === projectPath);
+      if (proj && proj.id) {
+        const globalDir = path.join(os.homedir(), '.ai-checkpoint', 'projects', proj.id);
+        return path.join(globalDir, 'intelligence-history.json');
+      }
+    }
+  } catch {}
   return path.join(projectPath, '.agents', 'intelligence-history.json');
 }
 
