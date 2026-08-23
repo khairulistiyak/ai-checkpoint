@@ -6,7 +6,12 @@ function scanDependencyHygiene(projectPath) {
   const pkgPath = path.join(projectPath, 'package.json');
 
   if (!fs.existsSync(pkgPath)) {
-    return { checked: false, issues: [{ type: 'no-package-json', msg: 'No package.json found' }] };
+    const { walkCodeFiles } = require('./file-walker.js');
+    const codeFiles = walkCodeFiles(projectPath);
+    if (codeFiles.length === 0) {
+      return { checked: false, totalDeps: 0, totalDevDeps: 0, issues: [] };
+    }
+    return { checked: false, totalDeps: 0, totalDevDeps: 0, issues: [{ type: 'no-package-json', msg: 'No package.json found' }] };
   }
 
   let pkg;
