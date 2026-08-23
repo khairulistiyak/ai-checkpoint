@@ -17,6 +17,7 @@ restore_source() {
   if [ -d "electron.bak" ]; then
     rm -rf electron && mv electron.bak electron
   fi
+  rm -rf dashboard/src/server/server electron/electron 2>/dev/null || true
   echo "✅ Source restored safely."
 }
 trap restore_source EXIT
