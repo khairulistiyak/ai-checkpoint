@@ -1693,3 +1693,17 @@ UPDATE LOG:
 - [x] **Step 96.8** — Add Release Gate Script (`scripts/release-check.cjs`)
 - [x] **Step 96.9** — Expose Release Check Command (`package.json`)
 - [x] **Step 96.10** — Final Release Gate Audit (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 97: UI Fluidity, Active Step Indicators & Clean Project Baseline — ✅ 100% COMPLETE
+
+- [x] **Step 97.1** — Clean Empty Project Baseline Scoring (`packages/core/quality-report.js`)
+- [x] **Step 97.2** — Skip Dependency Hygiene Penalty on Zero-File Projects (`packages/core/dep-hygiene.js`)
+- [x] **Step 97.3** — Instant Project Settings Modal Opening (`dashboard/src/components/ConfigEditor.jsx`)
+- [x] **Step 97.4** — Active Step Live Execution Banner in Plan Progress Tab (`dashboard/src/components/plans/PlanProgressTab.jsx`)
+- [x] **Step 97.5** — Active Step Indicator Enhancement in StepItem (`dashboard/src/components/StepItem.jsx`)
+- [x] **Step 97.6** — Active Step Banner in Cockpit Overview (`dashboard/src/components/CockpitTab.jsx`)
+- [x] **Step 97.7** — Rebuild Engine & Dashboard (`assets/engine.bin.js`)
+- [x] **Step 97.8** — Final Phase 97 Release Check Verification (`.agents/PROGRESS.md`)
+

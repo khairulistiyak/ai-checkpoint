@@ -5,6 +5,12 @@ function checkProjectConfig(projectPath) {
   const issues = [];
   const checks = [];
 
+  const { walkCodeFiles } = require('./file-walker.js');
+  const codeFiles = walkCodeFiles(projectPath);
+  if (codeFiles.length === 0) {
+    return { checks, issues };
+  }
+
   // Check .gitignore exists
   const gitignore = path.join(projectPath, '.gitignore');
   if (fs.existsSync(gitignore)) {
