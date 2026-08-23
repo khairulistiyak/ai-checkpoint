@@ -12,7 +12,7 @@ function buildSurgicalFixPrompt(opts = {}) {
     `## 🎯 Target Information:`,
     `- File: \`${file}\``,
     `- Line: ${line}`,
-    `- Issue Type: [${severity.toUpperCase()}] ${type}`,
+    `- Issue Type: [${(severity || 'warning').toUpperCase()}] ${type}`,
     `- Diagnosis: ${message}`,
     guidance ? `- Guidance: ${guidance}` : '',
     ``,
@@ -25,17 +25,43 @@ function buildSurgicalFixPrompt(opts = {}) {
   ].filter(Boolean).join('\n');
 }
 
+function buildBulkIssuesPrompt(opts = {}) {
+  const { category = 'All', issues = [] } = opts;
+  const issueLines = issues.map((iss, i) => {
+    const loc = iss.file ? `${iss.file}${iss.line ? `:${iss.line}` : ''}` : 'Project file';
+    const severity = (iss.severity || 'warning').toUpperCase();
+    const type = iss.type || iss.category || 'issue';
+    const msg = iss.message || iss.error || iss.msg || 'Diagnostic issue detected';
+    const guidance = iss.guidance || '';
+    return `${i + 1}. [${severity}] \`${loc}\` — ${type}: ${msg}${guidance ? ` (Guidance: ${guidance})` : ''}`;
+  }).join('\n');
+
+  return [
+    `# [BULK SURGICAL REMEDIATION: CATEGORY ${category.toUpperCase()}]`,
+    `Please resolve the following ${issues.length} issues sequentially using strict zero-regression standards:`,
+    ``,
+    `## 🛡️ Global Non-Breaking Rules (MANDATORY):`,
+    `1. CONTRACT PRESERVATION: Do NOT modify function signatures, exported names, component props, or return types. Only fix internal implementation.`,
+    `2. SURGICAL EDIT: Touch ONLY the offending lines. Do NOT rewrite unrelated code or entire files.`,
+    `3. ZERO DEPENDENCIES: Do NOT add new npm dependencies or third-party packages.`,
+    `4. RULE 0 COMPLIANCE: Every target file must remain strictly <= 150 lines and cyclomatic complexity <= 4.`,
+    `5. STEP-BY-STEP VERIFICATION: After fixing each file, run \`./l v && npm test\`. Revert immediately if anything fails.`,
+    ``,
+    `## 🔍 Issues to Resolve (${issues.length}):`,
+    issueLines || 'No issues found in this category.'
+  ].join('\n');
+}
+
 function buildDiagnosticReportPrompt(opts = {}) {
   const { projectId = 'Current Project', score = 100, healthScore = 100, qualityScore = 100, passed = true, filesScanned = 0, issues = [], breakdown = {} } = opts;
   const issueLines = issues.map((iss, i) => {
     const loc = iss.file ? `${iss.file}${iss.line ? `:${iss.line}` : ''}` : 'Project root';
-    return `${i + 1}. [${(iss.severity || 'warning').toUpperCase()}] ${loc} — ${iss.error || iss.msg || iss.message || iss.type}`;
+    return `${i + 1}. [${(iss.severity || 'warning').toUpperCase()}] \`${loc}\` — ${iss.error || iss.msg || iss.message || iss.type}`;
   }).join('\n');
 
   return [
     `# AI Checkpoint System Diagnostic Report`,
-    `Project ID: ${projectId}`,
-    `Overall Health Score: ${score}/100 (Health: ${healthScore}%, Quality: ${qualityScore}%)`,
+    `Project ID: ${projectId} | Health Score: ${score}/100 (Health: ${healthScore}%, Quality: ${qualityScore}%)`,
     `Status: ${passed ? 'PASSED ✅' : 'ISSUES DETECTED ⚠️'} | Files Scanned: ${filesScanned}`,
     ``,
     `## 📊 Issue Breakdown:`,
@@ -48,8 +74,8 @@ function buildDiagnosticReportPrompt(opts = {}) {
     `## 🔍 Detected Issues (${issues.length}):`,
     issueLines || 'No issues detected.',
     ``,
-    `## 🛡️ Execution Protocol for AI Assistant:`,
-    `1. Execute 1 issue at a time per atomic step.`,
+    `## 🛡️ Global Execution Protocol:`,
+    `1. Execute 1 issue at a time sequentially.`,
     `2. Do NOT break existing component interfaces, function parameters, or exports.`,
     `3. Verify every modification with \`./l v && npm test\`.`,
     `4. Keep all edited files strictly under 150 lines.`
@@ -100,6 +126,7 @@ function buildRefactorPrompt(opts = {}) {
 
 module.exports = {
   buildSurgicalFixPrompt,
+  buildBulkIssuesPrompt,
   buildDiagnosticReportPrompt,
   buildStepExecutionPrompt,
   buildRefactorPrompt
