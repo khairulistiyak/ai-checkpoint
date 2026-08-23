@@ -1,4 +1,3 @@
-const fs = require('fs');
 const path = require('path');
 const { log, colors, getProgressBar } = require('./colors.js');
 const { parseProgress } = require('./parse-progress.js');
@@ -7,68 +6,66 @@ const { updateProgressState, appendLogEntry, saveProgress } = require('./progres
 const { silentSync } = require('./plan-sync.js');
 const { syntaxCheck } = require('./syntax-checker.js');
 const { checkIntegrity } = require('./integrity-guard.js');
-let calculateHealth;
+
+let calculateHealth, generateQualityReport;
 try { calculateHealth = require('../core/health-score.js').calculateHealth; } catch { calculateHealth = null; }
-let generateQualityReport;
 try { generateQualityReport = require('../core/quality-report.js').generateQualityReport; } catch { generateQualityReport = null; }
+
+function checkTargetFileSyntax(stepNum, filePath) {
+  log.success(`Verified: ${path.relative(process.cwd(), filePath)}`);
+  const res = syntaxCheck(filePath);
+  if (!res.ok) {
+    console.log(`\n${colors.red}┌${'─'.repeat(74)}┐\n│ ❌ SYNTAX ERROR IN TARGET FILE`.padEnd(75) + `│\n│ ${(res.error || 'Syntax error').slice(0, 72).padEnd(73)}│\n└${'─'.repeat(74)}┘${colors.reset}\n`);
+    process.exit(1);
+  }
+  (res.warnings || []).forEach(w => log.warn(w));
+  const integ = checkIntegrity(stepNum, filePath);
+  (integ.warnings || []).forEach(w => log.warn(w));
+}
+
+function validateTargetFileIntegrity(targetStep, stepNum) {
+  const v = verifyTargetFile(targetStep.title);
+  if (!v.verified) {
+    console.log(`\n${colors.red}┌${'─'.repeat(74)}┐\n│ ❌ VERIFICATION FAILED`.padEnd(75) + `│\n│ ${v.error.padEnd(73)}│\n└${'─'.repeat(74)}┘${colors.reset}\n`);
+    process.exit(1);
+  }
+  if (v.path) checkTargetFileSyntax(stepNum, v.path);
+}
+
+function verifyHealthGates() {
+  if (calculateHealth) {
+    const health = calculateHealth(process.cwd());
+    if (health.breakdown.syntaxErrors > 0 || health.breakdown.criticalSecurity > 0) {
+      console.log(`\n${colors.red}┌${'─'.repeat(74)}┐\n│ ❌ HEALTH GATE FAILED — Score: ${String(health.score).padEnd(3)} (syntax: ${health.breakdown.syntaxErrors}, critical: ${health.breakdown.criticalSecurity})`.padEnd(75) + `│\n└${'─'.repeat(74)}┘${colors.reset}\n`);
+      process.exit(1);
+    }
+  }
+  if (generateQualityReport) {
+    const quality = generateQualityReport(process.cwd());
+    if (quality.score < 40) log.warn(`Quality score is ${quality.score}/100 — consider running ./l quality`);
+  }
+}
 
 function completeCommand(stepNum, comment) {
   checkFiles();
   silentSync();
-  if (!stepNum) { log.error("Step number required"); process.exit(1); }
-  if (!comment) { log.error("Comment required"); process.exit(1); }
+  if (!stepNum || !comment) {
+    log.error(!stepNum ? 'Step number required' : 'Comment required');
+    process.exit(1);
+  }
   
   const { lines, phases } = parseProgress();
   let targetStep = null, targetPhase = null;
-  for (const p of phases) { const s = p.steps.find(st => st.number === stepNum); if (s) { targetStep = s; targetPhase = p; break; } }
+  for (const p of phases) {
+    const s = p.steps.find(st => st.number === stepNum);
+    if (s) { targetStep = s; targetPhase = p; break; }
+  }
   if (!targetStep) { log.error(`Step ${stepNum} not found!`); process.exit(1); }
-  if (targetStep.status === 'done') { log.warn(`Already completed.`); process.exit(0); }
+  if (targetStep.status === 'done') { log.warn('Already completed.'); process.exit(0); }
 
   validateCommand();
-
-  const v = verifyTargetFile(targetStep.title);
-  if (!v.verified) {
-    console.log(`\n${colors.red}┌${'─'.repeat(74)}┐`);
-    console.log(`│ ❌ VERIFICATION FAILED`.padEnd(75) + "│");
-    console.log(`│ ${v.error.padEnd(73)}│`);
-    console.log(`└${'─'.repeat(74)}┘${colors.reset}\n`);
-    process.exit(1);
-  }
-  if (v.path) {
-    log.success(`Verified: ${path.relative(process.cwd(), v.path)}`);
-    const res = syntaxCheck(v.path);
-    if (!res.ok) {
-      console.log(`\n${colors.red}┌${'─'.repeat(74)}┐`);
-      console.log(`│ ❌ SYNTAX ERROR IN TARGET FILE`.padEnd(75) + "│");
-      console.log(`│ ${(res.error || 'Syntax error').slice(0, 72).padEnd(73)}│`);
-      console.log(`└${'─'.repeat(74)}┘${colors.reset}\n`);
-      process.exit(1);
-    }
-    if (res.warnings && res.warnings.length > 0) {
-      res.warnings.forEach(w => log.warn(w));
-    }
-    const integ = checkIntegrity(stepNum, v.path);
-    if (integ.warnings && integ.warnings.length > 0) {
-      integ.warnings.forEach(w => log.warn(w));
-    }
-  }
-
-  if (calculateHealth) {
-    const health = calculateHealth(process.cwd());
-    if (health.breakdown.syntaxErrors > 0 || health.breakdown.criticalSecurity > 0) {
-      console.log(`\n${colors.red}┌${'─'.repeat(74)}┐`);
-      console.log(`│ ❌ HEALTH GATE FAILED — Score: ${String(health.score).padEnd(3)} (syntax: ${health.breakdown.syntaxErrors}, critical: ${health.breakdown.criticalSecurity})`.padEnd(75) + "│");
-      console.log(`└${'─'.repeat(74)}┘${colors.reset}\n`);
-      process.exit(1);
-    }
-  }
-
-  if (generateQualityReport) {
-    const quality = generateQualityReport(process.cwd());
-    if (quality.score < 40) {
-      log.warn(`Quality score is ${quality.score}/100 — consider running ./l quality`);
-    }
-  }
+  validateTargetFileIntegrity(targetStep, stepNum);
+  verifyHealthGates();
 
   lines[targetStep.lineIndex] = lines[targetStep.lineIndex].replace(/-\s*\[([ x!/~])\]/, '- [x]');
   targetStep.status = 'done';
@@ -77,14 +74,9 @@ function completeCommand(stepNum, comment) {
   appendLogEntry(lines, stepNum, 'completed', comment);
   saveProgress(lines);
   
-  console.log(`\n${colors.green}┌${'─'.repeat(74)}┐`);
-  console.log(`│ 🎉  STEP ${stepNum} COMPLETED!`.padEnd(75) + "│");
-  console.log(`└${'─'.repeat(74)}┘${colors.reset}\n`);
-  
-  if (pPct === 100) { console.log(`${colors.bgCyan} 🏆 PHASE ${targetPhase.number} COMPLETE: ${targetPhase.name.toUpperCase()} ${colors.reset}\n`); }
+  console.log(`\n${colors.green}┌${'─'.repeat(74)}┐\n│ 🎉  STEP ${stepNum} COMPLETED!`.padEnd(75) + `│\n└${'─'.repeat(74)}┘${colors.reset}\n`);
+  if (pPct === 100) console.log(`${colors.bgCyan} 🏆 PHASE ${targetPhase.number} COMPLETE: ${targetPhase.name.toUpperCase()} ${colors.reset}\n`);
   console.log(`${colors.bright}Overall: ${colors.green}${oPct}%${colors.reset} ${getProgressBar(oPct, 20)} (${doneS}/${totalS})`);
 }
 
-module.exports = {
-  completeCommand
-};
+module.exports = { completeCommand };
