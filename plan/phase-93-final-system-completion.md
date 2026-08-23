@@ -15,12 +15,12 @@
 ## Step-by-Step Implementation Plan
 
 ### Step 93.1 — Clean Empty-State for New Projects
-- **File**: `dashboard/src/components/CockpitOverview.jsx`
+- **File**: `dashboard/src/components/CockpitTab.jsx`
 - **Action**: Add graceful empty state banner when a project has no active plans or steps.
 - **Content**: 
   - Check if `project.planStats?.totalSteps === 0`.
   - Display helpful empty state onboarding component suggesting user to create a plan in `plan/`.
-- **Done-check**: `grep -i "Create your first plan" dashboard/src/components/CockpitOverview.jsx`
+- **Done-check**: `grep -i "Create your first plan" dashboard/src/components/CockpitTab.jsx`
 - **Depends**: None
 
 ---

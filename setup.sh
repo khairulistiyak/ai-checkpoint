@@ -64,10 +64,16 @@ copy_if_new() {
   fi
 }
 
+if [ ! -d "$PROJECT_DIR/.git" ]; then
+  git init -b main "$PROJECT_DIR" >/dev/null 2>&1 || git init "$PROJECT_DIR" >/dev/null 2>&1 || true
+fi
+
 echo -e "${YELLOW}Setting up configuration files...${NC}"
+copy_if_new "$SCRIPT_DIR/templates/PROGRESS.md" "$PROJECT_DIR/.agents/PROGRESS.md"
 copy_if_new "$SCRIPT_DIR/templates/RULES.md" "$PROJECT_DIR/.agents/RULES.md"
 copy_if_new "$SCRIPT_DIR/templates/SYSTEM_GUIDE.md" "$PROJECT_DIR/.agents/SYSTEM_GUIDE.md"
 copy_if_new "$SCRIPT_DIR/templates/AGENTS.md" "$PROJECT_DIR/AGENTS.md"
+copy_if_new "$SCRIPT_DIR/templates/AGENTS.md" "$PROJECT_DIR/.agents/AGENTS.md"
 copy_if_new "$SCRIPT_DIR/templates/drafts-README.md" "$PROJECT_DIR/plan/drafts/README.md"
 
 echo -e "${YELLOW}Installing CLI wrapper...${NC}"

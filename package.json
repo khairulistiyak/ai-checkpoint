@@ -34,7 +34,8 @@
     "electron:build:mac": "bash scripts/build-desktop.sh mac",
     "electron:build:win": "bash scripts/build-desktop.sh win",
     "electron:build:linux": "bash scripts/build-desktop.sh linux",
-    "electron:build:all": "bash scripts/build-desktop.sh all"
+    "electron:build:all": "bash scripts/build-desktop.sh all",
+    "release:check": "node scripts/release-check.cjs"
   },
   "repository": {
     "type": "git",
