@@ -75,7 +75,7 @@ export default function DeveloperActionDock({
             }`}
           >
             {/* Top Micro Progress Hairline */}
-            <div className="absolute top-0 left-3 right-3 h-[2px] bg-white/5 rounded-full overflow-hidden pointer-events-none">
+            <div className="absolute top-0 left-3 right-3 h-0.5 bg-white/5 rounded-full overflow-hidden pointer-events-none">
               <div className="h-full bg-gradient-to-r from-sky-400 via-amber-400 to-emerald-400 transition-all duration-500" style={{ width: `${completionPct}%` }} />
             </div>
 
