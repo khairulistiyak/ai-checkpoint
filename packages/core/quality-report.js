@@ -55,6 +55,27 @@ function generateQualityReport(projectPath) {
     })));
   }
 
+  if (structure.totalFiles === 0) {
+    return {
+      score: 100,
+      maxScore: 100,
+      passed: true,
+      breakdown: {
+        structureIssues: 0,
+        namingIssues: 0,
+        hygieneIssues: 0,
+        complexityIssues: 0,
+        dependencyIssues: 0,
+        configIssues: 0,
+        duplicateIssues: 0,
+        dryScore: 100,
+        totalFiles: 0,
+        totalDirs: structure.totalDirs,
+      },
+      issues: [],
+    };
+  }
+
   let score = 100;
   score -= structure.issues.filter(i => i.type === 'junk-file').length * 3;
   score -= structure.issues.filter(i => i.type === 'empty-file').length * 5;
