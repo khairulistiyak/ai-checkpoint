@@ -64,10 +64,11 @@ export default function ActionDockButtons({
                   ? 'bg-purple-500/30 text-purple-200 border border-purple-500/40'
                   : 'text-purple-300 hover:text-purple-200 hover:bg-purple-500/15'
               }`}
-              title="Copy AI Prompt formatted for AI Agents"
+              title="Copy AI Prompt (⌘P / Ctrl+P)"
             >
               {copiedPrompt ? <Check className="w-3 h-3 text-purple-300" /> : <Sparkles className="w-3 h-3 text-purple-400" />}
               <span className="hidden sm:inline">Prompt</span>
+              <kbd className="hidden lg:inline text-[9px] font-mono text-purple-300/60 bg-purple-500/10 px-1 py-0.2 rounded border border-purple-500/20">⌘P</kbd>
             </button>
 
             <button
@@ -105,6 +106,7 @@ export default function ActionDockButtons({
             >
               <Terminal className="w-3 h-3 text-amber-400" />
               <span className="hidden sm:inline">Terminal</span>
+              <kbd className="hidden xl:inline text-[9px] font-mono text-amber-400/60 bg-amber-500/10 px-1 py-0.2 rounded border border-amber-500/20">~</kbd>
             </button>
           </>
         )}
@@ -117,8 +119,8 @@ export default function ActionDockButtons({
           onClick={handleExecute}
           className={`px-4 py-1.5 rounded-xl text-xs font-mono font-bold transition-all flex items-center gap-1.5 cursor-pointer shadow-lg active:scale-95 ${
             isRunning
-              ? 'bg-emerald-400 hover:bg-emerald-300 text-zinc-950 shadow-emerald-500/20'
-              : 'bg-white hover:bg-zinc-200 text-zinc-950 shadow-white/10'
+              ? 'bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 text-zinc-950 shadow-emerald-500/25 ring-1 ring-emerald-400/30'
+              : 'bg-white hover:bg-zinc-200 text-zinc-950 shadow-white/10 ring-1 ring-white/20'
           }`}
           title={isRunning ? `Complete step ${stepNumber}` : `Start step ${stepNumber}`}
         >
