@@ -7,7 +7,7 @@ directories:
   output: release
   buildResources: build-resources
 
-asar: true
+asar: false
 
 files:
   - "!**/._*"
