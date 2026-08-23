@@ -29,12 +29,15 @@ export default function DeveloperActionDock({
     handleCopyAiPrompt,
     handleCopyCliCommand,
     handleOpenIde,
-    handleQuickHealth
+    handleQuickHealth,
+    formattedTimer
   } = useDeveloperDock({ project, nextStep, runningStep, onRefresh, showToast });
 
   useEffect(() => {
     if (isAllComplete) setIsMinimized(true);
   }, [isAllComplete, setIsMinimized]);
+
+  const completionPct = project?.overall?.percentage || 0;
 
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 max-w-4xl w-[94%] sm:w-auto min-w-[18.75rem] transition-all duration-300 pointer-events-auto select-none">
@@ -63,8 +66,19 @@ export default function DeveloperActionDock({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 12 }}
             transition={{ type: 'spring', stiffness: 450, damping: 32 }}
-            className="bg-[#0b0c13]/95 backdrop-blur-2xl rounded-2xl p-2 sm:px-3 sm:py-2 flex flex-wrap md:flex-nowrap items-center justify-between gap-3 border border-white/[0.12] shadow-[0_20px_50px_rgba(0,0,0,0.85)] ring-1 ring-white/5"
+            className={`relative bg-[#0b0c13]/95 backdrop-blur-2xl rounded-2xl p-2 sm:px-3 sm:py-2 flex flex-wrap md:flex-nowrap items-center justify-between gap-3 border border-white/[0.12] ring-1 ring-white/5 transition-all duration-500 ${
+              isAllComplete
+                ? 'shadow-[0_16px_50px_-10px_rgba(16,185,129,0.25)]'
+                : isRunning
+                ? 'shadow-[0_16px_50px_-10px_rgba(245,158,11,0.25)]'
+                : 'shadow-[0_16px_50px_-10px_rgba(56,189,248,0.15)]'
+            }`}
           >
+            {/* Top Micro Progress Hairline */}
+            <div className="absolute top-0 left-3 right-3 h-[2px] bg-white/5 rounded-full overflow-hidden pointer-events-none">
+              <div className="h-full bg-gradient-to-r from-sky-400 via-amber-400 to-emerald-400 transition-all duration-500" style={{ width: `${completionPct}%` }} />
+            </div>
+
             <div className="flex items-center gap-2.5 min-w-0 flex-1 px-1">
               <div className="relative flex items-center justify-center shrink-0">
                 <span className="relative flex h-2.5 w-2.5">
@@ -80,6 +94,12 @@ export default function DeveloperActionDock({
                   <span className="text-[10px] font-mono text-zinc-300 font-bold bg-white/[0.06] px-1.5 py-0.2 rounded border border-white/10">
                     {isAllComplete ? '100%' : `#${stepNumber}`}
                   </span>
+                  {isRunning && formattedTimer && (
+                    <span className="text-[9px] font-mono text-amber-300 font-bold bg-amber-500/15 px-1.5 py-0.2 rounded border border-amber-500/25 flex items-center gap-1">
+                      <span>⏱</span>
+                      <span>{formattedTimer}</span>
+                    </span>
+                  )}
                 </div>
                 <div className="flex items-center gap-2 mt-0.5">
                   <span className="text-xs font-semibold text-zinc-100 truncate max-w-[13.75rem] sm:max-w-xs md:max-w-sm tracking-tight font-outfit">
