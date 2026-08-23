@@ -19,7 +19,9 @@
       xhr.open('POST', serverUrl + endpoint, true);
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.send(JSON.stringify(data));
-    } catch (e) {}
+    } catch (e) {
+      void e;
+    }
   }
 
   function trackVisit() {
