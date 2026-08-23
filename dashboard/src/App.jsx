@@ -6,12 +6,13 @@ import AppModals from './components/AppModals';
 import PageSkeleton from './components/ui/PageSkeleton';
 import UpdateNotification from './components/UpdateNotification';
 import ProgressDeleteWarningModal from './components/ProgressDeleteWarningModal';
-import ErrorBoundary from './components/ErrorBoundary';
 import { UpdateBanner } from './components/UpdateBanner';
 
 import { useProjects } from './hooks/useProjects';
 import { useHashRoute } from './hooks/useHashRoute';
 import { useFileWatcher } from './hooks/useFileWatcher';
+import { useTelemetryReporter } from './hooks/useTelemetryReporter';
+import { useAppShortcuts } from './hooks/useAppShortcuts';
 import { AnimatePresence } from 'framer-motion';
 import { useToast } from './components/ToastProvider';
 import * as api from './utils/api';
@@ -36,7 +37,7 @@ export default function App() {
   const [progressDeleteWarning, setProgressDeleteWarning] = useState(null);
   const [liveActivityEntry, setLiveActivityEntry] = useState(null);
 
-  useFileWatcher(selectedId ? selectedId : null, {
+  useFileWatcher(selectedId || null, {
     onRefresh: () => refresh(),
     onFileRestored: (d) => showToast(`🔄 ${d.file} auto-restored`, 'info'),
     onFileDeletedWarning: (d) => (d.file === '.agents/PROGRESS.md' && d.canRestore ? setProgressDeleteWarning(d) : showToast(`⚠️ ${d.message || d.file + ' deleted'}`, 'warning')),
@@ -49,44 +50,14 @@ export default function App() {
     else setSelectedId(null);
   }, [route, projectId]);
 
-  // Standalone Analytics Telemetry Reporter (Port 4100)
-  useEffect(() => {
-    let sid = sessionStorage.getItem('__ac_telemetry_sid');
-    if (!sid) {
-      sid = 'client_' + Math.random().toString(36).substring(2, 9) + Date.now();
-      sessionStorage.setItem('__ac_telemetry_sid', sid);
-    }
-    const reportEvent = () => {
-      fetch('http://localhost:4100/api/event', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId: sid, page: route || 'home' })
-      }).catch(() => {});
-    };
-    reportEvent();
-    const timer = setInterval(() => {
-      fetch('http://localhost:4100/api/heartbeat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId: sid })
-      }).catch(() => {});
-    }, 25000);
-    return () => clearInterval(timer);
-  }, [route]);
-
-  useEffect(() => {
-    const onKey = (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); setIsCommandPaletteOpen(true); }
-      else if (e.key === 'Escape') {
-        if (isAddModalOpen) setIsAddModalOpen(false);
-        else if (isSettingsOpen) setIsSettingsOpen(false);
-        else if (route === 'plans') navigate(`#/project/${projectId}`);
-        else if (configProject) setConfigProject(null);
-      }
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [isAddModalOpen, isSettingsOpen, configProject, route, projectId, navigate]);
+  useTelemetryReporter(route);
+  useAppShortcuts({
+    isAddModalOpen, setIsAddModalOpen,
+    isSettingsOpen, setIsSettingsOpen,
+    configProject, setConfigProject,
+    setIsCommandPaletteOpen,
+    route, projectId, navigate
+  });
 
   const selectedProject = projects.find((p) => p.id === selectedId);
   const handleSelectSidebar = (id) => { setSelectedId(id || null); id ? navigate(`#/project/${id}`) : navigate('#/'); setIsMobileMenuOpen(false); };
