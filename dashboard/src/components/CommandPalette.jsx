@@ -68,8 +68,7 @@ export default function CommandPalette({ isOpen, onClose, projects, onSelectProj
 
   return (
     <div className="fixed inset-0 z-50 flex items-start justify-center pt-0 md:pt-[15vh]">
-      <div className="absolute inset-0 bg-cyber-dark/80 backdrop-blur-md" onClick={onClose}></div>
-      
+      <button type="button" aria-label="Close search overlay" className="absolute inset-0 bg-cyber-dark/80 backdrop-blur-md w-full h-full border-0 cursor-default" onClick={onClose} />
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: -20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
