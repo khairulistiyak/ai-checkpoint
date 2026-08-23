@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import * as api from '../../utils/api';
+import { buildStepExecutionPrompt } from '../../utils/prompt-builder';
 
 export function useDeveloperDock({
   project,
@@ -60,7 +61,14 @@ export function useDeveloperDock({
 
   const handleCopyAiPrompt = () => {
     if (!activeTargetStep) return;
-    const prompt = `Execute Step ${stepNumber} — ${cleanTitle}\n\nProject Root: ${project.path || project.id}\nTarget File: ${filePath || 'Check plan file'}\nStatus: ${isRunning ? 'In Progress' : 'Pending'}\n\nGuidelines & Conventions:\n1. 1 step = 1 file — finish one before starting the next\n2. Start step: ./l start ${stepNumber}\n3. Implement necessary modifications for ${cleanTitle}\n4. Complete step: ./l c ${stepNumber} "Completed: ${cleanTitle}"\n5. Verify changes with tests or build before finalizing.`;
+    const prompt = buildStepExecutionPrompt({
+      stepNumber,
+      title: cleanTitle,
+      filePath,
+      projectPath: project.path || project.id,
+      status: isRunning ? 'running' : 'pending',
+      doneCheck: './l v && npm test'
+    });
     navigator.clipboard.writeText(prompt);
     setCopiedPrompt(true);
     showToast(`AI Prompt for Step ${stepNumber} copied!`, 'success');
