@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { fetchProjectHealth, triggerProjectAutofix } from '../../utils/api';
+import { buildDiagnosticReportPrompt } from '../../utils/prompt-builder';
 
 export function useHealthCommandCenter({ projectId, showToast }) {
   const [health, setHealth] = useState(null);
@@ -44,13 +45,16 @@ export function useHealthCommandCenter({ projectId, showToast }) {
 
   const handleCopyDiagnosticReport = () => {
     if (!health) return;
-    const issues = health.issues || [];
-    const breakdown = health.breakdown || {};
-    let report = `# AI Checkpoint System Diagnostic Report\nProject ID: ${projectId}\nOverall Health Score: ${health.score}/100 (Health: ${health.healthScore || 100}%, Quality: ${health.qualityScore || 100}%)\nStatus: ${health.passed ? 'PASSED ✅' : 'ISSUES DETECTED ⚠️'}\nFiles Scanned: ${health.filesScanned || 0}\n\n## Breakdown:\n- Security Warnings/Critical: ${(breakdown.criticalSecurity || 0) + (breakdown.warningSecurity || 0)}\n- Rule 0 Violations (>150 lines): ${breakdown.rule0Violations || 0}\n- Syntax Errors: ${breakdown.syntaxErrors || 0}\n- Broken Imports: ${breakdown.brokenImports || 0}\n- Hygiene / Clutter: ${breakdown.hygieneIssues || 0}\n- Complexity Issues: ${breakdown.complexityIssues || 0}\n\n## Detected Issues (${issues.length}):\n`;
-    issues.forEach((issue, idx) => {
-      report += `${idx + 1}. [${(issue.severity || 'warning').toUpperCase()}] ${issue.file}${issue.line ? `:${issue.line}` : ''} — ${issue.error || issue.msg || issue.type}\n`;
+    const report = buildDiagnosticReportPrompt({
+      projectId,
+      score: health.score,
+      healthScore: health.healthScore,
+      qualityScore: health.qualityScore,
+      passed: health.passed,
+      filesScanned: health.filesScanned,
+      issues: health.issues || [],
+      breakdown: health.breakdown || {}
     });
-    report += `\nPlease resolve these issues following Rule 0 (micro-file <= 150 lines) and strict coding standards.`;
     navigator.clipboard.writeText(report);
     setCopiedReport(true);
     showToast('AI Diagnostic Report copied to clipboard!', 'success');
