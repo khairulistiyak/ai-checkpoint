@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Circle, Loader2, AlertTriangle, FileCode2, Play, Check, Layers, Sparkles, Copy, Code2 } from 'lucide-react';
+import { CheckCircle2, Circle, Loader2, AlertTriangle, FileCode2, Play, Check, Layers, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useToast } from './ToastProvider';
 import * as api from '../utils/api';
@@ -28,19 +28,7 @@ export default function StepItem({ step, index, projectId, projectPath, hasPlanF
 
   const handleCopyPrompt = (e) => {
     e.stopPropagation();
-    const prompt = `Execute Step ${step.number} — ${cleanTitle}
-
-Project Root: ${projectPath || projectId}
-Target File: ${filePath || 'Check plan files'}
-Status: ${step.status === 'running' ? 'In Progress' : 'Pending'}
-
-Rules to follow:
-1. 1 step = 1 file — finish one before starting the next
-2. Start: ./l start ${step.number}
-3. Implement required changes for ${cleanTitle}
-4. Complete: ./l c ${step.number} "Completed: ${cleanTitle}"
-5. Verify step with tests / done-checks.`;
-
+    const prompt = `Execute Step ${step.number} — ${cleanTitle}\n\nProject Root: ${projectPath || projectId}\nTarget File: ${filePath || 'Check plan files'}\nStatus: ${step.status === 'running' ? 'In Progress' : 'Pending'}\n\nRules:\n1. 1 step = 1 file\n2. ./l start ${step.number}\n3. Implement changes for ${cleanTitle}\n4. ./l c ${step.number} "Completed: ${cleanTitle}"\n5. Verify done-check.`;
     navigator.clipboard.writeText(prompt);
     setCopiedPrompt(true);
     showToast(`AI Prompt for Step ${step.number} copied!`, 'success');
@@ -73,20 +61,29 @@ Rules to follow:
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.015, duration: 0.15 }}
       className={`py-1.5 px-3 rounded-lg transition-all duration-200 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border group ${
-        isRunning ? 'bg-white/[0.08] border-white/20' : isDone ? 'bg-white/[0.02] border-transparent hover:bg-white/[0.04]' : 'bg-black/20 border-white/5 hover:border-white/10 hover:bg-white/[0.04]'
+        isRunning
+          ? 'bg-amber-500/10 border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.15)] animate-pulse'
+          : isDone
+          ? 'bg-white/[0.02] border-transparent hover:bg-white/[0.04]'
+          : 'bg-black/20 border-white/5 hover:border-white/10 hover:bg-white/[0.04]'
       }`}
     >
       <div className="flex items-center gap-2.5 min-w-0 flex-1">
         <div className="shrink-0">
-          {isDone ? <CheckCircle2 className="w-3.5 h-3.5 text-white/70" /> : isRunning || executing ? <Loader2 className="w-3.5 h-3.5 text-white animate-spin" /> : isBlocked ? <AlertTriangle className="w-3.5 h-3.5 text-zinc-400" /> : <Circle className="w-3.5 h-3.5 text-white/20" />}
+          {isDone ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> : isRunning || executing ? <Loader2 className="w-3.5 h-3.5 text-amber-400 animate-spin" /> : isBlocked ? <AlertTriangle className="w-3.5 h-3.5 text-red-400" /> : <Circle className="w-3.5 h-3.5 text-white/20" />}
         </div>
         <span className={`text-[10px] font-mono shrink-0 ${isDone ? 'text-white/30' : 'text-white/50'}`}>#{step.number}</span>
         <span className={`text-xs tracking-tight truncate ${isDone ? 'text-white/50 line-through decoration-white/20' : 'text-white/90 font-medium'}`}>{cleanTitle}</span>
+        {isRunning && (
+          <span className="text-[9px] font-mono font-bold uppercase tracking-wider text-amber-400 bg-amber-500/20 px-1.5 py-0.5 rounded border border-amber-500/30 shrink-0">
+            WORKING
+          </span>
+        )}
         {filePath && (
           <button
             onClick={handleOpenIde}
             className="hidden md:inline-flex items-center gap-1 text-[10px] font-mono text-zinc-400 hover:text-sky-300 bg-white/5 hover:bg-sky-500/10 px-1.5 py-0.2 rounded border border-white/10 hover:border-sky-500/30 shrink-0 transition-all cursor-pointer"
-            title={`Click to open ${filePath} in VS Code / Cursor`}
+            title={`Click to open ${filePath} in IDE`}
           >
             <FileCode2 className="w-2.5 h-2.5 opacity-60" />
             <span className="truncate max-w-[11.25rem]">{filePath}</span>
@@ -95,21 +92,17 @@ Rules to follow:
       </div>
 
       <div className="flex items-center gap-1.5 shrink-0 self-end sm:self-auto">
-        {/* Copy AI Prompt Button */}
         <button
           onClick={handleCopyPrompt}
           className="p-1 px-1.5 rounded bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 hover:text-purple-200 border border-purple-500/20 hover:border-purple-500/40 flex items-center gap-1 font-mono text-[10px] transition-all cursor-pointer shrink-0"
-          title="Copy structured instruction prompt for AI Agent"
+          title="Copy prompt for AI Agent"
         >
           {copiedPrompt ? <Check className="w-2.5 h-2.5 text-purple-300" /> : <Sparkles className="w-2.5 h-2.5 text-purple-400" />}
           <span className="hidden xl:inline">Prompt</span>
         </button>
 
         {filePath && (
-          <button
-            onClick={handleOpenIde}
-            className="md:hidden inline-flex items-center gap-1 text-[10px] font-mono text-zinc-300 bg-white/5 px-1.5 py-0.2 rounded border border-white/10"
-          >
+          <button onClick={handleOpenIde} className="md:hidden inline-flex items-center gap-1 text-[10px] font-mono text-zinc-300 bg-white/5 px-1.5 py-0.2 rounded border border-white/10">
             <FileCode2 className="w-2.5 h-2.5 opacity-60" />
             <span className="truncate max-w-[7.5rem]">{filePath}</span>
           </button>
@@ -142,7 +135,7 @@ Rules to follow:
           <button
             disabled={executing}
             onClick={() => handleCommand('complete')}
-            className="px-2.5 py-0.5 rounded transition-all font-mono text-[10px] font-bold border flex items-center gap-1 bg-white text-zinc-950 hover:bg-zinc-200 border-white shadow-sm cursor-pointer"
+            className="px-2.5 py-0.5 rounded transition-all font-mono text-[10px] font-bold border flex items-center gap-1 bg-amber-400 text-zinc-950 hover:bg-amber-300 border-amber-300 shadow-sm cursor-pointer"
             title="Mark Step as Complete"
           >
             <Check className="w-2.5 h-2.5" />
