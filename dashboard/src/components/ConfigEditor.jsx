@@ -21,22 +21,21 @@ export default function ConfigEditor({ projectId, onClose }) {
   useEffect(() => {
     async function load() {
       try {
-        const [pData, cData, sData, rfcData] = await Promise.all([
+        const [pData, cData] = await Promise.all([
           api.fetchProject(projectId),
-          api.fetchConfig(projectId),
-          api.fetchProjectStack(projectId).catch(() => null),
-          api.fetchProjectCompliance(projectId).catch(() => null)
+          api.fetchConfig(projectId)
         ]);
         setProject(pData);
-        setStackInfo(sData);
-        setCompliance(rfcData);
         setRules(cData.rules || '');
         setAgents(cData.agents || '');
         setOrigRules(cData.rules || '');
         setOrigAgents(cData.agents || '');
+        setLoading(false);
+
+        api.fetchProjectStack(projectId).then(setStackInfo).catch(() => null);
+        api.fetchProjectCompliance(projectId).then(setCompliance).catch(() => null);
       } catch (err) {
         showToast(`Failed to load: ${err.message}`, 'error');
-      } finally {
         setLoading(false);
       }
     }
@@ -84,8 +83,6 @@ export default function ConfigEditor({ projectId, onClose }) {
     onClose();
   };
 
-  if (loading) return null;
-
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
       <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={handleClose} />
@@ -119,13 +116,20 @@ export default function ConfigEditor({ projectId, onClose }) {
         </div>
 
         <div className="flex-1 p-4 sm:p-6 overflow-y-auto custom-scrollbar">
-          <AnimatePresence mode="wait">
-            <motion.div key={activeTab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} className="h-full">
-              {activeTab === 'general' && <GeneralTab project={project} stackInfo={stackInfo} compliance={compliance} onUpdateName={handleUpdateName} onSyncPlans={() => api.syncProjectPlans(projectId).then(() => showToast('Plans synced!', 'success'))} onRelinkBridge={() => api.relinkProjectBridge(projectId).then(() => showToast('Bridge relinked!', 'success'))} onClearLogs={() => api.deleteActivityLog(projectId).then(() => showToast('Logs cleared!', 'info'))} onOpenIde={handleOpenIde} />}
-              {activeTab === 'rules' && <RulesTab content={rules} onChange={setRules} onInjectPreset={(txt) => setRules((prev) => prev ? prev + '\n' + txt : txt)} />}
-              {activeTab === 'agents' && <AgentsTab content={agents} onChange={setAgents} onInjectPreset={(txt) => setAgents((prev) => prev ? prev + '\n' + txt : txt)} />}
-            </motion.div>
-          </AnimatePresence>
+          {loading ? (
+            <div className="flex flex-col items-center justify-center h-48 gap-3 text-zinc-400">
+              <Loader2 className="w-6 h-6 animate-spin text-sky-400" />
+              <span className="text-xs font-mono">Loading configuration...</span>
+            </div>
+          ) : (
+            <AnimatePresence mode="wait">
+              <motion.div key={activeTab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} className="h-full">
+                {activeTab === 'general' && <GeneralTab project={project} stackInfo={stackInfo} compliance={compliance} onUpdateName={handleUpdateName} onSyncPlans={() => api.syncProjectPlans(projectId).then(() => showToast('Plans synced!', 'success'))} onRelinkBridge={() => api.relinkProjectBridge(projectId).then(() => showToast('Bridge relinked!', 'success'))} onClearLogs={() => api.deleteActivityLog(projectId).then(() => showToast('Logs cleared!', 'info'))} onOpenIde={handleOpenIde} />}
+                {activeTab === 'rules' && <RulesTab content={rules} onChange={setRules} onInjectPreset={(txt) => setRules((prev) => prev ? prev + '\n' + txt : txt)} />}
+                {activeTab === 'agents' && <AgentsTab content={agents} onChange={setAgents} onInjectPreset={(txt) => setAgents((prev) => prev ? prev + '\n' + txt : txt)} />}
+              </motion.div>
+            </AnimatePresence>
+          )}
         </div>
       </div>
     </motion.div>
