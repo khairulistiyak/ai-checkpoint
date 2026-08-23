@@ -3,6 +3,7 @@ import { Search, Activity } from 'lucide-react';
 import { AnimatePresence } from 'framer-motion';
 import PhaseView from '../PhaseView';
 import FilePreviewDrawer from './FilePreviewDrawer';
+import ActiveStepBanner from './ActiveStepBanner';
 
 export default function PlanProgressTab({
   project,
@@ -29,6 +30,17 @@ export default function PlanProgressTab({
       }
     }
     return { total, done, active, pending };
+  }, [allPhases]);
+
+  const activeStep = useMemo(() => {
+    for (const p of allPhases) {
+      for (const s of (p.steps || [])) {
+        if (s.status === 'running' || s.status === 'in_progress') {
+          return { ...s, phaseNumber: p.number, phaseName: p.name || p.title };
+        }
+      }
+    }
+    return null;
   }, [allPhases]);
 
   return (
@@ -87,6 +99,8 @@ export default function PlanProgressTab({
           </select>
         </div>
       </div>
+
+      <ActiveStepBanner activeStep={activeStep} />
 
       <div className="flex-1 overflow-y-auto custom-scrollbar p-4 sm:p-5 space-y-4">
         {filteredPhases.length === 0 ? (
