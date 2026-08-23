@@ -56,7 +56,7 @@ export default function SettingsModal({ isOpen, onClose }) {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4">
-      <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={onClose} />
+      <button type="button" aria-label="Close settings backdrop" className="absolute inset-0 bg-black/80 backdrop-blur-md w-full h-full border-0 cursor-default" onClick={onClose} />
       <motion.div
         initial={{ scale: 0.95, opacity: 0, y: 10 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
