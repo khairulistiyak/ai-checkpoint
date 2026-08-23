@@ -60,7 +60,7 @@
     "bats": "^1.13.0",
     "electron": "^43.3.0",
     "electron-builder": "^26.15.3",
-    "esbuild": "^0.23.0",
+    "esbuild": "^0.28.2",
     "javascript-obfuscator": "^4.1.0"
   },
   "author": "Khairul Istiyak <khairulistiyak@gmail.com>",
