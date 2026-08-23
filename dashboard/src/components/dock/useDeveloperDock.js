@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import * as api from '../../utils/api';
 
 export function useDeveloperDock({
@@ -12,12 +12,28 @@ export function useDeveloperDock({
   const [copiedPrompt, setCopiedPrompt] = useState(false);
   const [copiedCli, setCopiedCli] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
 
   const activeTargetStep = runningStep || nextStep;
   const isAllComplete = !activeTargetStep;
-  const isRunning = !runningStep;
+  const isRunning = Boolean(runningStep);
   const stepNumber = activeTargetStep?.number || '';
   const rawTitle = activeTargetStep?.title || '';
+
+  useEffect(() => {
+    if (!isRunning) {
+      setElapsedSeconds(0);
+      return;
+    }
+    const timer = setInterval(() => setElapsedSeconds((p) => p + 1), 1000);
+    return () => clearInterval(timer);
+  }, [isRunning, stepNumber]);
+
+  const formattedTimer = useMemo(() => {
+    const mins = Math.floor(elapsedSeconds / 60).toString().padStart(2, '0');
+    const secs = (elapsedSeconds % 60).toString().padStart(2, '0');
+    return `${mins}:${secs}`;
+  }, [elapsedSeconds]);
 
   const fileMatch = rawTitle.match(/[`(]([^`)]+\.[a-zA-Z0-9]+)[`)]/);
   const filePath = activeTargetStep?.file || (fileMatch ? fileMatch[1] : '');
@@ -99,6 +115,8 @@ export function useDeveloperDock({
     handleCopyAiPrompt,
     handleCopyCliCommand,
     handleOpenIde,
-    handleQuickHealth
+    handleQuickHealth,
+    elapsedSeconds,
+    formattedTimer
   };
 }
