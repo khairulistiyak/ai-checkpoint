@@ -11,8 +11,8 @@ function scanHygiene(projectPath) {
     try { content = fs.readFileSync(file.path, 'utf8'); } catch { continue; }
     const lines = content.split('\n');
 
-    // Check for console statements (except in CLI files) // keep
-    if (!file.path.includes('packages/cli') && !file.path.includes('server')) {
+    // Check for console statements (except in CLI & script files) // keep
+    if (!file.path.includes('packages/cli') && !file.path.includes('server') && !file.path.includes('scripts')) {
       for (let i = 0; i < lines.length; i++) {
         const line = lines[i].trim();
         if (line.startsWith('//')) continue;
