@@ -1774,3 +1774,12 @@ UPDATE LOG:
 - [x] **Step 102.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 102.6** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 103: Accessibility (A11Y) Modal Backdrop & Semantic Role Standardization — ⏳ IN PROGRESS
+
+- [ ] **Step 103.1** — AddProjectModal A11Y Semantic Backdrop (`dashboard/src/components/AddProjectModal.jsx`)
+- [ ] **Step 103.2** — SettingsModal A11Y Semantic Backdrop (`dashboard/src/components/SettingsModal.jsx`)
+- [ ] **Step 103.3** — CommandPalette A11Y Semantic Backdrop (`dashboard/src/components/CommandPalette.jsx`)
+- [ ] **Step 103.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 103.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
