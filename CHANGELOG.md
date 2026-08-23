@@ -6,6 +6,30 @@ This project follows Keep a Changelog and Semantic Versioning.
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-08-23
+
+### Added
+- Electron desktop app with tray icon, auto-updater, and native folder picker.
+- Real-time analytics telemetry engine with live dashboard.
+- Intelligence Hub with radar chart, smart insights, and HUD.
+- Worker-thread scanner with caching for zero-freeze health checks.
+- `setup.sh` now installs `l` CLI wrapper automatically.
+- CLI auto-run entry point (`require.main === module`).
+- Release gate verification script.
+
+### Fixed
+- Health score raised to 100/100 — zero Rule 0 violations.
+- All 42 diagnostic issues resolved (Phase 95).
+- BATS test suite restored to 31/31 passing.
+- Removed ghost duplicate directories (`server/server`, `electron/electron`).
+- Empty catch blocks replaced with safe `void err`.
+- macOS `._*` junk files cleaned and gitignored.
+
+### Changed
+- Extracted reusable hooks (`useTelemetryReporter`, `useAppShortcuts`).
+- Decomposed oversized components (`IssueCard`, `HUDCoreBalance`).
+- Split `api.js`, `global-store.js` into focused modules.
+
 ## [1.0.0] - 2026-07-24
 
 ### Added
