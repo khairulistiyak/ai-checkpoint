@@ -6,7 +6,7 @@
  */
 
 const SKIP_DIRS = [
-  'node_modules', '.git', 'dist', 'build', 'release',
+  'node_modules', '.git', 'dist', 'build', 'release', 'assets',
   '.agents', 'plan', '.vscode', '.github', '_archive',
   'vendor', 'marketing', 'tests', '.vite', '.cache',
   'coverage', '.nyc_output'
