@@ -25,7 +25,7 @@ export default function ProjectGrid({
   const overall = progress?.overall || { percentage: 0, completed: 0, total: 0 };
   const allPhases = progress?.phases || [];
   const remaining = Math.max(0, overall.total - overall.completed);
-  const activePhases = allPhases.filter(p => p.percentage > 0 && p.percentage < 100).length;
+  const activePhases = allPhases.filter((p) => p.percentage > 0 && p.percentage < 100).length;
   const totalPlanSteps = planStats?.totalSteps || overall.total || 0;
   const planFilesList = planStats?.files || [];
 
@@ -33,7 +33,7 @@ export default function ProjectGrid({
     const handleKeyDown = (e) => {
       if ((e.ctrlKey || e.metaKey) && (e.key === '`' || e.key === '~')) {
         e.preventDefault();
-        setIsTerminalOpen(prev => !prev);
+        setIsTerminalOpen((prev) => !prev);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -64,16 +64,16 @@ export default function ProjectGrid({
   const filteredPhases = useMemo(() => {
     if (!allPhases.length) return [];
     return allPhases
-      .filter(p => selectedPhaseNumber === 'all' || String(p.number) === String(selectedPhaseNumber))
-      .map(p => ({
+      .filter((p) => selectedPhaseNumber === 'all' || String(p.number) === String(selectedPhaseNumber))
+      .map((p) => ({
         ...p,
-        steps: (p.steps || []).filter(step => {
+        steps: (p.steps || []).filter((step) => {
           const matchStatus = statusFilter === 'all' || step.status === statusFilter;
           const matchSearch = !searchQuery || step.title.toLowerCase().includes(searchQuery.toLowerCase()) || String(step.number).includes(searchQuery);
           return matchStatus && matchSearch;
         })
       }))
-      .filter(p => p.steps.length > 0);
+      .filter((p) => p.steps.length > 0);
   }, [allPhases, selectedPhaseNumber, statusFilter, searchQuery]);
 
   if (loading || !selectedProject) {
@@ -91,47 +91,29 @@ export default function ProjectGrid({
 
   return (
     <div className="flex flex-col gap-4 min-h-full w-full pb-20">
-      <ProjectCard 
-        project={selectedProject} 
-        onRemove={onRemove} 
-        onOpenConfig={onOpenConfig} 
-        onOpenPlans={onOpenPlans} 
-        onOpenArchitect={handleOpenArchitect} 
+      <ProjectCard
+        project={selectedProject}
+        onRemove={onRemove}
+        onOpenConfig={onOpenConfig}
+        onOpenPlans={onOpenPlans}
+        onOpenArchitect={handleOpenArchitect}
         onOpenIntelligence={() => setIsIntelligenceOpen(true)}
       />
 
       <ProjectTabBar activeTab={activeTab} setActiveTab={setActiveTab} overall={overall} planStats={planStats} />
 
       <ProjectTabsContent
-        activeTab={activeTab}
-        selectedProject={selectedProject}
-        overall={overall}
-        allPhases={allPhases}
-        activePhases={activePhases}
-        remaining={remaining}
-        planStats={planStats}
-        totalPlanSteps={totalPlanSteps}
-        handleOpenArchitect={handleOpenArchitect}
-        refresh={refresh}
-        liveActivityEntry={liveActivityEntry}
-        filteredPhases={filteredPhases}
-        statusFilter={statusFilter}
-        setStatusFilter={setStatusFilter}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        selectedPhaseNumber={selectedPhaseNumber}
-        setSelectedPhaseNumber={setSelectedPhaseNumber}
-        onOpenConfig={onOpenConfig}
-        setActiveTab={setActiveTab}
+        activeTab={activeTab} selectedProject={selectedProject} overall={overall} allPhases={allPhases}
+        activePhases={activePhases} remaining={remaining} planStats={planStats} totalPlanSteps={totalPlanSteps}
+        handleOpenArchitect={handleOpenArchitect} refresh={refresh} liveActivityEntry={liveActivityEntry}
+        filteredPhases={filteredPhases} statusFilter={statusFilter} setStatusFilter={setStatusFilter}
+        searchQuery={searchQuery} setSearchQuery={setSearchQuery} selectedPhaseNumber={selectedPhaseNumber}
+        setSelectedPhaseNumber={setSelectedPhaseNumber} onOpenConfig={onOpenConfig} setActiveTab={setActiveTab}
       />
 
       <DeveloperActionDock
-        project={selectedProject}
-        nextStep={nextStep}
-        runningStep={runningStep}
-        onRefresh={refresh}
-        onToggleTerminal={() => setIsTerminalOpen(prev => !prev)}
-        isTerminalOpen={isTerminalOpen}
+        project={selectedProject} nextStep={nextStep} runningStep={runningStep} onRefresh={refresh}
+        onToggleTerminal={() => setIsTerminalOpen((prev) => !prev)} isTerminalOpen={isTerminalOpen}
       />
 
       <AnimatePresence>
@@ -143,20 +125,13 @@ export default function ProjectGrid({
       <AnimatePresence>
         {selectedArchitectFile && (
           <FilePreviewDrawer
-            projectId={selectedProject.id}
-            filename={selectedArchitectFile}
-            allFiles={planFilesList}
-            onSelectFile={(f) => setSelectedArchitectFile(f)}
-            onClose={() => setSelectedArchitectFile(null)}
+            projectId={selectedProject.id} filename={selectedArchitectFile} allFiles={planFilesList}
+            onSelectFile={(f) => setSelectedArchitectFile(f)} onClose={() => setSelectedArchitectFile(null)}
           />
         )}
       </AnimatePresence>
 
-      <IntelligenceModal 
-        isOpen={isIntelligenceOpen} 
-        onClose={() => setIsIntelligenceOpen(false)} 
-        project={selectedProject} 
-      />
+      <IntelligenceModal isOpen={isIntelligenceOpen} onClose={() => setIsIntelligenceOpen(false)} project={selectedProject} />
     </div>
   );
 }
