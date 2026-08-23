@@ -31,27 +31,27 @@ export function WorldMapSvg({ sessions = [] }) {
     <div style={{
       background: 'linear-gradient(180deg, #09090b 0%, #121215 100%)',
       border: '1px solid #27272a',
-      borderRadius: '16px',
-      padding: '20px',
+      borderRadius: '1rem',
+      padding: 'clamp(0.875rem, 2.5vw, 1.25rem)',
       position: 'relative',
       boxShadow: '0 8px 32px rgba(0,0,0,0.5)'
     }}>
       {/* Header Info */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
         <div>
-          <h3 style={{ color: '#f4f4f5', margin: 0, fontSize: '15px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <h3 style={{ color: '#f4f4f5', margin: 0, fontSize: 'clamp(0.875rem, 2vw, 0.9375rem)', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span>🗺️</span> Global Real-Time Visitor Map
           </h3>
-          <span style={{ color: '#71717a', fontSize: '12px' }}>Latitude/Longitude Precise Coordinate Mapping</span>
+          <span style={{ color: '#71717a', fontSize: '0.75rem' }}>Latitude/Longitude Precise Coordinate Mapping</span>
         </div>
-        <div style={{ background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '4px 12px', borderRadius: '20px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22c55e', animation: 'pulse 1.5s infinite' }}></span>
-          <span style={{ color: '#4ade80', fontSize: '12px', fontWeight: 600 }}>{sessions.length} Active Nodes</span>
+        <div style={{ background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)', padding: '0.25rem 0.75rem', borderRadius: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.375rem' }}>
+          <span style={{ width: '0.5rem', height: '0.5rem', borderRadius: '50%', background: '#22c55e', animation: 'pulse 1.5s infinite' }}></span>
+          <span style={{ color: '#4ade80', fontSize: '0.75rem', fontWeight: 600 }}>{sessions.length} Active Nodes</span>
         </div>
       </div>
 
       {/* SVG Canvas */}
-      <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '12px', border: '1px solid #1f1f23', background: '#0e0e11' }}>
+      <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '0.75rem', border: '1px solid #1f1f23', background: '#0e0e11' }}>
         <svg viewBox="0 0 800 400" style={{ width: '100%', height: 'auto', display: 'block' }}>
           <defs>
             {/* Radar Pulse Effect */}
