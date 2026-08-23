@@ -3,6 +3,7 @@ import { CheckCircle2, Circle, Loader2, AlertTriangle, FileCode2, Play, Check, L
 import { motion } from 'framer-motion';
 import { useToast } from './ToastProvider';
 import * as api from '../utils/api';
+import { buildStepExecutionPrompt } from '../utils/prompt-builder';
 
 export default function StepItem({ step, index, projectId, projectPath, hasPlanFiles, matchingFile, onOpenArchitect, onRefresh }) {
   const { showToast } = useToast();
@@ -15,11 +16,7 @@ export default function StepItem({ step, index, projectId, projectPath, hasPlanF
       await api.executeCommand(projectId, command, step.number, command === 'complete' ? 'Completed from Dashboard' : '');
       if (onRefresh) await onRefresh();
       showToast(`Step ${command === 'start' ? 'started' : 'completed'} successfully`, 'success');
-    } catch (err) {
-      showToast(`Command failed: ${err.message}`, 'error');
-    } finally {
-      setExecuting(false);
-    }
+    } catch (err) { showToast(`Command failed: ${err.message}`, 'error'); } finally { setExecuting(false); }
   };
 
   const fileMatch = step.title.match(/[`(]([^`)]+\.[a-zA-Z0-9]+)[`)]/);
@@ -28,7 +25,14 @@ export default function StepItem({ step, index, projectId, projectPath, hasPlanF
 
   const handleCopyPrompt = (e) => {
     e.stopPropagation();
-    const prompt = `Execute Step ${step.number} — ${cleanTitle}\n\nProject Root: ${projectPath || projectId}\nTarget File: ${filePath || 'Check plan files'}\nStatus: ${step.status === 'running' ? 'In Progress' : 'Pending'}\n\nRules:\n1. 1 step = 1 file\n2. ./l start ${step.number}\n3. Implement changes for ${cleanTitle}\n4. ./l c ${step.number} "Completed: ${cleanTitle}"\n5. Verify done-check.`;
+    const prompt = buildStepExecutionPrompt({
+      stepNumber: step.number,
+      title: cleanTitle,
+      filePath,
+      projectPath: projectPath || projectId,
+      status: step.status,
+      doneCheck: './l v && npm test'
+    });
     navigator.clipboard.writeText(prompt);
     setCopiedPrompt(true);
     showToast(`AI Prompt for Step ${step.number} copied!`, 'success');
@@ -38,8 +42,7 @@ export default function StepItem({ step, index, projectId, projectPath, hasPlanF
   const handleOpenIde = (e) => {
     e.stopPropagation();
     if (!filePath) return;
-    const fullPath = projectPath ? `${projectPath}/${filePath}` : filePath;
-    window.location.href = `vscode://file/${fullPath}`;
+    window.location.href = `vscode://file/${projectPath ? `${projectPath}/${filePath}` : filePath}`;
     showToast(`Opening ${filePath} in IDE...`, 'info');
   };
 
@@ -51,9 +54,7 @@ export default function StepItem({ step, index, projectId, projectPath, hasPlanF
     } catch { return d; }
   };
 
-  const isDone = step.status === 'done';
-  const isRunning = step.status === 'running';
-  const isBlocked = step.status === 'blocked';
+  const isDone = step.status === 'done', isRunning = step.status === 'running', isBlocked = step.status === 'blocked';
 
   return (
     <motion.div
@@ -137,10 +138,7 @@ export default function StepItem({ step, index, projectId, projectPath, hasPlanF
             onClick={() => handleCommand('complete')}
             className="px-2.5 py-0.5 rounded transition-all font-mono text-[10px] font-bold border flex items-center gap-1 bg-amber-400 text-zinc-950 hover:bg-amber-300 border-amber-300 shadow-sm cursor-pointer"
             title="Mark Step as Complete"
-          >
-            <Check className="w-2.5 h-2.5" />
-            <span>Complete</span>
-          </button>
+          ><Check className="w-2.5 h-2.5" /><span>Complete</span></button>
         )}
       </div>
     </motion.div>
