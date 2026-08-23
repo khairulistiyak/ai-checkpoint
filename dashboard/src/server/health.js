@@ -1,20 +1,8 @@
 import { Router } from 'express';
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
-import { createRequire } from 'module';
 import { getSettings } from './settings.js';
-
-const require = createRequire(import.meta.url);
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import { loadHealthModule } from './module-loader.js';
 
 const router = Router();
-
-function loadHealthModule() {
-  const corePath = path.resolve(__dirname, '..', '..', '..', 'packages', 'core', 'health-score.js');
-  try { return require(corePath); } catch { return null; }
-}
 
 router.get('/projects/:id/health', (req, res) => {
   try {

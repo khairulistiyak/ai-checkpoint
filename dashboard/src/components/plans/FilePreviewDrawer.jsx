@@ -6,26 +6,15 @@ import FilePreviewSidebar from '../plan/FilePreviewSidebar';
 import FilePreviewContent from './FilePreviewContent';
 import { useFilePreviewDrawer } from './useFilePreviewDrawer';
 
-export default function FilePreviewDrawer({
-  projectId,
-  filename,
-  allFiles = [],
-  onSelectFile,
-  onClose
-}) {
+export default function FilePreviewDrawer(props) {
+  const { onClose } = props;
   const {
     content, loading, saving, copied, viewMode, setViewMode,
     isFullscreen, setIsFullscreen, showToc, setShowToc,
     tocSearch, setTocSearch, fileNames, hasPrev, hasNext,
     handlePrev, handleNext, handleSaveContent, copyContent,
     lineCount, tocItems, filteredToc, scrollToElement
-  } = useFilePreviewDrawer({
-    projectId,
-    filename,
-    allFiles,
-    onSelectFile,
-    onClose
-  });
+  } = useFilePreviewDrawer(props);
 
   const modalNode = (
     <motion.div

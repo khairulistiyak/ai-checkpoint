@@ -30,14 +30,14 @@ export default function ProjectGrid({
   const planFilesList = planStats?.files || [];
 
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleTerminalToggle = (e) => {
       if ((e.ctrlKey || e.metaKey) && (e.key === '`' || e.key === '~')) {
         e.preventDefault();
         setIsTerminalOpen((prev) => !prev);
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('keydown', handleTerminalToggle);
+    return () => window.removeEventListener('keydown', handleTerminalToggle);
   }, []);
 
   const { runningStep, nextStep } = useMemo(() => {

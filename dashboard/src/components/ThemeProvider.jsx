@@ -23,8 +23,8 @@ export function ThemeProvider({ children }) {
   );
 }
 
-export const useTheme = () => {
-  const context = useContext(ThemeContext);
-  if (!context) throw new Error('useTheme must be used within ThemeProvider');
-  return context;
-};
+export function useTheme() {
+  const ctx = useContext(ThemeContext);
+  if (!ctx) throw new Error('useTheme requires ThemeProvider parent context');
+  return ctx;
+}

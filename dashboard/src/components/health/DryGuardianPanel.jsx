@@ -19,14 +19,9 @@ export default function DryGuardianPanel({ projectId }) {
       setData(res);
     } catch {} finally { setLoading(false); }
   };
-
   const loadUtils = async (q) => {
-    try {
-      const res = await fetchUtilityIndex(projectId, q);
-      setUtils(res.results || []);
-    } catch {}
+    try { const res = await fetchUtilityIndex(projectId, q); setUtils(res.results || []); } catch {}
   };
-
   useEffect(() => { loadData(); }, [projectId, threshold]);
   useEffect(() => { if (activeTab === 'utils') loadUtils(query); }, [projectId, query, activeTab]);
 
@@ -37,10 +32,12 @@ export default function DryGuardianPanel({ projectId }) {
     } catch {}
   };
 
-  const handleCopy = (key, text) => {
-    navigator.clipboard.writeText(text);
-    setCopiedKey(key);
-    setTimeout(() => setCopiedKey(null), 2000);
+  const triggerClipboardSave = (key, text) => {
+    if (!text) return;
+    navigator.clipboard?.writeText(text).then(() => {
+      setCopiedKey(key);
+      setTimeout(() => setCopiedKey(null), 2000);
+    }).catch(() => {});
   };
 
   const scoreColor = (data?.dryScore || 0) >= 90 ? '#10b981' : (data?.dryScore || 0) >= 70 ? '#f59e0b' : '#f43f5e';
@@ -113,7 +110,7 @@ export default function DryGuardianPanel({ projectId }) {
                     <div className="text-zinc-300 font-semibold">{proposals[i].guidance}</div>
                     <div className="flex items-center justify-between text-zinc-400">
                       <span>Target: {proposals[i].targetFile}</span>
-                      <button onClick={() => handleCopy(`prop-${i}`, proposals[i].proposedModuleContent)} className="flex items-center gap-1 text-zinc-300 hover:text-white cursor-pointer">
+                      <button onClick={() => triggerClipboardSave(`prop-${i}`, proposals[i].proposedModuleContent)} className="flex items-center gap-1 text-zinc-300 hover:text-white cursor-pointer">
                         {copiedKey === `prop-${i}` ? <Check size={11} /> : <Copy size={11} />} Copy Code
                       </button>
                     </div>

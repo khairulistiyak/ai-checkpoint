@@ -1,17 +1,6 @@
-import path from 'path';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
-import { createRequire } from 'module';
 import { getSettings } from './settings.js';
-
-const require = createRequire(import.meta.url);
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-function getCore() {
-  const corePath = path.resolve(__dirname, '..', '..', '..', 'packages', 'core', 'index.js');
-  try { return require(corePath); } catch { return null; }
-}
+import { loadCoreModule } from './module-loader.js';
 
 function resolveProjectPath(id) {
   try {
@@ -25,7 +14,7 @@ function resolveProjectPath(id) {
 export function handleGetDryAnalysis(req, res) {
   try {
     const projectPath = resolveProjectPath(req.params.id);
-    const core = getCore();
+    const core = loadCoreModule();
     if (!core || !core.detectDuplicates) return res.status(500).json({ error: 'DRY detector not available' });
 
     const threshold = req.query.threshold ? parseFloat(req.query.threshold) / 100 : 0.75;
@@ -39,7 +28,7 @@ export function handleGetDryAnalysis(req, res) {
 export function handleGetUtilityIndex(req, res) {
   try {
     const projectPath = resolveProjectPath(req.params.id);
-    const core = getCore();
+    const core = loadCoreModule();
     if (!core || !core.buildUtilityIndex) return res.status(500).json({ error: 'Utility indexer not available' });
 
     const query = req.query.q || '';
@@ -53,7 +42,7 @@ export function handleGetUtilityIndex(req, res) {
 
 export function handleGetRefactorProposal(req, res) {
   try {
-    const core = getCore();
+    const core = loadCoreModule();
     if (!core || !core.generateRefactorProposal) return res.status(500).json({ error: 'Refactor engine not available' });
 
     const pair = req.body;
