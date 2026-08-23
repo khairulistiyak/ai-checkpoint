@@ -1,3 +1,6 @@
+const fs = require('fs');
+const path = require('path');
+const { spawnSync } = require('child_process');
 const { colors, log } = require('./colors.js');
 const { statusCommand } = require('./cmd-status.js');
 const { startCommand } = require('./cmd-start.js');
@@ -42,52 +45,61 @@ ${colors.bright}Commands:${colors.reset}
 `);
 }
 
+function handleDashboard() {
+  const dashPath = path.resolve(__dirname, '..', '..', '..', 'dashboard');
+  const altDashPath = path.resolve(__dirname, '..', '..', 'dashboard');
+  const finalDash = fs.existsSync(dashPath) ? dashPath : fs.existsSync(altDashPath) ? altDashPath : null;
+  if (!finalDash) { log.error('Dashboard not found. Make sure you have the dashboard/ directory.'); process.exit(1); }
+  log.info(`Starting dashboard from: ${finalDash}`);
+  spawnSync('node', ['server.js'], { cwd: finalDash, stdio: 'inherit' });
+}
+
+function handleCheckpoint(args) {
+  const sub = args[1];
+  if (sub === 'save') return checkpointSave(args[2]);
+  if (sub === 'list') return checkpointList();
+  if (sub === 'back') {
+    const force = args.includes('--force');
+    const tag = args.slice(2).find(a => a !== '--force');
+    return checkpointBack(tag, force);
+  }
+  log.error('Usage: ./l cp save|list|back');
+  process.exit(1);
+}
+
+const COMMAND_MAP = {
+  help: () => showHelp(), '--help': () => showHelp(), '-h': () => showHelp(), h: () => showHelp(),
+  status: (args) => statusCommand(), s: (args) => statusCommand(),
+  projects: (args) => projectsCommand(), p: (args) => projectsCommand(),
+  'lint-plan': (args) => lintPlanCommand(args[1]), lp: (args) => lintPlanCommand(args[1]),
+  sync: () => syncCommand(),
+  watch: () => watchCommand(), w: () => watchCommand(),
+  run: (args) => runProjectCommand(args[1], args.slice(2)), r: (args) => runProjectCommand(args[1], args.slice(2)),
+  health: (args) => healthCommand(args.slice(1)), hl: (args) => healthCommand(args.slice(1)),
+  quality: (args) => qualityCommand(args.slice(1)), q: (args) => qualityCommand(args.slice(1)),
+  dry: (args) => dryCommand(args.slice(1)), duplicates: (args) => dryCommand(args.slice(1)), dup: (args) => dryCommand(args.slice(1)),
+  utils: (args) => utilsCommand(args.slice(1)), util: (args) => utilsCommand(args.slice(1)), u: (args) => utilsCommand(args.slice(1)),
+  start: (args) => startCommand(args[1]),
+  complete: (args) => completeCommand(args[1], args[2]), c: (args) => completeCommand(args[1], args[2]),
+  block: (args) => blockCommand(args[1], args[2]), b: (args) => blockCommand(args[1], args[2]),
+  validate: () => validateCommand(), v: () => validateCommand(),
+  doctor: () => doctorCommand(),
+  'new-plan': (args) => newPlanCommand(args[1], args.slice(2)), np: (args) => newPlanCommand(args[1], args.slice(2)),
+  dashboard: () => handleDashboard(), dash: () => handleDashboard(), ui: () => handleDashboard(),
+  checkpoint: (args) => handleCheckpoint(args), cp: (args) => handleCheckpoint(args),
+};
+
 function run() {
   const args = process.argv.slice(2);
   const cmd = args[0] ? args[0].toLowerCase() : 'status';
+  const handler = COMMAND_MAP[cmd];
 
-  switch (cmd) {
-    case 'help': case '--help': case '-h': case 'h': showHelp(); break;
-    case 'status': case 's': statusCommand(); break;
-    case 'projects': case 'p': projectsCommand(); break;
-    case 'lint-plan': case 'lp': lintPlanCommand(args[1]); break;
-    case 'sync': syncCommand(); break;
-    case 'watch': case 'w': watchCommand(); break;
-    case 'run': case 'r': runProjectCommand(args[1], args.slice(2)); break;
-    case 'health': case 'hl': healthCommand(args.slice(1)); break;
-    case 'quality': case 'q': qualityCommand(args.slice(1)); break;
-    case 'dry': case 'duplicates': case 'dup': dryCommand(args.slice(1)); break;
-    case 'utils': case 'util': case 'u': utilsCommand(args.slice(1)); break;
-    case 'start': startCommand(args[1]); break;
-    case 'complete': case 'c': completeCommand(args[1], args[2]); break;
-    case 'block': case 'b': blockCommand(args[1], args[2]); break;
-    case 'validate': case 'v': validateCommand(); break;
-    case 'doctor': doctorCommand(); break;
-    case 'new-plan': case 'np': newPlanCommand(args[1], args.slice(2)); break;
-    case 'dashboard': case 'dash': case 'ui': {
-      const dashPath = require('path').resolve(__dirname, '..', '..', '..', 'dashboard');
-      const altDashPath = require('path').resolve(__dirname, '..', '..', 'dashboard');
-      const finalDash = require('fs').existsSync(dashPath) ? dashPath : require('fs').existsSync(altDashPath) ? altDashPath : null;
-      if (!finalDash) { log.error('Dashboard not found. Make sure you have the dashboard/ directory.'); process.exit(1); }
-      log.info(`Starting dashboard from: ${finalDash}`);
-      const { spawnSync } = require('child_process');
-      spawnSync('node', ['server.js'], { cwd: finalDash, stdio: 'inherit' });
-      break;
-    }
-    case 'checkpoint': case 'cp': {
-      const sub = args[1];
-      if (sub === 'save') checkpointSave(args[2]);
-      else if (sub === 'list') checkpointList();
-      else if (sub === 'back') {
-        const force = args.includes('--force');
-        const tag = args.slice(2).find(a => a !== '--force');
-        checkpointBack(tag, force);
-      }
-      else { log.error('Usage: ./l cp save|list|back'); process.exit(1); }
-      break;
-    }
-    default: log.error(`Unknown: "${cmd}"`); showHelp(); process.exit(1);
+  if (!handler) {
+    log.error(`Unknown: "${cmd}"`);
+    showHelp();
+    process.exit(1);
   }
+  handler(args);
 }
 
 module.exports = { run, showHelp };
