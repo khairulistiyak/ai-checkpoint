@@ -1,29 +1,34 @@
-import React, { useState } from 'react';
-import { Rocket, Target, Activity, Layers, FileText } from 'lucide-react';
+import React, { useState, useMemo } from 'react';
+import { Rocket } from 'lucide-react';
 import GitVisualizer from './GitVisualizer';
 import ActivityLog from './ActivityLog';
 import CockpitHealthOverview from './cockpit/CockpitHealthOverview';
+import CockpitKpiCards from './cockpit/CockpitKpiCards';
 import IntelligenceModal from './intelligence/IntelligenceModal';
+import ActiveStepBanner from './plans/ActiveStepBanner';
 
 export default function CockpitTab({
-  selectedProject,
-  overall,
-  allPhases,
-  activePhases,
-  remaining,
-  planStats,
-  totalPlanSteps,
-  handleOpenArchitect,
-  refresh,
-  liveActivityEntry,
-  onSelectTab
+  selectedProject, overall, allPhases, activePhases, remaining, planStats, totalPlanSteps, handleOpenArchitect, refresh, liveActivityEntry, onSelectTab
 }) {
   const [isIntelligenceModalOpen, setIsIntelligenceModalOpen] = useState(false);
   const unsyncedSteps = selectedProject?.unsyncedSteps || 0;
   const hasNoSteps = totalPlanSteps === 0 && allPhases.length === 0;
 
+  const activeStep = useMemo(() => {
+    for (const p of allPhases) {
+      for (const s of (p.steps || [])) {
+        if (s.status === 'running' || s.status === 'in_progress') {
+          return { ...s, phaseNumber: p.number, phaseName: p.name || p.title };
+        }
+      }
+    }
+    return null;
+  }, [allPhases]);
+
   return (
     <div className="flex flex-col gap-3">
+      <ActiveStepBanner activeStep={activeStep} />
+
       {hasNoSteps && (
         <div className="bg-sky-500/10 border border-sky-500/20 rounded-2xl p-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -39,76 +44,22 @@ export default function CockpitTab({
           </div>
           <button
             onClick={() => onSelectTab ? onSelectTab('files') : handleOpenArchitect()}
-            className="px-3.5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs font-outfit transition-all shrink-0"
+            className="px-3.5 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-bold text-xs font-outfit transition-all shrink-0 cursor-pointer"
           >
             Open Plan Blueprints →
           </button>
         </div>
       )}
-      {/* Top 4 Compact Executive KPI Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5">
-        <div className="bg-[#121214]/90 border border-white/[0.08] hover:border-white/15 rounded-2xl p-3.5 flex flex-col justify-between gap-1.5 shadow-sm transition-all">
-          <div className="flex items-center justify-between text-zinc-400 text-xs font-mono">
-            <span className="font-medium">Completion</span>
-            <div className="w-6 h-6 rounded-lg bg-sky-500/10 border border-sky-500/20 flex items-center justify-center">
-              <Target className="w-3.5 h-3.5 text-sky-400" />
-            </div>
-          </div>
-          <div className="text-xl font-bold font-outfit text-white tracking-tight">{overall.percentage}%</div>
-          <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
-            <div className="bg-gradient-to-r from-sky-400 to-indigo-500 h-full rounded-full transition-all duration-500" style={{ width: `${overall.percentage}%` }} />
-          </div>
-        </div>
 
-        <div className="bg-[#121214]/90 border border-white/[0.08] hover:border-white/15 rounded-2xl p-3.5 flex flex-col justify-between gap-1.5 shadow-sm transition-all">
-          <div className="flex items-center justify-between text-zinc-400 text-xs font-mono">
-            <span className="font-medium">Steps Done</span>
-            <div className="w-6 h-6 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-              <Activity className="w-3.5 h-3.5 text-emerald-400" />
-            </div>
-          </div>
-          <div className="text-xl font-bold font-outfit text-white tracking-tight">
-            {overall.completed} <span className="text-xs font-mono text-zinc-500 font-normal">/ {overall.total}</span>
-          </div>
-          <div className="text-[11px] font-mono text-zinc-500 truncate">{remaining} steps remaining</div>
-        </div>
-
-        <div className="bg-[#121214]/90 border border-white/[0.08] hover:border-white/15 rounded-2xl p-3.5 flex flex-col justify-between gap-1.5 shadow-sm transition-all">
-          <div className="flex items-center justify-between text-zinc-400 text-xs font-mono">
-            <span className="font-medium">Phases</span>
-            <div className="w-6 h-6 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center">
-              <Layers className="w-3.5 h-3.5 text-purple-400" />
-            </div>
-          </div>
-          <div className="text-xl font-bold font-outfit text-white tracking-tight">
-            {allPhases.length} <span className="text-xs font-mono text-zinc-500 font-normal">Phases</span>
-          </div>
-          <div className="text-[11px] font-mono text-zinc-500 truncate">
-            {activePhases} active • {allPhases.filter(p => p.percentage === 100).length} done
-          </div>
-        </div>
-
-        <div
-          onClick={() => onSelectTab ? onSelectTab('files') : handleOpenArchitect()}
-          className="bg-[#121214]/90 border border-white/[0.08] hover:border-sky-500/30 hover:bg-sky-500/5 rounded-2xl p-3.5 flex flex-col justify-between gap-1.5 shadow-sm transition-all cursor-pointer group"
-        >
-          <div className="flex items-center justify-between text-zinc-400 group-hover:text-white text-xs font-mono">
-            <span className="flex items-center gap-1.5 font-bold">
-              <span>Blueprints</span>
-              <span className="text-[9px] px-1.5 py-0.2 rounded bg-sky-500/10 text-sky-400 border border-sky-500/20 font-mono">CAD</span>
-            </span>
-            <div className="w-6 h-6 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
-              <FileText className="w-3.5 h-3.5 text-amber-400" />
-            </div>
-          </div>
-          <div className="text-xl font-bold font-outfit text-white tracking-tight">
-            {planStats?.files?.length || 0} <span className="text-xs font-mono text-zinc-500 font-normal">Files</span>
-          </div>
-          <div className="text-[11px] font-mono text-zinc-500 group-hover:text-zinc-300 truncate">
-            {totalPlanSteps} planned steps • Open →
-          </div>
-        </div>
-      </div>
+      <CockpitKpiCards
+        overall={overall}
+        remaining={remaining}
+        allPhases={allPhases}
+        activePhases={activePhases}
+        planStats={planStats}
+        totalPlanSteps={totalPlanSteps}
+        onOpenArchitect={() => onSelectTab ? onSelectTab('files') : handleOpenArchitect()}
+      />
 
       {unsyncedSteps > 0 && (
         <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-3 flex items-center gap-3">
@@ -124,10 +75,8 @@ export default function CockpitTab({
         </div>
       )}
 
-      {/* Embedded Live Health & Quality Fortress */}
       <CockpitHealthOverview projectId={selectedProject.id} onOpenIntelligence={() => setIsIntelligenceModalOpen(true)} />
 
-      {/* Git Snapshots & Activity Stream */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 items-stretch">
         <div className="bg-[#121214]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-3.5 sm:p-4 flex flex-col shadow-sm min-h-[25rem]">
           <div className="flex items-center justify-between gap-2.5 mb-3 pb-2.5 border-b border-white/[0.08] shrink-0">
