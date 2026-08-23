@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Search, CheckCheck } from 'lucide-react';
 import IssueCard from './IssueCard';
+import { buildSurgicalFixPrompt } from '../../utils/prompt-builder';
 
 export default function HealthIssueExplorer({
   issues,
@@ -15,16 +16,14 @@ export default function HealthIssueExplorer({
   const [copiedIndex, setCopiedIndex] = useState(null);
 
   const handleCopyIssue = (issue, idx) => {
-    const prompt = `Please fix the following issue in my code:
-
-File: ${issue.file || 'Project root'}
-Line: ${issue.line || 'N/A'}
-Severity: ${issue.severity || issue.type || 'info'}
-
-Issue Description:
-${issue.error || issue.msg || issue.message || 'Diagnostic issue detected'}
-
-Please provide the corrected code or explain how to resolve this.`;
+    const prompt = buildSurgicalFixPrompt({
+      file: issue.file || 'Project root',
+      line: issue.line || 'N/A',
+      severity: issue.severity || issue.type || 'info',
+      type: issue.type || issue.category || 'diagnostic',
+      message: issue.error || issue.msg || issue.message || 'Diagnostic issue detected',
+      guidance: issue.guidance || issue.suggestion || ''
+    });
 
     navigator.clipboard.writeText(prompt).then(() => {
       setCopiedIndex(idx);
