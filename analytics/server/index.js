@@ -37,7 +37,9 @@ app.get('/api/embed-script', (req, res) => {
         page: window.location.pathname,
         referrer: document.referrer
       })
-    }).catch(function(){});
+    }).catch(function(err) {
+      void err;
+    });
   }
 
   function sendHeartbeat() {
@@ -46,7 +48,9 @@ app.get('/api/embed-script', (req, res) => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sessionId: sessionId })
-      }).catch(function(){});
+      }).catch(function(err) {
+        void err;
+      });
     }
   }
 
@@ -59,5 +63,5 @@ app.get('/api/embed-script', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🌍 Standalone Analytics API Server running on http://localhost:${PORT}`);
+  process.stdout.write(`Analytics API Server running on http://localhost:${PORT}\n`);
 });
