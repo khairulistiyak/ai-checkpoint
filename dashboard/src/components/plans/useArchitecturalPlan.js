@@ -28,7 +28,19 @@ export function useArchitecturalPlan({ content, filename }) {
   };
 
   const copyFullSpecAsPrompt = () => {
-    const prompt = `You are implementing the plan from: ${filename}\n\nStrict Rules:\n1. 1 step = 1 file — finish one before starting the next\n2. Run './l start X.Y' before starting\n3. Run './l c X.Y \"note\"' after verifying\n4. Never skip steps\n\nBlueprint Specification:\n${content}`;
+    const prompt = [
+      `# [AI AGENT TASK: IMPLEMENT ARCHITECTURAL PLAN]`,
+      `You are implementing the blueprint from: \`${filename}\``,
+      ``,
+      `## 🛡️ Strict Non-Breaking Rules (MANDATORY):`,
+      `1. CONTRACT PRESERVATION: Do NOT modify existing function exports, props, or signatures.`,
+      `2. 1 STEP = 1 FILE: Complete each step sequentially without skipping.`,
+      `3. EXECUTION CYCLE: Run \`./l start X.Y\`, modify file, verify with \`./l v && npm test\`, then run \`./l c X.Y "note"\`.`,
+      `4. RULE 0 COMPLIANCE: Every created or modified file must remain strictly <= 150 lines.`,
+      ``,
+      `## Blueprint Specification:`,
+      content
+    ].join('\n');
     navigator.clipboard.writeText(prompt);
     setCopiedSpec(true);
     setTimeout(() => setCopiedSpec(false), 2500);
@@ -71,7 +83,22 @@ export function useArchitecturalPlan({ content, filename }) {
   };
 
   const generateStepPrompt = (step) => {
-    return `Implement Step ${step.stepNum}: ${step.stepTitle}\n\nBlueprint Reference: ${filename}\n\nStep Instructions & Context:\n${step.body || step.rawHeading}\n\nRules to follow:\n- 1 step = 1 file — finish one before starting the next\n- Run './l start ${step.stepNum}' to begin\n- Perform the implementation and verify\n- Run './l c ${step.stepNum} \"Done\"' once verified`;
+    return [
+      `# [AI AGENT TASK: STEP ${step.stepNum}]`,
+      `Implement Step ${step.stepNum} — ${step.stepTitle}`,
+      ``,
+      `Blueprint Reference: \`${filename}\``,
+      ``,
+      `## Step Instructions & Context:`,
+      step.body || step.rawHeading,
+      ``,
+      `## 🛡️ Strict Non-Breaking Rules:`,
+      `- 1 step = 1 file: Touch only declared files`,
+      `- Start: \`./l start ${step.stepNum}\``,
+      `- Verify: \`./l v && npm test\``,
+      `- Complete: \`./l c ${step.stepNum} "Completed ${step.stepTitle}"\``,
+      `- File must strictly remain <= 150 lines.`
+    ].join('\n');
   };
 
   return {
