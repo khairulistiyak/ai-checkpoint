@@ -4,6 +4,7 @@ const { analyzeDynamics } = require('./dynamic-scanner.js');
 const { analyzePerformance } = require('./performance-scanner.js');
 const { analyzeA11y } = require('./a11y-scanner.js');
 const { scanSecurity } = require('./security-scanner.js');
+const { buildSurgicalFixPrompt } = require('./prompt-generator.js');
 
 function calculateGrade(averageScore) {
   if (averageScore >= 95) return 'A+';
@@ -13,14 +14,23 @@ function calculateGrade(averageScore) {
   return 'D';
 }
 
-function generatePrompt(issueType, issueText) {
-  const base = `Refactor this code to meet World Top 1 Standards. `;
-  if (issueType === 'responsive') return base + `Replace all hardcoded pixels with fluid units (rem, clamp, vw/vh) to ensure 100% responsiveness. Issue context: ${issueText}`;
-  if (issueType === 'dynamic') return base + `Add dynamic micro-interactions (hover, transitions, animations) or state to this static component. Issue context: ${issueText}`;
-  if (issueType === 'performance') return base + `Optimize performance by implementing React.lazy, memoization, or fixing heavy imports. Issue context: ${issueText}`;
-  if (issueType === 'security') return base + `Fix the security vulnerability. Issue context: ${issueText}`;
-  if (issueType === 'a11y') return base + `Improve accessibility by adding missing ARIA labels, roles, or alt texts. Issue context: ${issueText}`;
-  return base + `Please fix: ${issueText}`;
+function generatePrompt(issueType, issueText, file = 'Project file', line = 'N/A') {
+  const guidanceMap = {
+    responsive: 'Replace hardcoded pixels with fluid units (rem, clamp, %)',
+    dynamic: 'Add subtle micro-interactions or motion states to static UI',
+    performance: 'Implement memoization, code-splitting, or optimize imports',
+    security: 'Remediate security vulnerability and sanitize inputs',
+    a11y: 'Add missing ARIA attributes, semantic roles, or keyboard navigation'
+  };
+
+  return buildSurgicalFixPrompt({
+    file,
+    line,
+    severity: issueType === 'security' ? 'critical' : 'warning',
+    type: issueType,
+    message: issueText,
+    guidance: guidanceMap[issueType] || 'Resolve diagnostic issue'
+  });
 }
 
 function generateIntelligenceReport(projectPath) {
@@ -41,24 +51,22 @@ function generateIntelligenceReport(projectPath) {
   ) / 5);
 
   const grade = calculateGrade(averageScore);
-
   const allIssues = [];
 
-  // Map issues and generate prompts
   responsive.issues.forEach(item => {
-    item.issues.forEach(msg => allIssues.push({ type: 'responsive', file: item.file, message: msg, prompt: generatePrompt('responsive', msg) }));
+    item.issues.forEach(msg => allIssues.push({ type: 'responsive', file: item.file, message: msg, prompt: generatePrompt('responsive', msg, item.file) }));
   });
   dynamic.issues.forEach(item => {
-    item.issues.forEach(msg => allIssues.push({ type: 'dynamic', file: item.file, message: msg, prompt: generatePrompt('dynamic', msg) }));
+    item.issues.forEach(msg => allIssues.push({ type: 'dynamic', file: item.file, message: msg, prompt: generatePrompt('dynamic', msg, item.file) }));
   });
   performance.issues.forEach(item => {
-    item.issues.forEach(msg => allIssues.push({ type: 'performance', file: item.file, message: msg, prompt: generatePrompt('performance', msg) }));
+    item.issues.forEach(msg => allIssues.push({ type: 'performance', file: item.file, message: msg, prompt: generatePrompt('performance', msg, item.file) }));
   });
   a11y.issues.forEach(item => {
-    item.issues.forEach(msg => allIssues.push({ type: 'a11y', file: item.file, message: msg, prompt: generatePrompt('a11y', msg) }));
+    item.issues.forEach(msg => allIssues.push({ type: 'a11y', file: item.file, message: msg, prompt: generatePrompt('a11y', msg, item.file) }));
   });
   security.issues.forEach(item => {
-    allIssues.push({ type: 'security', file: item.file, line: item.line, message: item.msg, prompt: generatePrompt('security', item.msg) });
+    allIssues.push({ type: 'security', file: item.file, line: item.line, message: item.msg, prompt: generatePrompt('security', item.msg, item.file, item.line) });
   });
 
   return {
