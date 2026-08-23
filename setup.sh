@@ -70,6 +70,27 @@ copy_if_new "$SCRIPT_DIR/templates/SYSTEM_GUIDE.md" "$PROJECT_DIR/.agents/SYSTEM
 copy_if_new "$SCRIPT_DIR/templates/AGENTS.md" "$PROJECT_DIR/AGENTS.md"
 copy_if_new "$SCRIPT_DIR/templates/drafts-README.md" "$PROJECT_DIR/plan/drafts/README.md"
 
+echo -e "${YELLOW}Installing CLI wrapper...${NC}"
+if [ ! -f "$PROJECT_DIR/l" ]; then
+  cat > "$PROJECT_DIR/l" <<'EOF'
+#!/bin/bash
+if [ -f "packages/cli/index.js" ]; then
+  node packages/cli/index.js "$@"
+elif [ -f "$HOME/.ai-checkpoint/engine.bin.js" ]; then
+  node "$HOME/.ai-checkpoint/engine.bin.js" "$@"
+elif [ -f ".agents/scripts/ledger.cjs" ]; then
+  node .agents/scripts/ledger.cjs "$@"
+else
+  echo "Error: CLI Engine not found."
+  exit 1
+fi
+EOF
+  chmod +x "$PROJECT_DIR/l"
+  echo -e "  ${GREEN}✔ Created l${NC}"
+else
+  echo -e "  ${YELLOW}⚠ l already exists — skip${NC}"
+fi
+
 # 4. Done!
 echo ""
 echo -e "${BOLD}${GREEN}┌──────────────────────────────────────────────────────┐${NC}"
