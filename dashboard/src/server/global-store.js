@@ -1,9 +1,6 @@
 import os from 'os';
 import path from 'path';
 import fs from 'fs';
-import { createRequire } from 'module';
-
-const require = createRequire(import.meta.url);
 
 const GLOBAL_DIR = path.join(os.homedir(), '.ai-checkpoint');
 
@@ -67,7 +64,7 @@ export function deployGlobalEngine(engineSourcePath) {
   if (!fs.existsSync(GLOBAL_DIR)) {
     fs.mkdirSync(GLOBAL_DIR, { recursive: true });
   }
-  
+
   if (fs.existsSync(engineSourcePath)) {
     fs.copyFileSync(engineSourcePath, getGlobalEnginePath());
   }
@@ -78,125 +75,18 @@ export function backupPlanFile(projectId, projectPath, filename) {
   if (!fs.existsSync(planBackupDir)) {
     fs.mkdirSync(planBackupDir, { recursive: true });
   }
-  
+
   const sourceFile = path.join(projectPath, 'plan', filename);
   const destFile = path.join(planBackupDir, filename);
-  
+
   if (fs.existsSync(sourceFile)) {
     fs.copyFileSync(sourceFile, destFile);
   }
 }
 
-export function migrateFromDotAgents(projectId, projectPath) {
-  const oldAgentsDir = path.join(projectPath, '.agents');
-  if (!fs.existsSync(oldAgentsDir)) {
-    return { migrated: false };
-  }
-  
-  ensureProjectDataDir(projectId);
-  const migratedFiles = [];
-  
-  const filesToMove = [
-    { name: 'PROGRESS.md', dest: getProgressPath(projectId) },
-    { name: 'RULES.md', dest: getRulesPath(projectId) },
-    { name: 'AGENTS.md', dest: getAgentsPath(projectId) },
-    { name: 'SYSTEM_GUIDE.md', dest: getSystemGuidePath(projectId) },
-    { name: 'ai-config.json', dest: getAiConfigPath(projectId) },
-    { name: 'activity-log.jsonl', dest: getActivityLogPath(projectId) },
-    { name: 'intelligence-history.json', dest: getIntelligenceHistoryPath(projectId) }
-  ];
-  
-  for (const file of filesToMove) {
-    const src = path.join(oldAgentsDir, file.name);
-    if (fs.existsSync(src)) {
-      fs.copyFileSync(src, file.dest);
-      migratedFiles.push(file.name);
-    }
-  }
-  
-  // Rename old .agents to prevent re-migration and clean up
-  try {
-    fs.renameSync(oldAgentsDir, path.join(projectPath, '.agents.bak'));
-  } catch (e) {
-    console.error('⚠️ Could not rename .agents to .agents.bak:', e.message);
-  }
-  
-  return { migrated: true, files: migratedFiles };
-}
-
-export function saveSnapshot(projectId, projectPath) {
-  const snapshotsDir = getSnapshotsDir(projectId);
-  if (!fs.existsSync(snapshotsDir)) {
-    fs.mkdirSync(snapshotsDir, { recursive: true });
-  }
-  
-  const snapshotPath = getSnapshotPath(projectId);
-  
-  // Backup existing snapshot as history
-  if (fs.existsSync(snapshotPath)) {
-    const timestamp = Date.now();
-    const historyPath = path.join(snapshotsDir, `snapshot-${timestamp}.json`);
-    fs.copyFileSync(snapshotPath, historyPath);
-    
-    // Cleanup old snapshots (keep last 10)
-    const files = fs.readdirSync(snapshotsDir)
-      .filter(f => f.startsWith('snapshot-'))
-      .sort((a, b) => {
-        return fs.statSync(path.join(snapshotsDir, b)).mtime.getTime() - 
-               fs.statSync(path.join(snapshotsDir, a)).mtime.getTime();
-      });
-      
-    if (files.length > 10) {
-      for (let i = 10; i < files.length; i++) {
-        fs.unlinkSync(path.join(snapshotsDir, files[i]));
-      }
-    }
-  }
-  
-  // Create new snapshot
-  const planDir = path.join(projectPath, 'plan');
-  const planFiles = fs.existsSync(planDir) ? fs.readdirSync(planDir).filter(f => f.endsWith('.md')) : [];
-  
-  const snapshotData = {
-    timestamp: new Date().toISOString(),
-    planFilesCount: planFiles.length,
-    projectId,
-    projectPath
-  };
-  
-  fs.writeFileSync(snapshotPath, JSON.stringify(snapshotData, null, 2));
-}
-
-// BUG FIX: Added ensureProjectDataDir before writeFileSync
-export function recoverProgressFromPlans(projectId, projectPath) {
-  const progressPath = getProgressPath(projectId);
-  if (fs.existsSync(progressPath)) return { recovered: true, message: 'Already exists' };
-
-  try {
-    ensureProjectDataDir(projectId);
-    const skeleton = `# Progress Tracker
-
-[░░░░░░░░░░░░░░░░░░░░] 0% (0/0 steps complete)
-
-## 👉 NEXT: Create your first plan file in \`plan/\`
-
----
-
-<!--
-No phases yet. Add plan files to the plan/ directory,
-then click "Sync Plans" to populate this tracker.
--->
-`;
-    fs.writeFileSync(progressPath, skeleton, 'utf8');
-    
-    const enginePath = getGlobalEnginePath();
-    if (fs.existsSync(enginePath)) {
-      const { execSync } = require('child_process');
-      execSync(`node "${enginePath}" sync`, { cwd: projectPath, stdio: 'ignore' });
-    }
-    return { recovered: true };
-  } catch (e) {
-    console.error('⚠️ Progress recovery failed:', e.message);
-    return { recovered: false, error: e.message };
-  }
-}
+export {
+  migrateOldAgentsDir as migrateFromDotAgents,
+  migrateOldAgentsDir,
+  saveSnapshot,
+  recoverProgressFromPlans
+} from './global-store-ops.js';
