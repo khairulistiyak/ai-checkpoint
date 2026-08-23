@@ -12,6 +12,10 @@ setup() {
   # Run setup.sh from the repository root
   bash "$REPO_DIR/setup.sh" >/dev/null
 
+  mkdir -p "$PROJECT_DIR/packages"
+  cp -R "$REPO_DIR/packages/cli" "$PROJECT_DIR/packages/cli"
+  cp -R "$REPO_DIR/packages/core" "$PROJECT_DIR/packages/core"
+
   # Create a mock valid project state
   echo "# Phase 1" > plan/phase-1.md
   echo "## Step 1.1 — Test" >> plan/phase-1.md
@@ -20,6 +24,7 @@ setup() {
   echo "## Project" >> .agents/PROGRESS.md
   echo "## 🔷 Phase 1: Test — PENDING" >> .agents/PROGRESS.md
   echo "  - [ ] **Step 1.1** — Test" >> .agents/PROGRESS.md
+  cp "$REPO_DIR/templates/AGENTS.md" "$PROJECT_DIR/.agents/AGENTS.md"
   export TEST_PROJECT="$PROJECT_DIR"
 }
 
@@ -32,7 +37,7 @@ cleanup_test_project() {
 }
 
 setup_test_env() {
-  export CLI_DIR="$PROJECT_DIR/.agents/packages/cli"
+  export CLI_DIR="$PROJECT_DIR/packages/cli"
 }
 
 teardown() {

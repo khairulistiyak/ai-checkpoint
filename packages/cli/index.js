@@ -91,3 +91,7 @@ function run() {
 }
 
 module.exports = { run, showHelp };
+
+if (require.main === module) {
+  run();
+}
