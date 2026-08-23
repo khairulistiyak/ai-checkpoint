@@ -37,7 +37,7 @@ export default function DeveloperActionDock({
     if (isAllComplete) setIsMinimized(true);
   }, [isAllComplete, setIsMinimized]);
 
-  const completionPct = project?.overall?.percentage || 0;
+  const completionPct = project?.progress?.overall?.percentage ?? project?.overall?.percentage ?? (isAllComplete ? 100 : 0);
 
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 max-w-4xl w-[94%] sm:w-auto min-w-[18.75rem] transition-all duration-300 pointer-events-auto select-none">
