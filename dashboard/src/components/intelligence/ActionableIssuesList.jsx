@@ -4,6 +4,8 @@ import IssueFilterTabs from './IssueFilterTabs';
 import ActionableIssueCard from './ActionableIssueCard';
 import { useToast } from '../ToastProvider';
 
+import { buildSurgicalFixPrompt, buildBulkIssuesPrompt } from '../../utils/prompt-builder';
+
 const DEFAULT_CATEGORIES = [
   { id: 'responsive', label: 'Responsive' },
   { id: 'dynamic', label: 'Dynamic' },
@@ -40,7 +42,14 @@ export default function ActionableIssuesList({
 
   const handleCopyPrompt = (issue, index) => {
     if (navigator.clipboard) {
-      const fullText = `Please fix the following issue in my code:\n\nFile: ${issue.file || 'General'}\nLine: ${issue.line || 'N/A'}\nSeverity: ${issue.severity || issue.type || 'info'}\n\nIssue Description:\n${issue.message || issue.error || issue.msg || 'Diagnostic issue detected'}\n\nPlease provide the corrected code or explain how to resolve this.`;
+      const fullText = buildSurgicalFixPrompt({
+        file: issue.file || 'General',
+        line: issue.line || 'N/A',
+        severity: issue.severity || issue.type || 'info',
+        type: issue.type || issue.category || 'diagnostic',
+        message: issue.message || issue.error || issue.msg || 'Diagnostic issue detected',
+        guidance: issue.guidance || ''
+      });
       navigator.clipboard.writeText(fullText);
       setCopiedId(index);
       showToast("Diagnostic prompt copied to clipboard!", "success");
@@ -50,8 +59,11 @@ export default function ActionableIssuesList({
 
   const handleCopyAllPrompts = () => {
     if (navigator.clipboard) {
-      const fullPrompt = filteredIssues.map(issue => `File: ${issue.file || 'General'}\nIssue: ${issue.message || issue.error || issue.msg}\nPrompt: ${issue.prompt || `Fix: ${issue.message || issue.error || issue.msg}`}`).join('\n\n---\n\n');
-      navigator.clipboard.writeText(`Please fix the following issues to meet World Top 1 Standards:\n\n${fullPrompt}`);
+      const fullPrompt = buildBulkIssuesPrompt({
+        category: activeTab,
+        issues: filteredIssues
+      });
+      navigator.clipboard.writeText(fullPrompt);
       setCopiedAll(true);
       showToast(`Copied ${filteredIssues.length} prompts to clipboard!`, "success");
       setTimeout(() => setCopiedAll(false), 2000);
