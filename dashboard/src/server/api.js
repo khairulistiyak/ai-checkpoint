@@ -1,9 +1,9 @@
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
-import os from 'os';
-import { execSync, execFileSync } from 'child_process';
 import { getSettings, saveSettings, updatePreferences } from './settings.js';
+import { handleOpenInIde } from './ide-handler.js';
+import { handleBrowseDirectory } from './dir-picker.js';
 import projectsRouter from './projects.js';
 import configRouter from './config.js';
 
@@ -22,107 +22,8 @@ router.put('/settings', (req, res) => {
   }
 });
 
-router.post('/open-in-ide', (req, res) => {
-  try {
-    const { filePath, line = 1, projectId } = req.body;
-    if (!filePath) {
-      return res.status(400).json({ error: 'filePath is required' });
-    }
-
-    const settings = getSettings();
-    const preferredIde = settings.preferences?.preferredIde || 'vscode';
-
-    let fullPath = filePath;
-    if (!path.isAbsolute(filePath)) {
-      if (projectId) {
-        const project = settings.projects?.find(p => p.id === projectId);
-        if (project?.path) {
-          fullPath = path.resolve(project.path, filePath);
-        }
-      }
-      if (!fs.existsSync(fullPath)) {
-        for (const proj of settings.projects || []) {
-          const testPath = path.resolve(proj.path, filePath);
-          if (fs.existsSync(testPath)) {
-            fullPath = testPath;
-            break;
-          }
-        }
-      }
-      if (!fs.existsSync(fullPath)) {
-        fullPath = path.resolve(process.cwd(), '..', filePath);
-        if (!fs.existsSync(fullPath)) {
-          fullPath = path.resolve(process.cwd(), filePath);
-        }
-      }
-    }
-
-    const platform = os.platform();
-    let opened = false;
-    const ideExecutables = {
-      vscode: ['code', 'cursor', 'windsurf'],
-      cursor: ['cursor', 'code'],
-      windsurf: ['windsurf', 'code'],
-      idea: ['idea', 'code']
-    };
-
-    const targetBinaries = ideExecutables[preferredIde] || ['code'];
-    for (const bin of targetBinaries) {
-      try {
-        execFileSync(bin, ['-g', `${fullPath}:${line}`], { stdio: 'ignore', timeout: 5000 });
-        opened = true;
-        break;
-      } catch {}
-    }
-
-    if (!opened && platform === 'darwin') {
-      try {
-        execFileSync('open', [fullPath], { stdio: 'ignore', timeout: 5000 });
-        opened = true;
-      } catch {}
-    }
-
-    res.json({ success: true, opened, fullPath, ide: preferredIde, url: `${preferredIde}://file/${fullPath}:${line}` });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-function pickDirectoryLinux() {
-  const cmds = [
-    'zenity --file-selection --directory --title="Select Project Folder" 2>/dev/null',
-    'kdialog --getexistingdirectory "$HOME" 2>/dev/null',
-    'yad --file --directory --title="Select Project Folder" 2>/dev/null',
-    'python3 -c "import tkinter, tkinter.filedialog as fd; r=tkinter.Tk(); r.withdraw(); p=fd.askdirectory(); print(p or \'\')" 2>/dev/null'
-  ];
-  for (const cmd of cmds) {
-    try {
-      const out = execSync(cmd, { encoding: 'utf8', timeout: 60000 }).trim();
-      if (out && fs.existsSync(out)) return out;
-    } catch {}
-  }
-  return null;
-}
-
-router.get('/browse-directory', (req, res) => {
-  try {
-    const platform = os.platform();
-    let result = '';
-    if (platform === 'darwin') {
-      const cmd = `osascript -e 'tell application (path to frontmost application as text) to set myFolder to choose folder with prompt "Select Project Folder"' -e 'POSIX path of myFolder'`;
-      result = execSync(cmd, { encoding: 'utf8', timeout: 60000 }).trim();
-    } else if (platform === 'win32') {
-      const cmd = `powershell -NoProfile -Command "(new-object -COM 'Shell.Application').BrowseForFolder(0,'Select Project Folder',0,0).self.path"`;
-      result = execSync(cmd, { encoding: 'utf8', timeout: 60000 }).trim();
-    } else {
-      result = pickDirectoryLinux() || '';
-    }
-    res.json({ path: result && fs.existsSync(result) ? result : null });
-  } catch {
-    res.json({ path: null });
-  }
-});
-
+router.post('/open-in-ide', handleOpenInIde);
+router.get('/browse-directory', handleBrowseDirectory);
 
 router.post('/settings/projects', (req, res) => {
   const { path: dirPath, name } = req.body;
@@ -137,7 +38,7 @@ router.post('/settings/projects', (req, res) => {
   }
   const settings = getSettings();
 
-  if (settings.projects.find(p => p.path === dirPath)) {
+  if (settings.projects.find((p) => p.path === dirPath)) {
     return res.status(400).json({ error: 'Project already exists' });
   }
 
@@ -155,7 +56,7 @@ router.post('/settings/projects', (req, res) => {
 
 router.delete('/settings/projects/:id', (req, res) => {
   const settings = getSettings();
-  settings.projects = settings.projects.filter(p => p.id !== req.params.id);
+  settings.projects = settings.projects.filter((p) => p.id !== req.params.id);
   saveSettings(settings);
   res.json({ success: true });
 });
@@ -168,9 +69,9 @@ router.put('/settings/projects/reorder', (req, res) => {
     return res.status(400).json({ error: 'projectIds must be an array' });
   }
 
-  const projectMap = new Map(settings.projects.map(p => [p.id, p]));
-  const reordered = projectIds.map(id => projectMap.get(id)).filter(Boolean);
-  settings.projects.forEach(p => {
+  const projectMap = new Map(settings.projects.map((p) => [p.id, p]));
+  const reordered = projectIds.map((id) => projectMap.get(id)).filter(Boolean);
+  settings.projects.forEach((p) => {
     if (!projectIds.includes(p.id)) reordered.push(p);
   });
 
