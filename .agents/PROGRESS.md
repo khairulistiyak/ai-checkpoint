@@ -2115,6 +2115,14 @@ UPDATE LOG:
 - [x] **Step 140.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 140.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 141: Cockpit Roadmap Progress Card Live Workflow HUD Upgrade — ✅ 100% COMPLETE
+
+- [x] **Step 141.1** — Upgrade Active Step Capsule (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
+- [x] **Step 141.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 141.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 

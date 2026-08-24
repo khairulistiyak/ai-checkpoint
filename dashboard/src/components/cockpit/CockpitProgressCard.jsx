@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target, Zap } from 'lucide-react';
+import { Target } from 'lucide-react';
 
 export default function CockpitProgressCard({
   overall,
@@ -81,14 +81,22 @@ export default function CockpitProgressCard({
 
         {/* Context or Active Step Micro-HUD */}
         {activeStep ? (
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 max-w-full shadow-sm">
-            <Zap className="w-3 h-3 text-amber-400 animate-pulse shrink-0" />
-            <span className="text-[10px] font-mono font-bold text-amber-400 shrink-0">
-              Step {activeStep.id || activeStep.number}
-            </span>
-            <span className="text-[11px] font-medium text-zinc-200 truncate font-outfit">
-              {activeStep.title || activeStep.name}
-            </span>
+          <div className="w-full max-w-[17rem] px-2.5 py-1.5 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.12] flex items-center justify-between gap-2 shadow-sm transition-all">
+            <div className="flex items-center gap-2 min-w-0">
+              <span className="relative flex h-2 w-2 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400"></span>
+              </span>
+              <div className="flex items-center gap-1.5 min-w-0">
+                <span className="text-[10px] font-mono font-bold text-amber-300 shrink-0">
+                  Step {activeStep.id || activeStep.number}
+                </span>
+                <span className="text-zinc-600 text-[10px]">•</span>
+                <span className="text-[11px] font-mono text-zinc-300 truncate" title={activeStep.title || activeStep.name}>
+                  {activeStep.title || activeStep.name}
+                </span>
+              </div>
+            </div>
           </div>
         ) : (
           <div className="text-[11px] font-mono text-zinc-400 flex items-center justify-center gap-1.5">
