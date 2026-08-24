@@ -13,7 +13,7 @@ export default function SidebarHeader({
   return (
     <div
       className={`px-3 sm:px-3.5 pb-3 border-b border-white/[0.04] bg-transparent relative z-10 flex items-center select-none app-drag ${
-        isElectron ? 'pt-8' : 'pt-3.5'
+        isElectron ? 'pt-10' : 'pt-3.5'
       } ${
         isCollapsed ? 'justify-center flex-col gap-2.5' : 'justify-between gap-2'
       }`}
