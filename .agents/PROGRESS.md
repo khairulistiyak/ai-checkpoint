@@ -1794,12 +1794,13 @@ UPDATE LOG:
 
 ---
 
-## 🔷 Phase 105: GitHub-Flavored Markdown (GFM), Table Engine & Typography Overhaul — ⏳ IN PROGRESS
+## 🔷 Phase 105: GitHub-Flavored Markdown (GFM), Table Engine & Typography Overhaul — ✅ 100% COMPLETE
 
-- [ ] **Step 105.1** — Create GitHub-Flavored Table Block (`dashboard/src/components/plan/PlanTableBlock.jsx`)
-- [ ] **Step 105.2** — Create GitHub Alert & Callout Block (`dashboard/src/components/plan/PlanAlertBlock.jsx`)
-- [ ] **Step 105.3** — Upgrade Markdown Parser with Table, Alert & HR Support (`dashboard/src/components/plans/parse-plan-content.js`)
-- [ ] **Step 105.4** — Polish Inline Typography & Badges (`dashboard/src/components/plans/plan-formatters.jsx`)
-- [ ] **Step 105.5** — Integrate Table, Alert & Divider in Plan Phase List (`dashboard/src/components/plan/PlanPhaseList.jsx`)
-- [ ] **Step 105.6** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 105.7** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+- [x] **Step 105.1** — Create GitHub-Flavored Table Block (`dashboard/src/components/plan/PlanTableBlock.jsx`)
+- [x] **Step 105.2** — Create GitHub Alert & Callout Block (`dashboard/src/components/plan/PlanAlertBlock.jsx`)
+- [x] **Step 105.3** — Upgrade Markdown Parser with Table, Alert & HR Support (`dashboard/src/components/plans/parse-plan-content.js`)
+- [x] **Step 105.4** — Polish Inline Typography & Badges (`dashboard/src/components/plans/plan-formatters.jsx`)
+- [x] **Step 105.5** — Integrate Table, Alert & Divider in Plan Phase List (`dashboard/src/components/plan/PlanPhaseList.jsx`)
+- [x] **Step 105.6** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 105.7** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
