@@ -3,15 +3,20 @@ import { motion } from 'framer-motion';
 import { RefreshCw, ShieldCheck } from 'lucide-react';
 
 export default function HealthScoreGauge({
-  score,
-  scoreColor,
-  healthScore,
-  qualityScore,
-  filesScanned,
-  passed,
+  score = 100,
+  scoreColor = '#34d399',
+  healthScore = 100,
+  qualityScore = 100,
+  filesScanned = 0,
+  passed = true,
   onRescan,
-  isScanning
+  isScanning = false
 }) {
+  const radius = 30;
+  const circumference = 2 * Math.PI * radius;
+  const validScore = Math.min(100, Math.max(0, typeof score === 'number' ? score : 0));
+  const strokeDashoffset = circumference - (circumference * validScore) / 100;
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.98 }}
@@ -45,41 +50,63 @@ export default function HealthScoreGauge({
         )}
       </div>
 
-      {/* Score Center Gauge */}
-      <div className="my-2 flex flex-col items-center justify-center relative z-10">
-        <div
-          className="w-18 h-18 rounded-full border-2 flex flex-col items-center justify-center transition-all bg-white/[0.01]"
-          style={{ borderColor: scoreColor || '#34d399', boxShadow: `0 0 16px ${scoreColor || '#34d399'}15` }}
-        >
-          <span className="text-2xl font-extrabold font-mono tracking-tight" style={{ color: scoreColor || '#34d399' }}>
-            {score}
-          </span>
-          <span className="text-[9px] font-mono text-zinc-500 uppercase font-semibold -mt-0.5">
-            Score
-          </span>
+      {/* Center SVG Gauge */}
+      <div className="my-1 flex flex-col items-center justify-center relative z-10">
+        <div className="relative flex items-center justify-center w-20 h-20">
+          <svg className="w-full h-full transform -rotate-90" viewBox="0 0 72 72">
+            <circle
+              cx="36"
+              cy="36"
+              r={radius}
+              fill="transparent"
+              stroke="rgba(255, 255, 255, 0.05)"
+              strokeWidth="4"
+            />
+            <circle
+              cx="36"
+              cy="36"
+              r={radius}
+              fill="transparent"
+              stroke={scoreColor || '#34d399'}
+              strokeWidth="4"
+              strokeDasharray={circumference}
+              strokeDashoffset={strokeDashoffset}
+              strokeLinecap="round"
+              className="transition-all duration-700 ease-out"
+            />
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-xl font-extrabold font-mono tracking-tight text-zinc-100 tabular-nums">
+              {score}
+            </span>
+            <span className="text-[8px] font-mono text-zinc-500 uppercase font-semibold -mt-0.5">
+              Score
+            </span>
+          </div>
         </div>
 
-        <div className="flex items-center gap-1.5 mt-2">
-          <span className={`w-1.5 h-1.5 rounded-full ${passed ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
-          <span className="text-xs font-medium text-zinc-300 font-outfit">
+        {/* Live Status Pill */}
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.02] border border-white/[0.05] mt-1.5">
+          <span className={`w-1.5 h-1.5 rounded-full ${passed ? 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.5)] animate-pulse' : 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.5)]'}`} />
+          <span className="text-[11px] font-medium text-zinc-300 font-outfit">
             {passed ? 'System Verified' : 'Optimizations Advised'}
           </span>
         </div>
       </div>
 
-      {/* Metric Breakdown */}
-      <div className="grid grid-cols-3 gap-1 pt-2.5 border-t border-white/[0.04] text-center relative z-10 font-mono">
-        <div>
-          <div className="text-zinc-200 font-semibold text-xs">{healthScore}%</div>
-          <div className="text-[10px] text-zinc-500 uppercase">Health</div>
+      {/* 3-Cell Metric Matrix */}
+      <div className="grid grid-cols-3 gap-1.5 pt-2.5 border-t border-white/[0.04] text-center relative z-10 font-mono">
+        <div className="bg-white/[0.02] border border-white/[0.04] rounded-lg p-1.5 flex flex-col justify-center">
+          <div className="text-zinc-200 font-semibold text-xs tabular-nums">{healthScore}%</div>
+          <div className="text-[9px] text-zinc-500 uppercase font-medium">Health</div>
         </div>
-        <div className="border-x border-white/[0.04]">
-          <div className="text-zinc-200 font-semibold text-xs">{qualityScore}%</div>
-          <div className="text-[10px] text-zinc-500 uppercase">Quality</div>
+        <div className="bg-white/[0.02] border border-white/[0.04] rounded-lg p-1.5 flex flex-col justify-center">
+          <div className="text-zinc-200 font-semibold text-xs tabular-nums">{qualityScore}%</div>
+          <div className="text-[9px] text-zinc-500 uppercase font-medium">Quality</div>
         </div>
-        <div>
-          <div className="text-zinc-200 font-semibold text-xs">{filesScanned || 0}</div>
-          <div className="text-[10px] text-zinc-500 uppercase">Files</div>
+        <div className="bg-white/[0.02] border border-white/[0.04] rounded-lg p-1.5 flex flex-col justify-center">
+          <div className="text-zinc-200 font-semibold text-xs tabular-nums">{filesScanned || 0}</div>
+          <div className="text-[9px] text-zinc-500 uppercase font-medium">Files</div>
         </div>
       </div>
     </motion.div>
