@@ -2107,6 +2107,14 @@ UPDATE LOG:
 - [x] **Step 139.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 139.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 140: Remove Decorative Radar Sweep Line from AdvancedHUDV1 — ✅ 100% COMPLETE
+
+- [x] **Step 140.1** — Remove Rotating Sweep Element (`dashboard/src/components/intelligence/AdvancedHUDV1.jsx`)
+- [x] **Step 140.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 140.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 
