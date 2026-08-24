@@ -1826,3 +1826,14 @@ UPDATE LOG:
 - [x] **Step 107.4** — Adaptive Blueprint Header & Deduplicated Radar (`dashboard/src/components/plans/PlanSpecHeader.jsx`)
 - [x] **Step 107.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 107.6** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 108: Decluttering, Visual De-duplication & Zen Studio UX — ⏳ IN PROGRESS
+
+- [ ] **Step 108.1** — Header Decluttering & Streamlined Metrics (`dashboard/src/components/plans/PlanSpecHeader.jsx`)
+- [ ] **Step 108.2** — Unified Minimalist Studio Topology & Search Bar (`dashboard/src/components/plans/PlanSpecTopology.jsx`)
+- [ ] **Step 108.3** — Clean Step Metadata & Noise Suppression (`dashboard/src/components/plan/PlanStepMetadata.jsx`)
+- [ ] **Step 108.4** — Streamlined Step Action Group (`dashboard/src/components/plan/PlanStepBlock.jsx`)
+- [ ] **Step 108.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 108.6** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
