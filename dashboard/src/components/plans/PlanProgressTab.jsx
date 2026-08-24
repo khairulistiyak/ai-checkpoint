@@ -4,6 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import PhaseView from '../PhaseView';
 import FilePreviewDrawer from './FilePreviewDrawer';
 import ActiveStepBanner from './ActiveStepBanner';
+import { isStepDone, isStepActive, isStepPending } from '../../utils/date-formatter';
 
 export default function PlanProgressTab({
   project,
@@ -24,18 +25,26 @@ export default function PlanProgressTab({
     for (const p of allPhases) {
       for (const s of (p.steps || [])) {
         total++;
-        if (s.status === 'completed' || s.status === 'done') done++;
-        else if (s.status === 'running' || s.status === 'in_progress') active++;
+        if (isStepDone(s)) done++;
+        else if (isStepActive(s)) active++;
         else pending++;
       }
     }
     return { total, done, active, pending };
   }, [allPhases]);
 
+  const sortedPhasesForDropdown = useMemo(() => {
+    return [...allPhases].sort((a, b) => {
+      const numA = parseInt(a.number, 10) || 0;
+      const numB = parseInt(b.number, 10) || 0;
+      return numB - numA;
+    });
+  }, [allPhases]);
+
   const activeStep = useMemo(() => {
     for (const p of allPhases) {
       for (const s of (p.steps || [])) {
-        if (s.status === 'running' || s.status === 'in_progress') {
+        if (isStepActive(s)) {
           return { ...s, phaseNumber: p.number, phaseName: p.name || p.title };
         }
       }
@@ -91,7 +100,7 @@ export default function PlanProgressTab({
             className="bg-white/[0.04] border border-white/10 rounded-xl px-3 py-1.5 text-xs text-zinc-200 font-mono focus:outline-none focus:border-white/20 cursor-pointer"
           >
             <option value="all" className="bg-[#121214]">All Phases ({allPhases.length})</option>
-            {allPhases.map((phase) => (
+            {sortedPhasesForDropdown.map((phase) => (
               <option key={phase.number} value={phase.number} className="bg-[#121214]">
                 Phase {phase.number}: {phase.name || phase.title}
               </option>
@@ -107,20 +116,13 @@ export default function PlanProgressTab({
           <div className="text-center py-16 border border-dashed border-white/10 rounded-2xl bg-white/[0.02]">
             <Activity className="w-8 h-8 text-zinc-600 mx-auto mb-2" />
             <h3 className="text-sm font-bold text-white mb-1 font-outfit">No Matching Steps</h3>
-            <p className="text-xs text-zinc-500 max-w-xs mx-auto font-mono">
-              Adjust your status filter or search term to view execution steps.
-            </p>
+            <p className="text-xs text-zinc-500 max-w-xs mx-auto font-mono">Adjust your status filter or search term to view execution steps.</p>
           </div>
         ) : (
           filteredPhases.map((phase) => (
             <PhaseView
-              key={phase.number}
-              phase={phase}
-              projectId={project?.id}
-              projectPath={project?.path}
-              planFiles={project?.planStats?.files || []}
-              onOpenArchitect={(filename) => setSelectedPlanFile(filename)}
-              onRefresh={onRefresh}
+              key={phase.number} phase={phase} projectId={project?.id} projectPath={project?.path}
+              planFiles={project?.planStats?.files || []} onOpenArchitect={(fn) => setSelectedPlanFile(fn)} onRefresh={onRefresh}
             />
           ))
         )}
@@ -129,11 +131,8 @@ export default function PlanProgressTab({
       <AnimatePresence>
         {selectedPlanFile && (
           <FilePreviewDrawer
-            projectId={project?.id}
-            filename={selectedPlanFile}
-            allFiles={project?.planStats?.files || []}
-            onSelectFile={(f) => setSelectedPlanFile(f)}
-            onClose={() => setSelectedPlanFile(null)}
+            projectId={project?.id} filename={selectedPlanFile} allFiles={project?.planStats?.files || []}
+            onSelectFile={(f) => setSelectedPlanFile(f)} onClose={() => setSelectedPlanFile(null)}
           />
         )}
       </AnimatePresence>

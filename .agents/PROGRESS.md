@@ -1906,3 +1906,13 @@ UPDATE LOG:
 - [x] **Step 115.3** — Update ProjectTabsContent Routing (`dashboard/src/components/ProjectTabsContent.jsx`)
 - [x] **Step 115.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 115.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 116: Accurate Real-Time Filter Engine & Local Timezone Precision — ⏳ IN PROGRESS
+
+- [ ] **Step 116.1** — Create Local Timezone Formatter Utility (`dashboard/src/utils/date-formatter.js`)
+- [ ] **Step 116.2** — Fix Multi-Status Filter Logic & Descending Phase Dropdown (`dashboard/src/components/plans/PlanProgressTab.jsx`)
+- [ ] **Step 116.3** — Fix StepItem Timestamp Display with Local Timezone (`dashboard/src/components/StepItem.jsx`)
+- [ ] **Step 116.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 116.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)

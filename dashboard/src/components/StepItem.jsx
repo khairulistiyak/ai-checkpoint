@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useToast } from './ToastProvider';
 import * as api from '../utils/api';
 import { buildStepExecutionPrompt } from '../utils/prompt-builder';
+import { formatLocalTime } from '../utils/date-formatter';
 
 export default function StepItem({ step, index, projectId, projectPath, hasPlanFiles, matchingFile, onOpenArchitect, onRefresh }) {
   const { showToast } = useToast();
@@ -46,14 +47,7 @@ export default function StepItem({ step, index, projectId, projectPath, hasPlanF
     showToast(`Opening ${filePath} in IDE...`, 'info');
   };
 
-  const formatCompletedAt = (d) => {
-    if (!d) return '';
-    try {
-      const [y, m, day, h, min] = d.split(/[ -:]/).map(Number);
-      return new Date(y, (m || 1) - 1, day || 1, h || 0, min || 0).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-    } catch { return d; }
-  };
-
+  const formattedTime = step.completedAt ? formatLocalTime(step.completedAt) : '';
   const isDone = step.status === 'done', isRunning = step.status === 'running', isBlocked = step.status === 'blocked';
 
   return (
@@ -108,7 +102,7 @@ export default function StepItem({ step, index, projectId, projectPath, hasPlanF
             <span className="truncate max-w-[7.5rem]">{filePath}</span>
           </button>
         )}
-        {isDone && step.completedAt && <span className="text-[10px] font-mono text-white/40">{formatCompletedAt(step.completedAt)}</span>}
+        {isDone && formattedTime && <span className="text-[10px] font-mono text-white/40">{formattedTime}</span>}
         {matchingFile && (
           <button
             onClick={(e) => { e.stopPropagation(); if (onOpenArchitect) onOpenArchitect(matchingFile.name); }}

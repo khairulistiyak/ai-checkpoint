@@ -68,7 +68,11 @@ export default function ProjectGrid({
       .map((p) => ({
         ...p,
         steps: (p.steps || []).filter((step) => {
-          const matchStatus = statusFilter === 'all' || step.status === statusFilter;
+          const matchStatus =
+            statusFilter === 'all' ||
+            (statusFilter === 'done' && (step.status === 'done' || step.status === 'completed')) ||
+            (statusFilter === 'in_progress' && (step.status === 'running' || step.status === 'in_progress')) ||
+            (statusFilter === 'pending' && step.status !== 'done' && step.status !== 'completed' && step.status !== 'running' && step.status !== 'in_progress');
           const matchSearch = !searchQuery || step.title.toLowerCase().includes(searchQuery.toLowerCase()) || String(step.number).includes(searchQuery);
           return matchStatus && matchSearch;
         })
