@@ -7,7 +7,7 @@ import FilePreviewContent from './FilePreviewContent';
 import { useFilePreviewDrawer } from './useFilePreviewDrawer';
 
 export default function FilePreviewDrawer(props) {
-  const { onClose } = props;
+  const { onClose, filename, onSelectFile } = props;
   const {
     content, loading, saving, copied, viewMode, setViewMode,
     isFullscreen, setIsFullscreen, showToc, setShowToc,
