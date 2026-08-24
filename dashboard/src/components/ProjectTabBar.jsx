@@ -21,32 +21,21 @@ export default function ProjectTabBar({
       badgeStyle: 'bg-sky-500/20 text-sky-300 border-sky-500/30'
     },
     {
-      id: 'roadmap',
-      label: 'Roadmap & Steps',
+      id: 'plans',
+      label: 'Plans & Blueprints',
       icon: ListTodo,
       hotkey: '2',
       accentColor: '#818cf8',
       glowBorder: 'border-indigo-500/40',
       activeText: 'text-indigo-300',
-      badge: `${overall.completed}/${overall.total}`,
-      badgeStyle: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30'
-    },
-    {
-      id: 'files',
-      label: 'Plan Blueprints',
-      icon: FileCode,
-      hotkey: '3',
-      accentColor: '#60a5fa',
-      glowBorder: 'border-blue-500/40',
-      activeText: 'text-blue-300',
-      badge: planStats?.files?.length || 0,
-      badgeStyle: 'bg-blue-500/20 text-blue-300 border-blue-500/30'
+      badge: `${overall.completed}/${overall.total} • ${planStats?.files?.length || 0} Files`,
+      badgeStyle: 'bg-indigo-500/20 text-indigo-300 border-indigo-500/30 font-medium'
     },
     {
       id: 'commands',
       label: 'Workflows & CLI',
       icon: Terminal,
-      hotkey: '4',
+      hotkey: '3',
       accentColor: '#fbbf24',
       glowBorder: 'border-amber-500/40',
       activeText: 'text-amber-300',
