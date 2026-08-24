@@ -60,7 +60,7 @@ function buildDiagnosticReportPrompt(opts = {}) {
   }).join('\n');
 
   return [
-    `# AI Checkpoint System Diagnostic Report`,
+    `# Veylx System Diagnostic Report`,
     `Project ID: ${projectId} | Health Score: ${score}/100 (Health: ${healthScore}%, Quality: ${qualityScore}%)`,
     `Status: ${passed ? 'PASSED ✅' : 'ISSUES DETECTED ⚠️'} | Files Scanned: ${filesScanned}`,
     ``,

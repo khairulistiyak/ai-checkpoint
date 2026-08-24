@@ -67,7 +67,7 @@ export default function AddProjectModal({ isOpen, onClose, onAdd }) {
                   <h2 className="text-base font-bold text-white font-outfit tracking-tight">Track Workspace</h2>
                   <span className="px-2 py-0.5 rounded-full text-[9px] font-mono font-bold uppercase tracking-wider bg-sky-500/10 text-sky-400 border border-sky-500/20">Studio</span>
                 </div>
-                <p className="text-xs text-zinc-400 font-mono mt-0.5">Register local repository into AI Checkpoint state ledger.</p>
+                <p className="text-xs text-zinc-400 font-mono mt-0.5">Register local repository into Veylx state ledger.</p>
               </div>
             </div>
             <button onClick={onClose} className="p-1.5 rounded-xl text-zinc-400 hover:text-white hover:bg-white/5 transition-all cursor-pointer">

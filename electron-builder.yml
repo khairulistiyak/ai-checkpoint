@@ -1,6 +1,6 @@
-appId: com.khairulistiyak.ai-checkpoint
-productName: AI Checkpoint
-executableName: ai-checkpoint
+appId: com.khairulistiyak.veylx
+productName: Veylx
+executableName: veylx
 copyright: Copyright © 2026 Khairul Istiyak
 
 directories:
@@ -47,7 +47,7 @@ mac:
   icon: build-resources/icon.icns
 
 dmg:
-  title: AI Checkpoint Installer
+  title: Veylx Installer
   icon: build-resources/icon.icns
   contents:
     - x: 130
@@ -72,7 +72,7 @@ nsis:
   allowToChangeInstallationDirectory: true
   createDesktopShortcut: always
   createStartMenuShortcut: true
-  shortcutName: AI Checkpoint
+  shortcutName: Veylx
 
 linux:
   executableName: ai-checkpoint

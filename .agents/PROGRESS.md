@@ -2157,6 +2157,18 @@ UPDATE LOG:
 - [x] **Step 145.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 145.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 146: Project Rebranding to Veylx — ✅ 100% COMPLETE
+
+- [x] **Step 146.1** — Update Dashboard Header Brand Title (`dashboard/src/components/Header.jsx`)
+- [x] **Step 146.2** — Update Dashboard index.html Title & Metadata (`dashboard/index.html`)
+- [x] **Step 146.3** — Update UI Modals & Empty States (`dashboard/src/components/AddProjectModal.jsx`)
+- [x] **Step 146.4** — Update Core Diagnostic Prompt Generator (`packages/core/prompt-generator.js`)
+- [x] **Step 146.5** — Update Electron App Branding (`electron-builder.yml`)
+- [x] **Step 146.6** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 146.7** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 

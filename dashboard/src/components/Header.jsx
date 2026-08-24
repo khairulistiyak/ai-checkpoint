@@ -31,7 +31,7 @@ export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleM
           </div>
           <div className="flex items-center gap-2">
             <span className="text-sm font-bold tracking-tight text-white font-outfit">
-              AI-CHECKPOINT
+              VEYLX
             </span>
             <span className="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[9px] font-mono text-zinc-400 uppercase font-semibold">
               STUDIO
