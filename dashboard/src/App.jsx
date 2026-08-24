@@ -91,7 +91,9 @@ export default function App() {
           />
         )}
 
-        <main className={`flex-1 overflow-y-auto md:overflow-hidden relative flex flex-col custom-scrollbar ${isPlansRoute ? 'p-0 border-none rounded-none shadow-none bg-[#09090b]' : 'bg-[#09090b] p-2.5 sm:p-3.5 md:p-4'}`}>
+        <main className={`flex-1 overflow-y-auto md:overflow-hidden relative flex flex-col custom-scrollbar bg-[#09090b] ${
+          isPlansRoute ? (isElectron ? 'p-0 pt-8' : 'p-0') : (isElectron ? 'p-2.5 sm:p-3.5 md:p-4 pt-8 sm:pt-9 md:pt-10' : 'p-2.5 sm:p-3.5 md:p-4')
+        }`}>
           <div className="w-full h-full flex flex-col min-h-max md:min-h-0 max-w-full">
             <Suspense fallback={<PageSkeleton />}>
               <AnimatePresence mode="wait">
