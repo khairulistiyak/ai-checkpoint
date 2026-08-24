@@ -2131,6 +2131,14 @@ UPDATE LOG:
 - [x] **Step 142.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 142.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 143: Remove Fixed Bottom LogPanel Strip from Dashboard — ✅ 100% COMPLETE
+
+- [x] **Step 143.1** — Remove LogPanel Mount from AppModals (`dashboard/src/components/AppModals.jsx`)
+- [x] **Step 143.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 143.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 
