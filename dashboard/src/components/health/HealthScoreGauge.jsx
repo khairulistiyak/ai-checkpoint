@@ -4,7 +4,7 @@ import { RefreshCw, ShieldCheck } from 'lucide-react';
 
 export default function HealthScoreGauge({
   score = 100,
-  scoreColor = '#34d399',
+  scoreColor = '#e4e4e7',
   healthScore = 100,
   qualityScore = 100,
   filesScanned = 0,
@@ -16,6 +16,7 @@ export default function HealthScoreGauge({
   const circumference = 2 * Math.PI * radius;
   const validScore = Math.min(100, Math.max(0, typeof score === 'number' ? score : 0));
   const strokeDashoffset = circumference - (circumference * validScore) / 100;
+  const displayColor = scoreColor === '#34d399' || !scoreColor ? '#e4e4e7' : scoreColor;
 
   return (
     <motion.div
@@ -44,7 +45,7 @@ export default function HealthScoreGauge({
             className="px-2 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] text-zinc-400 hover:text-white transition-all flex items-center gap-1.5 text-[10px] font-mono shadow-sm cursor-pointer active:scale-95 disabled:opacity-50"
             title="Re-scan Health & Code Fortress"
           >
-            <RefreshCw size={11} className={isScanning ? 'animate-spin text-emerald-400' : ''} />
+            <RefreshCw size={11} className={isScanning ? 'animate-spin text-zinc-300' : ''} />
             <span>Re-scan</span>
           </button>
         )}
@@ -67,7 +68,7 @@ export default function HealthScoreGauge({
               cy="36"
               r={radius}
               fill="transparent"
-              stroke={scoreColor || '#34d399'}
+              stroke={displayColor}
               strokeWidth="4"
               strokeDasharray={circumference}
               strokeDashoffset={strokeDashoffset}
@@ -87,7 +88,7 @@ export default function HealthScoreGauge({
 
         {/* Live Status Pill */}
         <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.02] border border-white/[0.05] mt-1.5">
-          <span className={`w-1.5 h-1.5 rounded-full ${passed ? 'bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.5)] animate-pulse' : 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.5)]'}`} />
+          <span className={`w-1.5 h-1.5 rounded-full ${passed ? 'bg-zinc-300 shadow-[0_0_6px_rgba(255,255,255,0.4)] animate-pulse' : 'bg-amber-400 shadow-[0_0_6px_rgba(251,191,36,0.5)]'}`} />
           <span className="text-[11px] font-medium text-zinc-300 font-outfit">
             {passed ? 'System Verified' : 'Optimizations Advised'}
           </span>

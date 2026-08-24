@@ -46,7 +46,7 @@ export default function CockpitProgressCard({
           <span className="text-xs font-mono font-medium text-zinc-400">Roadmap Progress</span>
         </div>
         <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-zinc-100">
-          <span className="text-base text-emerald-400 tabular-nums">{pct}%</span>
+          <span className="text-base text-zinc-100 tabular-nums">{pct}%</span>
         </div>
       </div>
 
@@ -54,7 +54,7 @@ export default function CockpitProgressCard({
       <div className="mt-2 mb-1.5 relative z-10">
         <div className="w-full bg-white/[0.04] h-1.5 rounded-full overflow-hidden border border-white/[0.04]">
           <div
-            className="bg-emerald-400 h-full rounded-full transition-all duration-700 ease-out shadow-[0_0_8px_rgba(52,211,153,0.3)]"
+            className="bg-zinc-200 h-full rounded-full transition-all duration-700 ease-out shadow-[0_0_8px_rgba(255,255,255,0.12)]"
             style={{ width: `${pct}%` }}
           />
         </div>
@@ -91,7 +91,7 @@ export default function CockpitProgressCard({
         ) : (
           <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl px-3 py-2 flex items-center justify-between text-[11px] font-mono">
             <div className="flex items-center gap-1.5 text-zinc-400">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <CheckCircle2 className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
               <span className="text-zinc-300 font-outfit text-xs">
                 {pct === 100 ? 'All Milestones Complete' : 'Execution Ledger Synced'}
               </span>
