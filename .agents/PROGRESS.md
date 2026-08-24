@@ -2088,6 +2088,17 @@ UPDATE LOG:
 - [x] **Step 137.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 137.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 138: Intelligence Hub Smart Insights & Actionable Issues Visual Overhaul — ✅ 100% COMPLETE
+
+- [x] **Step 138.1** — Overhaul SmartInsights Component (`dashboard/src/components/intelligence/SmartInsights.jsx`)
+- [x] **Step 138.2** — Harmonize IssueFilterTabs Active Pill (`dashboard/src/components/intelligence/IssueFilterTabs.jsx`)
+- [x] **Step 138.3** — Refine ActionableIssueCard Design (`dashboard/src/components/intelligence/ActionableIssueCard.jsx`)
+- [x] **Step 138.4** — Polish ActionableIssuesList Container (`dashboard/src/components/intelligence/ActionableIssuesList.jsx`)
+- [x] **Step 138.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 138.6** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
 
 
 

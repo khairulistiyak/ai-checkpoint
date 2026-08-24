@@ -25,7 +25,7 @@ export default function SmartInsights({ grade, scores, issues }) {
       }
     });
 
-    if (lowestScore < 90) {
+    if (lowestScore < 90 && weakest) {
       const formattedWeakest = weakest.charAt(0).toUpperCase() + weakest.slice(1);
       text += `Currently, ${formattedWeakest} is your lowest metric (${lowestScore}%). `;
     }
@@ -44,33 +44,31 @@ export default function SmartInsights({ grade, scores, issues }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
+      initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      className="relative overflow-hidden rounded-2xl bg-white/[0.03] border border-white/10 p-6 backdrop-blur-xl group hover:border-indigo-500/30 transition-all duration-300 shadow-2xl"
+      transition={{ duration: 0.3 }}
+      className="relative overflow-hidden rounded-2xl bg-[#0e0e11]/80 backdrop-blur-md border border-white/[0.06] hover:border-white/[0.12] p-5 shadow-sm transition-all"
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/5 to-pink-500/10 opacity-30 group-hover:opacity-100 transition-opacity duration-700" />
+      <div className="absolute top-0 right-0 w-48 h-48 bg-white/[0.02] rounded-full blur-3xl pointer-events-none" />
       
-      {/* Decorative Blur */}
-      <div className="absolute -top-10 -right-10 w-32 h-32 bg-indigo-500/20 rounded-full blur-3xl" />
-      <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-500/20 rounded-full blur-3xl" />
-      
-      <div className="relative z-10 flex gap-4 items-start">
+      <div className="relative z-10 flex gap-3.5 items-start">
         <div className="shrink-0 mt-0.5">
-          <div className="w-10 h-10 rounded-xl bg-indigo-500/15 border border-indigo-500/30 flex items-center justify-center shadow-inner">
-            <Sparkles className="w-5 h-5 text-indigo-400 animate-pulse" />
+          <div className="w-9 h-9 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-zinc-300 shadow-sm">
+            <Sparkles className="w-4 h-4 text-zinc-300" />
           </div>
         </div>
         
-        <div>
-          <h3 className="text-xs font-bold text-indigo-300 uppercase tracking-widest mb-1.5 flex items-center gap-2">
-            AI Smart Insights
-            <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-indigo-500"></span>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-2 mb-1">
+            <h3 className="text-xs font-mono font-semibold text-zinc-300 uppercase tracking-wider">
+              AI Smart Insights
+            </h3>
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
             </span>
-          </h3>
-          <p className="text-zinc-200 leading-relaxed text-sm font-medium">
+          </div>
+          <p className="text-zinc-400 leading-relaxed text-xs font-mono">
             {insights}
           </p>
         </div>
