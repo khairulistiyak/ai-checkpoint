@@ -2222,6 +2222,16 @@ UPDATE LOG:
 - [x] **Step 152.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 152.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 153: Move Brand Header into Sidebar and Remove Top Navbar — ✅ 100% COMPLETE
+
+- [x] **Step 153.1** — Integrate VEYLX STUDIO Brand into SidebarHeader (`dashboard/src/components/SidebarHeader.jsx`)
+- [x] **Step 153.2** — Update Sidebar Layout & Props (`dashboard/src/components/Sidebar.jsx`)
+- [x] **Step 153.3** — Remove Top Header & Streamline App Layout (`dashboard/src/App.jsx`)
+- [x] **Step 153.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 153.5** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 

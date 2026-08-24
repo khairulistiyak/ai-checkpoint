@@ -1,5 +1,5 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
-import Header from './components/Header';
+import { Menu } from 'lucide-react';
 import Sidebar from './components/Sidebar';
 import InitializingView from './components/InitializingView';
 import AppModals from './components/AppModals';
@@ -80,11 +80,16 @@ export default function App() {
       )}
 
       {!isPlansRoute && (
-        <Header
-          onOpenSettings={() => setIsSettingsOpen(true)}
-          onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
-          onToggleMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        />
+        <div className="md:hidden flex items-center justify-between px-3 py-2 border-b border-white/[0.06] bg-[#0a0a0c] shrink-0">
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
+            className="p-1.5 text-zinc-400 hover:text-white rounded-lg bg-white/5 border border-white/10 cursor-pointer"
+            title="Open Menu"
+          >
+            <Menu className="w-4 h-4" />
+          </button>
+          <span className="text-xs font-bold text-white font-outfit">VEYLX STUDIO</span>
+        </div>
       )}
 
       <div className="flex flex-1 overflow-hidden relative p-0 gap-0">
@@ -94,6 +99,7 @@ export default function App() {
             isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen}
             onAddProject={() => setIsAddModalOpen(true)}
             onOpenSettings={() => setIsSettingsOpen(true)}
+            onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
             onReorder={async (ids) => { try { await api.reorderProjects(ids); refresh(); } catch { showToast('Failed to reorder', 'error'); } }}
           />
         )}

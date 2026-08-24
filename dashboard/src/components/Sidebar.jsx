@@ -12,7 +12,7 @@ const containerVariants = {
 };
 
 export default function Sidebar({
-  projects, selectedId, onSelect, onAddProject, onOpenSettings, onReorder, isMobileMenuOpen, setIsMobileMenuOpen
+  projects, selectedId, onSelect, onAddProject, onOpenSettings, onOpenCommandPalette, onReorder, isMobileMenuOpen, setIsMobileMenuOpen
 }) {
   const { items, handleReorder } = useSidebarReorder(projects, onReorder);
   const [searchQuery, setSearchQuery] = useState('');
@@ -73,8 +73,17 @@ export default function Sidebar({
                   placeholder="Filter workspaces..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-8 pr-2.5 py-1.5 text-xs font-mono bg-white/[0.02] hover:bg-white/[0.04] focus:bg-[#060608] border border-white/[0.06] focus:border-white/20 rounded-xl text-zinc-200 placeholder-zinc-500 outline-none transition-all"
+                  className="w-full pl-8 pr-9 py-1.5 text-xs font-mono bg-white/[0.02] hover:bg-white/[0.04] focus:bg-[#060608] border border-white/[0.06] focus:border-white/20 rounded-xl text-zinc-200 placeholder-zinc-500 outline-none transition-all"
                 />
+                {onOpenCommandPalette && (
+                  <button
+                    onClick={onOpenCommandPalette}
+                    className="absolute right-1.5 px-1 py-0.5 rounded bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-[9px] text-zinc-500 hover:text-zinc-300 font-mono transition-colors cursor-pointer select-none"
+                    title="Open Command Palette (⌘K)"
+                  >
+                    ⌘K
+                  </button>
+                )}
               </div>
             </div>
           ) : (
