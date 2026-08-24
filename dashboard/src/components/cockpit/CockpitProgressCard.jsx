@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target, Layers, FileCode2, CheckCircle2 } from 'lucide-react';
+import { Target, Zap } from 'lucide-react';
 
 export default function CockpitProgressCard({
   overall,
@@ -45,74 +45,66 @@ export default function CockpitProgressCard({
           </div>
           <span className="text-xs font-mono font-medium text-zinc-400">Roadmap Progress</span>
         </div>
-        <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-zinc-100">
-          <span className="text-base text-zinc-100 tabular-nums">{pct}%</span>
+
+        {/* Header Status Tag */}
+        <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-white/[0.02] border border-white/[0.05]">
+          <span className={`w-1.5 h-1.5 rounded-full ${pct === 100 ? 'bg-zinc-300 shadow-[0_0_6px_rgba(255,255,255,0.4)]' : (activeStep ? 'bg-amber-400 animate-ping' : 'bg-zinc-400')}`} />
+          <span className="text-[10px] font-mono text-zinc-400 uppercase font-semibold">
+            {pct === 100 ? 'COMPLETE' : (activeStep ? 'ACTIVE' : 'STANDBY')}
+          </span>
         </div>
       </div>
 
-      {/* Progress Track */}
-      <div className="mt-2 mb-1.5 relative z-10">
-        <div className="w-full bg-white/[0.04] h-1.5 rounded-full overflow-hidden border border-white/[0.04]">
+      {/* Center Hero Progress & Active HUD */}
+      <div className="my-auto py-2 flex flex-col items-center justify-center relative z-10 w-full">
+        {/* Large Percentage */}
+        <div className="flex items-baseline gap-1">
+          <span className="text-3xl font-extrabold font-mono tracking-tight text-zinc-100 tabular-nums">
+            {pct}%
+          </span>
+          <span className="text-[10px] font-mono text-zinc-500 uppercase font-medium">
+            {pct === 100 ? 'done' : 'progress'}
+          </span>
+        </div>
+
+        {/* Sleek Progress Track */}
+        <div className="w-full max-w-[16rem] bg-white/[0.04] h-1.5 rounded-full overflow-hidden border border-white/[0.04] mt-2 mb-1.5">
           <div
             className="bg-zinc-200 h-full rounded-full transition-all duration-700 ease-out shadow-[0_0_8px_rgba(255,255,255,0.12)]"
             style={{ width: `${pct}%` }}
           />
         </div>
-        <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500 mt-1">
-          <span>{pct === 100 ? 'Milestones complete' : `${remaining} step${remaining === 1 ? '' : 's'} remaining`}</span>
-          <span className="text-zinc-400 tabular-nums">{completedSteps}/{totalSteps} steps</span>
-        </div>
-      </div>
 
-      {/* Active Step HUD or Zen State Pill */}
-      <div className="my-1 relative z-10">
+        {/* Context or Active Step Micro-HUD */}
         {activeStep ? (
-          <div className="bg-amber-500/[0.06] border border-amber-500/25 rounded-xl p-2.5 flex flex-col gap-1 shadow-sm">
-            <div className="flex items-center justify-between gap-2 min-w-0">
-              <div className="flex items-center gap-1.5 min-w-0">
-                <span className="text-[9px] font-mono font-bold uppercase text-amber-400 bg-amber-500/20 px-1.5 py-0.5 rounded shrink-0">
-                  Step {activeStep.id || activeStep.number}
-                </span>
-                <span className="text-[11px] font-medium text-zinc-200 truncate font-outfit">
-                  {activeStep.title || activeStep.name}
-                </span>
-              </div>
-              <span className="inline-flex items-center gap-1 text-[9px] font-mono text-amber-400 font-bold uppercase shrink-0">
-                <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
-                Live
-              </span>
-            </div>
-            {activeStep.file && (
-              <div className="text-[9.5px] font-mono text-zinc-400 truncate">
-                Target: <span className="text-amber-300/90">{activeStep.file}</span>
-              </div>
-            )}
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 max-w-full">
+            <Zap className="w-3 h-3 text-amber-400 shrink-0" />
+            <span className="text-[11px] font-mono font-bold text-amber-400 shrink-0">
+              Step {activeStep.id || activeStep.number}
+            </span>
+            <span className="text-[11px] font-medium text-zinc-300 truncate font-outfit">
+              {activeStep.title || activeStep.name}
+            </span>
           </div>
         ) : (
-          <div className="bg-white/[0.02] border border-white/[0.04] rounded-xl px-3 py-2 flex items-center justify-between text-[11px] font-mono">
-            <div className="flex items-center gap-1.5 text-zinc-400">
-              <CheckCircle2 className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
-              <span className="text-zinc-300 font-outfit text-xs">
-                {pct === 100 ? 'All Milestones Complete' : 'Execution Ledger Synced'}
-              </span>
-            </div>
-            <span className="text-[10px] text-zinc-500 uppercase font-semibold">
-              {pct === 100 ? 'READY' : 'STANDBY'}
-            </span>
+          <div className="text-[11px] font-mono text-zinc-400 flex items-center gap-1.5">
+            <span className="text-zinc-300 tabular-nums font-semibold">{completedSteps}/{totalSteps}</span>
+            <span className="text-zinc-600">•</span>
+            <span className="text-zinc-500">{pct === 100 ? 'Milestones reached' : `${remaining} left`}</span>
           </div>
         )}
       </div>
 
-      {/* Micro-Metrics Breakdown */}
-      <div className="grid grid-cols-2 gap-1.5 pt-2 border-t border-white/[0.04] relative z-10 text-xs font-mono">
+      {/* 3-Cell Symmetrical Metric Matrix (Steps, Phases, Blueprints) */}
+      <div className="grid grid-cols-3 gap-1.5 pt-2.5 border-t border-white/[0.04] text-center relative z-10 font-mono">
         <div className="bg-white/[0.02] border border-white/[0.04] rounded-lg p-1.5 flex flex-col justify-center">
-          <div className="flex items-center gap-1.5 text-zinc-400 text-[10px]">
-            <Layers className="w-3 h-3 text-zinc-400" />
-            <span>Phases</span>
-          </div>
-          <div className="text-zinc-200 font-semibold text-xs mt-0.5 tabular-nums">
-            {completedPhases}/{totalPhases} <span className="text-[9px] text-zinc-500 font-normal">done</span>
-          </div>
+          <div className="text-zinc-200 font-semibold text-xs tabular-nums">{completedSteps}/{totalSteps}</div>
+          <div className="text-[9px] text-zinc-500 uppercase font-medium">Steps</div>
+        </div>
+
+        <div className="bg-white/[0.02] border border-white/[0.04] rounded-lg p-1.5 flex flex-col justify-center">
+          <div className="text-zinc-200 font-semibold text-xs tabular-nums">{completedPhases}/{totalPhases}</div>
+          <div className="text-[9px] text-zinc-500 uppercase font-medium">Phases</div>
         </div>
 
         <div
@@ -120,16 +112,11 @@ export default function CockpitProgressCard({
           className="bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.04] hover:border-white/[0.08] rounded-lg p-1.5 flex flex-col justify-center cursor-pointer transition-all group/bp"
           title="Open Plan Blueprints"
         >
-          <div className="flex items-center justify-between text-zinc-400 text-[10px]">
-            <div className="flex items-center gap-1.5">
-              <FileCode2 className="w-3 h-3 text-zinc-400 group-hover/bp:text-zinc-200" />
-              <span>Blueprints</span>
-            </div>
+          <div className="text-zinc-200 group-hover/bp:text-white font-semibold text-xs tabular-nums flex items-center justify-center gap-0.5">
+            <span>{totalPlans}</span>
             <span className="text-[9px] text-zinc-500 group-hover/bp:text-zinc-300">→</span>
           </div>
-          <div className="text-zinc-200 font-semibold text-xs mt-0.5 tabular-nums">
-            {totalPlans} <span className="text-[9px] text-zinc-500 font-normal">plans</span>
-          </div>
+          <div className="text-[9px] text-zinc-500 group-hover/bp:text-zinc-400 uppercase font-medium">Plans</div>
         </div>
       </div>
     </div>
