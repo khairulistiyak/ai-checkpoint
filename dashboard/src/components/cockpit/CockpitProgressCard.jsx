@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target } from 'lucide-react';
+import { Target, Zap } from 'lucide-react';
 
 export default function CockpitProgressCard({
   overall,
@@ -55,22 +55,26 @@ export default function CockpitProgressCard({
         </div>
       </div>
 
-      {/* Center Hero Progress & Active HUD */}
-      <div className="my-auto py-2 flex flex-col items-center justify-center relative z-10 w-full text-center">
-        {/* Large Percentage */}
-        <div className="flex items-baseline justify-center gap-1.5">
-          <span className="text-3xl font-extrabold font-mono tracking-tight text-zinc-100 tabular-nums">
-            {pct}%
-          </span>
-          <span className="text-[10px] font-mono text-zinc-500 uppercase font-semibold">
+      {/* Center Hero Progress & Milestone HUD */}
+      <div className="my-auto py-1 flex flex-col items-center justify-center relative z-10 w-full text-center">
+        {/* Large Gradient Percentage & Frosted Milestone Pill */}
+        <div className="flex items-center justify-center gap-2.5">
+          <div className="flex items-baseline">
+            <span className="text-4xl font-black font-mono tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-white via-zinc-100 to-zinc-400 tabular-nums drop-shadow-[0_2px_8px_rgba(255,255,255,0.06)]">
+              {pct}
+            </span>
+            <span className="text-base font-mono font-semibold text-zinc-500 ml-0.5">%</span>
+          </div>
+
+          <div className="inline-flex items-center px-2 py-0.5 rounded-full bg-white/[0.03] border border-white/[0.08] text-[9.5px] font-mono font-bold uppercase tracking-wider text-zinc-300 shadow-sm">
             {pct === 100 ? 'Completed' : 'Milestone'}
-          </span>
+          </div>
         </div>
 
-        {/* Sleek Progress Track */}
-        <div className="w-full max-w-[15rem] bg-white/[0.04] h-1.5 rounded-full overflow-hidden border border-white/[0.04] my-2">
+        {/* Glowing Ambient Progress Track */}
+        <div className="w-full max-w-[15rem] bg-white/[0.04] h-1.5 rounded-full overflow-hidden border border-white/[0.04] my-2 shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)]">
           <div
-            className="bg-zinc-200 h-full rounded-full transition-all duration-700 ease-out shadow-[0_0_8px_rgba(255,255,255,0.12)]"
+            className="bg-gradient-to-r from-zinc-300 to-zinc-100 h-full rounded-full transition-all duration-700 ease-out shadow-[0_0_12px_rgba(255,255,255,0.2)]"
             style={{ width: `${pct}%` }}
           />
         </div>
@@ -78,7 +82,7 @@ export default function CockpitProgressCard({
         {/* Context or Active Step Micro-HUD */}
         {activeStep ? (
           <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 max-w-full shadow-sm">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping shrink-0" />
+            <Zap className="w-3 h-3 text-amber-400 animate-pulse shrink-0" />
             <span className="text-[10px] font-mono font-bold text-amber-400 shrink-0">
               Step {activeStep.id || activeStep.number}
             </span>
@@ -88,7 +92,7 @@ export default function CockpitProgressCard({
           </div>
         ) : (
           <div className="text-[11px] font-mono text-zinc-400 flex items-center justify-center gap-1.5">
-            <span className="text-zinc-300 font-semibold">
+            <span className="text-zinc-300 font-medium">
               {pct === 100 ? 'All milestones achieved' : `${remaining} step${remaining === 1 ? '' : 's'} remaining`}
             </span>
             {pct < 100 && (
