@@ -5,16 +5,18 @@ export function formatTextWithBadges(text) {
   const parts = text.split(/(`[^`]+`|\*\*[^*]+\*\*)/g);
   return parts.map((part, index) => {
     if (part.startsWith('`') && part.endsWith('`')) {
-      const codeText = part.slice(1, -1);
       return (
-        <span key={index} className="inline-flex items-center gap-1 font-mono text-cyber-accent bg-cyber-accent/[0.08] px-1.5 py-0.2 rounded text-[11px] mx-0.5 font-bold">
-          <span>{codeText}</span>
-        </span>
+        <code
+          key={index}
+          className="px-1.5 py-0.5 rounded-md bg-white/[0.08] text-amber-200 border border-white/10 font-mono text-[11px] font-medium mx-0.5 select-all"
+        >
+          {part.slice(1, -1)}
+        </code>
       );
     }
     if (part.startsWith('**') && part.endsWith('**')) {
       return (
-        <strong key={index} className="text-cyber-accent font-bold tracking-tight bg-cyber-accent/[0.08] px-1.5 py-0.2 rounded">
+        <strong key={index} className="text-white font-bold tracking-tight">
           {part.slice(2, -2)}
         </strong>
       );
