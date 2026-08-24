@@ -2306,6 +2306,17 @@ UPDATE LOG:
 - [x] **Step 161.8** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 161.9** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔴 Phase 162: Asynchronous Non-Blocking Command Execution — ⏳ IN PROGRESS
+
+- [ ] **Step 162.1** — Make runCommand Async (`dashboard/src/server/run-command.js`)
+- [ ] **Step 162.2** — Make handleCommand Async (`dashboard/src/server/project-commands.js`)
+- [ ] **Step 162.3** — Make checkpoints.js Async (`dashboard/src/server/checkpoints.js`)
+- [ ] **Step 162.4** — Make handleSyncPlans Async (`dashboard/src/server/project-actions.js`)
+- [ ] **Step 162.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 162.6** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 

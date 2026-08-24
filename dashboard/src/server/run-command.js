@@ -1,7 +1,10 @@
-import { execFileSync } from 'child_process';
+import { execFile } from 'child_process';
+import util from 'util';
 import os from 'os';
 import path from 'path';
 import fs from 'fs';
+
+const execFileAsync = util.promisify(execFile);
 
 function findNvmBin(homeDir) {
   const nvmDir = path.join(homeDir, '.nvm', 'versions', 'node');
@@ -42,7 +45,7 @@ function getAugmentedEnv() {
   };
 }
 
-export function runCommand(command, args, cwd) {
+export async function runCommand(command, args, cwd) {
   if (command === './l' || command === 'l') {
     const enginePath = path.join(os.homedir(), '.ai-checkpoint', 'engine.bin.js');
     if (fs.existsSync(enginePath)) {
@@ -54,7 +57,7 @@ export function runCommand(command, args, cwd) {
   }
 
   try {
-    return execFileSync(command, args, {
+    const { stdout, stderr } = await execFileAsync(command, args, {
       cwd: cwd,
       encoding: 'utf8',
       timeout: 60000,
@@ -62,9 +65,11 @@ export function runCommand(command, args, cwd) {
       shell: false,
       env: getAugmentedEnv()
     });
+    return stdout || stderr || '';
   } catch (err) {
     if (err.stdout) err.message += `\nStdout: ${err.stdout}`;
     if (err.stderr) err.message += `\nStderr: ${err.stderr}`;
     throw err;
   }
 }
+

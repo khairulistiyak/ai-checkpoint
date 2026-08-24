@@ -35,7 +35,7 @@ export function handleRelinkBridge(req, res) {
   }
 }
 
-export function handleSyncPlans(req, res) {
+export async function handleSyncPlans(req, res) {
   try {
     const settings = getSettings();
     const project = settings.projects.find((p) => p.id === req.params.id);
@@ -43,7 +43,7 @@ export function handleSyncPlans(req, res) {
 
     const enginePath = globalStore.getGlobalEnginePath();
     if (fs.existsSync(enginePath)) {
-      runCommand('node', [enginePath, 'sync'], project.path);
+      await runCommand('node', [enginePath, 'sync'], project.path);
     }
     res.json({ success: true, message: 'Plans synchronized to PROGRESS.md' });
   } catch (e) {

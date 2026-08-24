@@ -3,7 +3,7 @@ import { getSettings } from './settings.js';
 import { runCommand } from './run-command.js';
 const router = express.Router();
 
-router.get('/:id/checkpoints', (req, res) => {
+router.get('/:id/checkpoints', async (req, res) => {
   try {
     const settings = getSettings();
     const project = settings.projects.find(p => p.id === req.params.id);
@@ -11,7 +11,7 @@ router.get('/:id/checkpoints', (req, res) => {
 
     let out = '';
     try {
-      out = runCommand('git', ['log', '--pretty=format:%h<SEP>%D<SEP>%s<SEP>%ar<SEP>%an'], project.path);
+      out = await runCommand('git', ['log', '--pretty=format:%h<SEP>%D<SEP>%s<SEP>%ar<SEP>%an'], project.path);
     } catch (e) {
       out = '';
     }
@@ -34,7 +34,7 @@ router.get('/:id/checkpoints', (req, res) => {
   }
 });
 
-router.post('/:id/rollback', (req, res) => {
+router.post('/:id/rollback', async (req, res) => {
   const settings = getSettings();
   const project = settings.projects.find(p => p.id === req.params.id);
   if (!project) return res.status(404).json({ error: 'Not found' });
@@ -44,7 +44,7 @@ router.post('/:id/rollback', (req, res) => {
   if (!/^aicp\/[0-9]+\.[0-9]+-[0-9]+$/.test(hash)) return res.status(400).json({ error: 'Invalid tag format' });
 
   try {
-    runCommand('./l', ['cp', 'back', '--force', hash], project.path);
+    await runCommand('./l', ['cp', 'back', '--force', hash], project.path);
     res.json({ success: true });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -52,3 +52,4 @@ router.post('/:id/rollback', (req, res) => {
 });
 
 export default router;
+
