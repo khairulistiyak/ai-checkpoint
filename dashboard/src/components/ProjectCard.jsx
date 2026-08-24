@@ -11,6 +11,7 @@ export default function ProjectCard({
   onOpenConfig,
   onOpenArchitect,
   onOpenIntelligence,
+  onOpenActivityLog,
 }) {
   const { showToast } = useToast();
   const { progress } = project;
@@ -133,6 +134,7 @@ export default function ProjectCard({
           handleQuickCheckpoint={handleQuickCheckpoint}
           onOpenConfig={onOpenConfig}
           onOpenIntelligence={onOpenIntelligence}
+          onOpenActivityLog={onOpenActivityLog}
           onRemove={onRemove}
         />
       </div>

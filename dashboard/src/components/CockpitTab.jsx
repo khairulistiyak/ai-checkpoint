@@ -1,13 +1,12 @@
 import React, { useState, useMemo } from 'react';
 import { Rocket } from 'lucide-react';
-import ActivityLog from './ActivityLog';
 import CockpitHealthOverview from './cockpit/CockpitHealthOverview';
 import CockpitKpiCards from './cockpit/CockpitKpiCards';
 import IntelligenceModal from './intelligence/IntelligenceModal';
 import ActiveStepBanner from './plans/ActiveStepBanner';
 
 export default function CockpitTab({
-  selectedProject, overall, allPhases, activePhases, remaining, planStats, totalPlanSteps, handleOpenArchitect, refresh, liveActivityEntry, onSelectTab
+  selectedProject, overall, allPhases, activePhases, remaining, planStats, totalPlanSteps, handleOpenArchitect, refresh, onSelectTab
 }) {
   const [isIntelligenceModalOpen, setIsIntelligenceModalOpen] = useState(false);
   const unsyncedSteps = selectedProject?.unsyncedSteps || 0;
@@ -75,10 +74,6 @@ export default function CockpitTab({
       )}
 
       <CockpitHealthOverview projectId={selectedProject.id} onOpenIntelligence={() => setIsIntelligenceModalOpen(true)} />
-
-      <div className="w-full">
-        <ActivityLog projectId={selectedProject.id} liveEntry={liveActivityEntry} />
-      </div>
 
       <IntelligenceModal 
         isOpen={isIntelligenceModalOpen} 

@@ -1930,8 +1930,18 @@ UPDATE LOG:
 
 ---
 
-## 🔷 Phase 118: Cockpit Zen Simplification & Full-Width Activity Stream — ⏳ IN PROGRESS
+## 🔷 Phase 118: Cockpit Zen Simplification & Full-Width Activity Stream — ✅ 100% COMPLETE
 
-- [ ] **Step 118.1** — Upgrade Cockpit Layout & Remove Git Visualizer Widget (`dashboard/src/components/CockpitTab.jsx`)
-- [ ] **Step 118.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 118.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+- [x] **Step 118.1** — Upgrade Cockpit Layout & Remove Git Visualizer Widget (`dashboard/src/components/CockpitTab.jsx`)
+- [x] **Step 118.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 118.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 119: Header Live Activity Modal & Cockpit Focus Architecture — ⏳ IN PROGRESS
+
+- [ ] **Step 119.1** — Create Dedicated Activity Log Modal Component (`dashboard/src/components/activity/ActivityLogModal.jsx`)
+- [ ] **Step 119.2** — Add Activity Log Button to Project Header (`dashboard/src/components/project/ProjectCardActions.jsx`)
+- [ ] **Step 119.3** — Wire Activity Log Modal in Project Header & Grid (`dashboard/src/components/ProjectCard.jsx`)
+- [ ] **Step 119.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 119.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)

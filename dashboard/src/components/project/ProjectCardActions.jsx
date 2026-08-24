@@ -1,5 +1,5 @@
 import React from "react";
-import { Layers, BookmarkPlus, Settings, Trash2, BrainCircuit } from "lucide-react";
+import { Layers, BookmarkPlus, Settings, Trash2, BrainCircuit, Activity } from "lucide-react";
 import ExportButton from "../ExportButton";
 
 export default function ProjectCardActions({
@@ -8,6 +8,7 @@ export default function ProjectCardActions({
   handleQuickCheckpoint,
   onOpenConfig,
   onOpenIntelligence,
+  onOpenActivityLog,
   onRemove,
 }) {
   return (
@@ -39,6 +40,15 @@ export default function ProjectCardActions({
       >
         <BrainCircuit className="w-3.5 h-3.5 text-indigo-400" />
         <span className="hidden sm:inline">Intelligence Hub</span>
+      </button>
+
+      <button
+        onClick={() => onOpenActivityLog && onOpenActivityLog()}
+        className="px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 hover:text-white transition-all text-xs font-mono font-bold flex items-center gap-1.5 cursor-pointer shadow-sm"
+        title="Open Live Activity Log & Execution Stream"
+      >
+        <Activity className="w-3.5 h-3.5 text-emerald-400" />
+        <span className="hidden sm:inline">Activity Log</span>
       </button>
 
       <ExportButton project={project} />

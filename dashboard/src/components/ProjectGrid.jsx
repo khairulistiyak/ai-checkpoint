@@ -8,6 +8,8 @@ import DeveloperActionDock from './DeveloperActionDock';
 import QuickTerminalDrawer from './QuickTerminalDrawer';
 import ProjectTabsContent from './ProjectTabsContent';
 import IntelligenceModal from './intelligence/IntelligenceModal';
+import ActivityLogModal from './activity/ActivityLogModal';
+import { isStepDone, isStepActive, isStepPending } from '../utils/date-formatter';
 
 export default function ProjectGrid({
   selectedProject, loading, installing, onRemove, onOpenConfig,
@@ -20,6 +22,7 @@ export default function ProjectGrid({
   const [selectedArchitectFile, setSelectedArchitectFile] = useState(null);
   const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [isIntelligenceOpen, setIsIntelligenceOpen] = useState(false);
+  const [isActivityOpen, setIsActivityOpen] = useState(false);
 
   const { progress, planStats } = selectedProject || {};
   const overall = progress?.overall || { percentage: 0, completed: 0, total: 0 };
@@ -70,10 +73,10 @@ export default function ProjectGrid({
         steps: (p.steps || []).filter((step) => {
           const matchStatus =
             statusFilter === 'all' ||
-            (statusFilter === 'done' && (step.status === 'done' || step.status === 'completed')) ||
-            (statusFilter === 'in_progress' && (step.status === 'running' || step.status === 'in_progress')) ||
-            (statusFilter === 'pending' && step.status !== 'done' && step.status !== 'completed' && step.status !== 'running' && step.status !== 'in_progress');
-          const matchSearch = !searchQuery || step.title.toLowerCase().includes(searchQuery.toLowerCase()) || String(step.number).includes(searchQuery);
+            (statusFilter === 'done' && isStepDone(step.status)) ||
+            (statusFilter === 'in_progress' && isStepActive(step.status)) ||
+            (statusFilter === 'pending' && isStepPending(step.status));
+          const matchSearch = !searchQuery || step.title?.toLowerCase().includes(searchQuery.toLowerCase()) || String(step.number).includes(searchQuery);
           return matchStatus && matchSearch;
         })
       }))
@@ -96,12 +99,9 @@ export default function ProjectGrid({
   return (
     <div className="flex flex-col gap-4 min-h-full w-full pb-20">
       <ProjectCard
-        project={selectedProject}
-        onRemove={onRemove}
-        onOpenConfig={onOpenConfig}
-        onOpenPlans={onOpenPlans}
-        onOpenArchitect={handleOpenArchitect}
-        onOpenIntelligence={() => setIsIntelligenceOpen(true)}
+        project={selectedProject} onRemove={onRemove} onOpenConfig={onOpenConfig} onOpenPlans={onOpenPlans}
+        onOpenArchitect={handleOpenArchitect} onOpenIntelligence={() => setIsIntelligenceOpen(true)}
+        onOpenActivityLog={() => setIsActivityOpen(true)}
       />
 
       <ProjectTabBar activeTab={activeTab} setActiveTab={setActiveTab} overall={overall} planStats={planStats} />
@@ -136,6 +136,11 @@ export default function ProjectGrid({
       </AnimatePresence>
 
       <IntelligenceModal isOpen={isIntelligenceOpen} onClose={() => setIsIntelligenceOpen(false)} project={selectedProject} />
+
+      <ActivityLogModal
+        isOpen={isActivityOpen} onClose={() => setIsActivityOpen(false)}
+        projectId={selectedProject.id} liveEntry={liveActivityEntry}
+      />
     </div>
   );
 }
