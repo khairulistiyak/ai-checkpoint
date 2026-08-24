@@ -1,7 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Rocket } from 'lucide-react';
 import CockpitHealthOverview from './cockpit/CockpitHealthOverview';
-import CockpitKpiCards from './cockpit/CockpitKpiCards';
 import IntelligenceModal from './intelligence/IntelligenceModal';
 import ActiveStepBanner from './plans/ActiveStepBanner';
 
@@ -49,16 +48,6 @@ export default function CockpitTab({
         </div>
       )}
 
-      <CockpitKpiCards
-        overall={overall}
-        remaining={remaining}
-        allPhases={allPhases}
-        activePhases={activePhases}
-        planStats={planStats}
-        totalPlanSteps={totalPlanSteps}
-        onOpenArchitect={() => onSelectTab ? onSelectTab('files') : handleOpenArchitect()}
-      />
-
       {unsyncedSteps > 0 && (
         <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-3 flex items-center gap-3">
           <span className="text-amber-400 text-sm">⚠</span>
@@ -73,7 +62,18 @@ export default function CockpitTab({
         </div>
       )}
 
-      <CockpitHealthOverview projectId={selectedProject.id} onOpenIntelligence={() => setIsIntelligenceModalOpen(true)} />
+      {/* Unified 3-Column Cockpit Overview (Roadmap KPI + Health Fortress + AI Intelligence) */}
+      <CockpitHealthOverview
+        projectId={selectedProject.id}
+        overall={overall}
+        remaining={remaining}
+        allPhases={allPhases}
+        activePhases={activePhases}
+        planStats={planStats}
+        totalPlanSteps={totalPlanSteps}
+        onOpenArchitect={() => onSelectTab ? onSelectTab('files') : handleOpenArchitect()}
+        onOpenIntelligence={() => setIsIntelligenceModalOpen(true)}
+      />
 
       <IntelligenceModal 
         isOpen={isIntelligenceModalOpen} 
