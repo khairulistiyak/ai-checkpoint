@@ -2178,6 +2178,15 @@ UPDATE LOG:
 - [x] **Step 147.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 147.4** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 148: Workspace Hero Progress Indicator — Frameless Radial Halo Redesign — ✅ 100% COMPLETE
+
+- [x] **Step 148.1** — Redesign ProgressRing to Frameless Radial Halo (`dashboard/src/components/ProgressRing.jsx`)
+- [x] **Step 148.2** — Mount Frameless Radial Halo in ProjectCard (`dashboard/src/components/ProjectCard.jsx`)
+- [x] **Step 148.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 148.4** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 

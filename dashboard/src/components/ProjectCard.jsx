@@ -48,17 +48,15 @@ export default function ProjectCard({
 
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3.5 relative z-10">
         <div className="flex items-center gap-3.5 min-w-0">
-          {/* Progress Ring with integrated live beacon */}
-          <div className="relative shrink-0">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-white/[0.06] to-white/[0.02] border border-white/[0.08] flex items-center justify-center shadow-md backdrop-blur-md">
-              <ProgressRing percentage={overall.percentage} size={36} strokeWidth={3.5} />
-            </div>
+          {/* Frameless Radial Halo Progress Indicator */}
+          <div className="relative shrink-0 flex items-center justify-center">
+            <ProgressRing percentage={overall.percentage} size={46} strokeWidth={3.5} />
             <div
-              className="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center"
+              className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shadow-sm"
               title="Live File Watcher Active"
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-              <span className="absolute w-1.5 h-1.5 rounded-full bg-emerald-400" />
+              <span className="w-1 h-1 rounded-full bg-emerald-400 animate-ping" />
+              <span className="absolute w-1 h-1 rounded-full bg-emerald-400" />
             </div>
           </div>
 

@@ -1,3 +1,18 @@
+# Phase 148: Workspace Hero Progress Indicator — Frameless Radial Halo Redesign
+
+> **Objective:** Upgrade the workspace hero progress indicator in `ProjectCard.jsx` and `ProgressRing.jsx` to Concept 1 (Frameless Radial Halo), eliminating the square container box for a seamless, floating glowing radial gauge. Zero regressions.
+
+---
+
+## 📋 Execution Steps
+
+### Step 148.1 — Redesign ProgressRing to Frameless Radial Halo (`dashboard/src/components/ProgressRing.jsx`)
+- **File**: `dashboard/src/components/ProgressRing.jsx`
+- **Action**: EDIT
+- **Content**: Implement frameless halo styling with React `useId`, soft glowing track drop shadow, and crisp centered percentage. Keep file <= 150 lines.
+
+Replace the file with:
+```jsx
 import React, { useId } from 'react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
@@ -66,3 +81,34 @@ export default function ProgressRing({ percentage, size = 46, strokeWidth = 3.5 
     </div>
   );
 }
+```
+
+- **Done-check**: `npm --prefix dashboard run build` -> exit 0
+- **Depends**: None
+
+---
+
+### Step 148.2 — Mount Frameless Radial Halo in ProjectCard (`dashboard/src/components/ProjectCard.jsx`)
+- **File**: `dashboard/src/components/ProjectCard.jsx`
+- **Action**: EDIT
+- **Content**: Mount the frameless radial halo directly without the outer square box. Keep file <= 150 lines.
+- **Done-check**: `npm --prefix dashboard run build` -> exit 0
+- **Depends**: 148.1
+
+---
+
+### Step 148.3 — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- **File**: `assets/engine.bin.js`
+- **Action**: EDIT
+- **Content**: Rebuild global engine binary and Vite dashboard bundle. Run test suite.
+- **Done-check**: `npm run build:engine && npm --prefix dashboard run build && npm test` -> exit 0
+- **Depends**: 148.2
+
+---
+
+### Step 148.4 — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+- **File**: `.agents/PROGRESS.md`
+- **Action**: EDIT
+- **Content**: Run full release check (`npm run release:check`) and save checkpoint.
+- **Done-check**: `npm run release:check` -> exit 0
+- **Depends**: 148.3
