@@ -23,19 +23,19 @@ export default function PlanSpecTopology({
   };
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-3 p-2.5 sm:p-3 rounded-xl bg-[#0c0c0f] border border-white/10 shadow-sm">
-      {/* Filter Tabs - Only show non-zero items */}
+    <div className="flex flex-wrap items-center justify-between gap-3 p-2.5 sm:p-3 rounded-xl bg-[#0c0c0f] border border-white/[0.08] shadow-sm">
+      {/* Filter Tabs - Clean Monochromatic */}
       <div className="flex items-center gap-1.5 flex-wrap">
         <button
           onClick={() => setFilterType('all')}
           className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all border cursor-pointer ${
             filterType === 'all'
-              ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30 font-bold shadow-sm'
-              : 'text-white/60 hover:text-white hover:bg-white/5 border-transparent'
+              ? 'bg-white/10 text-white border-white/20 font-bold shadow-sm'
+              : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04] border-transparent'
           }`}
         >
           <span className="flex items-center gap-1.5">
-            <Layers className="w-3.5 h-3.5 text-cyan-400" />
+            <Layers className="w-3.5 h-3.5 text-zinc-300" />
             <span>All ({modules.length})</span>
           </span>
         </button>
@@ -45,11 +45,11 @@ export default function PlanSpecTopology({
             onClick={() => setFilterType('steps')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all flex items-center gap-1.5 border cursor-pointer ${
               filterType === 'steps'
-                ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30 font-bold shadow-sm'
-                : 'text-white/60 hover:text-white hover:bg-white/5 border-transparent'
+                ? 'bg-white/10 text-white border-white/20 font-bold shadow-sm'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04] border-transparent'
             }`}
           >
-            <Terminal className="w-3.5 h-3.5 text-emerald-400" />
+            <Terminal className="w-3.5 h-3.5 text-zinc-300" />
             <span>Steps ({stats.totalSteps})</span>
           </button>
         )}
@@ -59,11 +59,11 @@ export default function PlanSpecTopology({
             onClick={() => setFilterType('tasks')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all flex items-center gap-1.5 border cursor-pointer ${
               filterType === 'tasks'
-                ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30 font-bold shadow-sm'
-                : 'text-white/60 hover:text-white hover:bg-white/5 border-transparent'
+                ? 'bg-white/10 text-white border-white/20 font-bold shadow-sm'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04] border-transparent'
             }`}
           >
-            <CheckCircle className="w-3.5 h-3.5 text-sky-400" />
+            <CheckCircle className="w-3.5 h-3.5 text-zinc-300" />
             <span>Tasks ({stats.totalTasks})</span>
           </button>
         )}
@@ -73,11 +73,11 @@ export default function PlanSpecTopology({
             onClick={() => setFilterType('code')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium transition-all flex items-center gap-1.5 border cursor-pointer ${
               filterType === 'code'
-                ? 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30 font-bold shadow-sm'
-                : 'text-white/60 hover:text-white hover:bg-white/5 border-transparent'
+                ? 'bg-white/10 text-white border-white/20 font-bold shadow-sm'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.04] border-transparent'
             }`}
           >
-            <Code2 className="w-3.5 h-3.5 text-purple-400" />
+            <Code2 className="w-3.5 h-3.5 text-zinc-300" />
             <span>Code ({stats.codeBlocks})</span>
           </button>
         )}
@@ -86,20 +86,20 @@ export default function PlanSpecTopology({
       {/* Search and Quick Expand Toggle */}
       <div className="flex items-center gap-2 w-full sm:w-auto">
         <div className="relative flex-1 sm:w-56">
-          <Search className="w-3.5 h-3.5 text-white/40 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+          <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
           <input
             type="text"
             placeholder="Search plan..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-8 pr-3 py-1 rounded-lg bg-black/40 border border-white/10 text-xs font-mono text-white placeholder-white/40 focus:outline-none focus:border-cyan-500/40"
+            className="w-full pl-8 pr-3 py-1 rounded-lg bg-black/50 border border-white/[0.08] text-xs font-mono text-zinc-100 placeholder-zinc-500 focus:outline-none focus:border-white/25 transition-colors"
           />
         </div>
 
         {modules.length > 1 && (
           <button
             onClick={toggleAll}
-            className="px-2.5 py-1 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-white/70 hover:text-white text-xs font-mono flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
+            className="px-2.5 py-1 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] border border-white/[0.08] text-zinc-400 hover:text-zinc-200 text-xs font-mono flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
             title={allCollapsed ? 'Expand All Modules' : 'Collapse All Modules'}
           >
             <ChevronsUpDown className="w-3.5 h-3.5" />

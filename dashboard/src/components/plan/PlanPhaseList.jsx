@@ -28,8 +28,10 @@ export default function PlanPhaseList({
           <div id={`arch-mod-${modIdx}`} key={modIdx} className="rounded-2xl bg-[#0d0e12] border border-white/[0.08] shadow-lg transition-all">
             <button onClick={() => toggleCollapse(modIdx)} className="w-full px-5 py-4 bg-white/[0.02] border-b border-white/[0.06] flex flex-wrap items-center justify-between gap-3 hover:bg-white/[0.04] transition-colors text-left cursor-pointer">
               <div className="flex items-center gap-3">
-                <span className="px-2.5 py-0.5 rounded-lg bg-cyber-accent/10 text-cyber-accent font-mono text-xs font-bold">LAYER {mod.number}</span>
-                <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">{mod.title}</h2>
+                <span className="px-2 py-0.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-zinc-300 font-mono text-[11px] font-bold">
+                  {mod.number ? `0${mod.number}`.slice(-2) : `0${modIdx + 1}`.slice(-2)}
+                </span>
+                <h2 className="text-base sm:text-lg font-bold text-zinc-100 tracking-tight font-mono">{mod.title}</h2>
               </div>
               <div className="flex items-center gap-3 shrink-0">
                 {mod.tasksTotal > 0 && <span className="text-xs font-mono text-zinc-400">{mod.tasksDone}/{mod.tasksTotal} ({modPercent}%)</span>}
@@ -69,7 +71,7 @@ function renderBlock(block, idx, ctx) {
   if (block.type === 'h3') {
     return (
       <div key={idx} className="flex items-center gap-2 pt-2 pb-1 border-b border-white/[0.06]">
-        <div className="w-1.5 h-1.5 rounded-full bg-cyber-accent" />
+        <div className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
         <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-200 font-mono">{block.text}</h3>
       </div>
     );
@@ -101,7 +103,7 @@ function renderBlock(block, idx, ctx) {
       <ul key={idx} className="space-y-2 pl-2 my-3">
         {block.items.map((item, i) => (
           <li key={i} className="flex items-start gap-2.5 text-xs font-mono leading-relaxed text-zinc-300">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyber-accent mt-1.5 shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-full bg-zinc-500 mt-1.5 shrink-0" />
             <span>{ctx.formatTextWithBadges(item)}</span>
           </li>
         ))}
