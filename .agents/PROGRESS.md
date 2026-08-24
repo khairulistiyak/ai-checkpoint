@@ -2149,6 +2149,14 @@ UPDATE LOG:
 - [x] **Step 144.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 144.5** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 145: Sidebar Header Linear-Style Workspace Hub Redesign — ✅ 100% COMPLETE
+
+- [x] **Step 145.1** — Redesign SidebarHeader to Linear Workspace Hub (`dashboard/src/components/SidebarHeader.jsx`)
+- [x] **Step 145.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 145.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 

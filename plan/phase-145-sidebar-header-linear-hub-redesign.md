@@ -1,3 +1,18 @@
+# Phase 145: Sidebar Header Linear-Style Workspace Hub Redesign
+
+> **Objective:** Upgrade `SidebarHeader.jsx` to Concept 1 (Linear-Style Workspace Hub) with a frosted brand mark, `font-outfit` bold title, clean `•` separator with monospaced counter pill, and a cohesive frosted action button micro-cluster. Zero regressions.
+
+---
+
+## 📋 Execution Steps
+
+### Step 145.1 — Redesign SidebarHeader to Linear Workspace Hub (`dashboard/src/components/SidebarHeader.jsx`)
+- **File**: `dashboard/src/components/SidebarHeader.jsx`
+- **Action**: EDIT
+- **Content**: Implement Concept 1 layout with frosted brand mark, clean typography, separator dot, monospaced counter, and frosted micro-cluster buttons. Keep file <= 150 lines.
+
+Replace the file with:
+```jsx
 import React from 'react';
 import { Layers, Plus, X, PanelLeftClose, PanelLeftOpen } from 'lucide-react';
 
@@ -77,3 +92,25 @@ export default function SidebarHeader({
     </div>
   );
 }
+```
+
+- **Done-check**: `npm --prefix dashboard run build` -> exit 0
+- **Depends**: None
+
+---
+
+### Step 145.2 — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- **File**: `assets/engine.bin.js`
+- **Action**: EDIT
+- **Content**: Rebuild global engine binary and Vite dashboard bundle. Run test suite.
+- **Done-check**: `npm run build:engine && npm --prefix dashboard run build && npm test` -> exit 0
+- **Depends**: 145.1
+
+---
+
+### Step 145.3 — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+- **File**: `.agents/PROGRESS.md`
+- **Action**: EDIT
+- **Content**: Run full release check (`npm run release:check`) and save checkpoint.
+- **Done-check**: `npm run release:check` -> exit 0
+- **Depends**: 145.2
