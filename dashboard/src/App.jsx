@@ -60,13 +60,7 @@ export default function App() {
 
   return (
     <div className="h-screen w-screen overflow-hidden flex flex-col font-outfit bg-[#09090b] text-white/90 relative">
-      {isElectron && (
-        <div className="w-full h-7 bg-[#070709] border-b border-white/[0.04] flex items-center justify-between px-3 shrink-0 select-none z-50 text-[11px] font-mono text-zinc-500 app-drag">
-          <div className="w-20 shrink-0" />
-          <span className="opacity-40 text-[10px] tracking-wider uppercase font-semibold">VEYLX STUDIO</span>
-          <div className="w-20 shrink-0" />
-        </div>
-      )}
+      {isElectron && <div className="absolute top-0 left-0 right-0 h-7 z-20 pointer-events-auto select-none bg-transparent app-drag" />}
       <UpdateBanner />
       <UpdateNotification />
       {error && (

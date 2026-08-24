@@ -6,7 +6,7 @@ export default function SidebarHeader({
 }) {
   return (
     <div
-      className={`p-3 sm:px-3.5 sm:py-3 border-b border-white/[0.05] bg-[#0a0a0c]/90 backdrop-blur-md relative z-10 flex items-center select-none app-drag ${
+      className={`p-3 sm:px-3.5 sm:py-3 border-b border-white/[0.04] bg-transparent relative z-10 flex items-center select-none app-drag ${
         isCollapsed ? 'justify-center flex-col gap-2.5' : 'justify-between gap-2'
       }`}
     >

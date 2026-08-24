@@ -2259,6 +2259,15 @@ UPDATE LOG:
 - [x] **Step 156.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 156.5** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 157: Seamless Invisible Electron Window Dragging Architecture — ✅ 100% COMPLETE
+
+- [x] **Step 157.1** — Remove Contrasting Top Bar & Implement Seamless Dragging (`dashboard/src/App.jsx`)
+- [x] **Step 157.2** — Polish SidebarHeader Seamless Aesthetic (`dashboard/src/components/SidebarHeader.jsx`)
+- [x] **Step 157.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 157.4** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 
