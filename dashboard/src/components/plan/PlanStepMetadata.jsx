@@ -33,6 +33,7 @@ export default function PlanStepMetadata({ body, formatTextWithBadges }) {
     }
   });
 
+  const hasDepends = depends && !['none', 'nil', '-', 'n/a'].includes(depends.toLowerCase().trim());
   const bodyContent = otherLines.join('\n').trim();
 
   const handleCopy = (text, type) => {
@@ -43,8 +44,8 @@ export default function PlanStepMetadata({ body, formatTextWithBadges }) {
   };
 
   return (
-    <div className="space-y-4 font-mono text-xs">
-      {(file || action || depends) && (
+    <div className="space-y-3 font-mono text-xs">
+      {(file || action || hasDepends) && (
         <div className="flex flex-wrap items-center gap-2 p-2.5 rounded-xl bg-black/40 border border-white/10">
           {file && (
             <button
@@ -65,7 +66,7 @@ export default function PlanStepMetadata({ body, formatTextWithBadges }) {
             </span>
           )}
 
-          {depends && (
+          {hasDepends && (
             <span className="px-2.5 py-1 rounded-lg border border-white/10 bg-white/[0.03] text-zinc-400 font-mono text-[11px] flex items-center gap-1">
               <Link2 className="w-3 h-3 text-zinc-500" />
               <span>Depends: <strong className="text-zinc-200">{depends}</strong></span>
