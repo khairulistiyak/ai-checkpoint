@@ -42,6 +42,14 @@ export function parsePlanFiles(projectId, projectPath) {
       totalSteps += stepCount;
       filesData.push({ name: file, steps: stepCount, createdAt, phaseNum: parsed?.phaseNum });
     }
+
+    filesData.sort((a, b) => {
+      const numA = parseInt(a.name.match(/phase-(\d+)/i)?.[1] || '0', 10);
+      const numB = parseInt(b.name.match(/phase-(\d+)/i)?.[1] || '0', 10);
+      if (numA && numB && numA !== numB) return numB - numA;
+      return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
+    });
+
     return { totalFiles: files.length, totalSteps, fileNames: filesData, files: filesData, parsedPhases };
   } catch (e) {
     return { totalFiles: 0, totalSteps: 0, fileNames: [], files: [], parsedPhases: [] };

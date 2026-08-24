@@ -1887,3 +1887,12 @@ UPDATE LOG:
 - [x] **Step 113.1** — Remove Start/Done Button Segment (`dashboard/src/components/plan/PlanStepBlock.jsx`)
 - [x] **Step 113.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 113.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 114: Chronological Plan Ordering & Plan Blueprints Search Engine — ✅ 100% COMPLETE
+
+- [x] **Step 114.1** — Sort Plan Files Descending by Phase & Date (`dashboard/src/server/parser.js`)
+- [x] **Step 114.2** — Add Real-Time Search & Sorting in PlanFilesTab (`dashboard/src/components/plans/PlanFilesTab.jsx`)
+- [x] **Step 114.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 114.4** — Final Release Gate & Verification (`.agents/PROGRESS.md`)

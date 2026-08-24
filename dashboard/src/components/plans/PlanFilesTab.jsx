@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Layers, Cpu, ChevronRight } from 'lucide-react';
+import { Layers, Cpu, ChevronRight, Search } from 'lucide-react';
 import FilePreviewDrawer from './FilePreviewDrawer';
 import PlanFileCard from '../plan/PlanFileCard';
 import PlanFilesHeader from './PlanFilesHeader';
 
 export default function PlanFilesTab({ project }) {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const files = project?.planStats?.files || [];
+
+  const filteredFiles = useMemo(() => {
+    if (!searchQuery.trim()) return files;
+    const q = searchQuery.toLowerCase().trim();
+    return files.filter(f => f.name.toLowerCase().includes(q));
+  }, [files, searchQuery]);
 
   if (files.length === 0) {
     return (
@@ -84,18 +91,26 @@ export default function PlanFilesTab({ project }) {
           <PlanFilesHeader
             filesCount={files.length}
             totalStepsAcrossFiles={totalStepsAcrossFiles}
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-            {files.map((file, idx) => (
-              <PlanFileCard
-                key={file.name}
-                file={file}
-                index={idx}
-                setSelectedFile={setSelectedFile}
-              />
-            ))}
-          </div>
+          {filteredFiles.length === 0 ? (
+            <div className="py-16 text-center text-zinc-500 font-mono text-xs">
+              No blueprints matching "{searchQuery}"
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+              {filteredFiles.map((file, idx) => (
+                <PlanFileCard
+                  key={file.name}
+                  file={file}
+                  index={idx}
+                  setSelectedFile={setSelectedFile}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
 
