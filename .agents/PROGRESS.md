@@ -1948,8 +1948,16 @@ UPDATE LOG:
 
 ---
 
-## 🔷 Phase 120: Header Action Zen Minimalism — Remove Redundant Action Buttons & Export — ⏳ IN PROGRESS
+## 🔷 Phase 120: Header Action Zen Minimalism — Remove Redundant Action Buttons & Export — ✅ 100% COMPLETE
 
-- [ ] **Step 120.1** — Clean Up Project Header Actions (`dashboard/src/components/project/ProjectCardActions.jsx`)
-- [ ] **Step 120.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 120.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+- [x] **Step 120.1** — Clean Up Project Header Actions (`dashboard/src/components/project/ProjectCardActions.jsx`)
+- [x] **Step 120.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 120.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 121: Ultra-Sleek Cockpit KPI Glass HUD & Modern Micro-Metrics — ⏳ IN PROGRESS
+
+- [ ] **Step 121.1** — Redesign Cockpit KPI Cards HUD (`dashboard/src/components/cockpit/CockpitKpiCards.jsx`)
+- [ ] **Step 121.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 121.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
