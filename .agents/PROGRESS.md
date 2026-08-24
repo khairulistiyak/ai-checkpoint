@@ -2240,6 +2240,15 @@ UPDATE LOG:
 - [x] **Step 154.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 154.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 155: Restore Electron Window Dragging Support — ✅ 100% COMPLETE
+
+- [x] **Step 155.1** — Configure SidebarHeader Window Dragging (`dashboard/src/components/SidebarHeader.jsx`)
+- [x] **Step 155.2** — Add Electron Drag Region in App (`dashboard/src/App.jsx`)
+- [x] **Step 155.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 155.4** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 

@@ -25,17 +25,13 @@ export default function App() {
   const { showToast } = useToast();
   const { projects, loading, error, addProject, removeProject, refresh } = useProjects(30000);
   const { route, projectId, tab, navigate } = useHashRoute();
+  const isElectron = typeof window !== 'undefined' && (window.navigator?.userAgent?.includes('Electron') || new URLSearchParams(window.location.search).has('port') || Boolean(window.electronAPI));
 
-  const [selectedId, setSelectedId] = useState(null);
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [configProject, setConfigProject] = useState(null);
-  const [installing, setInstalling] = useState(false);
-  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [confirmRemove, setConfirmRemove] = useState(false);
-  const [progressDeleteWarning, setProgressDeleteWarning] = useState(null);
-  const [liveActivityEntry, setLiveActivityEntry] = useState(null);
+  const [selectedId, setSelectedId] = useState(null), [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [configProject, setConfigProject] = useState(null), [installing, setInstalling] = useState(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false), [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false), [confirmRemove, setConfirmRemove] = useState(false);
+  const [progressDeleteWarning, setProgressDeleteWarning] = useState(null), [liveActivityEntry, setLiveActivityEntry] = useState(null);
 
   useFileWatcher(selectedId || null, {
     onRefresh: () => refresh(),
@@ -51,13 +47,7 @@ export default function App() {
   }, [route, projectId]);
 
   useTelemetryReporter(route);
-  useAppShortcuts({
-    isAddModalOpen, setIsAddModalOpen,
-    isSettingsOpen, setIsSettingsOpen,
-    configProject, setConfigProject,
-    setIsCommandPaletteOpen,
-    route, projectId, navigate
-  });
+  useAppShortcuts({ isAddModalOpen, setIsAddModalOpen, isSettingsOpen, setIsSettingsOpen, configProject, setConfigProject, setIsCommandPaletteOpen, route, projectId, navigate });
 
   const selectedProject = projects.find((p) => p.id === selectedId);
   const handleSelectSidebar = (id) => { setSelectedId(id || null); id ? navigate(`#/project/${id}`) : navigate('#/'); setIsMobileMenuOpen(false); };
@@ -74,18 +64,14 @@ export default function App() {
       <UpdateNotification />
       {error && (
         <div className="mx-4 md:mx-6 mt-2 px-4 py-2 bg-red-500/10 border border-red-500/30 rounded-xl flex items-center gap-3 text-sm text-red-300">
-          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0"></span>
+          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0" />
           Server connection error. Auto-retrying...
         </div>
       )}
 
       {!isPlansRoute && (
         <div className="md:hidden flex items-center justify-between px-3 py-2 border-b border-white/[0.06] bg-[#0a0a0c] shrink-0">
-          <button
-            onClick={() => setIsMobileMenuOpen(true)}
-            className="p-1.5 text-zinc-400 hover:text-white rounded-lg bg-white/5 border border-white/10 cursor-pointer"
-            title="Open Menu"
-          >
+          <button onClick={() => setIsMobileMenuOpen(true)} className="p-1.5 text-zinc-400 hover:text-white rounded-lg bg-white/5 border border-white/10 cursor-pointer" title="Open Menu">
             <Menu className="w-4 h-4" />
           </button>
           <span className="text-xs font-bold text-white font-outfit">VEYLX STUDIO</span>
@@ -105,6 +91,7 @@ export default function App() {
         )}
 
         <main className={`flex-1 overflow-y-auto md:overflow-hidden relative flex flex-col custom-scrollbar ${isPlansRoute ? 'p-0 border-none rounded-none shadow-none bg-[#09090b]' : 'bg-[#09090b] p-2.5 sm:p-3.5 md:p-4'}`}>
+          {isElectron && <div style={{ WebkitAppRegion: 'drag' }} className="h-6 w-full shrink-0 select-none pointer-events-auto" />}
           <div className="w-full h-full flex flex-col min-h-max md:min-h-0 max-w-full">
             <Suspense fallback={<PageSkeleton />}>
               <AnimatePresence mode="wait">
@@ -137,9 +124,7 @@ export default function App() {
 
       <ProgressDeleteWarningModal
         warning={progressDeleteWarning ? { ...progressDeleteWarning, projectId: selectedId } : null}
-        onClose={() => setProgressDeleteWarning(null)}
-        onRestored={refresh}
-        showToast={showToast}
+        onClose={() => setProgressDeleteWarning(null)} onRestored={refresh} showToast={showToast}
       />
     </div>
   );
