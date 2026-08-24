@@ -61,7 +61,7 @@ export default function IntelligenceHub({ project }) {
   if (loading) {
     return (
       <div className="p-12 flex flex-col items-center justify-center space-y-4">
-        <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+        <div className="w-8 h-8 border-2 border-zinc-500 border-t-transparent rounded-full animate-spin" />
         <p className="text-zinc-400 animate-pulse font-medium">Scanning project intelligence...</p>
       </div>
     );
@@ -79,17 +79,17 @@ export default function IntelligenceHub({ project }) {
       {/* Modern Clean Header */}
       <motion.div variants={itemVariants} className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-white/[0.05] pr-12">
         <div className="flex items-center gap-3.5 min-w-0">
-          <div className="w-11 h-11 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 shrink-0 shadow-[0_0_20px_rgba(99,102,241,0.15)]">
+          <div className="w-11 h-11 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-zinc-300 shrink-0 shadow-sm">
             <Activity className="w-5 h-5" />
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2.5 flex-wrap">
               <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight font-outfit">Intelligence Hub</h2>
-              <span className="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold flex items-center gap-1.5 shadow-sm">
+              <span className="bg-white/[0.04] text-zinc-300 border border-white/10 px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold flex items-center gap-1.5 shadow-sm">
                 <span>🥇 Grade {grade}</span>
               </span>
             </div>
-            <p className="text-zinc-400 text-xs font-mono mt-0.5">World Top 1 Standard Code Quality Analysis</p>
+            <p className="text-zinc-400 text-xs font-mono mt-0.5">Code Quality & Architectural Intelligence Radar</p>
           </div>
         </div>
 
@@ -137,11 +137,11 @@ export default function IntelligenceHub({ project }) {
 
       {/* Top Full Width: Advanced HUD */}
       <motion.div variants={itemVariants} className="w-full flex flex-col mb-8 relative">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(6,182,212,0.03),transparent_60%)] pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(255,255,255,0.02),transparent_60%)] pointer-events-none" />
 
-        <h3 className="text-[0.625rem] font-bold text-cyan-500 uppercase tracking-widest mb-0 mt-2 text-center relative z-10 flex items-center justify-center gap-2 opacity-80">
-          <Activity className="w-3 h-3" /> Core Balance
+        <h3 className="text-[0.625rem] font-bold text-zinc-400 uppercase tracking-widest mb-0 mt-2 text-center relative z-10 flex items-center justify-center gap-2 opacity-80">
+          <Activity className="w-3 h-3 text-zinc-400" /> Core Balance
         </h3>
         <div className="w-full h-[clamp(15rem,25vw,20rem)] flex items-center justify-center relative z-10">
           <AdvancedHUDV1 scores={scores} isFullWidth={true} />

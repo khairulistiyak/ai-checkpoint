@@ -26,19 +26,19 @@ export default function AdvancedHUDV1({ scores, isFullWidth = false }) {
       <AnimatePresence>
         {hoveredNode && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.9 }}
-            className="absolute top-1 right-1 bg-[#09090b]/95 backdrop-blur-xl border border-cyan-500/30 rounded-xl p-2 w-32 z-50 pointer-events-none shadow-[0_4px_20px_rgba(6,182,212,0.15)]"
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="absolute top-1 right-1 bg-[#121214]/95 backdrop-blur-xl border border-white/10 rounded-xl p-2 w-32 z-50 pointer-events-none shadow-2xl"
           >
-            <div className="flex justify-between items-center text-[10px] text-zinc-200 border-b border-white/[0.08] pb-1 mb-1 font-medium">
-              <span>{hoveredNode.id}</span>
-              <span className="font-bold text-emerald-400 tabular-nums">{hoveredNode.val}%</span>
+            <div className="flex justify-between items-center text-[10px] text-zinc-200 border-b border-white/[0.06] pb-1 mb-1 font-medium">
+              <span className="font-semibold">{hoveredNode.label}</span>
+              <span className="font-bold text-zinc-100 tabular-nums">{hoveredNode.val}%</span>
             </div>
             <div className="space-y-0.5">
               {Object.entries(hoveredNode.details).map(([k, v]) => (
                 <div key={k} className="flex justify-between text-[8.5px]">
-                  <span className="text-zinc-500 uppercase">{k}</span>
+                  <span className="text-zinc-500 uppercase font-medium">{k}</span>
                   <span className="text-zinc-300 font-mono">{v}</span>
                 </div>
               ))}
@@ -51,8 +51,8 @@ export default function AdvancedHUDV1({ scores, isFullWidth = false }) {
         <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible z-10">
           <defs>
             <linearGradient id="radarMeshGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.25" />
-              <stop offset="100%" stopColor="#10b981" stopOpacity="0.12" />
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.12" />
+              <stop offset="100%" stopColor="#ffffff" stopOpacity="0.03" />
             </linearGradient>
           </defs>
 
@@ -65,7 +65,7 @@ export default function AdvancedHUDV1({ scores, isFullWidth = false }) {
                 return `${center + radius * scale * Math.cos(rad)},${center + radius * scale * Math.sin(rad)}`;
               }).join(' ')}
               fill="none"
-              stroke="rgba(255,255,255,0.06)"
+              stroke="rgba(255,255,255,0.05)"
               strokeWidth="0.5"
               strokeDasharray={idx === 1 ? '1.5 1.5' : undefined}
             />
@@ -79,7 +79,7 @@ export default function AdvancedHUDV1({ scores, isFullWidth = false }) {
               y1={center}
               x2={center + radius * Math.cos(n.angle * (Math.PI / 180))}
               y2={center + radius * Math.sin(n.angle * (Math.PI / 180))}
-              stroke="rgba(255,255,255,0.06)"
+              stroke="rgba(255,255,255,0.05)"
               strokeWidth="0.5"
             />
           ))}
@@ -93,7 +93,7 @@ export default function AdvancedHUDV1({ scores, isFullWidth = false }) {
             <path
               d={`M 50 ${center - radius + 4} A ${radius - 4} ${radius - 4} 0 0 1 ${center + radius - 4} 50`}
               fill="none"
-              stroke="rgba(6,182,212,0.35)"
+              stroke="rgba(255,255,255,0.15)"
               strokeWidth="0.75"
               strokeLinecap="round"
             />
@@ -103,10 +103,10 @@ export default function AdvancedHUDV1({ scores, isFullWidth = false }) {
           <polygon
             points={polygonPoints}
             fill="url(#radarMeshGrad)"
-            stroke="#06b6d4"
+            stroke="rgba(255,255,255,0.35)"
             strokeWidth="0.85"
             strokeLinejoin="round"
-            className="transition-all duration-700 ease-out drop-shadow-[0_0_8px_rgba(6,182,212,0.3)]"
+            className="transition-all duration-700 ease-out"
           />
 
           {/* Vertices */}
@@ -121,8 +121,8 @@ export default function AdvancedHUDV1({ scores, isFullWidth = false }) {
 
             return (
               <g key={i} className="cursor-pointer" onMouseEnter={() => setHoveredNode(n)} onMouseLeave={() => setHoveredNode(null)}>
-                <circle cx={x} cy={y} r={isHovered ? 2.6 : 1.6} fill={isHovered ? '#22d3ee' : '#10b981'} />
-                <text x={lx} y={ly + 0.5} fill={isHovered ? '#22d3ee' : 'rgba(255,255,255,0.6)'} fontSize="3.2" textAnchor="middle" alignmentBaseline="middle" fontWeight="bold">
+                <circle cx={x} cy={y} r={isHovered ? 2.4 : 1.5} fill={isHovered ? '#ffffff' : '#a1a1aa'} />
+                <text x={lx} y={ly + 0.5} fill={isHovered ? '#ffffff' : 'rgba(255,255,255,0.5)'} fontSize="3.2" textAnchor="middle" alignmentBaseline="middle" fontWeight="600">
                   {n.id}
                 </text>
                 <circle cx={lx} cy={ly} r="7" fill="transparent" />
@@ -133,7 +133,7 @@ export default function AdvancedHUDV1({ scores, isFullWidth = false }) {
         </svg>
 
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full shadow-[0_0_8px_#22d3ee]" />
+          <div className="w-1 h-1 bg-white/40 rounded-full" />
         </div>
       </div>
     </div>
