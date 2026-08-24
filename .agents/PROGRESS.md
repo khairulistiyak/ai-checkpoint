@@ -1786,8 +1786,9 @@ UPDATE LOG:
 
 ---
 
-## 🔷 Phase 104: Fix FilePreviewDrawer ReferenceError & Robust Prop Destructuring — ⏳ IN PROGRESS
+## 🔷 Phase 104: Fix FilePreviewDrawer ReferenceError & Robust Prop Destructuring — ✅ 100% COMPLETE
 
-- [ ] **Step 104.1** — Fix Prop Destructuring in FilePreviewDrawer (`dashboard/src/components/plans/FilePreviewDrawer.jsx`)
-- [ ] **Step 104.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 104.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+- [x] **Step 104.1** — Fix Prop Destructuring in FilePreviewDrawer (`dashboard/src/components/plans/FilePreviewDrawer.jsx`)
+- [x] **Step 104.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 104.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
