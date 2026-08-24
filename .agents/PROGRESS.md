@@ -2195,6 +2195,14 @@ UPDATE LOG:
 - [x] **Step 149.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 149.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 150: Remove Live Watcher Pinging Dot from Hero Progress Indicator — ✅ 100% COMPLETE
+
+- [x] **Step 150.1** — Remove Watcher Dot in ProjectCard (`dashboard/src/components/ProjectCard.jsx`)
+- [x] **Step 150.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 150.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 

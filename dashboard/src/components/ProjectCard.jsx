@@ -51,13 +51,6 @@ export default function ProjectCard({
           {/* Frameless Radial Halo Progress Indicator */}
           <div className="relative shrink-0 flex items-center justify-center">
             <ProgressRing percentage={overall.percentage} size={46} strokeWidth={3.5} />
-            <div
-              className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shadow-sm"
-              title="Live File Watcher Active"
-            >
-              <span className="w-1 h-1 rounded-full bg-emerald-400 animate-ping" />
-              <span className="absolute w-1 h-1 rounded-full bg-emerald-400" />
-            </div>
           </div>
 
           {/* Project Details */}
