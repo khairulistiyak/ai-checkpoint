@@ -1,26 +1,37 @@
 import React from 'react';
-import { Target, Layers, FileCode2, CheckCircle2, Zap } from 'lucide-react';
+import { Target, Layers, FileCode2, CheckCircle2 } from 'lucide-react';
 
 export default function CockpitProgressCard({
   overall,
   remaining = 0,
   allPhases = [],
   activePhases = [],
-  planStats = { totalPlans: 0, totalPlannedSteps: 0 },
+  planStats = null,
   totalPlanSteps = 0,
   activeStep = null,
   onOpenArchitect
 }) {
-  const totalPhases = allPhases.length;
-  const completedPhases = allPhases.filter(p => p.status === 'completed' || p.status === 'done').length;
-  const fallbackTotalSteps = allPhases.reduce((acc, p) => acc + (p.steps?.length || 0), 0);
+  const totalPlans = planStats?.totalFiles ?? planStats?.files?.length ?? planStats?.fileNames?.length ?? allPhases.length ?? 0;
+  const totalPhases = allPhases.length || totalPlans;
+  
+  const fallbackTotalSteps = allPhases.reduce((acc, p) => acc + (p.steps?.length || p.total || 0), 0);
   const totalSteps = overall?.total || fallbackTotalSteps || totalPlanSteps || 0;
-  const completedSteps = overall?.completed ?? Math.max(0, totalSteps - remaining);
   
   const rawPct = typeof overall === 'number' 
     ? overall 
-    : (overall?.percentage ?? (totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0));
+    : (overall?.percentage ?? (totalSteps > 0 ? Math.round(((overall?.completed || 0) / totalSteps) * 100) : 0));
   const pct = Math.min(100, Math.max(0, isNaN(rawPct) ? 0 : Math.round(rawPct)));
+
+  const completedSteps = overall?.completed ?? (pct === 100 ? totalSteps : Math.max(0, totalSteps - remaining));
+
+  const parsedCompletedPhases = allPhases.filter(p => (
+    p.status === 'completed' || 
+    p.status === 'done' || 
+    (typeof p.percentage === 'number' && p.percentage >= 100) ||
+    (p.completed && p.total && p.completed >= p.total)
+  )).length;
+
+  const completedPhases = (pct === 100 && totalPhases > 0) ? totalPhases : parsedCompletedPhases;
 
   return (
     <div className="bg-[#0e0e11]/80 backdrop-blur-md border border-white/[0.06] hover:border-white/[0.12] rounded-2xl p-4 flex flex-col justify-between h-full min-h-[14rem] shadow-sm transition-all group relative overflow-hidden">
@@ -117,7 +128,7 @@ export default function CockpitProgressCard({
             <span className="text-[9px] text-zinc-500 group-hover/bp:text-zinc-300">→</span>
           </div>
           <div className="text-zinc-200 font-semibold text-xs mt-0.5 tabular-nums">
-            {planStats?.totalPlans || 0} <span className="text-[9px] text-zinc-500 font-normal">plans</span>
+            {totalPlans} <span className="text-[9px] text-zinc-500 font-normal">plans</span>
           </div>
         </div>
       </div>

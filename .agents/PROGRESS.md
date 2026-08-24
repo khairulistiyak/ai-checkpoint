@@ -2008,9 +2008,17 @@ UPDATE LOG:
 
 ---
 
-## 🔷 Phase 128: Integrate Active Step HUD into Roadmap Progress Card — ⏳ IN PROGRESS
+## 🔷 Phase 128: Integrate Active Step HUD into Roadmap Progress Card — ✅ 100% COMPLETE
 
-- [ ] **Step 128.1** — Upgrade CockpitProgressCard with Active Step HUD (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
-- [ ] **Step 128.2** — Wire Active Step Props in Cockpit Overview (`dashboard/src/components/cockpit/CockpitHealthOverview.jsx` & `dashboard/src/components/CockpitTab.jsx`)
-- [ ] **Step 128.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 128.4** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+- [x] **Step 128.1** — Upgrade CockpitProgressCard with Active Step HUD (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
+- [x] **Step 128.2** — Wire Active Step Props in Cockpit Overview (`dashboard/src/components/cockpit/CockpitHealthOverview.jsx` & `dashboard/src/components/CockpitTab.jsx`)
+- [x] **Step 128.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 128.4** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 129: Fix Cockpit Progress Card Phase Completion & Plan Count Resolution — ⏳ IN PROGRESS
+
+- [ ] **Step 129.1** — Fix Phase Completion & Plan Count Extraction (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
+- [ ] **Step 129.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 129.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
