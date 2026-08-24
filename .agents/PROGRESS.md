@@ -1919,11 +1919,19 @@ UPDATE LOG:
 
 ---
 
-## 🔷 Phase 117: Zero-Flicker Live Scores & Smart Scan Caching Architecture — ⏳ IN PROGRESS
+## 🔷 Phase 117: Zero-Flicker Live Scores & Smart Scan Caching Architecture — ✅ 100% COMPLETE
 
-- [ ] **Step 117.1** — Create Client-Side Scan Memory Store (`dashboard/src/utils/scan-cache.js`)
-- [ ] **Step 117.2** — Update Health Command Center to Use Client Cache (`dashboard/src/components/health/useHealthCommandCenter.js`)
-- [ ] **Step 117.3** — Update CockpitHealthOverview to Prevent Tab-Switch Scans (`dashboard/src/components/cockpit/CockpitHealthOverview.jsx`)
-- [ ] **Step 117.4** — Implement Keep-Alive Tab Preservation (`dashboard/src/components/ProjectTabsContent.jsx`)
-- [ ] **Step 117.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 117.6** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+- [x] **Step 117.1** — Create Client-Side Scan Memory Store (`dashboard/src/utils/scan-cache.js`)
+- [x] **Step 117.2** — Update Health Command Center to Use Client Cache (`dashboard/src/components/health/useHealthCommandCenter.js`)
+- [x] **Step 117.3** — Update CockpitHealthOverview to Prevent Tab-Switch Scans (`dashboard/src/components/cockpit/CockpitHealthOverview.jsx`)
+- [x] **Step 117.4** — Implement Keep-Alive Tab Preservation (`dashboard/src/components/ProjectTabsContent.jsx`)
+- [x] **Step 117.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 117.6** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 118: Cockpit Zen Simplification & Full-Width Activity Stream — ⏳ IN PROGRESS
+
+- [ ] **Step 118.1** — Upgrade Cockpit Layout & Remove Git Visualizer Widget (`dashboard/src/components/CockpitTab.jsx`)
+- [ ] **Step 118.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 118.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)

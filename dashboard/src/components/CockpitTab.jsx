@@ -1,6 +1,5 @@
 import React, { useState, useMemo } from 'react';
 import { Rocket } from 'lucide-react';
-import GitVisualizer from './GitVisualizer';
 import ActivityLog from './ActivityLog';
 import CockpitHealthOverview from './cockpit/CockpitHealthOverview';
 import CockpitKpiCards from './cockpit/CockpitKpiCards';
@@ -77,23 +76,8 @@ export default function CockpitTab({
 
       <CockpitHealthOverview projectId={selectedProject.id} onOpenIntelligence={() => setIsIntelligenceModalOpen(true)} />
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 items-stretch">
-        <div className="bg-[#121214]/90 backdrop-blur-xl border border-white/[0.08] rounded-2xl p-3.5 sm:p-4 flex flex-col shadow-sm min-h-[25rem]">
-          <div className="flex items-center justify-between gap-2.5 mb-3 pb-2.5 border-b border-white/[0.08] shrink-0">
-            <h2 className="text-xs font-bold text-white flex items-center gap-2 font-outfit uppercase tracking-wider">
-              <Rocket className="w-3.5 h-3.5 text-sky-400" />
-              <span>Git Snapshots & Checkpoints</span>
-            </h2>
-            <span className="text-[10px] font-mono text-zinc-500">Live Rollback Tree</span>
-          </div>
-          <div className="flex-1 min-h-0 overflow-hidden">
-            <GitVisualizer projectId={selectedProject.id} onRefresh={refresh} />
-          </div>
-        </div>
-
-        <div className="flex flex-col min-h-[25rem]">
-          <ActivityLog projectId={selectedProject.id} liveEntry={liveActivityEntry} />
-        </div>
+      <div className="w-full">
+        <ActivityLog projectId={selectedProject.id} liveEntry={liveActivityEntry} />
       </div>
 
       <IntelligenceModal 
