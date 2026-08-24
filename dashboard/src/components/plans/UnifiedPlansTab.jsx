@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ListTodo, FileCode } from 'lucide-react';
+import { ListTodo, FileCode2 } from 'lucide-react';
 import PlanProgressTab from './PlanProgressTab';
 import PlanFilesTab from './PlanFilesTab';
 
@@ -17,19 +17,19 @@ export default function UnifiedPlansTab({
   initialSubTab = 'roadmap'
 }) {
   const [subTab, setSubTab] = useState(initialSubTab);
-  const filesCount = project?.planStats?.files?.length || 0;
+  const filesCount = project?.planStats?.totalFiles ?? project?.planStats?.files?.length ?? 0;
 
   return (
-    <div className="flex flex-col min-h-0 flex-1">
+    <div className="flex flex-col min-h-0 flex-1 bg-[#09090b]">
       {/* Segmented Sub-Navigation Switcher */}
-      <div className="px-4 py-2.5 border-b border-white/10 bg-black/40 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-1.5 p-1 bg-white/[0.04] border border-white/10 rounded-xl">
+      <div className="px-4 py-2 border-b border-white/[0.06] bg-[#0c0c0e]/90 backdrop-blur-md flex items-center justify-between gap-3 shrink-0">
+        <div className="flex items-center gap-1.5 p-1 bg-white/[0.03] border border-white/[0.06] rounded-xl">
           <button
             onClick={() => setSubTab('roadmap')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium flex items-center gap-2 transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono flex items-center gap-2 transition-all cursor-pointer ${
               subTab === 'roadmap'
-                ? 'bg-white/15 text-white border border-white/20 font-bold shadow-sm'
-                : 'text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent'
+                ? 'bg-white/[0.08] text-white border border-white/[0.12] font-semibold shadow-sm'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03] border border-transparent'
             }`}
           >
             <ListTodo className="w-3.5 h-3.5" />
@@ -38,16 +38,16 @@ export default function UnifiedPlansTab({
 
           <button
             onClick={() => setSubTab('blueprints')}
-            className={`px-3 py-1.5 rounded-lg text-xs font-mono font-medium flex items-center gap-2 transition-all cursor-pointer ${
+            className={`px-3 py-1.5 rounded-lg text-xs font-mono flex items-center gap-2 transition-all cursor-pointer ${
               subTab === 'blueprints'
-                ? 'bg-white/15 text-white border border-white/20 font-bold shadow-sm'
-                : 'text-zinc-400 hover:text-white hover:bg-white/5 border border-transparent'
+                ? 'bg-white/[0.08] text-white border border-white/[0.12] font-semibold shadow-sm'
+                : 'text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.03] border border-transparent'
             }`}
           >
-            <FileCode className="w-3.5 h-3.5" />
+            <FileCode2 className="w-3.5 h-3.5" />
             <span>Blueprint Specifications</span>
             {filesCount > 0 && (
-              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-full bg-white/10 text-zinc-300">
+              <span className="text-[10px] font-mono px-1.5 py-0.5 rounded-md bg-white/[0.06] border border-white/[0.08] text-zinc-300">
                 {filesCount}
               </span>
             )}

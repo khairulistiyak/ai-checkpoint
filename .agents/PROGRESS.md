@@ -2017,8 +2017,19 @@ UPDATE LOG:
 
 ---
 
-## 🔷 Phase 129: Fix Cockpit Progress Card Phase Completion & Plan Count Resolution — ⏳ IN PROGRESS
+## 🔷 Phase 129: Fix Cockpit Progress Card Phase Completion & Plan Count Resolution — ✅ 100% COMPLETE
 
-- [ ] **Step 129.1** — Fix Phase Completion & Plan Count Extraction (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
-- [ ] **Step 129.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 129.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+- [x] **Step 129.1** — Fix Phase Completion & Plan Count Extraction (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
+- [x] **Step 129.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 129.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 130: Execution Roadmap Comprehensive Zen & Workflow Polish — ⏳ IN PROGRESS
+
+- [ ] **Step 130.1** — Refine UnifiedPlansTab Sub-Navigation (`dashboard/src/components/plans/UnifiedPlansTab.jsx`)
+- [ ] **Step 130.2** — Refine PlanProgressTab Search & Filter Toolbar (`dashboard/src/components/plans/PlanProgressTab.jsx`)
+- [ ] **Step 130.3** — Refine PhaseView Accordion Card & Blueprint Action (`dashboard/src/components/PhaseView.jsx`)
+- [ ] **Step 130.4** — Refine StepItem Row & Actions (`dashboard/src/components/StepItem.jsx`)
+- [ ] **Step 130.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 130.6** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
