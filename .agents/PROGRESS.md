@@ -2268,6 +2268,14 @@ UPDATE LOG:
 - [x] **Step 157.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 157.4** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 158: Perfect Sidebar Top Spacing & Electron Native Titlebar Alignment — ✅ 100% COMPLETE
+
+- [x] **Step 158.1** — Add Dynamic Electron Top Padding (`dashboard/src/components/SidebarHeader.jsx`)
+- [x] **Step 158.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 158.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 

@@ -4,9 +4,17 @@ import { Brain, Plus, X } from 'lucide-react';
 export default function SidebarHeader({
   itemsCount, isCollapsed, setIsCollapsed, onAddProject, setIsMobileMenuOpen
 }) {
+  const isElectron = typeof window !== 'undefined' && Boolean(
+    window.electronAPI ||
+    window.navigator?.userAgent?.includes('Electron') ||
+    new URLSearchParams(window.location.search).has('port')
+  );
+
   return (
     <div
-      className={`p-3 sm:px-3.5 sm:py-3 border-b border-white/[0.04] bg-transparent relative z-10 flex items-center select-none app-drag ${
+      className={`px-3 sm:px-3.5 pb-3 border-b border-white/[0.04] bg-transparent relative z-10 flex items-center select-none app-drag ${
+        isElectron ? 'pt-8' : 'pt-3.5'
+      } ${
         isCollapsed ? 'justify-center flex-col gap-2.5' : 'justify-between gap-2'
       }`}
     >
