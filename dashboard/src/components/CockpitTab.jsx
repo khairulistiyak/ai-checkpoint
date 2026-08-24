@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react';
 import { Rocket } from 'lucide-react';
 import CockpitHealthOverview from './cockpit/CockpitHealthOverview';
 import IntelligenceModal from './intelligence/IntelligenceModal';
-import ActiveStepBanner from './plans/ActiveStepBanner';
 
 export default function CockpitTab({
   selectedProject, overall, allPhases, activePhases, remaining, planStats, totalPlanSteps, handleOpenArchitect, refresh, onSelectTab
@@ -24,8 +23,6 @@ export default function CockpitTab({
 
   return (
     <div className="flex flex-col gap-3">
-      <ActiveStepBanner activeStep={activeStep} />
-
       {hasNoSteps && (
         <div className="bg-sky-500/10 border border-sky-500/20 rounded-2xl p-4 flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
@@ -71,6 +68,7 @@ export default function CockpitTab({
         activePhases={activePhases}
         planStats={planStats}
         totalPlanSteps={totalPlanSteps}
+        activeStep={activeStep}
         onOpenArchitect={() => onSelectTab ? onSelectTab('files') : handleOpenArchitect()}
         onOpenIntelligence={() => setIsIntelligenceModalOpen(true)}
       />

@@ -16,6 +16,7 @@ export default function CockpitHealthOverview({
   activePhases,
   planStats,
   totalPlanSteps,
+  activeStep,
   onOpenArchitect,
   onOpenIntelligence
 }) {
@@ -65,6 +66,7 @@ export default function CockpitHealthOverview({
           activePhases={activePhases}
           planStats={planStats}
           totalPlanSteps={totalPlanSteps}
+          activeStep={activeStep}
           onOpenArchitect={onOpenArchitect}
         />
 
