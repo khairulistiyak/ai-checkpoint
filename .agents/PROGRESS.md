@@ -1784,3 +1784,10 @@ UPDATE LOG:
 - [x] **Step 103.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 103.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 104: Fix FilePreviewDrawer ReferenceError & Robust Prop Destructuring — ⏳ IN PROGRESS
+
+- [ ] **Step 104.1** — Fix Prop Destructuring in FilePreviewDrawer (`dashboard/src/components/plans/FilePreviewDrawer.jsx`)
+- [ ] **Step 104.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 104.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
