@@ -1,57 +1,45 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import HUDCoreBalance from './HUDCoreBalance';
 
 export default function AdvancedHUDV1({ scores, isFullWidth = false }) {
   const [hoveredNode, setHoveredNode] = useState(null);
 
-  const displayScores = scores && !Array.isArray(scores) ? [
-    { id: 'PERFORMANCE', val: scores.performance || 0, color: '#06b6d4' },
-    { id: 'DYNAMIC', val: scores.dynamic || 0, color: '#a855f7' },
-    { id: 'RESPONSIVE', val: scores.responsive || 0, color: '#10b981' },
-    { id: 'A11Y', val: scores.a11y || 0, color: '#f59e0b' },
-    { id: 'SECURITY', val: scores.security || 0, color: '#ec4899' }
-  ] : [
-    { id: 'PERFORMANCE', val: 92, color: '#06b6d4' },
-    { id: 'DYNAMIC', val: 78, color: '#a855f7' },
-    { id: 'RESPONSIVE', val: 95, color: '#10b981' },
-    { id: 'A11Y', val: 80, color: '#f59e0b' },
-    { id: 'SECURITY', val: 99, color: '#ec4899' }
-  ];
-
   const nodes = [
-    { id: 'RES', label: 'Responsive', val: scores?.responsive || 0, angle: 270, status: (scores?.responsive || 0) >= 90 ? 'optimal' : 'anomaly', details: { lcp: '1.2s', shift: '0', tti: '0.8s' } },
-    { id: 'DYN', label: 'Dynamic', val: scores?.dynamic || 0, angle: 342, status: (scores?.dynamic || 0) >= 90 ? 'optimal' : 'anomaly', details: { render: '60fps', mem: '45MB', state: 'synced' } },
-    { id: 'PRF', label: 'Performance', val: scores?.performance || 0, angle: 54, status: (scores?.performance || 0) >= 90 ? 'optimal' : 'anomaly', details: { bundle: '240kb', cache: 'HIT', paint: 'fast' } },
-    { id: 'ALY', label: 'A11y', val: scores?.a11y || 0, angle: 126, status: (scores?.a11y || 0) >= 90 ? 'optimal' : 'anomaly', details: { contrast: 'AAA', aria: '100%', focus: 'visible' } },
-    { id: 'SEC', label: 'Security', val: scores?.security || 0, angle: 198, status: (scores?.security || 0) >= 90 ? 'optimal' : 'anomaly', details: { csp: 'strict', ssl: 'tls1.3', xss: 'safe' } },
+    { id: 'RES', label: 'Responsive', val: scores?.responsive || 95, angle: 270, details: { lcp: '1.1s', cls: '0' } },
+    { id: 'DYN', label: 'Dynamic', val: scores?.dynamic || 88, angle: 342, details: { fps: '60', mem: '38MB' } },
+    { id: 'PRF', label: 'Performance', val: scores?.performance || 94, angle: 54, details: { load: '0.4s', cache: 'HIT' } },
+    { id: 'ALY', label: 'Accessibility', val: scores?.a11y || 92, angle: 126, details: { aria: '100%', a11y: 'AAA' } },
+    { id: 'SEC', label: 'Security', val: scores?.security || 99, angle: 198, details: { cve: '0', ssl: 'tls1.3' } },
   ];
 
   const center = 50;
-  const radius = 42;
+  const radius = 38;
+
+  const polygonPoints = nodes.map((n) => {
+    const rad = n.angle * (Math.PI / 180);
+    const dist = (Math.min(100, Math.max(10, n.val)) / 100) * radius;
+    return `${center + dist * Math.cos(rad)},${center + dist * Math.sin(rad)}`;
+  }).join(' ');
 
   return (
-    <div className="w-full h-full flex items-center justify-center relative font-mono">
-      <HUDCoreBalance scores={displayScores} isFullWidth={isFullWidth} />
-
+    <div className="w-full h-full flex items-center justify-center relative font-mono select-none">
       <AnimatePresence>
         {hoveredNode && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 10 }}
-            className="absolute top-2 right-2 bg-black/80 backdrop-blur-md border border-cyan-500/30 rounded-lg p-3 w-40 z-50 pointer-events-none shadow-[0_0_1rem_rgba(6,182,212,0.15)]"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="absolute top-1 right-1 bg-[#09090b]/95 backdrop-blur-xl border border-cyan-500/30 rounded-xl p-2 w-32 z-50 pointer-events-none shadow-[0_4px_20px_rgba(6,182,212,0.15)]"
           >
-            <div className="text-[0.625rem] text-cyan-400 mb-1 font-bold border-b border-cyan-500/30 pb-1">SYS.{hoveredNode.id}_DATA</div>
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-xs text-white">{hoveredNode.label}</span>
-              <span className={`text-xs font-bold ${hoveredNode.status === 'optimal' ? 'text-emerald-400' : 'text-rose-400'}`}>{hoveredNode.val}%</span>
+            <div className="flex justify-between items-center text-[10px] text-zinc-200 border-b border-white/[0.08] pb-1 mb-1 font-medium">
+              <span>{hoveredNode.id}</span>
+              <span className="font-bold text-emerald-400 tabular-nums">{hoveredNode.val}%</span>
             </div>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {Object.entries(hoveredNode.details).map(([k, v]) => (
-                <div key={k} className="flex justify-between text-[0.5625rem]">
+                <div key={k} className="flex justify-between text-[8.5px]">
                   <span className="text-zinc-500 uppercase">{k}</span>
-                  <span className="text-zinc-300">{v}</span>
+                  <span className="text-zinc-300 font-mono">{v}</span>
                 </div>
               ))}
             </div>
@@ -59,60 +47,93 @@ export default function AdvancedHUDV1({ scores, isFullWidth = false }) {
         )}
       </AnimatePresence>
 
-      <div className={`w-full h-full relative ${isFullWidth ? 'max-w-[clamp(15rem,30vw,22rem)] max-h-[clamp(15rem,30vw,22rem)]' : 'max-w-[12.5rem] max-h-[12.5rem]'}`}>
+      <div className={`w-full h-full relative ${isFullWidth ? 'max-w-[clamp(15rem,30vw,20rem)] max-h-[clamp(15rem,30vw,20rem)]' : 'max-w-[11.5rem] max-h-[11.5rem]'}`}>
         <svg viewBox="0 0 100 100" className="w-full h-full overflow-visible z-10">
-          <circle cx={center} cy={center} r={radius} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" strokeDasharray="2 2" />
-          <circle cx={center} cy={center} r={radius * 0.6} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-          <circle cx={center} cy={center} r={radius * 0.2} fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+          <defs>
+            <linearGradient id="radarMeshGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#10b981" stopOpacity="0.12" />
+            </linearGradient>
+          </defs>
 
+          {/* Web grids */}
+          {[1, 0.65, 0.35].map((scale, idx) => (
+            <polygon
+              key={idx}
+              points={nodes.map((n) => {
+                const rad = n.angle * (Math.PI / 180);
+                return `${center + radius * scale * Math.cos(rad)},${center + radius * scale * Math.sin(rad)}`;
+              }).join(' ')}
+              fill="none"
+              stroke="rgba(255,255,255,0.06)"
+              strokeWidth="0.5"
+              strokeDasharray={idx === 1 ? '1.5 1.5' : undefined}
+            />
+          ))}
+
+          {/* Axis lines */}
+          {nodes.map((n, i) => (
+            <line
+              key={i}
+              x1={center}
+              y1={center}
+              x2={center + radius * Math.cos(n.angle * (Math.PI / 180))}
+              y2={center + radius * Math.sin(n.angle * (Math.PI / 180))}
+              stroke="rgba(255,255,255,0.06)"
+              strokeWidth="0.5"
+            />
+          ))}
+
+          {/* Rotating scan sweep */}
           <motion.g
             animate={{ rotate: 360 }}
-            transition={{ duration: 40, repeat: Infinity, ease: 'linear' }}
+            transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
             style={{ originX: '50%', originY: '50%' }}
           >
-            <path d={`M 50 ${50 - radius + 5} A ${radius - 5} ${radius - 5} 0 0 1 ${50 + radius - 5} 50`} fill="none" stroke="rgba(6,182,212,0.3)" strokeWidth="0.5" />
+            <path
+              d={`M 50 ${center - radius + 4} A ${radius - 4} ${radius - 4} 0 0 1 ${center + radius - 4} 50`}
+              fill="none"
+              stroke="rgba(6,182,212,0.35)"
+              strokeWidth="0.75"
+              strokeLinecap="round"
+            />
           </motion.g>
 
+          {/* Polygon mesh */}
+          <polygon
+            points={polygonPoints}
+            fill="url(#radarMeshGrad)"
+            stroke="#06b6d4"
+            strokeWidth="0.85"
+            strokeLinejoin="round"
+            className="transition-all duration-700 ease-out drop-shadow-[0_0_8px_rgba(6,182,212,0.3)]"
+          />
+
+          {/* Vertices */}
           {nodes.map((n, i) => {
             const rad = n.angle * (Math.PI / 180);
-            const tx = center + radius * Math.cos(rad);
-            const ty = center + radius * Math.sin(rad);
-            const dist = (n.val / 100) * radius;
+            const dist = (Math.min(100, Math.max(10, n.val)) / 100) * radius;
             const x = center + dist * Math.cos(rad);
             const y = center + dist * Math.sin(rad);
-            const lx = center + 48 * Math.cos(rad);
-            const ly = center + 48 * Math.sin(rad);
+            const lx = center + (radius + 8) * Math.cos(rad);
+            const ly = center + (radius + 8) * Math.sin(rad);
             const isHovered = hoveredNode?.id === n.id;
-            const isAnomaly = n.status === 'anomaly';
 
             return (
-              <g
-                key={i}
-                className="cursor-pointer"
-                onMouseEnter={() => setHoveredNode(n)}
-                onMouseLeave={() => setHoveredNode(null)}
-              >
-                <line x1={center} y1={center} x2={tx} y2={ty} stroke="rgba(255,255,255,0.05)" strokeWidth="0.5" />
-                <line x1={center} y1={center} x2={x} y2={y} stroke={isHovered ? '#06b6d4' : 'rgba(255,255,255,0.2)'} strokeWidth={isHovered ? '1' : '0.5'} />
-                <motion.circle
-                  cx={x} cy={y} r={isHovered ? 2.5 : 1.5}
-                  fill={isAnomaly ? '#f43f5e' : (isHovered ? '#06b6d4' : '#10b981')}
-                  animate={isAnomaly ? { opacity: [1, 0.4, 1], scale: [1, 1.2, 1] } : {}}
-                  transition={{ duration: 0.5, repeat: Infinity, ease: 'easeInOut' }}
-                />
-                <circle cx={tx} cy={ty} r="1" fill="none" stroke="rgba(255,255,255,0.2)" />
-                <text x={lx} y={ly} fill={isHovered ? '#06b6d4' : (isAnomaly ? '#f43f5e' : 'rgba(255,255,255,0.5)')} fontSize="3" textAnchor="middle" alignmentBaseline="middle" fontWeight="bold">
+              <g key={i} className="cursor-pointer" onMouseEnter={() => setHoveredNode(n)} onMouseLeave={() => setHoveredNode(null)}>
+                <circle cx={x} cy={y} r={isHovered ? 2.6 : 1.6} fill={isHovered ? '#22d3ee' : '#10b981'} />
+                <text x={lx} y={ly + 0.5} fill={isHovered ? '#22d3ee' : 'rgba(255,255,255,0.6)'} fontSize="3.2" textAnchor="middle" alignmentBaseline="middle" fontWeight="bold">
                   {n.id}
                 </text>
-                <circle cx={lx} cy={ly} r="8" fill="transparent" />
-                <circle cx={x} cy={y} r="6" fill="transparent" />
+                <circle cx={lx} cy={ly} r="7" fill="transparent" />
+                <circle cx={x} cy={y} r="5" fill="transparent" />
               </g>
             );
           })}
         </svg>
 
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-1 h-1 bg-cyan-400 rounded-full shadow-[0_0_0.5rem_#22d3ee]" />
+          <div className="w-1.5 h-1.5 bg-cyan-400 rounded-full shadow-[0_0_8px_#22d3ee]" />
         </div>
       </div>
     </div>

@@ -44,23 +44,20 @@ export default function CockpitHealthOverview({
   }, [projectId, showToast]);
 
   useEffect(() => {
-    if (!getCachedIntelligence(projectId)) {
-      fetchIntelligence();
-    }
+    if (!getCachedIntelligence(projectId)) fetchIntelligence();
   }, [projectId, fetchIntelligence]);
 
   const scores = intelligenceData?.scores || {
-    performance: healthScore || 92,
-    dynamic: qualityScore || 85,
-    responsive: score || 88,
-    a11y: 98,
+    performance: healthScore || 94,
+    dynamic: qualityScore || 88,
+    responsive: score || 95,
+    a11y: 92,
     security: 100 - (breakdown?.criticalSecurity || 0) * 10
   };
 
   return (
     <>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3.5 items-stretch">
-        {/* Card 1: Roadmap & Progress KPI */}
         <CockpitProgressCard
           overall={overall}
           remaining={remaining}
@@ -71,12 +68,7 @@ export default function CockpitHealthOverview({
           onOpenArchitect={onOpenArchitect}
         />
 
-        {/* Card 2: Health Fortress with Re-scan */}
-        <div 
-          onClick={() => setIsModalOpen(true)}
-          className="group cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99] h-full relative"
-          title="Click to view detailed Health breakdown"
-        >
+        <div onClick={() => setIsModalOpen(true)} className="group cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99] h-full relative" title="Click to view detailed Health breakdown">
           <HealthScoreGauge
             score={score}
             scoreColor={scoreColor}
@@ -89,15 +81,9 @@ export default function CockpitHealthOverview({
           />
         </div>
 
-        {/* Card 3: Intelligence Hub Radar */}
         {onOpenIntelligence && (
-          <div 
-            onClick={onOpenIntelligence}
-            className="group cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99] h-full bg-[#0e0e11]/80 backdrop-blur-md border border-white/[0.06] hover:border-white/[0.12] rounded-2xl p-4 flex flex-col justify-between shadow-sm relative overflow-hidden min-h-[14rem]"
-            title="Click to open Full Intelligence Hub"
-          >
+          <div onClick={onOpenIntelligence} className="group cursor-pointer hover:scale-[1.01] transition-transform active:scale-[0.99] h-full bg-[#0e0e11]/80 backdrop-blur-md border border-white/[0.06] hover:border-white/[0.12] rounded-2xl p-4 flex flex-col justify-between shadow-sm relative overflow-hidden min-h-[14rem]" title="Click to open Full Intelligence Hub">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/[0.02] rounded-full blur-3xl pointer-events-none" />
-            
             <div className="flex items-center justify-between relative z-10 w-full">
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-zinc-400">
@@ -105,7 +91,6 @@ export default function CockpitHealthOverview({
                 </div>
                 <span className="text-xs font-mono font-medium text-zinc-400">AI Intelligence</span>
               </div>
-
               <button
                 onClick={(e) => {
                   e.stopPropagation();
@@ -120,23 +105,29 @@ export default function CockpitHealthOverview({
               </button>
             </div>
 
-            <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-center my-1">
+            <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-center my-0.5">
               <AdvancedHUDV1 isFullWidth={false} scores={scores} />
             </div>
             
-            <div className="flex items-center gap-1.5 pt-2.5 border-t border-white/[0.04] w-full justify-center text-xs font-mono text-zinc-400 relative z-10">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              <span className="text-zinc-300 font-outfit text-xs font-medium">Intelligence Radar</span>
+            <div className="grid grid-cols-3 gap-1.5 pt-2.5 border-t border-white/[0.04] text-center relative z-10 font-mono">
+              <div className="bg-white/[0.02] border border-white/[0.04] rounded-lg p-1.5 flex flex-col justify-center">
+                <div className="text-zinc-200 font-semibold text-xs tabular-nums">{scores.performance}%</div>
+                <div className="text-[9px] text-zinc-500 uppercase font-medium">Perf</div>
+              </div>
+              <div className="bg-white/[0.02] border border-white/[0.04] rounded-lg p-1.5 flex flex-col justify-center">
+                <div className="text-zinc-200 font-semibold text-xs tabular-nums">{scores.dynamic}%</div>
+                <div className="text-[9px] text-zinc-500 uppercase font-medium">Dynamic</div>
+              </div>
+              <div className="bg-white/[0.02] border border-white/[0.04] rounded-lg p-1.5 flex flex-col justify-center">
+                <div className="text-zinc-200 font-semibold text-xs tabular-nums">{scores.security}%</div>
+                <div className="text-[9px] text-zinc-500 uppercase font-medium">Security</div>
+              </div>
             </div>
           </div>
         )}
       </div>
 
-      <CockpitHealthModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        {...healthCenter}
-      />
+      <CockpitHealthModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} {...healthCenter} />
     </>
   );
 }
