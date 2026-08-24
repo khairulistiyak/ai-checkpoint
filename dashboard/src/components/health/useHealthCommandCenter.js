@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { fetchProjectHealth, triggerProjectAutofix } from '../../utils/api';
 import { buildDiagnosticReportPrompt } from '../../utils/prompt-builder';
+import { getCachedHealth, setCachedHealth } from '../../utils/scan-cache';
 
 export function useHealthCommandCenter({ projectId, showToast }) {
-  const [health, setHealth] = useState(null);
+  const [health, setHealth] = useState(() => getCachedHealth(projectId));
   const [loading, setLoading] = useState(false);
   const [fixing, setFixing] = useState(false);
   const [copiedReport, setCopiedReport] = useState(false);
@@ -11,13 +12,14 @@ export function useHealthCommandCenter({ projectId, showToast }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const fetchHealth = useCallback(async () => {
+  const fetchHealth = useCallback(async (isManual = false) => {
     if (!projectId) return;
-    setLoading(true);
+    if (isManual || !getCachedHealth(projectId)) setLoading(true);
     setError(null);
     try {
       const data = await fetchProjectHealth(projectId);
       setHealth(data);
+      setCachedHealth(projectId, data);
     } catch (err) {
       setError(err.message || 'Failed to fetch project health');
     } finally {
@@ -26,8 +28,10 @@ export function useHealthCommandCenter({ projectId, showToast }) {
   }, [projectId]);
 
   useEffect(() => {
-    fetchHealth();
-  }, [fetchHealth]);
+    if (!getCachedHealth(projectId)) {
+      fetchHealth();
+    }
+  }, [projectId, fetchHealth]);
 
   const handleAutoFix = async () => {
     if (!projectId || fixing) return;

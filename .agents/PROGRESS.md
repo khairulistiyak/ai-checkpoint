@@ -1909,10 +1909,21 @@ UPDATE LOG:
 
 ---
 
-## 🔷 Phase 116: Accurate Real-Time Filter Engine & Local Timezone Precision — ⏳ IN PROGRESS
+## 🔷 Phase 116: Accurate Real-Time Filter Engine & Local Timezone Precision — ✅ 100% COMPLETE
 
-- [ ] **Step 116.1** — Create Local Timezone Formatter Utility (`dashboard/src/utils/date-formatter.js`)
-- [ ] **Step 116.2** — Fix Multi-Status Filter Logic & Descending Phase Dropdown (`dashboard/src/components/plans/PlanProgressTab.jsx`)
-- [ ] **Step 116.3** — Fix StepItem Timestamp Display with Local Timezone (`dashboard/src/components/StepItem.jsx`)
-- [ ] **Step 116.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 116.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+- [x] **Step 116.1** — Create Local Timezone Formatter Utility (`dashboard/src/utils/date-formatter.js`)
+- [x] **Step 116.2** — Fix Multi-Status Filter Logic & Descending Phase Dropdown (`dashboard/src/components/plans/PlanProgressTab.jsx`)
+- [x] **Step 116.3** — Fix StepItem Timestamp Display with Local Timezone (`dashboard/src/components/StepItem.jsx`)
+- [x] **Step 116.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 116.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 117: Zero-Flicker Live Scores & Smart Scan Caching Architecture — ⏳ IN PROGRESS
+
+- [ ] **Step 117.1** — Create Client-Side Scan Memory Store (`dashboard/src/utils/scan-cache.js`)
+- [ ] **Step 117.2** — Update Health Command Center to Use Client Cache (`dashboard/src/components/health/useHealthCommandCenter.js`)
+- [ ] **Step 117.3** — Update CockpitHealthOverview to Prevent Tab-Switch Scans (`dashboard/src/components/cockpit/CockpitHealthOverview.jsx`)
+- [ ] **Step 117.4** — Implement Keep-Alive Tab Preservation (`dashboard/src/components/ProjectTabsContent.jsx`)
+- [ ] **Step 117.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 117.6** — Final Release Gate & Verification (`.agents/PROGRESS.md`)

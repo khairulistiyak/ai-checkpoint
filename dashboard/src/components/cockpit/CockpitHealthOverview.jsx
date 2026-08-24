@@ -5,22 +5,24 @@ import HealthScoreGauge from '../health/HealthScoreGauge';
 import { useHealthCommandCenter } from '../health/useHealthCommandCenter';
 import AdvancedHUDV1 from '../intelligence/AdvancedHUDV1';
 import CockpitHealthModal from './CockpitHealthModal';
+import { getCachedIntelligence, setCachedIntelligence } from '../../utils/scan-cache';
 
 export default function CockpitHealthOverview({ projectId, onOpenIntelligence }) {
   const { showToast } = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [intelligenceData, setIntelligenceData] = useState(null);
+  const [intelligenceData, setIntelligenceData] = useState(() => getCachedIntelligence(projectId));
   const [isIntelligenceScanning, setIsIntelligenceScanning] = useState(false);
 
   const healthCenter = useHealthCommandCenter({ projectId, showToast });
   const { health, score, healthScore, qualityScore, scoreColor, breakdown, loading: isHealthScanning, fetchHealth } = healthCenter;
 
   const fetchIntelligence = useCallback(async (isManual = false) => {
-    if (isManual) setIsIntelligenceScanning(true);
+    if (isManual || !getCachedIntelligence(projectId)) setIsIntelligenceScanning(true);
     try {
       const res = await fetch(`/api/projects/${projectId}/intelligence`).then(r => r.json());
       if (res?.success) {
         setIntelligenceData(res.report);
+        setCachedIntelligence(projectId, res.report);
         if (isManual) showToast("Intelligence radar re-scanned!", "success");
       }
     } catch {
@@ -31,8 +33,10 @@ export default function CockpitHealthOverview({ projectId, onOpenIntelligence })
   }, [projectId, showToast]);
 
   useEffect(() => {
-    fetchIntelligence();
-  }, [fetchIntelligence]);
+    if (!getCachedIntelligence(projectId)) {
+      fetchIntelligence();
+    }
+  }, [projectId, fetchIntelligence]);
 
   const scores = intelligenceData?.scores || {
     performance: healthScore || 92,
@@ -60,7 +64,7 @@ export default function CockpitHealthOverview({ projectId, onOpenIntelligence })
             passed={health?.passed || false}
             onRescan={(e) => {
               e?.stopPropagation();
-              fetchHealth();
+              fetchHealth(true);
             }}
             isScanning={isHealthScanning}
           />
