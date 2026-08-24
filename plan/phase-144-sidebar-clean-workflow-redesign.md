@@ -1,3 +1,18 @@
+# Phase 144: Sidebar Linear-Style Clean Workflow & Visual Harmonization
+
+> **Objective:** Overhaul the sidebar (`Sidebar.jsx`, `SidebarHeader.jsx`, `SidebarItem.jsx`, `SidebarFooter.jsx`) to a sleek, frosted, distraction-free Linear/Raycast design with matte indicators, subtle hover-revealed drag handles, native frosted search input, and clean typography. Zero regressions.
+
+---
+
+## 📋 Execution Steps
+
+### Step 144.1 — Overhaul Sidebar Container & Search (`dashboard/src/components/Sidebar.jsx`)
+- **File**: `dashboard/src/components/Sidebar.jsx`
+- **Action**: EDIT
+- **Content**: Replace cyber-styled input with a sleek, native frosted search bar (`bg-white/[0.02] border-white/[0.06] focus:border-white/20`), clean container glass borders (`border-white/[0.06]`), and smooth scrollbar. Keep file <= 150 lines.
+
+Replace the file with:
+```jsx
 import React, { useState, useMemo } from 'react';
 import { Search } from 'lucide-react';
 import { useSidebarReorder } from '../hooks/use-sidebar-reorder.js';
@@ -127,3 +142,43 @@ export default function Sidebar({
     </>
   );
 }
+```
+
+- **Done-check**: `npm --prefix dashboard run build` -> exit 0
+- **Depends**: None
+
+---
+
+### Step 144.2 — Polish Sidebar Header & Footer (`dashboard/src/components/SidebarHeader.jsx` & `SidebarFooter.jsx`)
+- **File**: `dashboard/src/components/SidebarHeader.jsx`
+- **Action**: EDIT
+- **Content**: Update header styling to frosted `bg-[#0a0a0c]/90 border-white/[0.06]`, subtle workspace count badge, and clean action buttons.
+- **Done-check**: `npm --prefix dashboard run build` -> exit 0
+- **Depends**: 144.1
+
+---
+
+### Step 144.3 — Redesign Sidebar Row Items (`dashboard/src/components/SidebarItem.jsx`)
+- **File**: `dashboard/src/components/SidebarItem.jsx`
+- **Action**: EDIT
+- **Content**: Upgrade row items: hover-revealed grip handle, sleek frosted active capsule (`bg-white/[0.05] border-white/[0.10]`), matte status indicators, crisp percentage badge, and clean mini-collapsed view. Keep file <= 150 lines.
+- **Done-check**: `npm --prefix dashboard run build` -> exit 0
+- **Depends**: 144.2
+
+---
+
+### Step 144.4 — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- **File**: `assets/engine.bin.js`
+- **Action**: EDIT
+- **Content**: Rebuild global engine binary and Vite dashboard bundle. Run test suite.
+- **Done-check**: `npm run build:engine && npm --prefix dashboard run build && npm test` -> exit 0
+- **Depends**: 144.3
+
+---
+
+### Step 144.5 — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+- **File**: `.agents/PROGRESS.md`
+- **Action**: EDIT
+- **Content**: Run full release check (`npm run release:check`) and save checkpoint.
+- **Done-check**: `npm run release:check` -> exit 0
+- **Depends**: 144.4
