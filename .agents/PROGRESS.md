@@ -1858,3 +1858,13 @@ UPDATE LOG:
 - [x] **Step 110.2** — Remove Left Accent Strip & Glow Shadows (`dashboard/src/components/plan/PlanPhaseList.jsx`)
 - [x] **Step 110.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 110.4** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 111: Ambient De-glaring, Pulse Animation Removal & Pure Zen Visuals — ✅ 100% COMPLETE
+
+- [x] **Step 111.1** — Header De-glaring, Animation Removal & Static Status Dot (`dashboard/src/components/plans/PlanSpecHeader.jsx`)
+- [x] **Step 111.2** — Uniform Rounded Alert Cards without Thick Left Bars (`dashboard/src/components/plan/PlanAlertBlock.jsx`)
+- [x] **Step 111.3** — Velvet Table Borders & Sidebar De-glowing (`dashboard/src/components/plan/PlanTableBlock.jsx`)
+- [x] **Step 111.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 111.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
