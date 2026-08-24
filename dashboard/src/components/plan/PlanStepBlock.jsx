@@ -1,5 +1,6 @@
 import React from 'react';
 import { Check, Play, CheckCircle2, Bot } from 'lucide-react';
+import PlanStepMetadata from './PlanStepMetadata.jsx';
 
 export default function PlanStepBlock({
   block, idx, copiedStepBadge, copyStepCommand, generateStepPrompt,
@@ -12,13 +13,13 @@ export default function PlanStepBlock({
   const isPromptCopied = copiedStepBadge === `${block.stepNum}-prompt`;
 
   return (
-    <div key={idx} className="bg-[#121215]/80 backdrop-blur-xl border border-white/[0.08] hover:border-white/[0.15] rounded-2xl p-4 sm:p-5 my-5 space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.6)] transition-all relative overflow-hidden group">
-      <div className="absolute -top-24 -right-24 w-48 h-48 bg-white/[0.02] rounded-full blur-3xl pointer-events-none group-hover:bg-white/[0.03] transition-colors" />
+    <div key={idx} className="bg-[#121216]/90 backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-2xl p-4 sm:p-5 my-5 space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.6)] transition-all relative overflow-hidden group">
+      <div className="absolute -top-24 -right-24 w-48 h-48 bg-sky-500/[0.03] rounded-full blur-3xl pointer-events-none group-hover:bg-sky-500/[0.06] transition-colors" />
 
       {/* Step Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3.5 border-b border-white/[0.08] relative z-10">
         <div className="flex items-center gap-2.5">
-          <span className="px-2.5 py-1 rounded-lg bg-white text-black font-mono text-xs font-black">
+          <span className="px-2.5 py-1 rounded-lg bg-white text-black font-mono text-xs font-black shadow-sm">
             Step {block.stepNum}
           </span>
           <h3 className="text-sm sm:text-base font-bold text-white font-mono tracking-tight">
@@ -37,7 +38,7 @@ export default function PlanStepBlock({
             }`}
             title="Copy: ./l start command"
           >
-            {isStartCopied ? <Check className="w-3 h-3" /> : <Play className="w-3 h-3 text-white/60" />}
+            {isStartCopied ? <Check className="w-3 h-3 text-emerald-400" /> : <Play className="w-3 h-3 text-white/60" />}
             <span>./l start {block.stepNum}</span>
           </button>
 
@@ -50,7 +51,7 @@ export default function PlanStepBlock({
             }`}
             title="Copy: ./l c complete command"
           >
-            {isCompCopied ? <Check className="w-3 h-3" /> : <CheckCircle2 className="w-3 h-3 text-white/60" />}
+            {isCompCopied ? <Check className="w-3 h-3 text-emerald-400" /> : <CheckCircle2 className="w-3 h-3 text-white/60" />}
             <span>./l c {block.stepNum}</span>
           </button>
 
@@ -66,17 +67,15 @@ export default function PlanStepBlock({
             }`}
             title="Copy ready-to-run AI agent prompt for this step"
           >
-            {isPromptCopied ? <Check className="w-3 h-3" /> : <Bot className="w-3 h-3 text-white" />}
+            {isPromptCopied ? <Check className="w-3 h-3 text-emerald-400" /> : <Bot className="w-3 h-3 text-white" />}
             <span>AI Step Prompt</span>
           </button>
         </div>
       </div>
 
-      {/* Step Body */}
+      {/* Step Body with Structured Metadata */}
       {block.body && (
-        <div className="text-xs sm:text-sm font-mono text-white/80 leading-relaxed space-y-2 whitespace-pre-wrap">
-          {formatTextWithBadges(block.body)}
-        </div>
+        <PlanStepMetadata body={block.body} formatTextWithBadges={formatTextWithBadges} />
       )}
     </div>
   );
