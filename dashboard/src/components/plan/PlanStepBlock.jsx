@@ -13,16 +13,16 @@ export default function PlanStepBlock({
   const isPromptCopied = copiedStepBadge === `${block.stepNum}-prompt`;
 
   return (
-    <div key={idx} className="bg-[#121216]/90 backdrop-blur-2xl border border-white/10 hover:border-white/20 rounded-2xl p-4 sm:p-5 my-5 space-y-4 shadow-[0_8px_30px_rgba(0,0,0,0.6)] transition-all relative overflow-hidden group">
-      <div className="absolute -top-24 -right-24 w-48 h-48 bg-sky-500/[0.03] rounded-full blur-3xl pointer-events-none group-hover:bg-sky-500/[0.06] transition-colors" />
+    <div key={idx} className="bg-[#101116] border border-white/[0.07] border-l-2 border-l-cyan-500/40 hover:border-l-cyan-400/80 rounded-2xl p-4 sm:p-5 my-4 space-y-3.5 shadow-lg transition-all relative overflow-hidden group">
+      <div className="absolute -top-24 -right-24 w-48 h-48 bg-sky-500/[0.02] rounded-full blur-3xl pointer-events-none group-hover:bg-sky-500/[0.04] transition-colors" />
 
       {/* Step Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3.5 border-b border-white/[0.08] relative z-10">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06] relative z-10">
         <div className="flex items-center gap-2.5">
-          <span className="px-2.5 py-1 rounded-lg bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-mono text-xs font-bold shadow-sm">
+          <span className="px-2.5 py-0.5 rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-500/25 font-mono text-xs font-bold shadow-sm">
             Step {block.stepNum}
           </span>
-          <h3 className="text-sm sm:text-base font-bold text-white font-mono tracking-tight">
+          <h3 className="text-sm sm:text-base font-bold text-zinc-100 font-mono tracking-tight">
             {block.stepTitle}
           </h3>
         </div>

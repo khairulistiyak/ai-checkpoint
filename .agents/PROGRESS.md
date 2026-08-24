@@ -1840,12 +1840,12 @@ UPDATE LOG:
 
 ---
 
-## 🔷 Phase 109: Eye-Comfort Ergonomics, Velvet Glass Styling & Visual Rhythm Overhaul — ⏳ IN PROGRESS
+## 🔷 Phase 109: Eye-Comfort Ergonomics, Velvet Glass Styling & Visual Rhythm Overhaul — ✅ 100% COMPLETE
 
-- [ ] **Step 109.1** — Velvet Glass Borders & Soft Typography in Module List (`dashboard/src/components/plan/PlanPhaseList.jsx`)
-- [ ] **Step 109.2** — Step Card Ergonomics & Subdued Terminal Gate (`dashboard/src/components/plan/PlanStepBlock.jsx`)
-- [ ] **Step 109.3** — Terminal Window & Traffic Lights Softening (`dashboard/src/components/plan/PlanStepMetadata.jsx`)
-- [ ] **Step 109.4** — Code Block Spacing & Subdued Header (`dashboard/src/components/plan/PlanCodeBlock.jsx`)
-- [ ] **Step 109.5** — Drawer Header Keyboard Hints & Muted Controls (`dashboard/src/components/plan/FilePreviewHeader.jsx`)
-- [ ] **Step 109.6** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 109.7** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+- [x] **Step 109.1** — Velvet Glass Borders & Soft Typography in Module List (`dashboard/src/components/plan/PlanPhaseList.jsx`)
+- [x] **Step 109.2** — Step Card Ergonomics & Subdued Terminal Gate (`dashboard/src/components/plan/PlanStepBlock.jsx`)
+- [x] **Step 109.3** — Terminal Window & Traffic Lights Softening (`dashboard/src/components/plan/PlanStepMetadata.jsx`)
+- [x] **Step 109.4** — Code Block Spacing & Subdued Header (`dashboard/src/components/plan/PlanCodeBlock.jsx`)
+- [x] **Step 109.5** — Drawer Header Keyboard Hints & Muted Controls (`dashboard/src/components/plan/FilePreviewHeader.jsx`)
+- [x] **Step 109.6** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 109.7** — Final Release Gate & Verification (`.agents/PROGRESS.md`)

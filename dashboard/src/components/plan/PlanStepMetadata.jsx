@@ -82,29 +82,32 @@ export default function PlanStepMetadata({ body, formatTextWithBadges }) {
       )}
 
       {doneCheck && (
-        <div className="rounded-xl border border-white/15 bg-[#08090d] overflow-hidden shadow-md">
-          <div className="flex items-center justify-between px-3.5 py-2 bg-white/[0.04] border-b border-white/10">
+        <div className="rounded-xl border border-white/[0.07] bg-[#07080b] overflow-hidden shadow-inner">
+          <div className="flex items-center justify-between px-3.5 py-1.5 bg-white/[0.02] border-b border-white/[0.05]">
             <div className="flex items-center gap-2">
               <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
-                <span className="w-2.5 h-2.5 rounded-full bg-amber-500/80" />
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500/80" />
+                <span className="w-2 h-2 rounded-full bg-rose-500/50" />
+                <span className="w-2 h-2 rounded-full bg-amber-500/50" />
+                <span className="w-2 h-2 rounded-full bg-emerald-500/50" />
               </div>
               <span className="text-[10px] uppercase tracking-widest text-zinc-400 font-bold flex items-center gap-1 ml-1.5">
-                <Terminal className="w-3 h-3 text-emerald-400" />
+                <Terminal className="w-3 h-3 text-emerald-400/80" />
                 Done-Check Gate
               </span>
             </div>
             <button
               onClick={() => handleCopy(doneCheck.replace(/[`]/g, ''), 'check')}
-              className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-white/5 hover:bg-white/15 text-zinc-300 hover:text-white text-[10px] transition-colors cursor-pointer border border-white/10"
+              className="flex items-center gap-1 px-2 py-0.5 rounded-md bg-white/[0.04] hover:bg-white/[0.10] text-zinc-400 hover:text-white text-[10px] transition-colors cursor-pointer border border-white/[0.06]"
             >
               {copiedCheck ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
               <span>{copiedCheck ? 'Copied' : 'Copy'}</span>
             </button>
           </div>
-          <div className="p-3 overflow-x-auto text-[11px] font-mono text-emerald-300/90 leading-relaxed">
-            {formatTextWithBadges ? formatTextWithBadges(doneCheck) : doneCheck}
+          <div className="p-3 overflow-x-auto text-[11px] font-mono text-emerald-400/90 leading-relaxed flex items-baseline">
+            <span className="text-zinc-500 select-none mr-2 shrink-0">$</span>
+            <div className="flex-1">
+              {formatTextWithBadges ? formatTextWithBadges(doneCheck) : doneCheck}
+            </div>
           </div>
         </div>
       )}

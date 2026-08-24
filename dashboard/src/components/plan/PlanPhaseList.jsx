@@ -28,14 +28,14 @@ export default function PlanPhaseList({
           <div id={`arch-mod-${modIdx}`} key={modIdx} className="relative overflow-hidden rounded-2xl bg-[#0b0b0e] border border-white/15 shadow-xl transition-all">
             <div className={`absolute top-0 bottom-0 left-0 w-0.5 transition-colors duration-500 ${isCollapsed ? 'bg-white/5' : 'bg-cyber-accent/60'}`} />
 
-            <button onClick={() => toggleCollapse(modIdx)} className="w-full px-5 py-4 bg-white/[0.02] border-b border-white/10 flex flex-wrap items-center justify-between gap-3 hover:bg-white/[0.04] transition-colors text-left cursor-pointer">
+            <button onClick={() => toggleCollapse(modIdx)} className="w-full px-5 py-4 bg-white/[0.02] border-b border-white/[0.06] flex flex-wrap items-center justify-between gap-3 hover:bg-white/[0.04] transition-colors text-left cursor-pointer">
               <div className="flex items-center gap-3">
                 <span className="px-2.5 py-0.5 rounded-lg bg-cyber-accent/10 text-cyber-accent font-mono text-xs font-bold">LAYER {mod.number}</span>
                 <h2 className="text-base sm:text-lg font-bold text-white tracking-tight">{mod.title}</h2>
               </div>
               <div className="flex items-center gap-3 shrink-0">
-                {mod.tasksTotal > 0 && <span className="text-xs font-mono text-white/60">{mod.tasksDone}/{mod.tasksTotal} ({modPercent}%)</span>}
-                <div className="w-7 h-7 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/60">
+                {mod.tasksTotal > 0 && <span className="text-xs font-mono text-zinc-400">{mod.tasksDone}/{mod.tasksTotal} ({modPercent}%)</span>}
+                <div className="w-7 h-7 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-zinc-400">
                   {isCollapsed ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
                 </div>
               </div>
@@ -66,26 +66,26 @@ function renderBlock(block, idx, ctx) {
     return <PlanAlertBlock key={idx} block={block} idx={idx} formatTextWithBadges={ctx.formatTextWithBadges} />;
   }
   if (block.type === 'hr') {
-    return <hr key={idx} className="border-0 h-px bg-white/10 my-6" />;
+    return <hr key={idx} className="border-0 h-px bg-white/[0.07] my-6" />;
   }
   if (block.type === 'h3') {
     return (
-      <div key={idx} className="flex items-center gap-2 pt-2 pb-1 border-b border-white/5">
+      <div key={idx} className="flex items-center gap-2 pt-2 pb-1 border-b border-white/[0.06]">
         <div className="w-1.5 h-1.5 rounded-full bg-cyber-accent shadow-[0_0_8px_rgba(var(--cyber-accent-rgb),0.8)]" />
-        <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-white font-mono">{block.text}</h3>
+        <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-200 font-mono">{block.text}</h3>
       </div>
     );
   }
   if (block.type === 'checklist') {
     return (
       <div key={idx} className="bg-black/50 border border-white/[0.06] rounded-xl p-4 sm:p-5 space-y-3 my-4 shadow-inner relative overflow-hidden">
-        <div className="text-[11px] font-mono text-white/50 uppercase tracking-widest pb-2 border-b border-white/5 flex items-center justify-between relative z-10">
-          <span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-white/70" /><span>Execution Checkpoints</span></span>
-          <span className="text-white/80 font-bold bg-white/10 px-2 py-0.2 rounded border border-white/15 text-[10px]">{block.items.length} Tasks</span>
+        <div className="text-[11px] font-mono text-zinc-400 uppercase tracking-widest pb-2 border-b border-white/[0.06] flex items-center justify-between relative z-10">
+          <span className="flex items-center gap-1.5"><ShieldCheck className="w-3.5 h-3.5 text-zinc-400" /><span>Execution Checkpoints</span></span>
+          <span className="text-zinc-300 font-bold bg-white/[0.06] px-2 py-0.2 rounded border border-white/10 text-[10px]">{block.items.length} Tasks</span>
         </div>
         {block.items.map((item, i) => (
-          <div key={i} className={`flex items-start gap-3 p-2.5 rounded-lg transition-all border ${item.checked ? 'bg-white/10 border-white/25 text-white' : 'bg-white/[0.02] border-white/5 text-white/90 hover:border-white/15'}`}>
-            <div className="mt-0.5 shrink-0">{item.checked ? <CheckCircle2 className="w-4 h-4 text-white" /> : <Circle className="w-4 h-4 text-white/30" />}</div>
+          <div key={i} className={`flex items-start gap-3 p-2.5 rounded-lg transition-all border ${item.checked ? 'bg-emerald-500/10 border-emerald-500/25 text-emerald-300' : 'bg-white/[0.02] border-white/[0.06] text-zinc-300 hover:border-white/15'}`}>
+            <div className="mt-0.5 shrink-0">{item.checked ? <CheckCircle2 className="w-4 h-4 text-emerald-400" /> : <Circle className="w-4 h-4 text-white/30" />}</div>
             <div className="flex-1 text-xs leading-relaxed font-mono"><span className={item.checked ? 'line-through opacity-70' : ''}>{ctx.formatTextWithBadges(item.text)}</span></div>
           </div>
         ))}
@@ -96,13 +96,13 @@ function renderBlock(block, idx, ctx) {
     return <PlanCodeBlock key={idx} block={block} idx={idx} copiedCodeIndex={ctx.copiedCodeIndex} copySnippet={ctx.copySnippet} formatCodeWithTheme={ctx.formatCodeWithTheme} />;
   }
   if (block.type === 'quote') {
-    return <div key={idx} className="p-4 rounded-xl bg-white/5 border-l-2 border-white text-xs font-mono text-zinc-300 my-3">{ctx.formatTextWithBadges(block.text)}</div>;
+    return <div key={idx} className="p-4 rounded-xl bg-white/[0.03] border-l-2 border-cyan-500/40 text-xs font-mono text-zinc-300 my-3">{ctx.formatTextWithBadges(block.text)}</div>;
   }
   if (block.type === 'list') {
     return (
       <ul key={idx} className="space-y-2 pl-2 my-3">
         {block.items.map((item, i) => (
-          <li key={i} className="flex items-start gap-2.5 text-xs font-mono leading-relaxed text-white/80">
+          <li key={i} className="flex items-start gap-2.5 text-xs font-mono leading-relaxed text-zinc-300">
             <span className="w-1.5 h-1.5 rounded-full bg-cyber-accent mt-1.5 shrink-0 shadow-[0_0_8px_rgba(var(--cyber-accent-rgb),0.8)]" />
             <span>{ctx.formatTextWithBadges(item)}</span>
           </li>
@@ -110,5 +110,5 @@ function renderBlock(block, idx, ctx) {
       </ul>
     );
   }
-  return <p key={idx} className="text-xs font-mono leading-relaxed text-white/80 my-2.5">{ctx.formatTextWithBadges(block.text)}</p>;
+  return <p key={idx} className="text-xs font-mono leading-relaxed text-zinc-300 my-2.5">{ctx.formatTextWithBadges(block.text)}</p>;
 }
