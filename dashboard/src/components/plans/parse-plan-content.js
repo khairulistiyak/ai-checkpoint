@@ -1,14 +1,16 @@
 function parseStepBlock(lines, i) {
   const line = lines[i];
-  const stepMatch = line.match(/^###\s+(Step\s+([0-9]+(?:\.[0-9]+)?)[^:\n—\-]*)[—\-:]?\s*(.*)/i);
-  const stepRaw = stepMatch[1].trim(), stepNum = stepMatch[2].trim(), stepTitle = (stepMatch[3] || stepRaw).trim();
+  const stepMatch = line.match(/^#{2,3}\s+(Step\s+([0-9]+(?:\.[0-9]+)?)[^:\n—\-]*)[—\-:]?\s*(.*)/i);
+  const stepRaw = stepMatch ? stepMatch[1].trim() : 'Step';
+  const stepNum = stepMatch && stepMatch[2] ? stepMatch[2].trim() : '';
+  const stepTitle = (stepMatch && stepMatch[3] ? stepMatch[3] : stepRaw).trim();
   const stepBody = [];
   let nextI = i + 1;
   while (nextI < lines.length && !lines[nextI].startsWith('#')) {
     stepBody.push(lines[nextI]);
     nextI++;
   }
-  return { nextI, block: { type: 'step', stepNum, stepTitle, rawHeading: line.replace(/^###+\s*/, '').trim(), body: stepBody.join('\n').trim() } };
+  return { nextI, block: { type: 'step', stepNum, stepTitle, rawHeading: line.replace(/^#+\s*/, '').trim(), body: stepBody.join('\n').trim() } };
 }
 
 function parseCodeBlock(lines, i) {
@@ -93,16 +95,16 @@ export function parsePlanContent(content, filename) {
   while (i < lines.length) {
     const line = lines[i];
     if (line.startsWith('# ')) { mainTitle = line.slice(2).trim(); i++; continue; }
+    if (/^#{2,3}\s+Step\s+[0-9]/i.test(line)) {
+      const res = parseStepBlock(lines, i);
+      totalSteps++; currentMod.stepsCount++; currentMod.blocks.push(res.block); i = res.nextI; continue;
+    }
     if (line.startsWith('## ')) {
       if (currentMod.blocks.length > 0 || modCount > 0) parsedModules.push(currentMod);
       modCount++;
       const numStr = modCount < 10 ? `0${modCount}` : `${modCount}`;
       currentMod = { number: numStr, title: line.slice(3).trim(), blocks: [], tasksTotal: 0, tasksDone: 0, codeCount: 0, stepsCount: 0 };
       i++; continue;
-    }
-    if (/^###\s+Step\s+[0-9]/i.test(line)) {
-      const res = parseStepBlock(lines, i);
-      totalSteps++; currentMod.stepsCount++; currentMod.blocks.push(res.block); i = res.nextI; continue;
     }
     if (/^###+\s/.test(line)) { currentMod.blocks.push({ type: 'h3', text: line.replace(/^###+\s*/, '').trim() }); i++; continue; }
     if (line.trim().startsWith('```')) {

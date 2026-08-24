@@ -11,6 +11,11 @@ export default function PlanSpecHeader({
   copiedFilePath,
   setCopiedFilePath,
 }) {
+  const uniqueFiles = Array.from(new Set(targetFiles || []));
+  const subText = stats.totalTasks > 0
+    ? `${stats.totalTasks} checkpoints`
+    : `${stats.totalSteps} execution steps`;
+
   return (
     <div className="relative overflow-hidden rounded-2xl bg-[#0d0e12] border border-white/15 p-5 sm:p-7 shadow-2xl">
       {/* Ambient Radial Glow Elements */}
@@ -37,7 +42,7 @@ export default function PlanSpecHeader({
             {title}
           </h1>
           <p className="text-xs font-mono text-white/60 leading-relaxed">
-            Atomic execution specification • <strong className="text-white">{stats.totalModules} modules</strong> • <strong className="text-white">{stats.totalTasks} checkpoints</strong>
+            Atomic execution specification • <strong className="text-white">{stats.totalModules} modules</strong> • <strong className="text-white">{subText}</strong>
           </p>
         </div>
 
@@ -76,14 +81,14 @@ export default function PlanSpecHeader({
         </div>
       </div>
 
-      {targetFiles.length > 0 && (
+      {uniqueFiles.length > 0 && (
         <div className="mt-5 pt-4 border-t border-white/10 relative z-10">
           <div className="flex items-center gap-2 mb-2 text-[11px] font-mono uppercase tracking-wider text-white/60 font-semibold">
             <FileCode2 className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Target Files & References Radar ({targetFiles.length})</span>
+            <span>Target Files & References Radar ({uniqueFiles.length})</span>
           </div>
           <div className="flex flex-wrap gap-1.5">
-            {targetFiles.map((filePath, i) => (
+            {uniqueFiles.map((filePath, i) => (
               <button
                 key={i}
                 onClick={() => {

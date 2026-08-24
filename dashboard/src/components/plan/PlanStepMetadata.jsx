@@ -20,18 +20,20 @@ export default function PlanStepMetadata({ body, formatTextWithBadges }) {
 
   lines.forEach((line) => {
     const clean = line.trim();
-    if (/^[-*]\s*(\*\*)?File:?(\*\*)?/i.test(clean)) {
-      file = clean.replace(/^[-*]\s*(\*\*)?File:?(\*\*)?\s*/i, '').replace(/[`*]/g, '').trim();
-    } else if (/^[-*]\s*(\*\*)?Action:?(\*\*)?/i.test(clean)) {
-      action = clean.replace(/^[-*]\s*(\*\*)?Action:?(\*\*)?\s*/i, '').replace(/[`*]/g, '').trim();
-    } else if (/^[-*]\s*(\*\*)?Depends:?(\*\*)?/i.test(clean)) {
-      depends = clean.replace(/^[-*]\s*(\*\*)?Depends:?(\*\*)?\s*/i, '').replace(/[`*]/g, '').trim();
-    } else if (/^[-*]\s*(\*\*)?Done-check:?(\*\*)?/i.test(clean)) {
-      doneCheck = clean.replace(/^[-*]\s*(\*\*)?Done-check:?(\*\*)?\s*/i, '').trim();
+    if (/^[-*]?\s*(\*\*)?File:?(\*\*)?/i.test(clean)) {
+      file = clean.replace(/^[-*]?\s*(\*\*)?File:?(\*\*)?\s*/i, '').replace(/[`*]/g, '').trim();
+    } else if (/^[-*]?\s*(\*\*)?Action:?(\*\*)?/i.test(clean)) {
+      action = clean.replace(/^[-*]?\s*(\*\*)?Action:?(\*\*)?\s*/i, '').replace(/[`*]/g, '').trim();
+    } else if (/^[-*]?\s*(\*\*)?Depends:?(\*\*)?/i.test(clean)) {
+      depends = clean.replace(/^[-*]?\s*(\*\*)?Depends:?(\*\*)?\s*/i, '').replace(/[`*]/g, '').trim();
+    } else if (/^[-*]?\s*(\*\*)?Done-check:?(\*\*)?/i.test(clean)) {
+      doneCheck = clean.replace(/^[-*]?\s*(\*\*)?Done-check:?(\*\*)?\s*/i, '').trim();
     } else {
       otherLines.push(line);
     }
   });
+
+  const bodyContent = otherLines.join('\n').trim();
 
   const handleCopy = (text, type) => {
     if (!text) return;
@@ -72,9 +74,9 @@ export default function PlanStepMetadata({ body, formatTextWithBadges }) {
         </div>
       )}
 
-      {otherLines.length > 0 && (
+      {bodyContent && (
         <div className="text-zinc-300 leading-relaxed space-y-2 whitespace-pre-wrap">
-          {formatTextWithBadges ? formatTextWithBadges(otherLines.join('\n').trim()) : otherLines.join('\n').trim()}
+          {formatTextWithBadges ? formatTextWithBadges(bodyContent) : bodyContent}
         </div>
       )}
 
