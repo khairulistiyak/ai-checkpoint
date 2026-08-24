@@ -1,8 +1,8 @@
 import React from 'react';
-import { Brain, Settings, Search, Menu } from 'lucide-react';
+import { Brain, Search, Menu } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleMenu }) {
+export default function Header({ onOpenCommandPalette, onToggleMenu }) {
   const isElectron = typeof window !== 'undefined' && (
     window.navigator?.userAgent?.includes('Electron') ||
     new URLSearchParams(window.location.search).has('port')
@@ -66,14 +66,6 @@ export default function Header({ onOpenSettings, onOpenCommandPalette, onToggleM
           title="Search"
         >
           <Search className="w-4 h-4" />
-        </button>
-
-        <button
-          onClick={onOpenSettings}
-          className="p-2 text-zinc-400 hover:text-white rounded-xl bg-white/5 border border-white/10 hover:border-white/20 transition-colors cursor-pointer"
-          title="Settings"
-        >
-          <Settings className="w-4 h-4" />
         </button>
       </div>
     </motion.header>

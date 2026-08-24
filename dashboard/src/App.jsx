@@ -93,6 +93,7 @@ export default function App() {
             projects={projects} selectedId={selectedId} onSelect={handleSelectSidebar}
             isMobileMenuOpen={isMobileMenuOpen} setIsMobileMenuOpen={setIsMobileMenuOpen}
             onAddProject={() => setIsAddModalOpen(true)}
+            onOpenSettings={() => setIsSettingsOpen(true)}
             onReorder={async (ids) => { try { await api.reorderProjects(ids); refresh(); } catch { showToast('Failed to reorder', 'error'); } }}
           />
         )}

@@ -2203,6 +2203,17 @@ UPDATE LOG:
 - [x] **Step 150.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 150.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 151: Move Settings Action to Sidebar Footer — ✅ 100% COMPLETE
+
+- [x] **Step 151.1** — Add Settings Button to SidebarFooter (`dashboard/src/components/SidebarFooter.jsx`)
+- [x] **Step 151.2** — Pass onOpenSettings through Sidebar (`dashboard/src/components/Sidebar.jsx`)
+- [x] **Step 151.3** — Connect onOpenSettings in App.jsx (`dashboard/src/App.jsx`)
+- [x] **Step 151.4** — Remove Settings Button from Header (`dashboard/src/components/Header.jsx`)
+- [x] **Step 151.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 151.6** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 

@@ -12,7 +12,7 @@ const containerVariants = {
 };
 
 export default function Sidebar({
-  projects, selectedId, onSelect, onAddProject, onReorder, isMobileMenuOpen, setIsMobileMenuOpen
+  projects, selectedId, onSelect, onAddProject, onOpenSettings, onReorder, isMobileMenuOpen, setIsMobileMenuOpen
 }) {
   const { items, handleReorder } = useSidebarReorder(projects, onReorder);
   const [searchQuery, setSearchQuery] = useState('');
@@ -122,7 +122,7 @@ export default function Sidebar({
           )}
         </div>
 
-        <SidebarFooter isCollapsed={isCollapsed} />
+        <SidebarFooter isCollapsed={isCollapsed} onOpenSettings={onOpenSettings} />
       </aside>
     </>
   );
