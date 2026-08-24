@@ -56,11 +56,13 @@ export function parsePlanFiles(projectId, projectPath) {
   }
 }
 
-export function parseProgress(projectId) {
+export function parseProgress(projectId, projectPath = '') {
   try {
-    const progressFile = globalStore.getProgressPath(projectId);
-    if (!fs.existsSync(progressFile)) return null;
-    return coreParser.parseProgressText(fs.readFileSync(progressFile, 'utf8'));
+    const localFile = projectPath ? path.join(projectPath, '.agents', 'PROGRESS.md') : null;
+    const globalFile = globalStore.getProgressPath(projectId);
+    const targetFile = (localFile && fs.existsSync(localFile)) ? localFile : (fs.existsSync(globalFile) ? globalFile : null);
+    if (!targetFile) return null;
+    return coreParser.parseProgressText(fs.readFileSync(targetFile, 'utf8'));
   } catch { return null; }
 }
 
@@ -114,8 +116,9 @@ export function enrichProject(p) {
       return { ...p, name: fallback, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] }, unsyncedSteps: 0 };
     }
     const safeName = p.name || path.basename(p.path.replace(/\/+$/, '')) || 'Untitled';
-    const isInstalled = fs.existsSync(globalStore.getProgressPath(p.id));
-    let progress = isInstalled ? parseProgress(p.id) : null;
+    const hasLocalProgress = fs.existsSync(path.join(p.path, '.agents', 'PROGRESS.md'));
+    const isInstalled = hasLocalProgress || fs.existsSync(globalStore.getProgressPath(p.id));
+    let progress = isInstalled ? parseProgress(p.id, p.path) : null;
     let hasPlanFiles = false;
     let planStats = { totalFiles: 0, totalSteps: 0, fileNames: [], parsedPhases: [] };
 
@@ -130,7 +133,6 @@ export function enrichProject(p) {
     }
 
     const intelligence = isInstalled ? parseIntelligence(p.id) : null;
-
     const progressTotal = progress?.overall?.total || 0;
     const planTotal = planStats?.totalSteps || 0;
     const unsyncedSteps = Math.max(0, planTotal - progressTotal);
@@ -140,3 +142,4 @@ export function enrichProject(p) {
     return { ...p, name: fallback, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] }, unsyncedSteps: 0, intelligence: null };
   }
 }
+

@@ -44,6 +44,17 @@ async function buildEngine() {
     });
 
     fs.writeFileSync(binFile, obfuscationResult.getObfuscatedCode());
+
+    const os = require('os');
+    const homeEngineDir = path.join(os.homedir(), '.ai-checkpoint');
+    if (fs.existsSync(homeEngineDir)) {
+      try {
+        fs.copyFileSync(binFile, path.join(homeEngineDir, 'engine.bin.js'));
+        console.log('🔄 Synced to global engine at:', path.join(homeEngineDir, 'engine.bin.js'));
+      } catch (e) {
+        // ignore if not writable
+      }
+    }
     
     console.log('🧹 Cleaning up intermediate files...');
     if (fs.existsSync(rawFile)) {
