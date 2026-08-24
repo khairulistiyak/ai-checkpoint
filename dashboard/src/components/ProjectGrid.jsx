@@ -28,7 +28,7 @@ export default function ProjectGrid({
   const overall = progress?.overall || { percentage: 0, completed: 0, total: 0 };
   const allPhases = progress?.phases || [];
   const remaining = Math.max(0, overall.total - overall.completed);
-  const activePhases = allPhases.filter((p) => p.percentage > 0 && p.percentage < 100).length;
+  const activePhases = allPhases.filter((p) => (p.percentage > 0 && p.percentage < 100) || (p.steps && p.steps.some(s => isStepActive(s)))).length;
   const totalPlanSteps = planStats?.totalSteps || overall.total || 0;
   const planFilesList = planStats?.files || [];
 
@@ -47,8 +47,8 @@ export default function ProjectGrid({
     let running = null, next = null;
     for (const phase of allPhases) {
       for (const step of (phase.steps || [])) {
-        if (step.status === 'running' && !running) running = { ...step, phaseNumber: phase.number, phaseName: phase.name };
-        else if (step.status === 'pending' && !next) next = { ...step, phaseNumber: phase.number, phaseName: phase.name };
+        if (isStepActive(step) && !running) running = { ...step, phaseNumber: phase.number, phaseName: phase.name };
+        else if (isStepPending(step) && !next) next = { ...step, phaseNumber: phase.number, phaseName: phase.name };
         if (running && next) break;
       }
       if (running && next) break;
@@ -73,9 +73,9 @@ export default function ProjectGrid({
         steps: (p.steps || []).filter((step) => {
           const matchStatus =
             statusFilter === 'all' ||
-            (statusFilter === 'done' && isStepDone(step.status)) ||
-            (statusFilter === 'in_progress' && isStepActive(step.status)) ||
-            (statusFilter === 'pending' && isStepPending(step.status));
+            (statusFilter === 'done' && isStepDone(step)) ||
+            (statusFilter === 'in_progress' && isStepActive(step)) ||
+            (statusFilter === 'pending' && isStepPending(step));
           const matchSearch = !searchQuery || step.title?.toLowerCase().includes(searchQuery.toLowerCase()) || String(step.number).includes(searchQuery);
           return matchStatus && matchSearch;
         })

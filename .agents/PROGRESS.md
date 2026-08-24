@@ -2032,3 +2032,13 @@ UPDATE LOG:
 - [ ] **Step 131.3** — Clean Color Harmonization for AdvancedHUDV1 (`dashboard/src/components/intelligence/AdvancedHUDV1.jsx`)
 - [ ] **Step 131.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [ ] **Step 131.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 132: Zero-Regression Fix for Active Plan & Active Step Detection — ⏳ IN PROGRESS
+
+- [ ] **Step 132.1** — Update Polymorphic Status Helpers (`dashboard/src/utils/date-formatter.js`)
+- [ ] **Step 132.2** — Update ProjectGrid Filter & Active Phase Calculations (`dashboard/src/components/ProjectGrid.jsx`)
+- [ ] **Step 132.3** — Update CockpitTab Active Step Detection (`dashboard/src/components/CockpitTab.jsx`)
+- [ ] **Step 132.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 132.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)

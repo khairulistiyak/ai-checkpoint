@@ -2,9 +2,10 @@ import React, { useState, useMemo } from 'react';
 import { Rocket } from 'lucide-react';
 import CockpitHealthOverview from './cockpit/CockpitHealthOverview';
 import IntelligenceModal from './intelligence/IntelligenceModal';
+import { isStepActive } from '../utils/date-formatter';
 
 export default function CockpitTab({
-  selectedProject, overall, allPhases, activePhases, remaining, planStats, totalPlanSteps, handleOpenArchitect, refresh, onSelectTab
+  selectedProject, overall, allPhases = [], activePhases, remaining, planStats, totalPlanSteps, handleOpenArchitect, refresh, onSelectTab
 }) {
   const [isIntelligenceModalOpen, setIsIntelligenceModalOpen] = useState(false);
   const unsyncedSteps = selectedProject?.unsyncedSteps || 0;
@@ -13,7 +14,7 @@ export default function CockpitTab({
   const activeStep = useMemo(() => {
     for (const p of allPhases) {
       for (const s of (p.steps || [])) {
-        if (s.status === 'running' || s.status === 'in_progress') {
+        if (isStepActive(s)) {
           return { ...s, phaseNumber: p.number, phaseName: p.name || p.title };
         }
       }
@@ -61,7 +62,7 @@ export default function CockpitTab({
 
       {/* Unified 3-Column Cockpit Overview (Roadmap KPI + Health Fortress + AI Intelligence) */}
       <CockpitHealthOverview
-        projectId={selectedProject.id}
+        projectId={selectedProject?.id}
         overall={overall}
         remaining={remaining}
         allPhases={allPhases}

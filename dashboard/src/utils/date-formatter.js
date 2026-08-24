@@ -4,12 +4,14 @@
 
 export function isStepDone(step) {
   if (!step) return false;
-  return step.status === 'done' || step.status === 'completed';
+  const s = typeof step === 'string' ? step.toLowerCase().trim() : (step.status ? String(step.status).toLowerCase().trim() : '');
+  return s === 'done' || s === 'completed' || s === 'x';
 }
 
 export function isStepActive(step) {
   if (!step) return false;
-  return step.status === 'running' || step.status === 'in_progress';
+  const s = typeof step === 'string' ? step.toLowerCase().trim() : (step.status ? String(step.status).toLowerCase().trim() : '');
+  return s === 'running' || s === 'in_progress' || s === 'active' || s === '~' || s === '/';
 }
 
 export function isStepPending(step) {
