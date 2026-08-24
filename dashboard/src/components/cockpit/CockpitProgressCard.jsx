@@ -2,7 +2,7 @@ import React from 'react';
 import { Target, Layers, FileCode2, CheckCircle2 } from 'lucide-react';
 
 export default function CockpitProgressCard({
-  overall = 0,
+  overall,
   remaining = 0,
   allPhases = [],
   activePhases = [],
@@ -12,9 +12,14 @@ export default function CockpitProgressCard({
 }) {
   const totalPhases = allPhases.length;
   const completedPhases = allPhases.filter(p => p.status === 'completed' || p.status === 'done').length;
-  const totalSteps = allPhases.reduce((acc, p) => acc + (p.steps?.length || 0), 0);
-  const completedSteps = totalSteps - remaining;
-  const pct = Math.min(100, Math.max(0, Math.round(overall)));
+  const fallbackTotalSteps = allPhases.reduce((acc, p) => acc + (p.steps?.length || 0), 0);
+  const totalSteps = overall?.total || fallbackTotalSteps || totalPlanSteps || 0;
+  const completedSteps = overall?.completed ?? Math.max(0, totalSteps - remaining);
+  
+  const rawPct = typeof overall === 'number' 
+    ? overall 
+    : (overall?.percentage ?? (totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0));
+  const pct = Math.min(100, Math.max(0, isNaN(rawPct) ? 0 : Math.round(rawPct)));
 
   return (
     <div className="bg-[#0e0e11]/80 backdrop-blur-md border border-white/[0.06] hover:border-white/[0.12] rounded-2xl p-4 flex flex-col justify-between h-full min-h-[14rem] shadow-sm transition-all group relative overflow-hidden">
@@ -24,12 +29,12 @@ export default function CockpitProgressCard({
       <div className="flex items-center justify-between relative z-10">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 rounded-lg bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-zinc-400">
-            <Target className="w-3.5 h-3.5" />
+            <Target className="w-3.5 h-3.5 text-zinc-400" />
           </div>
           <span className="text-xs font-mono font-medium text-zinc-400">Roadmap Progress</span>
         </div>
         <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-zinc-100">
-          <span className="text-base text-emerald-400">{pct}%</span>
+          <span className="text-base text-emerald-400 tabular-nums">{pct}%</span>
         </div>
       </div>
 
@@ -43,7 +48,7 @@ export default function CockpitProgressCard({
         </div>
         <div className="flex items-center justify-between text-[11px] font-mono text-zinc-500 mt-1.5">
           <span>{pct === 100 ? 'All milestones reached' : `${remaining} step${remaining === 1 ? '' : 's'} remaining`}</span>
-          <span className="text-zinc-400">{completedSteps}/{totalSteps} steps</span>
+          <span className="text-zinc-400 tabular-nums">{completedSteps}/{totalSteps} steps</span>
         </div>
       </div>
 
@@ -54,7 +59,7 @@ export default function CockpitProgressCard({
             <Layers className="w-3 h-3 text-zinc-400" />
             <span>Phases</span>
           </div>
-          <div className="text-zinc-200 font-semibold text-xs mt-0.5">
+          <div className="text-zinc-200 font-semibold text-xs mt-0.5 tabular-nums">
             {completedPhases}/{totalPhases} <span className="text-[10px] text-zinc-500 font-normal">done</span>
           </div>
         </div>
@@ -71,8 +76,8 @@ export default function CockpitProgressCard({
             </div>
             <span className="text-[10px] text-zinc-500 group-hover/bp:text-zinc-300">→</span>
           </div>
-          <div className="text-zinc-200 font-semibold text-xs mt-0.5">
-            {planStats.totalPlans} <span className="text-[10px] text-zinc-500 font-normal">plans</span>
+          <div className="text-zinc-200 font-semibold text-xs mt-0.5 tabular-nums">
+            {planStats?.totalPlans || 0} <span className="text-[10px] text-zinc-500 font-normal">plans</span>
           </div>
         </div>
       </div>

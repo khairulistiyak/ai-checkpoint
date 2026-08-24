@@ -1972,11 +1972,19 @@ UPDATE LOG:
 
 ---
 
-## 🔷 Phase 124: Unified 3-Column Zen Cockpit Grid Transformation — ⏳ IN PROGRESS
+## 🔷 Phase 124: Unified 3-Column Zen Cockpit Grid Transformation — ✅ 100% COMPLETE
 
-- [ ] **Step 124.1** — Create Unified Progress KPI Card (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
-- [ ] **Step 124.2** — Refactor Health Score Gauge for 3-Column Grid (`dashboard/src/components/health/HealthScoreGauge.jsx`)
-- [ ] **Step 124.3** — Refactor CockpitHealthOverview to 3-Column Grid Layout (`dashboard/src/components/cockpit/CockpitHealthOverview.jsx`)
-- [ ] **Step 124.4** — Wire Unified Grid in CockpitTab (`dashboard/src/components/CockpitTab.jsx`)
-- [ ] **Step 124.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 124.6** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+- [x] **Step 124.1** — Create Unified Progress KPI Card (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
+- [x] **Step 124.2** — Refactor Health Score Gauge for 3-Column Grid (`dashboard/src/components/health/HealthScoreGauge.jsx`)
+- [x] **Step 124.3** — Refactor CockpitHealthOverview to 3-Column Grid Layout (`dashboard/src/components/cockpit/CockpitHealthOverview.jsx`)
+- [x] **Step 124.4** — Wire Unified Grid in CockpitTab (`dashboard/src/components/CockpitTab.jsx`)
+- [x] **Step 124.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 124.6** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 125: Fix Cockpit Progress NaN & Robust Progress Handling — ⏳ IN PROGRESS
+
+- [ ] **Step 125.1** — Fix Robust Progress Calculations (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
+- [ ] **Step 125.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 125.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
