@@ -25,9 +25,7 @@ export default function PlanPhaseList({
         const modPercent = mod.tasksTotal > 0 ? Math.round((mod.tasksDone / mod.tasksTotal) * 100) : 100;
         const isCollapsed = collapsedModules[modIdx];
         return (
-          <div id={`arch-mod-${modIdx}`} key={modIdx} className="relative overflow-hidden rounded-2xl bg-[#0b0b0e] border border-white/15 shadow-xl transition-all">
-            <div className={`absolute top-0 bottom-0 left-0 w-0.5 transition-colors duration-500 ${isCollapsed ? 'bg-white/5' : 'bg-cyber-accent/60'}`} />
-
+          <div id={`arch-mod-${modIdx}`} key={modIdx} className="rounded-2xl bg-[#0d0e12] border border-white/[0.08] shadow-lg transition-all">
             <button onClick={() => toggleCollapse(modIdx)} className="w-full px-5 py-4 bg-white/[0.02] border-b border-white/[0.06] flex flex-wrap items-center justify-between gap-3 hover:bg-white/[0.04] transition-colors text-left cursor-pointer">
               <div className="flex items-center gap-3">
                 <span className="px-2.5 py-0.5 rounded-lg bg-cyber-accent/10 text-cyber-accent font-mono text-xs font-bold">LAYER {mod.number}</span>
@@ -71,7 +69,7 @@ function renderBlock(block, idx, ctx) {
   if (block.type === 'h3') {
     return (
       <div key={idx} className="flex items-center gap-2 pt-2 pb-1 border-b border-white/[0.06]">
-        <div className="w-1.5 h-1.5 rounded-full bg-cyber-accent shadow-[0_0_8px_rgba(var(--cyber-accent-rgb),0.8)]" />
+        <div className="w-1.5 h-1.5 rounded-full bg-cyber-accent" />
         <h3 className="text-xs sm:text-sm font-bold uppercase tracking-wider text-zinc-200 font-mono">{block.text}</h3>
       </div>
     );
@@ -96,14 +94,14 @@ function renderBlock(block, idx, ctx) {
     return <PlanCodeBlock key={idx} block={block} idx={idx} copiedCodeIndex={ctx.copiedCodeIndex} copySnippet={ctx.copySnippet} formatCodeWithTheme={ctx.formatCodeWithTheme} />;
   }
   if (block.type === 'quote') {
-    return <div key={idx} className="p-4 rounded-xl bg-white/[0.03] border-l-2 border-cyan-500/40 text-xs font-mono text-zinc-300 my-3">{ctx.formatTextWithBadges(block.text)}</div>;
+    return <div key={idx} className="p-4 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs font-mono text-zinc-300 my-3">{ctx.formatTextWithBadges(block.text)}</div>;
   }
   if (block.type === 'list') {
     return (
       <ul key={idx} className="space-y-2 pl-2 my-3">
         {block.items.map((item, i) => (
           <li key={i} className="flex items-start gap-2.5 text-xs font-mono leading-relaxed text-zinc-300">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyber-accent mt-1.5 shrink-0 shadow-[0_0_8px_rgba(var(--cyber-accent-rgb),0.8)]" />
+            <span className="w-1.5 h-1.5 rounded-full bg-cyber-accent mt-1.5 shrink-0" />
             <span>{ctx.formatTextWithBadges(item)}</span>
           </li>
         ))}

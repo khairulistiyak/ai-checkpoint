@@ -1849,3 +1849,12 @@ UPDATE LOG:
 - [x] **Step 109.5** — Drawer Header Keyboard Hints & Muted Controls (`dashboard/src/components/plan/FilePreviewHeader.jsx`)
 - [x] **Step 109.6** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 109.7** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 110: Side Glow & Left Border Elimination for Flat Zen Design — ✅ 100% COMPLETE
+
+- [x] **Step 110.1** — Remove Side Accent Border & Corner Glow (`dashboard/src/components/plan/PlanStepBlock.jsx`)
+- [x] **Step 110.2** — Remove Left Accent Strip & Glow Shadows (`dashboard/src/components/plan/PlanPhaseList.jsx`)
+- [x] **Step 110.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 110.4** — Final Release Gate & Verification (`.agents/PROGRESS.md`)

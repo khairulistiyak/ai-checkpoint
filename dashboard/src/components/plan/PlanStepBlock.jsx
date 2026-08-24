@@ -13,11 +13,9 @@ export default function PlanStepBlock({
   const isPromptCopied = copiedStepBadge === `${block.stepNum}-prompt`;
 
   return (
-    <div key={idx} className="bg-[#101116] border border-white/[0.07] border-l-2 border-l-cyan-500/40 hover:border-l-cyan-400/80 rounded-2xl p-4 sm:p-5 my-4 space-y-3.5 shadow-lg transition-all relative overflow-hidden group">
-      <div className="absolute -top-24 -right-24 w-48 h-48 bg-sky-500/[0.02] rounded-full blur-3xl pointer-events-none group-hover:bg-sky-500/[0.04] transition-colors" />
-
+    <div key={idx} className="bg-[#101116] border border-white/[0.07] hover:border-white/15 rounded-2xl p-4 sm:p-5 my-4 space-y-3.5 shadow-lg transition-all group">
       {/* Step Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06] relative z-10">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
         <div className="flex items-center gap-2.5">
           <span className="px-2.5 py-0.5 rounded-lg bg-cyan-500/10 text-cyan-300 border border-cyan-500/25 font-mono text-xs font-bold shadow-sm">
             Step {block.stepNum}
