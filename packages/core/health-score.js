@@ -1,9 +1,10 @@
 const { scanWorkspace } = require('./workspace-scanner.js');
 const { scanSecurity } = require('./security-scanner.js');
 
-// Exclude heavy directories (node_modules, dist, .git, build) to prevent scanner freeze
+let detectCircularDeps;
+try { detectCircularDeps = require('./circular-dep-detector.js').detectCircularDeps; } catch { detectCircularDeps = null; }
+
 function calculateHealth(projectPath, options = {}) {
-  // Ensure heavy vendor directories like node_modules are safely ignored during scan
   const workspace = scanWorkspace(projectPath);
   const security = scanSecurity(projectPath);
 
@@ -13,12 +14,21 @@ function calculateHealth(projectPath, options = {}) {
   const criticalSecurity = security.issues.filter(i => i.severity === 'critical').length;
   const warningSecurity = security.issues.filter(i => i.severity === 'warning').length;
 
+  let circularDeps = 0;
+  if (detectCircularDeps) {
+    try {
+      const result = detectCircularDeps(projectPath);
+      circularDeps = result.cycles ? result.cycles.length : 0;
+    } catch { circularDeps = 0; }
+  }
+
   let score = 100;
   score -= syntaxErrors * 10;
   score -= brokenImports * 5;
   score -= rule0Violations * 8;
   score -= criticalSecurity * 15;
   score -= warningSecurity * 2;
+  score -= Math.min(circularDeps * 5, 20);
   if (score < 0) score = 0;
 
   const allIssues = [
@@ -31,7 +41,7 @@ function calculateHealth(projectPath, options = {}) {
     maxScore: 100,
     passed: score === 100,
     filesScanned: workspace.filesScanned,
-    breakdown: { syntaxErrors, brokenImports, rule0Violations, criticalSecurity, warningSecurity },
+    breakdown: { syntaxErrors, brokenImports, rule0Violations, criticalSecurity, warningSecurity, circularDeps },
     issues: allIssues,
   };
 }

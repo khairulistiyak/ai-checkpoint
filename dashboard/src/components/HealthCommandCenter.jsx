@@ -65,14 +65,16 @@ export default function HealthCommandCenter({ projectId }) {
       {health && (
         <>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-            <HealthScoreGauge
-              score={score}
-              scoreColor={scoreColor}
-              healthScore={healthScore}
-              qualityScore={qualityScore}
-              filesScanned={health.filesScanned}
-              passed={health.passed}
-            />
+            <div className="lg:col-span-4">
+              <HealthScoreGauge
+                score={score}
+                scoreColor={scoreColor}
+                healthScore={healthScore}
+                qualityScore={qualityScore}
+                filesScanned={health.filesScanned}
+                passed={health.passed}
+              />
+            </div>
             <HealthPillarGrid breakdown={breakdown} />
           </div>
 

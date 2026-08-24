@@ -3,13 +3,19 @@
  * Guarantees zero disk writes to project directories.
  */
 
+const CACHE_TTL_MS = 5 * 60 * 1000;
 const healthStore = new Map();
 const intelligenceStore = new Map();
 
 export function getCachedHealth(projectId) {
   if (!projectId) return null;
-  const entry = healthStore.get(String(projectId));
+  const key = String(projectId);
+  const entry = healthStore.get(key);
   if (!entry) return null;
+  if (Date.now() - entry.timestamp > CACHE_TTL_MS) {
+    healthStore.delete(key);
+    return null;
+  }
   return entry.data;
 }
 
@@ -29,8 +35,13 @@ export function setCachedHealth(projectId, data) {
 
 export function getCachedIntelligence(projectId) {
   if (!projectId) return null;
-  const entry = intelligenceStore.get(String(projectId));
+  const key = String(projectId);
+  const entry = intelligenceStore.get(key);
   if (!entry) return null;
+  if (Date.now() - entry.timestamp > CACHE_TTL_MS) {
+    intelligenceStore.delete(key);
+    return null;
+  }
   return entry.data;
 }
 
