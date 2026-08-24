@@ -85,19 +85,27 @@ export default function AdvancedHUDV1({ scores, isFullWidth = false }) {
           ))}
 
           {/* Rotating scan sweep */}
-          <motion.g
-            animate={{ rotate: 360 }}
-            transition={{ duration: 25, repeat: Infinity, ease: 'linear' }}
-            style={{ originX: '50%', originY: '50%' }}
+          <g
+            className="animate-[spin_6s_linear_infinite]"
+            style={{ transformOrigin: '50px 50px' }}
           >
             <path
               d={`M 50 ${center - radius + 4} A ${radius - 4} ${radius - 4} 0 0 1 ${center + radius - 4} 50`}
               fill="none"
-              stroke="rgba(255,255,255,0.15)"
-              strokeWidth="0.75"
+              stroke="rgba(255,255,255,0.3)"
+              strokeWidth="0.85"
               strokeLinecap="round"
             />
-          </motion.g>
+            <line
+              x1={center}
+              y1={center}
+              x2={center}
+              y2={center - radius + 4}
+              stroke="rgba(255,255,255,0.2)"
+              strokeWidth="0.5"
+              strokeDasharray="1 1"
+            />
+          </g>
 
           {/* Polygon mesh */}
           <polygon
