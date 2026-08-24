@@ -2214,6 +2214,14 @@ UPDATE LOG:
 - [x] **Step 151.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 151.6** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 152: Remove Online Status Indicator from Sidebar Footer — ✅ 100% COMPLETE
+
+- [x] **Step 152.1** — Clean SidebarFooter (`dashboard/src/components/SidebarFooter.jsx`)
+- [x] **Step 152.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 152.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 
