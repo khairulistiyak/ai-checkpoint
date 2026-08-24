@@ -2187,6 +2187,14 @@ UPDATE LOG:
 - [x] **Step 148.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 148.4** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 149: Activity Log & Action Controls Visual Harmonization — ✅ 100% COMPLETE
+
+- [x] **Step 149.1** — Harmonize Action Buttons in ProjectCardActions (`dashboard/src/components/project/ProjectCardActions.jsx`)
+- [x] **Step 149.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 149.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 
