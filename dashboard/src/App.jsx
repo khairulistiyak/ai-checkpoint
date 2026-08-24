@@ -60,6 +60,13 @@ export default function App() {
 
   return (
     <div className="h-screen w-screen overflow-hidden flex flex-col font-outfit bg-[#09090b] text-white/90 relative">
+      {isElectron && (
+        <div className="w-full h-7 bg-[#070709] border-b border-white/[0.04] flex items-center justify-between px-3 shrink-0 select-none z-50 text-[11px] font-mono text-zinc-500 app-drag">
+          <div className="w-20 shrink-0" />
+          <span className="opacity-40 text-[10px] tracking-wider uppercase font-semibold">VEYLX STUDIO</span>
+          <div className="w-20 shrink-0" />
+        </div>
+      )}
       <UpdateBanner />
       <UpdateNotification />
       {error && (
@@ -91,7 +98,6 @@ export default function App() {
         )}
 
         <main className={`flex-1 overflow-y-auto md:overflow-hidden relative flex flex-col custom-scrollbar ${isPlansRoute ? 'p-0 border-none rounded-none shadow-none bg-[#09090b]' : 'bg-[#09090b] p-2.5 sm:p-3.5 md:p-4'}`}>
-          {isElectron && <div style={{ WebkitAppRegion: 'drag' }} className="h-6 w-full shrink-0 select-none pointer-events-auto" />}
           <div className="w-full h-full flex flex-col min-h-max md:min-h-0 max-w-full">
             <Suspense fallback={<PageSkeleton />}>
               <AnimatePresence mode="wait">

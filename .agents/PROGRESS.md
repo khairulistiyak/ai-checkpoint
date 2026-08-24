@@ -2249,6 +2249,16 @@ UPDATE LOG:
 - [x] **Step 155.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 155.4** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 156: 100% Reliable Electron Window Dragging Engine — ✅ 100% COMPLETE
+
+- [x] **Step 156.1** — Add App-Drag CSS Classes (`dashboard/src/index.css`)
+- [x] **Step 156.2** — Implement Full-Width Electron Drag Bar (`dashboard/src/App.jsx`)
+- [x] **Step 156.3** — Update SidebarHeader Drag Classes (`dashboard/src/components/SidebarHeader.jsx`)
+- [x] **Step 156.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 156.5** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 

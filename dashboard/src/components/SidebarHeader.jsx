@@ -4,18 +4,9 @@ import { Brain, Plus, X } from 'lucide-react';
 export default function SidebarHeader({
   itemsCount, isCollapsed, setIsCollapsed, onAddProject, setIsMobileMenuOpen
 }) {
-  const isElectron = typeof window !== 'undefined' && (
-    window.navigator?.userAgent?.includes('Electron') ||
-    new URLSearchParams(window.location.search).has('port') ||
-    Boolean(window.electronAPI)
-  );
-
   return (
     <div
-      style={{ WebkitAppRegion: isElectron ? 'drag' : undefined }}
-      className={`p-3 sm:px-3.5 sm:py-3 border-b border-white/[0.05] bg-[#0a0a0c]/90 backdrop-blur-md relative z-10 flex items-center select-none ${
-        isElectron ? 'pt-8' : ''
-      } ${
+      className={`p-3 sm:px-3.5 sm:py-3 border-b border-white/[0.05] bg-[#0a0a0c]/90 backdrop-blur-md relative z-10 flex items-center select-none app-drag ${
         isCollapsed ? 'justify-center flex-col gap-2.5' : 'justify-between gap-2'
       }`}
     >
@@ -23,9 +14,8 @@ export default function SidebarHeader({
         <>
           {/* Brand Mark & Title (Click to toggle sidebar) */}
           <div
-            style={{ WebkitAppRegion: 'no-drag' }}
             onClick={() => setIsCollapsed(true)}
-            className="flex items-center gap-2.5 min-w-0 cursor-pointer group hover:opacity-85 transition-opacity"
+            className="flex items-center gap-2.5 min-w-0 cursor-pointer group hover:opacity-85 transition-opacity app-no-drag"
             title="VEYLX STUDIO — Click to collapse sidebar"
           >
             <div className="w-8 h-8 rounded-xl bg-white/5 border border-white/10 group-hover:border-white/20 flex items-center justify-center text-white shrink-0 shadow-sm transition-all">
@@ -43,7 +33,7 @@ export default function SidebarHeader({
           </div>
 
           {/* Action Buttons Micro-Cluster */}
-          <div className="flex items-center gap-1 shrink-0" style={{ WebkitAppRegion: 'no-drag' }}>
+          <div className="flex items-center gap-1 shrink-0 app-no-drag">
             <button
               onClick={onAddProject}
               className="w-7 h-7 rounded-lg bg-white/[0.02] hover:bg-white/[0.08] border border-transparent hover:border-white/[0.08] text-zinc-400 hover:text-white flex items-center justify-center transition-all cursor-pointer shadow-sm"
@@ -62,7 +52,7 @@ export default function SidebarHeader({
           </div>
         </>
       ) : (
-        <div className="flex flex-col items-center gap-2 py-0.5" style={{ WebkitAppRegion: 'no-drag' }}>
+        <div className="flex flex-col items-center gap-2 py-0.5 app-no-drag">
           <div
             className="w-8 h-8 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 flex items-center justify-center text-white shrink-0 shadow-sm cursor-pointer transition-all"
             onClick={() => setIsCollapsed(false)}

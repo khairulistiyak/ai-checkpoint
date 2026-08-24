@@ -131,3 +131,14 @@
 .animate-tooltip-in {
   animation: tooltipFadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Electron Window Drag Regions */
+.app-drag {
+  -webkit-app-region: drag !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+.app-no-drag {
+  -webkit-app-region: no-drag !important;
+}
