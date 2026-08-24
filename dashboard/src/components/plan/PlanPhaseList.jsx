@@ -3,6 +3,8 @@ import { AnimatePresence } from 'framer-motion';
 import { ChevronRight, ChevronDown, ShieldCheck, CheckCircle2, Circle } from 'lucide-react';
 import PlanStepBlock from './PlanStepBlock.jsx';
 import PlanCodeBlock from './PlanCodeBlock.jsx';
+import PlanTableBlock from './PlanTableBlock.jsx';
+import PlanAlertBlock from './PlanAlertBlock.jsx';
 
 export default function PlanPhaseList({
   filteredModules, collapsedModules, toggleCollapse,
@@ -56,6 +58,15 @@ export default function PlanPhaseList({
 function renderBlock(block, idx, ctx) {
   if (block.type === 'step') {
     return <PlanStepBlock key={idx} block={block} idx={idx} copiedStepBadge={ctx.copiedStepBadge} copyStepCommand={ctx.copyStepCommand} generateStepPrompt={ctx.generateStepPrompt} formatTextWithBadges={ctx.formatTextWithBadges} />;
+  }
+  if (block.type === 'table') {
+    return <PlanTableBlock key={idx} block={block} idx={idx} formatTextWithBadges={ctx.formatTextWithBadges} />;
+  }
+  if (block.type === 'alert') {
+    return <PlanAlertBlock key={idx} block={block} idx={idx} formatTextWithBadges={ctx.formatTextWithBadges} />;
+  }
+  if (block.type === 'hr') {
+    return <hr key={idx} className="border-0 h-px bg-white/10 my-6" />;
   }
   if (block.type === 'h3') {
     return (
