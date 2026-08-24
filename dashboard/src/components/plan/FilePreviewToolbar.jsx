@@ -46,7 +46,7 @@ export default function FilePreviewToolbar({ showToc, setShowToc, viewMode, setV
           onClick={() => setViewMode('edit')}
           className={`flex items-center gap-1.5 px-3 py-1 rounded-lg transition-all cursor-pointer ${
             viewMode === 'edit'
-              ? 'bg-white text-black font-bold shadow-md'
+              ? 'bg-cyber-accent/10 text-cyber-accent font-bold border border-cyber-accent/30 shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.15)]'
               : 'text-white/50 hover:text-white'
           }`}
         >

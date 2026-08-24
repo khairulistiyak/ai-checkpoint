@@ -63,17 +63,21 @@ export default function PlanSpecHeader({
 
           <button
             onClick={copyFullSpecAsPrompt}
-            className="px-3.5 py-2 rounded-xl bg-white text-black hover:bg-zinc-200 border border-white font-mono text-xs font-bold flex items-center gap-2 transition-all shadow-md cursor-pointer hover:shadow-[0_0_15px_rgba(255,255,255,0.2)]"
+            className={`px-3.5 py-2 rounded-xl border font-mono text-xs font-bold flex items-center gap-2 transition-all cursor-pointer ${
+              copiedSpec
+                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40 shadow-[0_0_15px_rgba(16,185,129,0.2)]'
+                : 'bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 hover:text-cyan-200 border-cyan-500/30 hover:border-cyan-500/50 shadow-[0_0_15px_rgba(6,182,212,0.12)]'
+            }`}
             title="Copy entire blueprint as an AI instruction prompt"
           >
             {copiedSpec ? (
               <>
-                <Check className="w-3.5 h-3.5 text-black" />
+                <Check className="w-3.5 h-3.5 text-emerald-400" />
                 <span>Prompt Copied!</span>
               </>
             ) : (
               <>
-                <Bot className="w-3.5 h-3.5 text-black" />
+                <Bot className="w-3.5 h-3.5 text-cyan-400" />
                 <span>Copy AI Full Plan Prompt</span>
               </>
             )}

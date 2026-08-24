@@ -21,7 +21,7 @@ export default function HomeCommandBanner({ onAddProject }) {
       <div className="flex flex-wrap items-center gap-3 shrink-0">
         <button
           onClick={onAddProject}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#ededef] hover:bg-white text-zinc-950 transition-all text-xs font-mono uppercase tracking-wider font-bold cursor-pointer shadow-sm"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-white border border-white/15 hover:border-white/30 transition-all text-xs font-mono uppercase tracking-wider font-bold cursor-pointer shadow-sm"
         >
           <PlusCircle className="w-4 h-4" />
           <span>Add New Project</span>

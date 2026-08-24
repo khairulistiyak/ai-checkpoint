@@ -25,7 +25,7 @@ export default function NotInitializedView({ installing, onInstall, onRemove }) 
           <button
             onClick={onInstall}
             disabled={installing}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white text-zinc-950 hover:bg-zinc-200 transition-all text-xs font-mono font-bold uppercase tracking-wider shadow-sm cursor-pointer"
+            className="flex items-center gap-2 px-6 py-3 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 text-cyan-300 border border-cyan-500/30 transition-all text-xs font-mono font-bold uppercase tracking-wider shadow-sm cursor-pointer"
           >
             {installing ? <Loader2 className="w-4 h-4 animate-spin" /> : <PlaySquare className="w-4 h-4" />}
             <span>Initialize Workspace</span>

@@ -19,7 +19,7 @@ export default function PlanStepBlock({
       {/* Step Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3.5 border-b border-white/[0.08] relative z-10">
         <div className="flex items-center gap-2.5">
-          <span className="px-2.5 py-1 rounded-lg bg-white text-black font-mono text-xs font-black shadow-sm">
+          <span className="px-2.5 py-1 rounded-lg bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-mono text-xs font-bold shadow-sm">
             Step {block.stepNum}
           </span>
           <h3 className="text-sm sm:text-base font-bold text-white font-mono tracking-tight">
@@ -63,11 +63,11 @@ export default function PlanStepBlock({
             className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold flex items-center gap-1.5 border transition-all cursor-pointer ${
               isPromptCopied
                 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                : 'bg-white/10 hover:bg-white/20 text-white border-white/25'
+                : 'bg-white/5 hover:bg-white/15 text-white/90 border-white/15'
             }`}
             title="Copy ready-to-run AI agent prompt for this step"
           >
-            {isPromptCopied ? <Check className="w-3 h-3 text-emerald-400" /> : <Bot className="w-3 h-3 text-white" />}
+            {isPromptCopied ? <Check className="w-3 h-3 text-emerald-400" /> : <Bot className="w-3 h-3 text-white/70" />}
             <span>AI Step Prompt</span>
           </button>
         </div>
