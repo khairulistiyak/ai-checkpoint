@@ -2232,6 +2232,14 @@ UPDATE LOG:
 - [x] **Step 153.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 153.5** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 154: Streamlined Brand Logo Sidebar Toggle Redesign — ✅ 100% COMPLETE
+
+- [x] **Step 154.1** — Clean SidebarHeader Toggle Action (`dashboard/src/components/SidebarHeader.jsx`)
+- [x] **Step 154.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 154.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 

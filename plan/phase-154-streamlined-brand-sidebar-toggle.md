@@ -1,3 +1,18 @@
+# Phase 154: Streamlined Brand Logo Sidebar Toggle Redesign
+
+> **Objective:** Remove the awkward collapse icon button and make the VEYLX brand emblem the sleek, intuitive toggle trigger for expanding and collapsing the sidebar.
+
+---
+
+## 📋 Execution Steps
+
+### Step 154.1 — Clean SidebarHeader Toggle Action (`dashboard/src/components/SidebarHeader.jsx`)
+- **File**: `dashboard/src/components/SidebarHeader.jsx`
+- **Action**: EDIT
+- **Content**: Make the Brand header clickable to toggle collapse/expand state smoothly, and eliminate the separate collapse icon button for a clean, minimal header. Keep file <= 150 lines.
+
+Replace with:
+```jsx
 import React from 'react';
 import { Brain, Plus, X } from 'lucide-react';
 
@@ -79,3 +94,25 @@ export default function SidebarHeader({
     </div>
   );
 }
+```
+
+- **Done-check**: `npm --prefix dashboard run build` -> exit 0
+- **Depends**: None
+
+---
+
+### Step 154.2 — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- **File**: `assets/engine.bin.js`
+- **Action**: EDIT
+- **Content**: Rebuild global engine binary and Vite dashboard bundle. Run test suite.
+- **Done-check**: `npm run build:engine && npm --prefix dashboard run build && npm test` -> exit 0
+- **Depends**: 154.1
+
+---
+
+### Step 154.3 — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+- **File**: `.agents/PROGRESS.md`
+- **Action**: EDIT
+- **Content**: Run full release check (`npm run release:check`) and save checkpoint.
+- **Done-check**: `npm run release:check` -> exit 0
+- **Depends**: 154.2
