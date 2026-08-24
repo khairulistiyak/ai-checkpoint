@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { fetchProjectHealth, triggerProjectAutofix } from '../../utils/api';
+import { fetchProjectHealth, triggerProjectAutofix, openInIde } from '../../utils/api';
 import { buildDiagnosticReportPrompt } from '../../utils/prompt-builder';
 import { getCachedHealth, setCachedHealth } from '../../utils/scan-cache';
 
@@ -69,12 +69,7 @@ export function useHealthCommandCenter({ projectId, showToast }) {
     if (!filePath) return;
     try {
       showToast(`Opening ${filePath.split('/').pop()} in IDE...`, 'info');
-      const res = await fetch('/api/open-in-ide', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ filePath, line, projectId })
-      }).then(r => r.json()).catch(() => null);
-
+      const res = await openInIde(filePath, line, projectId).catch(() => null);
       if (!res?.opened && res?.url) {
         window.location.href = res.url;
       }

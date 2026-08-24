@@ -7,6 +7,7 @@ import AdvancedHUDV1 from '../intelligence/AdvancedHUDV1';
 import CockpitHealthModal from './CockpitHealthModal';
 import CockpitProgressCard from './CockpitProgressCard';
 import { getCachedIntelligence, setCachedIntelligence } from '../../utils/scan-cache';
+import { fetchProjectIntelligence } from '../../utils/api';
 
 export default function CockpitHealthOverview({
   projectId,
@@ -31,7 +32,7 @@ export default function CockpitHealthOverview({
   const fetchIntelligence = useCallback(async (isManual = false) => {
     if (isManual || !getCachedIntelligence(projectId)) setIsIntelligenceScanning(true);
     try {
-      const res = await fetch(`/api/projects/${projectId}/intelligence`).then(r => r.json());
+      const res = await fetchProjectIntelligence(projectId);
       if (res?.success) {
         setIntelligenceData(res.report);
         setCachedIntelligence(projectId, res.report);

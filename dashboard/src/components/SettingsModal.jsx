@@ -4,6 +4,7 @@ import { Settings, X, Bot, Shield, Terminal, Palette, Check } from 'lucide-react
 import { useTheme } from './ThemeProvider';
 import { AgentTab, TelemetryTab, IdeTab, ToggleRow } from './settings/SettingsTabs';
 import { useToast } from './ToastProvider';
+import { fetchSettings, updateSettings } from '../utils/api';
 
 const themes = [
   { id: 'studio', name: 'Apple Studio Matte', desc: 'Zinc monochrome zero-glare', primary: 'bg-zinc-900', accent: 'bg-zinc-100' },
@@ -23,8 +24,7 @@ export default function SettingsModal({ isOpen, onClose }) {
 
   useEffect(() => {
     if (!isOpen) return;
-    fetch('/api/settings')
-      .then((r) => r.json())
+    fetchSettings()
       .then((d) => { if (d.preferences) setPrefs((prev) => ({ ...prev, ...d.preferences })); })
       .catch(() => {});
   }, [isOpen]);
@@ -34,11 +34,7 @@ export default function SettingsModal({ isOpen, onClose }) {
     setPrefs(next);
     if (patch.theme) setTheme(patch.theme);
     try {
-      await fetch('/api/settings', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ preferences: patch })
-      });
+      await updateSettings(patch);
       showToast('Settings saved', 'success');
     } catch {
       showToast('Failed to save settings', 'error');

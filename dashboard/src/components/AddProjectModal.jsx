@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FolderPlus, Folder, Tag, X, Sparkles, Loader2, ArrowRight } from 'lucide-react';
+import { browseDirectory } from '../utils/api';
 
 export default function AddProjectModal({ isOpen, onClose, onAdd }) {
   const [path, setPath] = useState('');
@@ -29,8 +30,7 @@ export default function AddProjectModal({ isOpen, onClose, onAdd }) {
         if (folderPath) handlePathChange(folderPath);
         return;
       }
-      const res = await fetch('/api/browse-directory');
-      const data = await res.json();
+      const data = await browseDirectory();
       if (data?.path) handlePathChange(data.path);
     } catch (err) {
       console.error('Failed to browse directory', err);

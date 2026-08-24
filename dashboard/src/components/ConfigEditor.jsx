@@ -68,7 +68,7 @@ export default function ConfigEditor({ projectId, onClose }) {
 
   const handleOpenIde = async () => {
     try {
-      const res = await fetch('/api/settings').then((r) => r.json()).catch(() => ({}));
+      const res = await api.fetchSettings().catch(() => ({}));
       const ide = res.preferences?.preferredIde || 'vscode';
       window.location.href = `${ide}://file/${project?.path}`;
       showToast(`Opening in ${ide.toUpperCase()}...`, 'info');

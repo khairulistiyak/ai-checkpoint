@@ -2,31 +2,23 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Activity, Sparkles, RefreshCw, Check } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useToast } from '../ToastProvider';
+import { fetchProjectIntelligence } from '../../utils/api';
 import ActionableIssuesList from './ActionableIssuesList';
 import AdvancedHUDV1 from './AdvancedHUDV1';
 import SmartInsights from './SmartInsights';
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { staggerChildren: 0.1 } }
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } }
-};
+const containerVariants = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.1 } } };
+const itemVariants = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } } };
 
 export default function IntelligenceHub({ project }) {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isScanning, setIsScanning] = useState(false);
-  const [copiedFixPrompt, setCopiedFixPrompt] = useState(false);
+  const [data, setData] = useState(null), [loading, setLoading] = useState(true);
+  const [isScanning, setIsScanning] = useState(false), [copiedFixPrompt, setCopiedFixPrompt] = useState(false);
   const { showToast } = useToast();
 
   const fetchIntelligence = useCallback(async (isManual = false) => {
     if (isManual) setIsScanning(true);
     try {
-      const res = await fetch(`/api/projects/${project.id}/intelligence`).then(r => r.json());
+      const res = await fetchProjectIntelligence(project.id);
       if (res?.success) {
         setData(res);
         if (isManual) showToast("Intelligence re-scan complete!", "success");

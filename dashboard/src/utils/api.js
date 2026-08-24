@@ -1,8 +1,9 @@
-const urlParams = new URLSearchParams(window.location.search);
+const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams();
 const electronPort = urlParams.get('port');
 const BASE_URL = electronPort 
   ? `http://localhost:${electronPort}/api`
-  : (window.location.port === '5173' ? 'http://localhost:20226/api' : window.location.origin + '/api');
+  : (typeof window !== 'undefined' && window.location.port === '5173' ? 'http://localhost:20226/api' : (typeof window !== 'undefined' ? window.location.origin + '/api' : 'http://localhost:20226/api'));
+
 
 async function req(url, options = {}) {
   const res = await fetch(`${BASE_URL}${url}`, options);
@@ -67,3 +68,12 @@ export const fetchDryAnalysis = (id, params = {}) => {
 };
 export const fetchUtilityIndex = (id, query = '') => req(`/projects/${id}/utility-index${query ? '?q=' + encodeURIComponent(query) : ''}`);
 export const fetchRefactorProposal = (id, pair) => post(`/projects/${id}/refactor-proposal`, pair);
+export const fetchProjectIntelligence = (id) => req(`/projects/${id}/intelligence`);
+export const openInIde = (filePath, line, projectId) => post('/open-in-ide', { filePath, line, projectId });
+export const browseDirectory = () => req('/browse-directory');
+export const updateSettings = (preferences) => req('/settings', {
+  method: 'PUT',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ preferences })
+});
+

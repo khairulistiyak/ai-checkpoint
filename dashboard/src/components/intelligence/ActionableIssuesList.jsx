@@ -4,6 +4,7 @@ import IssueFilterTabs from './IssueFilterTabs';
 import ActionableIssueCard from './ActionableIssueCard';
 import { useToast } from '../ToastProvider';
 import { buildSurgicalFixPrompt, buildBulkIssuesPrompt } from '../../utils/prompt-builder';
+import { openInIde } from '../../utils/api';
 
 const DEFAULT_CATEGORIES = [
   { id: 'responsive', label: 'Responsive' },
@@ -63,7 +64,7 @@ export default function ActionableIssuesList({ issues = [], categories = DEFAULT
     try {
       const fileName = filePath.split('/').pop() || filePath;
       showToast(`Opening ${fileName} in IDE...`, "info");
-      const res = await fetch('/api/open-in-ide', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ filePath, line, projectId }) }).then(r => r.json()).catch(() => null);
+      const res = await openInIde(filePath, line, projectId).catch(() => null);
       if (!res?.opened && res?.url) window.location.href = res.url;
     } catch {
       window.location.href = `vscode://file/${filePath}${line ? `:${line}` : ''}`;

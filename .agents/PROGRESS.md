@@ -2292,6 +2292,20 @@ UPDATE LOG:
 - [x] **Step 160.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 160.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 161: Fix Electron API Base URL & Restore Intelligence Hub Data — ✅ 100% COMPLETE
+
+- [x] **Step 161.1** — Export Missing API Methods in api.js (`dashboard/src/utils/api.js`)
+- [x] **Step 161.2** — Fix IntelligenceHub API Calls (`dashboard/src/components/intelligence/IntelligenceHub.jsx`)
+- [x] **Step 161.3** — Fix CockpitHealthOverview Intelligence API Call (`dashboard/src/components/cockpit/CockpitHealthOverview.jsx`)
+- [x] **Step 161.4** — Fix openInIde in ActionableIssuesList (`dashboard/src/components/intelligence/ActionableIssuesList.jsx`)
+- [x] **Step 161.5** — Fix useHealthCommandCenter openInIde API Call (`dashboard/src/components/health/useHealthCommandCenter.js`)
+- [x] **Step 161.6** — Fix SettingsModal API Calls (`dashboard/src/components/SettingsModal.jsx`)
+- [x] **Step 161.7** — Fix AddProjectModal Browse API Call (`dashboard/src/components/AddProjectModal.jsx`)
+- [x] **Step 161.8** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 161.9** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 
