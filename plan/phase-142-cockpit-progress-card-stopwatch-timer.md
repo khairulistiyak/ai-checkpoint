@@ -1,3 +1,18 @@
+# Phase 142: Add Live Stopwatch / Elapsed Timer to Roadmap Progress HUD
+
+> **Objective:** Add a real-time elapsed timer (stopwatch) to the active step HUD strip inside `CockpitProgressCard.jsx` (`⏱️ mm:ss`) with a clean frosted timer badge, updating every second during active step execution. Zero regressions.
+
+---
+
+## 📋 Execution Steps
+
+### Step 142.1 — Implement Stopwatch Timer in CockpitProgressCard (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
+- **File**: `dashboard/src/components/cockpit/CockpitProgressCard.jsx`
+- **Action**: EDIT
+- **Content**: Add `useState`, `useEffect` for 1-second interval timer when `activeStep` is present, format elapsed time as `mm:ss`, and render a clean stopwatch badge with `Timer` icon. Keep file <= 150 lines.
+
+Replace the file with:
+```jsx
 import React, { useState, useEffect } from 'react';
 import { Target, Timer } from 'lucide-react';
 
@@ -142,3 +157,25 @@ export default function CockpitProgressCard({
     </div>
   );
 }
+```
+
+- **Done-check**: `npm --prefix dashboard run build` -> exit 0
+- **Depends**: None
+
+---
+
+### Step 142.2 — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- **File**: `assets/engine.bin.js`
+- **Action**: EDIT
+- **Content**: Rebuild global engine binary and Vite dashboard bundle. Run test suite.
+- **Done-check**: `npm run build:engine && npm --prefix dashboard run build && npm test` -> exit 0
+- **Depends**: 142.1
+
+---
+
+### Step 142.3 — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+- **File**: `.agents/PROGRESS.md`
+- **Action**: EDIT
+- **Content**: Run full release check (`npm run release:check`) and save checkpoint.
+- **Done-check**: `npm run release:check` -> exit 0
+- **Depends**: 142.2

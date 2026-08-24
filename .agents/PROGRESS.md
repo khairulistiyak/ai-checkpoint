@@ -2123,6 +2123,14 @@ UPDATE LOG:
 - [x] **Step 141.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 141.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 142: Add Live Stopwatch / Elapsed Timer to Roadmap Progress HUD — ✅ 100% COMPLETE
+
+- [x] **Step 142.1** — Implement Stopwatch Timer in CockpitProgressCard (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
+- [x] **Step 142.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 142.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
 
 
 
