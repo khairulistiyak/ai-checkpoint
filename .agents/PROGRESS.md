@@ -1879,3 +1879,11 @@ UPDATE LOG:
 - [x] **Step 112.4** — Clean Structured Module Headers (`dashboard/src/components/plan/PlanPhaseList.jsx`)
 - [x] **Step 112.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 112.6** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 113: Removal of Redundant Start/Done Step Buttons — ✅ 100% COMPLETE
+
+- [x] **Step 113.1** — Remove Start/Done Button Segment (`dashboard/src/components/plan/PlanStepBlock.jsx`)
+- [x] **Step 113.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 113.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
