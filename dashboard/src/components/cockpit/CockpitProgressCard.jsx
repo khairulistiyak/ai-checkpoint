@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target, Zap } from 'lucide-react';
+import { Target } from 'lucide-react';
 
 export default function CockpitProgressCard({
   overall,
@@ -56,19 +56,19 @@ export default function CockpitProgressCard({
       </div>
 
       {/* Center Hero Progress & Active HUD */}
-      <div className="my-auto py-2 flex flex-col items-center justify-center relative z-10 w-full">
+      <div className="my-auto py-2 flex flex-col items-center justify-center relative z-10 w-full text-center">
         {/* Large Percentage */}
-        <div className="flex items-baseline gap-1">
+        <div className="flex items-baseline justify-center gap-1.5">
           <span className="text-3xl font-extrabold font-mono tracking-tight text-zinc-100 tabular-nums">
             {pct}%
           </span>
-          <span className="text-[10px] font-mono text-zinc-500 uppercase font-medium">
-            {pct === 100 ? 'done' : 'progress'}
+          <span className="text-[10px] font-mono text-zinc-500 uppercase font-semibold">
+            {pct === 100 ? 'Completed' : 'Milestone'}
           </span>
         </div>
 
         {/* Sleek Progress Track */}
-        <div className="w-full max-w-[16rem] bg-white/[0.04] h-1.5 rounded-full overflow-hidden border border-white/[0.04] mt-2 mb-1.5">
+        <div className="w-full max-w-[15rem] bg-white/[0.04] h-1.5 rounded-full overflow-hidden border border-white/[0.04] my-2">
           <div
             className="bg-zinc-200 h-full rounded-full transition-all duration-700 ease-out shadow-[0_0_8px_rgba(255,255,255,0.12)]"
             style={{ width: `${pct}%` }}
@@ -77,29 +77,35 @@ export default function CockpitProgressCard({
 
         {/* Context or Active Step Micro-HUD */}
         {activeStep ? (
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-500/10 border border-amber-500/20 max-w-full">
-            <Zap className="w-3 h-3 text-amber-400 shrink-0" />
-            <span className="text-[11px] font-mono font-bold text-amber-400 shrink-0">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/25 max-w-full shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping shrink-0" />
+            <span className="text-[10px] font-mono font-bold text-amber-400 shrink-0">
               Step {activeStep.id || activeStep.number}
             </span>
-            <span className="text-[11px] font-medium text-zinc-300 truncate font-outfit">
+            <span className="text-[11px] font-medium text-zinc-200 truncate font-outfit">
               {activeStep.title || activeStep.name}
             </span>
           </div>
         ) : (
-          <div className="text-[11px] font-mono text-zinc-400 flex items-center gap-1.5">
-            <span className="text-zinc-300 tabular-nums font-semibold">{completedSteps}/{totalSteps}</span>
-            <span className="text-zinc-600">•</span>
-            <span className="text-zinc-500">{pct === 100 ? 'Milestones reached' : `${remaining} left`}</span>
+          <div className="text-[11px] font-mono text-zinc-400 flex items-center justify-center gap-1.5">
+            <span className="text-zinc-300 font-semibold">
+              {pct === 100 ? 'All milestones achieved' : `${remaining} step${remaining === 1 ? '' : 's'} remaining`}
+            </span>
+            {pct < 100 && (
+              <>
+                <span className="text-zinc-600">•</span>
+                <span className="text-zinc-500">Ready</span>
+              </>
+            )}
           </div>
         )}
       </div>
 
-      {/* 3-Cell Symmetrical Metric Matrix (Steps, Phases, Blueprints) */}
+      {/* 3-Cell Symmetrical Metric Matrix (Steps Done, Phases, Blueprints) */}
       <div className="grid grid-cols-3 gap-1.5 pt-2.5 border-t border-white/[0.04] text-center relative z-10 font-mono">
         <div className="bg-white/[0.02] border border-white/[0.04] rounded-lg p-1.5 flex flex-col justify-center">
-          <div className="text-zinc-200 font-semibold text-xs tabular-nums">{completedSteps}/{totalSteps}</div>
-          <div className="text-[9px] text-zinc-500 uppercase font-medium">Steps</div>
+          <div className="text-zinc-200 font-semibold text-xs tabular-nums">{completedSteps}</div>
+          <div className="text-[9px] text-zinc-500 uppercase font-medium">Steps Done</div>
         </div>
 
         <div className="bg-white/[0.02] border border-white/[0.04] rounded-lg p-1.5 flex flex-col justify-center">
