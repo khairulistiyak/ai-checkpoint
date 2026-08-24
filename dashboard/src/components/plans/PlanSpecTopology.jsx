@@ -16,10 +16,10 @@ export default function PlanSpecTopology({
   return (
     <>
       {modules.length > 1 && (
-        <div className="p-4 rounded-2xl bg-[#0c0c0e] border border-white/10">
+        <div className="p-4 rounded-2xl bg-[#0c0c0e] border border-white/10 shadow-lg">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
             <div className="text-xs font-mono uppercase tracking-widest text-white/80 font-bold flex items-center gap-2">
-              <Activity className="w-3.5 h-3.5 text-white" />
+              <Activity className="w-3.5 h-3.5 text-cyan-400" />
               <span>ARCHITECTURAL TOPOLOGY MAP</span>
             </div>
 
@@ -40,7 +40,7 @@ export default function PlanSpecTopology({
             </button>
           </div>
 
-          <div className="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar">
+          <div className="flex items-center gap-2.5 overflow-x-auto pb-1.5 custom-scrollbar">
             {modules.map((mod, idx) => {
               const modPercent = mod.tasksTotal > 0 ? Math.round((mod.tasksDone / mod.tasksTotal) * 100) : 100;
               const isSelected = activeModuleIndex === idx;
@@ -48,20 +48,20 @@ export default function PlanSpecTopology({
                 <React.Fragment key={idx}>
                   <button
                     onClick={() => scrollToModule(idx)}
-                    className={`flex items-center gap-2.5 px-3 py-2 rounded-xl border text-left shrink-0 transition-all group cursor-pointer ${
+                    className={`flex flex-col gap-1.5 px-3 py-2 rounded-xl border text-left shrink-0 transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-cyber-accent/10 border-cyber-accent/40 text-cyber-accent shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.15)]'
+                        ? 'bg-cyan-500/10 border-cyan-500/40 text-cyan-300 shadow-[0_0_15px_rgba(6,182,212,0.15)]'
                         : 'bg-white/5 border-white/10 hover:border-white/20 text-white/80 hover:text-white'
                     }`}
                   >
-                    <span className={`w-6 h-6 rounded-lg font-mono text-[11px] font-bold flex items-center justify-center border transition-colors ${isSelected ? 'bg-cyber-accent/20 text-cyber-accent border-cyber-accent/40' : 'bg-white/10 text-white border-white/20'}`}>
-                      {mod.number}
-                    </span>
-                    <div className="flex flex-col">
-                      <span className="text-xs font-bold truncate max-w-[8.75rem]">{mod.title}</span>
-                      <span className="text-[10px] font-mono text-white/40">
-                        {mod.tasksDone}/{mod.tasksTotal} ({modPercent}%)
+                    <div className="flex items-center gap-2">
+                      <span className={`w-5 h-5 rounded-md font-mono text-[10px] font-bold flex items-center justify-center border ${isSelected ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40' : 'bg-white/10 text-white border-white/20'}`}>
+                        {mod.number}
                       </span>
+                      <span className="text-xs font-bold truncate max-w-[8.5rem]">{mod.title}</span>
+                    </div>
+                    <div className="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+                      <div className="h-full bg-emerald-400 rounded-full transition-all duration-300" style={{ width: `${modPercent}%` }} />
                     </div>
                   </button>
                   {idx < modules.length - 1 && (
@@ -80,7 +80,7 @@ export default function PlanSpecTopology({
             onClick={() => setFilterType('all')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all border cursor-pointer ${
               filterType === 'all'
-                ? 'bg-cyber-accent/10 text-cyber-accent border-cyber-accent/30 shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.1)]'
+                ? 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.1)]'
                 : 'text-white/60 hover:text-white hover:bg-white/5 border-transparent'
             }`}
           >
@@ -91,7 +91,7 @@ export default function PlanSpecTopology({
               onClick={() => setFilterType('steps')}
               className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 border cursor-pointer ${
                 filterType === 'steps'
-                  ? 'bg-cyber-accent/10 text-cyber-accent border-cyber-accent/30 shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.1)]'
+                  ? 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.1)]'
                   : 'text-white/60 hover:text-white hover:bg-white/5 border-transparent'
               }`}
             >
@@ -103,7 +103,7 @@ export default function PlanSpecTopology({
             onClick={() => setFilterType('tasks')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 border cursor-pointer ${
               filterType === 'tasks'
-                ? 'bg-cyber-accent/10 text-cyber-accent border-cyber-accent/30 shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.1)]'
+                ? 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.1)]'
                 : 'text-white/60 hover:text-white hover:bg-white/5 border-transparent'
             }`}
           >
@@ -114,7 +114,7 @@ export default function PlanSpecTopology({
             onClick={() => setFilterType('code')}
             className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1.5 border cursor-pointer ${
               filterType === 'code'
-                ? 'bg-cyber-accent/10 text-cyber-accent border-cyber-accent/30 shadow-[0_0_10px_rgba(var(--cyber-accent-rgb),0.1)]'
+                ? 'bg-cyan-500/10 text-cyan-300 border-cyan-500/30 shadow-[0_0_10px_rgba(6,182,212,0.1)]'
                 : 'text-white/60 hover:text-white hover:bg-white/5 border-transparent'
             }`}
           >
