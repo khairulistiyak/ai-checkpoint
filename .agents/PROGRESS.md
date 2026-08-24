@@ -1938,10 +1938,18 @@ UPDATE LOG:
 
 ---
 
-## 🔷 Phase 119: Header Live Activity Modal & Cockpit Focus Architecture — ⏳ IN PROGRESS
+## 🔷 Phase 119: Header Live Activity Modal & Cockpit Focus Architecture — ✅ 100% COMPLETE
 
-- [ ] **Step 119.1** — Create Dedicated Activity Log Modal Component (`dashboard/src/components/activity/ActivityLogModal.jsx`)
-- [ ] **Step 119.2** — Add Activity Log Button to Project Header (`dashboard/src/components/project/ProjectCardActions.jsx`)
-- [ ] **Step 119.3** — Wire Activity Log Modal in Project Header & Grid (`dashboard/src/components/ProjectCard.jsx`)
-- [ ] **Step 119.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 119.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+- [x] **Step 119.1** — Create Dedicated Activity Log Modal Component (`dashboard/src/components/activity/ActivityLogModal.jsx`)
+- [x] **Step 119.2** — Add Activity Log Button to Project Header (`dashboard/src/components/project/ProjectCardActions.jsx`)
+- [x] **Step 119.3** — Wire Activity Log Modal in Project Header & Grid (`dashboard/src/components/ProjectCard.jsx`)
+- [x] **Step 119.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 119.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 120: Header Action Zen Minimalism — Remove Redundant Action Buttons & Export — ⏳ IN PROGRESS
+
+- [ ] **Step 120.1** — Clean Up Project Header Actions (`dashboard/src/components/project/ProjectCardActions.jsx`)
+- [ ] **Step 120.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 120.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)

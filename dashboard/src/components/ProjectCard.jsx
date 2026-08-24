@@ -129,11 +129,7 @@ export default function ProjectCard({
         </div>
 
         <ProjectCardActions
-          project={project}
-          onOpenArchitect={onOpenArchitect}
-          handleQuickCheckpoint={handleQuickCheckpoint}
           onOpenConfig={onOpenConfig}
-          onOpenIntelligence={onOpenIntelligence}
           onOpenActivityLog={onOpenActivityLog}
           onRemove={onRemove}
         />
