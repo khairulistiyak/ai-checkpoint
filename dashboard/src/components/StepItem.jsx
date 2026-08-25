@@ -50,7 +50,8 @@ export default function StepItem({
   };
 
   const formattedTime = step.completedAt ? formatLocalTime(step.completedAt) : '';
-  const isDone = step.status === 'done', isRunning = step.status === 'running', isBlocked = step.status === 'blocked';
+  const isRunning = Boolean(step.isRunning || step.status === 'running' || step.status === 'in_progress' || step.status === '~' || step.status === '/');
+  const isDone = (step.status === 'done' || step.status === 'x') && !isRunning, isBlocked = step.status === 'blocked';
 
   const rowStyle = isRunning
     ? 'bg-amber-500/[0.09] border-amber-500/40 shadow-[0_0_15px_rgba(245,158,11,0.12)] ring-1 ring-amber-500/20'

@@ -21,10 +21,11 @@ function findPlanFileForPhase(phase, planFiles = []) {
 }
 
 export default function PhaseView({
-  phase, isActive, index = 0, projectId, projectPath, hasPlanFiles, planFiles = [], onOpenArchitect, onRefresh
+  phase, isActive, activeStep = null, index = 0, projectId, projectPath, hasPlanFiles, planFiles = [], onOpenArchitect, onRefresh
 }) {
+  const activeStepNum = activeStep?.step || activeStep?.number || activeStep?.id;
   const isDone = phase.percentage === 100;
-  const hasRunningStep = phase.steps?.some((s) => s.status === 'running' || s.status === 'in_progress');
+  const hasRunningStep = phase.steps?.some((s) => s.isRunning || s.status === 'running' || s.status === 'in_progress' || (activeStepNum && String(s.number) === String(activeStepNum)));
   const isWorking = hasRunningStep || (isActive && !isDone);
   const isPartiallyDone = phase.percentage > 0 && !isDone && !hasRunningStep;
   const isPending = phase.percentage === 0 && !hasRunningStep && !isActive;
@@ -104,13 +105,16 @@ export default function PhaseView({
                   No steps recorded in this phase yet.
                 </div>
               ) : (
-                phase.steps.map((step, idx) => (
-                  <StepItem
-                    key={step.id || step.number || idx}
-                    step={step} index={idx} projectId={projectId} projectPath={projectPath}
-                    hasPlanFiles={hasPlanFiles} matchingFile={matchingFile} onOpenArchitect={onOpenArchitect} onRefresh={onRefresh}
-                  />
-                ))
+                phase.steps.map((step, idx) => {
+                  const isStepRunning = step.isRunning || step.status === 'running' || step.status === 'in_progress' || (activeStepNum && String(step.number) === String(activeStepNum));
+                  return (
+                    <StepItem
+                      key={step.id || step.number || idx}
+                      step={{ ...step, isRunning: isStepRunning }} index={idx} projectId={projectId} projectPath={projectPath}
+                      hasPlanFiles={hasPlanFiles} matchingFile={matchingFile} onOpenArchitect={onOpenArchitect} onRefresh={onRefresh}
+                    />
+                  );
+                })
               )}
             </div>
           </motion.div>

@@ -10,7 +10,7 @@ export default function ActiveStepBanner({ activeStep }) {
         <div className="min-w-0">
           <div className="flex items-center gap-2">
             <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-amber-400 bg-amber-500/20 px-2 py-0.5 rounded-md">
-              Active Step {activeStep.id || activeStep.number}
+              Active Step {activeStep.step || activeStep.id || activeStep.number}
             </span>
             <span className="text-xs font-medium text-white truncate">
               {activeStep.title || activeStep.name}

@@ -22,29 +22,33 @@ export default function PlanProgressTab({
 
   const counts = useMemo(() => {
     let total = 0, done = 0, active = 0, pending = 0;
+    const activeStepNum = project?.activeStep?.step || project?.activeStep?.number || project?.activeStep?.id;
     for (const p of allPhases) {
       for (const s of (p.steps || [])) {
         total++;
-        if (isStepDone(s)) done++;
-        else if (isStepActive(s)) active++;
+        const isAct = isStepActive(s) || (activeStepNum && String(s.number) === String(activeStepNum));
+        if (isStepDone(s) && !isAct) done++;
+        else if (isAct) active++;
         else pending++;
       }
     }
+    if (active === 0 && project?.activeStep) active = 1;
     return { total, done, active, pending };
-  }, [allPhases]);
+  }, [allPhases, project?.activeStep]);
 
   const sortedPhases = useMemo(() => (
     [...allPhases].sort((a, b) => (parseInt(b.number, 10) || 0) - (parseInt(a.number, 10) || 0))
   ), [allPhases]);
 
   const activeStep = useMemo(() => {
+    if (project?.activeStep) return project.activeStep;
     for (const p of allPhases) {
       for (const s of (p.steps || [])) {
         if (isStepActive(s)) return { ...s, phaseNumber: p.number, phaseName: p.name || p.title };
       }
     }
     return null;
-  }, [allPhases]);
+  }, [allPhases, project?.activeStep]);
 
   const filters = [
     { id: 'all', label: 'All', count: counts.total },
@@ -116,16 +120,10 @@ export default function PlanProgressTab({
         ) : (
           filteredPhases.map((phase, idx) => (
             <PhaseView
-              key={phase.number || idx}
-              phase={phase}
-              isActive={Boolean(activeStep && Number(activeStep.phaseNumber) === Number(phase.number))}
-              index={idx}
-              projectId={project?.id}
-              projectPath={project?.path}
-              hasPlanFiles={project?.hasPlanFiles}
-              planFiles={project?.planStats?.files || []}
-              onOpenArchitect={(fn) => setSelectedPlanFile(fn)}
-              onRefresh={onRefresh}
+              key={phase.number || idx} phase={phase} isActive={Boolean(activeStep && Number(activeStep.phaseNumber || activeStep.phase) === Number(phase.number))}
+              activeStep={activeStep} index={idx} projectId={project?.id} projectPath={project?.path}
+              hasPlanFiles={project?.hasPlanFiles} planFiles={project?.planStats?.files || []}
+              onOpenArchitect={(fn) => setSelectedPlanFile(fn)} onRefresh={onRefresh}
             />
           ))
         )}
@@ -134,11 +132,8 @@ export default function PlanProgressTab({
       <AnimatePresence>
         {selectedPlanFile && (
           <FilePreviewDrawer
-            projectId={project?.id}
-            filename={selectedPlanFile}
-            allFiles={project?.planStats?.files || []}
-            onSelectFile={(f) => setSelectedPlanFile(f)}
-            onClose={() => setSelectedPlanFile(null)}
+            projectId={project?.id} filename={selectedPlanFile} allFiles={project?.planStats?.files || []}
+            onSelectFile={(f) => setSelectedPlanFile(f)} onClose={() => setSelectedPlanFile(null)}
           />
         )}
       </AnimatePresence>

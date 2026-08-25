@@ -33,14 +33,9 @@ export default function ProjectGrid({
   const planFilesList = planStats?.files || [];
 
   useEffect(() => {
-    const handleTerminalToggle = (e) => {
-      if ((e.ctrlKey || e.metaKey) && (e.key === '`' || e.key === '~')) {
-        e.preventDefault();
-        setIsTerminalOpen((prev) => !prev);
-      }
-    };
-    window.addEventListener('keydown', handleTerminalToggle);
-    return () => window.removeEventListener('keydown', handleTerminalToggle);
+    const handleToggle = (e) => { if ((e.ctrlKey || e.metaKey) && (e.key === '`' || e.key === '~')) { e.preventDefault(); setIsTerminalOpen(p => !p); } };
+    window.addEventListener('keydown', handleToggle);
+    return () => window.removeEventListener('keydown', handleToggle);
   }, []);
 
   const { runningStep, nextStep } = useMemo(() => {
@@ -66,22 +61,27 @@ export default function ProjectGrid({
 
   const filteredPhases = useMemo(() => {
     if (!allPhases.length) return [];
+    const activeStepNum = selectedProject?.activeStep?.step || selectedProject?.activeStep?.number || selectedProject?.activeStep?.id;
     return allPhases
       .filter((p) => selectedPhaseNumber === 'all' || String(p.number) === String(selectedPhaseNumber))
       .map((p) => ({
         ...p,
-        steps: (p.steps || []).filter((step) => {
+        steps: (p.steps || []).map((step) => {
+          const isRunning = isStepActive(step) || (activeStepNum && String(step.number) === String(activeStepNum));
+          return isRunning ? { ...step, isRunning: true } : step;
+        }).filter((step) => {
+          const isRunning = step.isRunning || isStepActive(step);
           const matchStatus =
             statusFilter === 'all' ||
-            (statusFilter === 'done' && isStepDone(step)) ||
-            (statusFilter === 'in_progress' && isStepActive(step)) ||
-            (statusFilter === 'pending' && isStepPending(step));
+            (statusFilter === 'done' && isStepDone(step) && !isRunning) ||
+            (statusFilter === 'in_progress' && isRunning) ||
+            (statusFilter === 'pending' && isStepPending(step) && !isRunning);
           const matchSearch = !searchQuery || step.title?.toLowerCase().includes(searchQuery.toLowerCase()) || String(step.number).includes(searchQuery);
           return matchStatus && matchSearch;
         })
       }))
       .filter((p) => p.steps.length > 0);
-  }, [allPhases, selectedPhaseNumber, statusFilter, searchQuery]);
+  }, [allPhases, selectedPhaseNumber, statusFilter, searchQuery, selectedProject?.activeStep]);
 
   if (loading || !selectedProject) {
     return (
