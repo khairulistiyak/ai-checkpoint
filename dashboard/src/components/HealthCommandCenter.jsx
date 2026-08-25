@@ -75,7 +75,11 @@ export default function HealthCommandCenter({ projectId }) {
                 passed={health.passed}
               />
             </div>
-            <HealthPillarGrid breakdown={breakdown} />
+            <HealthPillarGrid
+              breakdown={breakdown}
+              activeCategory={activeCategory}
+              onSelectCategory={setActiveCategory}
+            />
           </div>
 
           <DryGuardianPanel projectId={projectId} />

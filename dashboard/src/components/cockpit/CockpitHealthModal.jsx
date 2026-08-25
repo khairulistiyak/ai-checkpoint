@@ -78,7 +78,11 @@ export default function CockpitHealthModal({
                       <HealthCoreChecklist checks={checks} />
                     </div>
                     <div className="lg:col-span-8 flex flex-col gap-5">
-                      <HealthPillarGrid breakdown={breakdown} />
+                      <HealthPillarGrid
+                        breakdown={breakdown}
+                        activeCategory={activeCategory}
+                        onSelectCategory={setActiveCategory}
+                      />
                     </div>
                   </div>
 
