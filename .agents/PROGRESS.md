@@ -2353,6 +2353,14 @@ UPDATE LOG:
 - [x] **Step 165.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 165.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 166: Ultra-Clean & Workflow-Oriented Redesign for Intelligence Hub Header — ✅ 100% COMPLETE
+
+- [x] **Step 166.1** — Redesign IntelligenceHub Header & Controls (`dashboard/src/components/intelligence/IntelligenceHub.jsx`)
+- [x] **Step 166.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 166.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
 
 
 

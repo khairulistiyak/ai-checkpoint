@@ -68,54 +68,51 @@ export default function IntelligenceHub({ project }) {
   return (
     <motion.div className="p-6 space-y-6" variants={containerVariants} initial="hidden" animate="show">
       {/* Modern Clean Header */}
-      <motion.div variants={itemVariants} className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-white/[0.05] pr-12">
-        <div className="flex items-center gap-3.5 min-w-0">
-          <div className="w-11 h-11 rounded-2xl bg-white/[0.04] border border-white/10 flex items-center justify-center text-zinc-300 shrink-0 shadow-sm">
-            <Activity className="w-5 h-5" />
+      <motion.div variants={itemVariants} className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-white/[0.05]">
+        <div className="flex items-center gap-3 min-w-0">
+          <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-zinc-300 shrink-0 shadow-sm">
+            <Activity className="w-4 h-4 text-zinc-300" />
           </div>
           <div className="min-w-0">
             <div className="flex items-center gap-2.5 flex-wrap">
               <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight font-outfit">Intelligence Hub</h2>
-              <span className="bg-white/[0.04] text-zinc-300 border border-white/10 px-2.5 py-0.5 rounded-full text-xs font-mono font-semibold flex items-center gap-1.5 shadow-sm">
-                <span>🥇 Grade {grade}</span>
-              </span>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-zinc-300 text-xs font-mono font-medium shadow-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(52,211,153,0.5)]" />
+                <span>Grade {grade}</span>
+              </div>
             </div>
-            <p className="text-zinc-400 text-xs font-mono mt-0.5">Code Quality & Architectural Intelligence Radar</p>
+            <p className="text-zinc-500 text-xs font-mono mt-0.5">Code Quality & Architectural Intelligence Radar</p>
           </div>
         </div>
 
         {/* Right Action & Metric Cluster */}
-        <div className="flex items-center gap-2.5 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={handleCopyFixPrompt}
             disabled={isScanning || !report}
-            className="bg-purple-500/10 hover:bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-xl px-3.5 py-2 text-xs font-mono font-semibold transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 active:scale-95 shadow-sm"
+            className="px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-zinc-200 hover:text-white border border-white/[0.08] hover:border-white/[0.16] text-xs font-mono font-medium transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-40 active:scale-95 shadow-sm"
             title="Copy structured diagnostic prompt for AI to fix all issues"
           >
-            {copiedFixPrompt ? <Check size={14} className="text-purple-300" /> : <Sparkles size={14} className="text-purple-400" />}
-            <span>{copiedFixPrompt ? 'Copied!' : 'Fix Prompt'}</span>
+            {copiedFixPrompt ? <Check size={13} className="text-emerald-400" /> : <Sparkles size={13} className="text-zinc-400" />}
+            <span>{copiedFixPrompt ? 'Prompt Copied' : 'Fix Prompt'}</span>
           </button>
 
           <button
             onClick={() => fetchIntelligence(true)}
             disabled={isScanning}
-            className="bg-white/[0.06] hover:bg-white/[0.1] text-zinc-200 border border-white/10 rounded-xl px-3.5 py-2 text-xs font-mono font-semibold transition-all flex items-center gap-2 cursor-pointer disabled:opacity-50 active:scale-95 shadow-sm"
+            className="px-3 py-1.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-zinc-200 hover:text-white border border-white/[0.08] hover:border-white/[0.16] text-xs font-mono font-medium transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-40 active:scale-95 shadow-sm"
             title="Run continuous live diagnostic scan"
           >
-            <RefreshCw size={14} className={isScanning ? 'animate-spin' : ''} />
+            <RefreshCw size={13} className={`text-zinc-400 ${isScanning ? 'animate-spin' : ''}`} />
             <span>{isScanning ? 'Scanning...' : 'Re-scan'}</span>
           </button>
 
-          <div className="flex items-center gap-2.5 bg-white/[0.02] hover:bg-white/[0.04] border border-white/[0.06] rounded-2xl px-3.5 py-1.5 transition-all">
-            <div className="flex flex-col">
-              <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span className="text-[10px] font-mono text-zinc-400 uppercase font-bold tracking-wider">Score</span>
-              </div>
-              <div className="flex items-baseline gap-1 font-mono">
-                <span className="text-xl font-black text-white tracking-tight">{averageScore}</span>
-                <span className="text-[11px] text-zinc-500 font-semibold">/100</span>
-              </div>
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-white/[0.03] border border-white/[0.08] rounded-xl font-mono shadow-sm">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_rgba(52,211,153,0.5)]" />
+            <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">Score</span>
+            <div className="flex items-baseline gap-0.5">
+              <span className="text-sm font-bold text-white tracking-tight">{averageScore}</span>
+              <span className="text-[10px] text-zinc-600 font-medium">/100</span>
             </div>
           </div>
         </div>
