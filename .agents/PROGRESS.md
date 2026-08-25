@@ -2394,6 +2394,16 @@ UPDATE LOG:
 - [x] **Step 170.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 170.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 171: Clear Visual Distinction for Active, Working, Pending & Completed Plan States — ✅ 100% COMPLETE
+
+- [x] **Step 171.1** — Upgrade PhaseView Status Indicators (`dashboard/src/components/PhaseView.jsx`)
+- [x] **Step 171.2** — Refine StepItem State Styling (`dashboard/src/components/StepItem.jsx`)
+- [x] **Step 171.3** — Connect Real-Time Active State in PlanProgressTab (`dashboard/src/components/plans/PlanProgressTab.jsx`)
+- [x] **Step 171.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 171.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
 
 
 

@@ -61,9 +61,7 @@ export default function PlanProgressTab({
           <div className="relative">
             <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-2.5 top-1/2 -translate-y-1/2" />
             <input
-              type="text"
-              placeholder="Search steps & files..."
-              value={searchQuery}
+              type="text" placeholder="Search steps & files..." value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="pl-8 pr-7 py-1.5 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-white/[0.12] text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none focus:border-white/20 w-44 sm:w-56 font-mono transition-all"
             />
@@ -77,8 +75,7 @@ export default function PlanProgressTab({
           <div className="flex items-center gap-1 bg-white/[0.02] border border-white/[0.06] rounded-xl p-1">
             {filters.map(item => (
               <button
-                key={item.id}
-                onClick={() => setStatusFilter(item.id)}
+                key={item.id} onClick={() => setStatusFilter(item.id)}
                 className={`px-2.5 py-1 rounded-lg text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer ${
                   statusFilter === item.id
                     ? 'bg-white/[0.10] text-white border border-white/[0.15] font-semibold shadow-sm'
@@ -86,9 +83,7 @@ export default function PlanProgressTab({
                 }`}
               >
                 <span>{item.label}</span>
-                <span className={`text-[10px] font-mono px-1 rounded bg-black/40 ${item.color || 'text-zinc-400'}`}>
-                  {item.count}
-                </span>
+                <span className={`text-[10px] font-mono px-1 rounded bg-black/40 ${item.color || 'text-zinc-400'}`}>{item.count}</span>
               </button>
             ))}
           </div>
@@ -97,15 +92,12 @@ export default function PlanProgressTab({
         <div className="flex items-center gap-2">
           <span className="text-xs font-mono text-zinc-400">Phase:</span>
           <select
-            value={selectedPhaseNumber}
-            onChange={(e) => setSelectedPhaseNumber(e.target.value)}
+            value={selectedPhaseNumber} onChange={(e) => setSelectedPhaseNumber(e.target.value)}
             className="bg-[#121214] border border-white/[0.08] hover:border-white/[0.15] rounded-xl px-3 py-1.5 text-xs text-zinc-200 font-mono focus:outline-none focus:border-white/20 cursor-pointer"
           >
             <option value="all">All Phases ({allPhases.length})</option>
             {sortedPhases.map((phase) => (
-              <option key={phase.number} value={phase.number}>
-                Phase {phase.number}: {phase.name || phase.title}
-              </option>
+              <option key={phase.number} value={phase.number}>Phase {phase.number}: {phase.name || phase.title}</option>
             ))}
           </select>
         </div>
@@ -126,6 +118,7 @@ export default function PlanProgressTab({
             <PhaseView
               key={phase.number || idx}
               phase={phase}
+              isActive={Boolean(activeStep && Number(activeStep.phaseNumber) === Number(phase.number))}
               index={idx}
               projectId={project?.id}
               projectPath={project?.path}
