@@ -118,18 +118,6 @@ export default function SidebarItem({ p, selectedId, onSelect, isSearching, isCo
             {p.name}
           </span>
         </div>
-
-        {p.isInstalled && (
-          <span
-            className={`text-[10px] font-mono px-1.5 py-0.5 rounded-md shrink-0 ml-2 transition-all border tabular-nums ${
-              isSelected
-                ? 'bg-white/[0.10] text-white border-white/[0.15] font-bold shadow-sm'
-                : 'bg-white/[0.02] border-white/[0.04] text-zinc-500 group-hover:text-zinc-400'
-            }`}
-          >
-            {progress}%
-          </span>
-        )}
       </div>
     </Reorder.Item>
   );

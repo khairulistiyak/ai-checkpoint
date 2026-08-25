@@ -2369,6 +2369,14 @@ UPDATE LOG:
 - [x] **Step 167.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 167.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 168: Remove Project Progress Percentage Badge from SidebarItem — ✅ 100% COMPLETE
+
+- [x] **Step 168.1** — Remove Progress Badge from SidebarItem (`dashboard/src/components/SidebarItem.jsx`)
+- [x] **Step 168.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 168.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
 
 
 
