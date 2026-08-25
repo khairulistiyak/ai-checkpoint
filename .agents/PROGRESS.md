@@ -2345,6 +2345,14 @@ UPDATE LOG:
 - [x] **Step 164.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 164.4** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 165: Remove AI Smart Insights Banner from IntelligenceHub — ✅ 100% COMPLETE
+
+- [x] **Step 165.1** — Remove SmartInsights Component from IntelligenceHub (`dashboard/src/components/intelligence/IntelligenceHub.jsx`)
+- [x] **Step 165.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 165.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
 
 
 

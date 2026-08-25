@@ -5,7 +5,6 @@ import { useToast } from '../ToastProvider';
 import { fetchProjectIntelligence } from '../../utils/api';
 import ActionableIssuesList from './ActionableIssuesList';
 import AdvancedHUDV1 from './AdvancedHUDV1';
-import SmartInsights from './SmartInsights';
 
 const containerVariants = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.1 } } };
 const itemVariants = { hidden: { opacity: 0, y: 20 }, show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 300, damping: 24 } } };
@@ -120,11 +119,6 @@ export default function IntelligenceHub({ project }) {
             </div>
           </div>
         </div>
-      </motion.div>
-
-      {/* Smart Insights Banner */}
-      <motion.div variants={itemVariants}>
-        <SmartInsights grade={grade} scores={scores || {}} issues={issues} />
       </motion.div>
 
       {/* Top Full Width: Advanced HUD */}
