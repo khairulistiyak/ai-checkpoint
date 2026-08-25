@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-import { Search, CheckCheck } from 'lucide-react';
+import { Copy, Check, CheckCheck } from 'lucide-react';
 import IssueCard from './IssueCard';
-import { buildSurgicalFixPrompt } from '../../utils/prompt-builder';
+import { buildSurgicalFixPrompt, buildBulkIssuesPrompt } from '../../utils/prompt-builder';
+import { useToast } from '../ToastProvider';
 
 export default function HealthIssueExplorer({
-  issues,
-  filteredIssues,
-  categoryCounts,
-  activeCategory,
+  issues = [],
+  filteredIssues = [],
+  categoryCounts = {},
+  activeCategory = 'all',
   setActiveCategory,
-  searchQuery,
-  setSearchQuery,
   onOpenInIde
 }) {
   const [copiedIndex, setCopiedIndex] = useState(null);
+  const [copiedAll, setCopiedAll] = useState(false);
+  const { showToast } = useToast();
 
   const handleCopyIssue = (issue, idx) => {
     const prompt = buildSurgicalFixPrompt({
@@ -25,10 +26,25 @@ export default function HealthIssueExplorer({
       guidance: issue.guidance || issue.suggestion || ''
     });
 
-    navigator.clipboard.writeText(prompt).then(() => {
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(prompt);
       setCopiedIndex(idx);
+      if (showToast) showToast('Diagnostic prompt copied!', 'success');
       setTimeout(() => setCopiedIndex(null), 2000);
-    });
+    }
+  };
+
+  const handleCopyAllPrompts = () => {
+    if (navigator.clipboard) {
+      const fullPrompt = buildBulkIssuesPrompt({
+        category: activeCategory,
+        issues: filteredIssues
+      });
+      navigator.clipboard.writeText(fullPrompt);
+      setCopiedAll(true);
+      if (showToast) showToast(`Copied ${filteredIssues.length} prompts for ${activeCategory}!`, 'success');
+      setTimeout(() => setCopiedAll(false), 2000);
+    }
   };
 
   const categories = [
@@ -44,7 +60,7 @@ export default function HealthIssueExplorer({
   return (
     <div className="bg-[#121214] border border-white/[0.04] rounded-3xl p-6 relative overflow-hidden">
       <div className="relative z-10 space-y-6">
-        <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 pb-4 border-b border-white/[0.04]">
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 pb-4 border-b border-white/[0.04]">
           <div className="flex items-center gap-1 overflow-x-auto custom-scrollbar p-1 bg-white/[0.02] border border-white/[0.04] rounded-2xl mask-edges">
             {categories.map((cat) => (
               <button
@@ -68,16 +84,16 @@ export default function HealthIssueExplorer({
             ))}
           </div>
 
-          <div className="relative w-full md:w-64 lg:w-72 shrink-0 group">
-            <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2 transition-colors group-focus-within:text-zinc-300" />
-            <input
-              type="text"
-              placeholder="Search issues..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-2xl bg-white/[0.02] border border-white/[0.04] text-zinc-200 placeholder-zinc-600 text-xs font-mono focus:outline-none focus:border-white/10 focus:bg-white/[0.04] transition-all"
-            />
-          </div>
+          {filteredIssues.length > 0 && (
+            <button
+              onClick={handleCopyAllPrompts}
+              className="px-3.5 py-1.5 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] text-zinc-400 hover:text-zinc-100 text-xs font-mono font-medium flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shrink-0 shadow-sm"
+              title={`Copy fix prompts for ${activeCategory} section`}
+            >
+              {copiedAll ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} className="text-zinc-400" />}
+              <span>{copiedAll ? 'Copied All!' : 'Copy Prompts'}</span>
+            </button>
+          )}
         </div>
 
         {filteredIssues.length === 0 ? (
@@ -89,7 +105,7 @@ export default function HealthIssueExplorer({
             <p className="text-xs font-mono text-zinc-400 max-w-sm mx-auto">
               {issues.length === 0
                 ? 'Your workspace is in pristine condition! All health, syntax, and Rule 0 tests passed.'
-                : 'No issues match the selected category or search filter.'}
+                : 'No issues match the selected category filter.'}
             </p>
           </div>
         ) : (

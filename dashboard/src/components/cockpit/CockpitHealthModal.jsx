@@ -7,47 +7,17 @@ import HealthCoreChecklist from '../health/HealthCoreChecklist';
 import HealthIssueExplorer from '../health/HealthIssueExplorer';
 
 export default function CockpitHealthModal({
-  isOpen,
-  onClose,
-  health,
-  loading,
-  error,
-  copiedReport,
-  score,
-  healthScore,
-  qualityScore,
-  scoreColor,
-  breakdown,
-  issues,
-  checks,
-  filteredIssues,
-  categoryCounts,
-  activeCategory,
-  setActiveCategory,
-  searchQuery,
-  setSearchQuery,
-  fetchHealth,
-  handleCopyDiagnosticReport,
-  handleOpenInIde,
+  isOpen, onClose, health, loading, error, copiedReport, score, healthScore,
+  qualityScore, scoreColor, breakdown, issues, checks, filteredIssues,
+  categoryCounts, activeCategory, setActiveCategory, fetchHealth,
+  handleCopyDiagnosticReport, handleOpenInIde,
 }) {
   return (
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-          />
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative w-full max-w-6xl bg-[#0e0e11] border border-white/10 rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden"
-          >
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 20 }} className="relative w-full max-w-6xl bg-[#0e0e11] border border-white/10 rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
             {/* Header */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 sm:p-5 border-b border-white/10 shrink-0 bg-white/[0.02]">
               <div className="flex items-center gap-3">
@@ -85,10 +55,7 @@ export default function CockpitHealthModal({
 
                 <div className="w-px h-6 bg-white/10 mx-1 hidden sm:block" />
 
-                <button
-                  onClick={onClose}
-                  className="p-2 rounded-xl hover:bg-white/10 text-zinc-400 hover:text-white transition-colors"
-                >
+                <button onClick={onClose} className="p-2 rounded-xl hover:bg-white/10 text-zinc-400 hover:text-white transition-colors">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -107,17 +74,9 @@ export default function CockpitHealthModal({
                 <div className="flex flex-col gap-5">
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
                     <div className="lg:col-span-4 flex flex-col gap-5">
-                      <HealthScoreGauge
-                        score={score}
-                        scoreColor={scoreColor}
-                        healthScore={healthScore}
-                        qualityScore={qualityScore}
-                        filesScanned={health.filesScanned}
-                        passed={health.passed}
-                      />
+                      <HealthScoreGauge score={score} scoreColor={scoreColor} healthScore={healthScore} qualityScore={qualityScore} filesScanned={health.filesScanned} passed={health.passed} />
                       <HealthCoreChecklist checks={checks} />
                     </div>
-
                     <div className="lg:col-span-8 flex flex-col gap-5">
                       <HealthPillarGrid breakdown={breakdown} />
                     </div>
@@ -129,8 +88,6 @@ export default function CockpitHealthModal({
                     categoryCounts={categoryCounts}
                     activeCategory={activeCategory}
                     setActiveCategory={setActiveCategory}
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
                     onOpenInIde={handleOpenInIde}
                   />
                 </div>

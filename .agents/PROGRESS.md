@@ -2386,6 +2386,14 @@ UPDATE LOG:
 - [x] **Step 169.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 169.4** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 170: Replace Search in HealthIssueExplorer with Section-Wise Copy Prompts Button — ✅ 100% COMPLETE
+
+- [x] **Step 170.1** — Update HealthIssueExplorer Component (`dashboard/src/components/health/HealthIssueExplorer.jsx`)
+- [x] **Step 170.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 170.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
 
 
 

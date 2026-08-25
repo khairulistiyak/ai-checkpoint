@@ -88,8 +88,6 @@ export default function HealthCommandCenter({ projectId }) {
             categoryCounts={categoryCounts}
             activeCategory={activeCategory}
             setActiveCategory={setActiveCategory}
-            searchQuery={searchQuery}
-            setSearchQuery={setSearchQuery}
             onOpenInIde={handleOpenInIde}
           />
         </>
