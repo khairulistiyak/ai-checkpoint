@@ -2457,3 +2457,11 @@ UPDATE LOG:
 - [x] **Step 176.3** — Update ProjectGrid FilteredPhases Active State Match (`dashboard/src/components/ProjectGrid.jsx`)
 - [x] **Step 176.4** — Update PhaseView & StepItem Active Highlight (`dashboard/src/components/PhaseView.jsx`)
 - [x] **Step 176.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+
+---
+
+## 🔷 Phase 177: Persistent Always-Visible Execution Status Banner & Stopwatch HUD — ✅ 100% COMPLETE
+
+- [x] **Step 177.1** — Refactor ActiveStepBanner to Persistent Dual-State HUD (`dashboard/src/components/plans/ActiveStepBanner.jsx`)
+- [x] **Step 177.2** — Pass Rich State and Next Step to ActiveStepBanner (`dashboard/src/components/plans/PlanProgressTab.jsx`)
+- [x] **Step 177.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)

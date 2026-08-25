@@ -4,7 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import PhaseView from '../PhaseView';
 import FilePreviewDrawer from './FilePreviewDrawer';
 import ActiveStepBanner from './ActiveStepBanner';
-import { isStepDone, isStepActive } from '../../utils/date-formatter';
+import { isStepDone, isStepActive, isStepPending } from '../../utils/date-formatter';
 
 export default function PlanProgressTab({
   project,
@@ -42,13 +42,14 @@ export default function PlanProgressTab({
 
   const activeStep = useMemo(() => {
     if (project?.activeStep) return project.activeStep;
-    for (const p of allPhases) {
-      for (const s of (p.steps || [])) {
-        if (isStepActive(s)) return { ...s, phaseNumber: p.number, phaseName: p.name || p.title };
-      }
-    }
+    for (const p of allPhases) { for (const s of (p.steps || [])) { if (isStepActive(s)) return { ...s, phaseNumber: p.number, phaseName: p.name || p.title }; } }
     return null;
   }, [allPhases, project?.activeStep]);
+
+  const nextStep = useMemo(() => {
+    for (const p of allPhases) { for (const s of (p.steps || [])) { if (isStepPending(s)) return { ...s, phaseNumber: p.number, phaseName: p.name || p.title }; } }
+    return null;
+  }, [allPhases]);
 
   const filters = [
     { id: 'all', label: 'All', count: counts.total },
@@ -107,7 +108,12 @@ export default function PlanProgressTab({
         </div>
       </div>
 
-      <ActiveStepBanner activeStep={activeStep} />
+      <ActiveStepBanner
+        activeStep={activeStep}
+        nextStep={nextStep}
+        totalCompleted={counts.done}
+        totalSteps={counts.total}
+      />
 
       {/* Phase List */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-3.5 sm:p-4 space-y-2.5 pb-16">
