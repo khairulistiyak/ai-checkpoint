@@ -2,15 +2,17 @@ import React, { useId } from 'react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 
-export default function ProgressRing({ percentage, size = 46, strokeWidth = 3.5 }) {
+export default function ProgressRing({ percentage, size = 46, strokeWidth = 3.5, isRunning = false }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = radius * 2 * Math.PI;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
-  const isDone = percentage === 100;
+  const isDone = percentage === 100 && !isRunning;
   const rawId = useId();
   const gradientId = `progress-halo-${rawId.replace(/:/g, '')}`;
 
-  const gradientStops = isDone
+  const gradientStops = isRunning
+    ? { start: '#fbbf24', end: '#f59e0b' } // Amber to Orange
+    : isDone
     ? { start: '#10b981', end: '#06b6d4' } // Emerald to Cyan
     : { start: '#6366f1', end: '#a855f7' }; // Indigo to Purple
 
@@ -58,7 +60,7 @@ export default function ProgressRing({ percentage, size = 46, strokeWidth = 3.5 
         {isDone ? (
           <Check className="w-4 h-4 text-emerald-400" />
         ) : (
-          <span style={{ fontSize: Math.max(size * 0.25, 11) }} className="text-zinc-100 tracking-tighter">
+          <span style={{ fontSize: Math.max(size * 0.25, 11) }} className={isRunning ? "text-amber-300 tracking-tighter" : "text-zinc-100 tracking-tighter"}>
             {percentage}%
           </span>
         )}

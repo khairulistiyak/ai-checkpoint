@@ -4,6 +4,7 @@ import ProjectCardActions from "./project/ProjectCardActions";
 import { Terminal, FolderOpen, Copy, Check, Zap, Award } from "lucide-react";
 import { motion } from "framer-motion";
 import { useToast } from "./ToastProvider";
+import { isStepActive } from "../utils/date-formatter";
 
 export default function ProjectCard({
   project, onRemove, onOpenConfig, onOpenArchitect, onOpenIntelligence, onOpenActivityLog
@@ -14,7 +15,10 @@ export default function ProjectCard({
   const [copiedCd, setCopiedCd] = useState(false);
 
   const overall = progress?.overall || { percentage: 0, completed: 0, total: 0 };
-  const isDone = overall.percentage === 100;
+  const hasRunningStep = Boolean(progress?.phases?.some(p => p.steps?.some(s => isStepActive(s))));
+  const isDone = overall.percentage === 100 && !hasRunningStep && overall.total > 0;
+  const displayPct = hasRunningStep ? (overall.percentage >= 100 ? 99 : overall.percentage) : overall.percentage;
+
   const intelligence = project.intelligence;
   const grade = intelligence?.grade || '?';
   const score = intelligence?.averageScore || 0;
@@ -42,7 +46,9 @@ export default function ProjectCard({
       initial={{ opacity: 0, y: -6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25 }}
-      className="bg-[#0b0c10]/90 backdrop-blur-xl border border-white/[0.06] hover:border-white/[0.12] rounded-2xl p-3.5 sm:p-4 flex flex-col gap-3 transition-all shadow-xl relative overflow-hidden shrink-0"
+      className={`bg-[#0b0c10]/90 backdrop-blur-xl border rounded-2xl p-3.5 sm:p-4 flex flex-col gap-3 transition-all shadow-xl relative overflow-hidden shrink-0 ${
+        hasRunningStep ? 'border-amber-500/30' : 'border-white/[0.06] hover:border-white/[0.12]'
+      }`}
     >
       <div className="absolute top-0 right-0 w-80 h-80 bg-white/[0.01] rounded-full blur-3xl pointer-events-none -mr-16 -mt-16" />
 
@@ -50,7 +56,7 @@ export default function ProjectCard({
         <div className="flex items-center gap-3.5 min-w-0">
           {/* Frameless Radial Halo Progress Indicator */}
           <div className="relative shrink-0 flex items-center justify-center">
-            <ProgressRing percentage={overall.percentage} size={46} strokeWidth={3.5} />
+            <ProgressRing percentage={displayPct} size={46} strokeWidth={3.5} isRunning={hasRunningStep} />
           </div>
 
           {/* Project Details */}
@@ -60,14 +66,19 @@ export default function ProjectCard({
                 {project.name}
               </h1>
 
-              {isDone ? (
+              {hasRunningStep ? (
+                <span className="bg-amber-500/10 text-amber-300 border border-amber-500/30 px-2 py-0.5 rounded-md text-[11px] font-mono font-bold flex items-center gap-1 shadow-sm">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-ping" />
+                  <span>Working</span>
+                </span>
+              ) : isDone ? (
                 <span className="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-2 py-0.5 rounded-md text-[11px] font-mono font-medium flex items-center gap-1 shadow-sm">
                   <Check className="w-3 h-3" />
                   <span>100% Done</span>
                 </span>
               ) : (
-                <span className="bg-amber-500/10 text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-md text-[11px] font-mono font-medium flex items-center gap-1 shadow-sm">
-                  <Zap className="w-3 h-3 text-amber-400" />
+                <span className="bg-white/[0.03] text-zinc-400 border border-white/[0.06] px-2 py-0.5 rounded-md text-[11px] font-mono font-medium flex items-center gap-1 shadow-sm">
+                  <Zap className="w-3 h-3 text-zinc-400" />
                   <span>In Progress</span>
                 </span>
               )}

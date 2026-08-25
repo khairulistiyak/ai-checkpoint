@@ -2404,6 +2404,16 @@ UPDATE LOG:
 - [x] **Step 171.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 171.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
 
+---
+
+## 🔴 Phase 172: Live Roadmap Progress & Active Working State Synchronization — ⏳ IN PROGRESS
+
+- [ ] **Step 172.1** — Upgrade CockpitProgressCard Active Working State (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
+- [ ] **Step 172.2** — Update ProjectCard & ProgressRing Active State (`dashboard/src/components/ProjectCard.jsx`)
+- [ ] **Step 172.3** — Update SidebarItem Real-Time Working Indicator (`dashboard/src/components/SidebarItem.jsx`)
+- [ ] **Step 172.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [ ] **Step 172.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
 
 
 

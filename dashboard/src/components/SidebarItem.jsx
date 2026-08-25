@@ -1,6 +1,7 @@
 import React from 'react';
 import { GripVertical } from 'lucide-react';
 import { Reorder, useDragControls } from 'framer-motion';
+import { isStepActive } from '../utils/date-formatter';
 
 const itemVariants = {
   hidden: { opacity: 0, x: -8 },
@@ -9,11 +10,14 @@ const itemVariants = {
 
 export default function SidebarItem({ p, selectedId, onSelect, isSearching, isCollapsed }) {
   const isSelected = selectedId === p.id;
-  const progress = p.progress?.overall?.percentage || 0;
+  const rawProgress = p.progress?.overall?.percentage || 0;
+  const hasRunningStep = Boolean(p.progress?.phases?.some(ph => ph.steps?.some(s => isStepActive(s))));
+  const progress = hasRunningStep ? (rawProgress >= 100 ? 99 : rawProgress) : rawProgress;
   const dragControls = useDragControls();
 
   let statusColor = 'bg-zinc-500';
   if (!p.isInstalled) statusColor = 'bg-rose-400/80';
+  else if (hasRunningStep) statusColor = 'bg-amber-400 animate-ping shadow-[0_0_8px_rgba(251,191,36,0.6)]';
   else if (progress === 100) statusColor = 'bg-emerald-400/90 shadow-[0_0_6px_rgba(52,211,153,0.4)]';
   else if (progress > 0) statusColor = 'bg-amber-400/90 shadow-[0_0_6px_rgba(251,191,36,0.4)]';
 
@@ -59,8 +63,10 @@ export default function SidebarItem({ p, selectedId, onSelect, isSearching, isCo
             <span className={`w-1.5 h-1.5 rounded-full ${statusColor}`} />
             <span className="font-semibold text-zinc-100">{p.name}</span>
             {p.isInstalled && (
-              <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-white/[0.06] border border-white/[0.08] text-zinc-300 font-bold">
-                {progress}%
+              <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded border font-bold ${
+                hasRunningStep ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' : 'bg-white/[0.06] border border-white/[0.08] text-zinc-300'
+              }`}>
+                {hasRunningStep ? 'Working' : `${progress}%`}
               </span>
             )}
           </div>
