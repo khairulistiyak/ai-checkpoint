@@ -2472,3 +2472,10 @@ UPDATE LOG:
 
 - [x] **Step 178.1** — Redesign HealthPillarGrid with Clean Frosted Glass & Interactive Filter HUD (`dashboard/src/components/health/HealthPillarGrid.jsx`)
 - [x] **Step 178.2** — Rebuild Engine & Dashboard Assets, Verify Tests & Release Gates (`assets/engine.bin.js`)
+
+---
+
+## 🔷 Phase 179: Telemetry Circuit Breaker & Silent Offline Handling — ✅ 100% COMPLETE
+
+- [x] **Step 179.1** — Add Smart Circuit Breaker & Safe Request Handling (`dashboard/src/hooks/useTelemetryReporter.js`)
+- [x] **Step 179.2** — Rebuild Engine & Dashboard Assets, Verify Tests & Release Gate (`assets/engine.bin.js`)
