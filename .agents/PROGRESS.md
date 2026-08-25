@@ -2361,6 +2361,14 @@ UPDATE LOG:
 - [x] **Step 166.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
 - [x] **Step 166.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
 
+---
+
+## 🔷 Phase 167: Fix Intelligence Modal Close Button Clearance & Header Padding — ✅ 100% COMPLETE
+
+- [x] **Step 167.1** — Add Right Clearance to IntelligenceHub Header (`dashboard/src/components/intelligence/IntelligenceHub.jsx`)
+- [x] **Step 167.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 167.3** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
 
 
 

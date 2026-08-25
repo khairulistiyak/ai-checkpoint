@@ -68,7 +68,7 @@ export default function IntelligenceHub({ project }) {
   return (
     <motion.div className="p-6 space-y-6" variants={containerVariants} initial="hidden" animate="show">
       {/* Modern Clean Header */}
-      <motion.div variants={itemVariants} className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-white/[0.05]">
+      <motion.div variants={itemVariants} className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-5 border-b border-white/[0.05] pr-12 sm:pr-14">
         <div className="flex items-center gap-3 min-w-0">
           <div className="w-10 h-10 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-zinc-300 shrink-0 shadow-sm">
             <Activity className="w-4 h-4 text-zinc-300" />
