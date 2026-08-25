@@ -16,7 +16,7 @@ export default function HomeProjectCard({ project }) {
     doneSteps = project.progress.overall.completed || 0;
   }
 
-  const percent = totalSteps === 0 ? 0 : Math.round((doneSteps / totalSteps) * 100);
+  const percent = totalSteps === 0 ? 0 : (doneSteps === totalSteps ? 100 : Math.min(99, Math.floor((doneSteps / totalSteps) * 100)));
 
   const handleOpenProject = () => navigate(`#/project/${project.id}`);
   const handleOpenPlans = (e) => {

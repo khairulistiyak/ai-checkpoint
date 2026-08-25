@@ -14,7 +14,7 @@ export default function GlobalOverview({ projects }) {
     }
   });
 
-  const percent = totalSteps === 0 ? 0 : Math.round((doneSteps / totalSteps) * 100);
+  const percent = totalSteps === 0 ? 0 : (doneSteps === totalSteps ? 100 : Math.min(99, Math.floor((doneSteps / totalSteps) * 100)));
 
   return (
     <div className="w-full max-w-7xl mx-auto bg-[#121214] border border-white/[0.08] hover:border-white/[0.15] rounded-3xl p-6 sm:p-7 shadow-sm transition-all">

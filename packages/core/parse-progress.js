@@ -39,7 +39,7 @@ function parsePhasesAndSteps(lines) {
 
   phases.forEach(p => {
     const done = p.steps.filter(s => s.status === 'done').length;
-    p.percentage = p.steps.length > 0 ? Math.round((done / p.steps.length) * 100) : 0;
+    p.percentage = p.steps.length > 0 ? (done === p.steps.length ? 100 : Math.min(99, Math.floor((done / p.steps.length) * 100))) : 0;
   });
   return phases;
 }
@@ -52,7 +52,7 @@ function calculateOverallProgress(phases) {
   });
   if (calculatedTotal === 0) return { percentage: 0, completed: 0, total: 0 };
   return {
-    percentage: Math.round((calculatedDone / calculatedTotal) * 100),
+    percentage: (calculatedDone === calculatedTotal) ? 100 : Math.min(99, Math.floor((calculatedDone / calculatedTotal) * 100)),
     completed: calculatedDone,
     total: calculatedTotal
   };

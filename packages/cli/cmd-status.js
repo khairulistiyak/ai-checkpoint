@@ -25,7 +25,7 @@ function statusCommand() {
     const pTotal = p.steps.length;
     totalSteps += pTotal;
     doneSteps += pDone;
-    const pPct = pTotal === 0 ? 0 : Math.round((pDone / pTotal) * 100);
+    const pPct = pTotal === 0 ? 0 : (pDone === pTotal ? 100 : Math.min(99, Math.floor((pDone / pTotal) * 100)));
     
     console.log(`${colors.bright}Phase ${p.number}: ${p.name}${colors.reset}`);
     console.log(`${getProgressBar(pPct, 20)} ${pPct}% (${pDone}/${pTotal}) - ${pPct === 100 ? colors.green + 'COMPLETE' + colors.reset : colors.yellow + 'IN PROGRESS' + colors.reset}`);
@@ -41,7 +41,7 @@ function statusCommand() {
     console.log('');
   });
 
-  const oPct = totalSteps === 0 ? 0 : Math.round((doneSteps / totalSteps) * 100);
+  const oPct = totalSteps === 0 ? 0 : (doneSteps === totalSteps ? 100 : Math.min(99, Math.floor((doneSteps / totalSteps) * 100)));
   console.log(`${colors.bright}OVERALL PROGRESS: ${colors.green}${oPct}%${colors.reset} ${getProgressBar(oPct, 30)} (${doneSteps}/${totalSteps})\n`);
 
   let nextStep = null;

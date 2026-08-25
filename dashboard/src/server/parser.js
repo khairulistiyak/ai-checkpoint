@@ -109,7 +109,7 @@ function mergeUnsyncedPhases(progress, parsedPhases) {
   return {
     ...progress,
     phases: merged,
-    overall: { percentage: total > 0 ? Math.round((completed / total) * 100) : 0, completed, total }
+    overall: { percentage: total > 0 ? (completed === total ? 100 : Math.min(99, Math.floor((completed / total) * 100))) : 0, completed, total }
   };
 }
 

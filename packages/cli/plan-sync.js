@@ -18,7 +18,7 @@ function updateOverallBar() {
   }
 
   if (totalS === 0) return;
-  const oPct = Math.round((doneS / totalS) * 100);
+  const oPct = totalS === 0 ? 0 : (doneS === totalS ? 100 : Math.min(99, Math.floor((doneS / totalS) * 100)));
   const bar = '█'.repeat(Math.round((oPct / 100) * 20)) + '░'.repeat(20 - Math.round((oPct / 100) * 20));
 
   let foundOverall = false, foundBar = false;

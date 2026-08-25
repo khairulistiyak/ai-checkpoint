@@ -16,8 +16,10 @@ export default function ProjectCard({
 
   const overall = progress?.overall || { percentage: 0, completed: 0, total: 0 };
   const hasRunningStep = Boolean(progress?.phases?.some(p => p.steps?.some(s => isStepActive(s))));
-  const isDone = overall.percentage === 100 && !hasRunningStep && overall.total > 0;
-  const displayPct = hasRunningStep ? (overall.percentage >= 100 ? 99 : overall.percentage) : overall.percentage;
+  const hasRemaining = (overall.total > 0 && overall.completed < overall.total);
+  const isDone = overall.percentage === 100 && !hasRunningStep && !hasRemaining && overall.total > 0;
+  const safePct = hasRemaining ? Math.min(99, overall.percentage) : overall.percentage;
+  const displayPct = (hasRunningStep || hasRemaining) ? Math.min(99, safePct) : safePct;
 
   const intelligence = project.intelligence;
   const grade = intelligence?.grade || '?';

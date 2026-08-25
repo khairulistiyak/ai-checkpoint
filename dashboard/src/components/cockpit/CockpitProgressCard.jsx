@@ -10,13 +10,18 @@ export default function CockpitProgressCard({
   const fallbackTotalSteps = allPhases.reduce((acc, p) => acc + (p.steps?.length || p.total || 0), 0);
   const totalSteps = overall?.total || fallbackTotalSteps || totalPlanSteps || 0;
   
-  const rawPct = typeof overall === 'number' ? overall : (overall?.percentage ?? (totalSteps > 0 ? Math.round(((overall?.completed || 0) / totalSteps) * 100) : 0));
-  const pct = Math.min(100, Math.max(0, isNaN(rawPct) ? 0 : Math.round(rawPct)));
-  const hasRunningStep = Boolean(activeStep || allPhases.some(p => p.steps?.some(s => isStepActive(s))));
-  const isTrulyComplete = !hasRunningStep && pct === 100 && totalSteps > 0 && remaining === 0;
-  const displayPct = hasRunningStep ? (pct >= 100 ? 99 : pct) : pct;
+  const fallbackCompletedSteps = allPhases.reduce((acc, p) => acc + (p.steps?.filter(s => s.status === 'done').length || p.completed || 0), 0);
+  const completedSteps = overall?.completed ?? fallbackCompletedSteps;
+  
+  const hasRemaining = (remaining > 0) || (totalSteps > 0 && completedSteps < totalSteps);
+  const calculatedPct = totalSteps > 0 ? (hasRemaining ? Math.min(99, Math.floor((completedSteps / totalSteps) * 100)) : 100) : 0;
+  const rawPct = typeof overall === 'number' ? overall : (overall?.percentage ?? calculatedPct);
+  const safePct = hasRemaining ? Math.min(99, Math.max(0, isNaN(rawPct) ? 0 : Math.floor(rawPct))) : Math.min(100, Math.max(0, isNaN(rawPct) ? 0 : Math.round(rawPct)));
 
-  const completedSteps = overall?.completed ?? (isTrulyComplete ? totalSteps : Math.max(0, totalSteps - remaining));
+  const hasRunningStep = Boolean(activeStep || allPhases.some(p => p.steps?.some(s => isStepActive(s))));
+  const isTrulyComplete = !hasRunningStep && !hasRemaining && safePct === 100 && totalSteps > 0;
+  const displayPct = (hasRunningStep || hasRemaining) ? Math.min(99, safePct) : safePct;
+
   const parsedCompletedPhases = allPhases.filter(p => p.status === 'completed' || p.status === 'done' || (typeof p.percentage === 'number' && p.percentage >= 100) || (p.completed && p.total && p.completed >= p.total)).length;
   const completedPhases = (isTrulyComplete && totalPhases > 0) ? totalPhases : parsedCompletedPhases;
 
@@ -63,8 +68,16 @@ export default function CockpitProgressCard({
             <span className="text-base font-mono font-semibold text-zinc-500 ml-0.5">%</span>
           </div>
 
-          <div className={`inline-flex items-center px-2 py-0.5 rounded-full text-[9.5px] font-mono font-bold uppercase tracking-wider shadow-sm ${hasRunningStep ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30' : isTrulyComplete ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20' : 'bg-white/[0.03] border border-white/[0.08] text-zinc-300'}`}>
-            {hasRunningStep ? 'In Progress' : isTrulyComplete ? 'Completed' : 'Milestone'}
+          <div className={`inline-flex items-center px-2 py-0.5 rounded-full text-[9.5px] font-mono font-bold uppercase tracking-wider shadow-sm ${
+            hasRunningStep
+              ? 'bg-amber-500/15 text-amber-300 border border-amber-500/30'
+              : isTrulyComplete
+                ? 'bg-emerald-500/10 text-emerald-300 border border-emerald-500/20'
+                : hasRemaining
+                  ? 'bg-sky-500/10 text-sky-300 border border-sky-500/20'
+                  : 'bg-white/[0.03] border border-white/[0.08] text-zinc-300'
+          }`}>
+            {hasRunningStep ? 'In Progress' : isTrulyComplete ? 'Completed' : hasRemaining ? 'In Progress' : 'Milestone'}
           </div>
         </div>
 

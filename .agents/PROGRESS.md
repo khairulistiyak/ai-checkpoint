@@ -2416,14 +2416,23 @@ UPDATE LOG:
 
 ---
 
-## 🔴 Phase 173: Upgrade Health Pillar Grid Design & Interactive Category Filtering — ⏳ IN PROGRESS
+## 🔷 Phase 173: Upgrade Health Pillar Grid Design & Interactive Category Filtering — ✅ 100% COMPLETE
 
-- [ ] **Step 173.1** — Upgrade HealthPillarGrid Aesthetics & Interactivity (`dashboard/src/components/health/HealthPillarGrid.jsx`)
-- [ ] **Step 173.2** — Connect Active Category Props in Parents (`dashboard/src/components/HealthCommandCenter.jsx`)
-- [ ] **Step 173.3** — Connect Active Category in CockpitHealthModal (`dashboard/src/components/cockpit/CockpitHealthModal.jsx`)
-- [ ] **Step 173.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 173.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+- [x] **Step 173.1** — Upgrade HealthPillarGrid Aesthetics & Interactivity (`dashboard/src/components/health/HealthPillarGrid.jsx`)
+- [x] **Step 173.2** — Connect Active Category Props in Parents (`dashboard/src/components/HealthCommandCenter.jsx`)
+- [x] **Step 173.3** — Connect Active Category in CockpitHealthModal (`dashboard/src/components/cockpit/CockpitHealthModal.jsx`)
+- [x] **Step 173.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 173.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
 
+---
 
+## 🔴 Phase 174: Strict Progress Percentage Rounding, Floor Protection & Milestone Accuracy — ⏳ IN PROGRESS
 
-
+- [ ] **Step 174.1** — Update Core Progress Calculator (`packages/core/parse-progress.js`)
+- [ ] **Step 174.2** — Update CLI Progress Updater (`packages/cli/progress-updater.js`)
+- [ ] **Step 174.3** — Update Plan Sync Overall Bar (`packages/cli/plan-sync.js`)
+- [ ] **Step 174.4** — Update CLI Status Output (`packages/cli/cmd-status.js`)
+- [ ] **Step 174.5** — Update Dashboard Server Parser (`dashboard/src/server/parser.js`)
+- [ ] **Step 174.6** — Update Cockpit Progress Card (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
+- [ ] **Step 174.7** — Update Project Cards Strict Percentage (`dashboard/src/components/ProjectCard.jsx`)
+- [ ] **Step 174.8** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)

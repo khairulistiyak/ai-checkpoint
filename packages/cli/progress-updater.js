@@ -9,13 +9,13 @@ function updateProgressState(lines, phases, targetPhase) {
   // 1. Update phase header percentage
   const pDone = targetPhase.steps.filter(s => s.status === 'done').length;
   const pTotal = targetPhase.steps.length;
-  const pPct = Math.round((pDone / pTotal) * 100);
+  const pPct = pTotal === 0 ? 0 : (pDone === pTotal ? 100 : Math.min(99, Math.floor((pDone / pTotal) * 100)));
   lines[targetPhase.headerIndex] = lines[targetPhase.headerIndex].split('—')[0] + '— ' + (pPct === 100 ? "✅ 100% COMPLETE" : `🟡 ${pPct}% IN PROGRESS`);
 
   // 2. Update overall progress bar
   let totalS = 0, doneS = 0;
   phases.forEach(p => { totalS += p.steps.length; doneS += p.steps.filter(s => s.status === 'done').length; });
-  const oPct = Math.round((doneS / totalS) * 100);
+  const oPct = totalS === 0 ? 0 : (doneS === totalS ? 100 : Math.min(99, Math.floor((doneS / totalS) * 100)));
   const bar = "█".repeat(Math.round((oPct / 100) * 20)) + "░".repeat(20 - Math.round((oPct / 100) * 20));
 
   let foundOverall = false, foundBar = false;
