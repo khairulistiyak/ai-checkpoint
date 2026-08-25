@@ -73,6 +73,10 @@ function completeCommand(stepNum, comment) {
   const { pPct, oPct, doneS, totalS } = updateProgressState(lines, phases, targetPhase);
   appendLogEntry(lines, stepNum, 'completed', comment);
   saveProgress(lines);
+
+  // Clear active step marker for dashboard
+  const activeStepFile = path.join(path.dirname(require('./paths.js').PROGRESS_PATH), '.active-step');
+  try { if (fs.existsSync(activeStepFile)) fs.unlinkSync(activeStepFile); } catch {}
   
   console.log(`\n${colors.green}┌${'─'.repeat(74)}┐\n│ 🎉  STEP ${stepNum} COMPLETED!`.padEnd(75) + `│\n└${'─'.repeat(74)}┘${colors.reset}\n`);
   if (pPct === 100) console.log(`${colors.bgCyan} 🏆 PHASE ${targetPhase.number} COMPLETE: ${targetPhase.name.toUpperCase()} ${colors.reset}\n`);

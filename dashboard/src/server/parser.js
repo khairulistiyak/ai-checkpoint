@@ -4,7 +4,6 @@ import { createRequire } from 'module';
 import { fileURLToPath } from 'url';
 import coreParser from '../../../packages/core/parse-progress.js';
 import * as globalStore from './global-store.js';
-
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -59,7 +58,6 @@ export function parsePlanFiles(projectId, projectPath) {
     return { totalFiles: 0, totalSteps: 0, fileNames: [], files: [], parsedPhases: [] };
   }
 }
-
 export function parseProgress(projectId, projectPath = '') {
   try {
     const localFile = projectPath ? path.join(projectPath, '.agents', 'PROGRESS.md') : null;
@@ -78,7 +76,6 @@ export function parseIntelligence(projectId) {
     return history.length > 0 ? history[history.length - 1] : null;
   } catch { return null; }
 }
-
 function mergeUnsyncedPhases(progress, parsedPhases) {
   if (!progress?.phases) return progress;
   const existing = new Set(progress.phases.map(p => String(p.number)));
@@ -112,7 +109,6 @@ function mergeUnsyncedPhases(progress, parsedPhases) {
     overall: { percentage: total > 0 ? (completed === total ? 100 : Math.min(99, Math.floor((completed / total) * 100))) : 0, completed, total }
   };
 }
-
 export function enrichProject(p) {
   try {
     if (!p?.path || !fs.existsSync(p.path)) {
@@ -140,10 +136,14 @@ export function enrichProject(p) {
     const progressTotal = progress?.overall?.total || 0;
     const planTotal = planStats?.totalSteps || 0;
     const unsyncedSteps = Math.max(0, planTotal - progressTotal);
-    return { ...p, name: safeName, isInstalled, progress, hasPlanFiles, planStats, unsyncedSteps, intelligence };
+
+    // Read persisted active step from CLI
+    let activeStep = null;
+    try { const asf = path.join(p.path, '.agents', '.active-step'); if (fs.existsSync(asf)) activeStep = JSON.parse(fs.readFileSync(asf, 'utf8')); } catch {}
+
+    return { ...p, name: safeName, isInstalled, progress, hasPlanFiles, planStats, unsyncedSteps, intelligence, activeStep };
   } catch (e) {
     const fallback = p?.name || path.basename((p?.path || '').replace(/\/+$/, '')) || 'Untitled';
     return { ...p, name: fallback, isInstalled: false, progress: null, hasPlanFiles: false, planStats: { totalFiles: 0, totalSteps: 0, fileNames: [] }, unsyncedSteps: 0, intelligence: null };
   }
 }
-

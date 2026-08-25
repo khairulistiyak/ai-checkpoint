@@ -79,6 +79,12 @@ function startCommand(stepNum) {
   }
 
   fs.writeFileSync(PROGRESS_PATH, lines.join('\n'), 'utf8');
+
+  // Persist active step for dashboard live detection
+  const activeStepFile = path.join(path.dirname(PROGRESS_PATH), '.active-step');
+  const activeData = { step: stepNum, title: targetStep.title, phase: targetPhase.number, phaseName: targetPhase.name, startedAt: new Date().toISOString() };
+  fs.writeFileSync(activeStepFile, JSON.stringify(activeData, null, 2), 'utf8');
+
   saveIntegritySnapshot(stepNum);
   log.success(`Step ${stepNum} initialized [~]`);
 }

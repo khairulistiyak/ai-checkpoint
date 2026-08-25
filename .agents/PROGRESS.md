@@ -2426,13 +2426,24 @@ UPDATE LOG:
 
 ---
 
-## 🔴 Phase 174: Strict Progress Percentage Rounding, Floor Protection & Milestone Accuracy — ⏳ IN PROGRESS
+## 🔷 Phase 174: Strict Progress Percentage Rounding, Floor Protection & Milestone Accuracy — ✅ 100% COMPLETE
 
-- [ ] **Step 174.1** — Update Core Progress Calculator (`packages/core/parse-progress.js`)
-- [ ] **Step 174.2** — Update CLI Progress Updater (`packages/cli/progress-updater.js`)
-- [ ] **Step 174.3** — Update Plan Sync Overall Bar (`packages/cli/plan-sync.js`)
-- [ ] **Step 174.4** — Update CLI Status Output (`packages/cli/cmd-status.js`)
-- [ ] **Step 174.5** — Update Dashboard Server Parser (`dashboard/src/server/parser.js`)
-- [ ] **Step 174.6** — Update Cockpit Progress Card (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
-- [ ] **Step 174.7** — Update Project Cards Strict Percentage (`dashboard/src/components/ProjectCard.jsx`)
-- [ ] **Step 174.8** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 174.1** — Update Core Progress Calculator (`packages/core/parse-progress.js`)
+- [x] **Step 174.2** — Update CLI Progress Updater (`packages/cli/progress-updater.js`)
+- [x] **Step 174.3** — Update Plan Sync Overall Bar (`packages/cli/plan-sync.js`)
+- [x] **Step 174.4** — Update CLI Status Output (`packages/cli/cmd-status.js`)
+- [x] **Step 174.5** — Update Dashboard Server Parser (`dashboard/src/server/parser.js`)
+- [x] **Step 174.6** — Update Cockpit Progress Card (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
+- [x] **Step 174.7** — Update Project Cards Strict Percentage (`dashboard/src/components/ProjectCard.jsx`)
+- [x] **Step 174.8** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+
+---
+
+## 🔷 Phase 175: Fix Cockpit Badge & Live Working State Visibility — ✅ 100% COMPLETE
+
+- [x] **Step 175.1** — Write Active Step File on Start (`packages/cli/cmd-start.js`)
+- [x] **Step 175.2** — Clear Active Step File on Complete (`packages/cli/cmd-complete.js`)
+- [x] **Step 175.3** — Read Active Step in Dashboard Server (`dashboard/src/server/parser.js`)
+- [x] **Step 175.4** — Fix Remaining Count & Badge Logic (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
+- [x] **Step 175.5** — Pass Server ActiveStep from ProjectGrid to CockpitTab (`dashboard/src/components/ProjectGrid.jsx`)
+- [x] **Step 175.6** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)

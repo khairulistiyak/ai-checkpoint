@@ -44,7 +44,7 @@ export default function ProjectGrid({
   }, []);
 
   const { runningStep, nextStep } = useMemo(() => {
-    let running = null, next = null;
+    let running = selectedProject?.activeStep || null, next = null;
     for (const phase of allPhases) {
       for (const step of (phase.steps || [])) {
         if (isStepActive(step) && !running) running = { ...step, phaseNumber: phase.number, phaseName: phase.name };
@@ -54,7 +54,7 @@ export default function ProjectGrid({
       if (running && next) break;
     }
     return { runningStep: running, nextStep: next };
-  }, [allPhases]);
+  }, [allPhases, selectedProject?.activeStep]);
 
   const handleOpenArchitect = (filename) => {
     if (filename) setSelectedArchitectFile(filename);

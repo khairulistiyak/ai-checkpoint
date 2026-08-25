@@ -3,34 +3,38 @@ import { Target, Timer } from 'lucide-react';
 import { isStepActive } from '../../utils/date-formatter';
 
 export default function CockpitProgressCard({
-  overall, remaining = 0, allPhases = [], activePhases = [], planStats = null, totalPlanSteps = 0, activeStep = null, onOpenArchitect
+  overall, remaining = 0, allPhases = [], activePhases = [], planStats = null, totalPlanSteps = 0, activeStep = null, serverActiveStep = null, onOpenArchitect
 }) {
   const totalPlans = planStats?.totalFiles ?? planStats?.files?.length ?? planStats?.fileNames?.length ?? allPhases.length ?? 0;
   const totalPhases = allPhases.length || totalPlans;
   const fallbackTotalSteps = allPhases.reduce((acc, p) => acc + (p.steps?.length || p.total || 0), 0);
   const totalSteps = overall?.total || fallbackTotalSteps || totalPlanSteps || 0;
-  
   const fallbackCompletedSteps = allPhases.reduce((acc, p) => acc + (p.steps?.filter(s => s.status === 'done').length || p.completed || 0), 0);
   const completedSteps = overall?.completed ?? fallbackCompletedSteps;
-  
-  const hasRemaining = (remaining > 0) || (totalSteps > 0 && completedSteps < totalSteps);
+
+  // True remaining: count non-done steps directly from phases (single source of truth)
+  const trueRemaining = allPhases.reduce((acc, p) => acc + (p.steps?.filter(s => s.status !== 'done').length || 0), 0);
+  const hasRemaining = trueRemaining > 0 || (remaining > 0) || (totalSteps > 0 && completedSteps < totalSteps);
   const calculatedPct = totalSteps > 0 ? (hasRemaining ? Math.min(99, Math.floor((completedSteps / totalSteps) * 100)) : 100) : 0;
   const rawPct = typeof overall === 'number' ? overall : (overall?.percentage ?? calculatedPct);
   const safePct = hasRemaining ? Math.min(99, Math.max(0, isNaN(rawPct) ? 0 : Math.floor(rawPct))) : Math.min(100, Math.max(0, isNaN(rawPct) ? 0 : Math.round(rawPct)));
 
-  const hasRunningStep = Boolean(activeStep || allPhases.some(p => p.steps?.some(s => isStepActive(s))));
+  // Merge client-side activeStep with server-persisted activeStep
+  const resolvedActiveStep = activeStep || serverActiveStep;
+  const hasRunningStep = Boolean(resolvedActiveStep || allPhases.some(p => p.steps?.some(s => isStepActive(s))));
   const isTrulyComplete = !hasRunningStep && !hasRemaining && safePct === 100 && totalSteps > 0;
   const displayPct = (hasRunningStep || hasRemaining) ? Math.min(99, safePct) : safePct;
+  const displayRemaining = trueRemaining || remaining;
 
   const parsedCompletedPhases = allPhases.filter(p => p.status === 'completed' || p.status === 'done' || (typeof p.percentage === 'number' && p.percentage >= 100) || (p.completed && p.total && p.completed >= p.total)).length;
   const completedPhases = (isTrulyComplete && totalPhases > 0) ? totalPhases : parsedCompletedPhases;
 
   const [elapsed, setElapsed] = useState(0);
   useEffect(() => {
-    if (!activeStep) { setElapsed(0); return; }
+    if (!resolvedActiveStep) { setElapsed(0); return; }
     const timer = setInterval(() => setElapsed(prev => prev + 1), 1000);
     return () => clearInterval(timer);
-  }, [activeStep?.id || activeStep?.number || null]);
+  }, [resolvedActiveStep?.step || resolvedActiveStep?.id || resolvedActiveStep?.number || null]);
 
   const formatElapsed = (sec) => `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
   const cardBorder = hasRunningStep ? 'border-amber-500/35 bg-[#0e0e11]/95 shadow-[0_0_20px_rgba(245,158,11,0.06)]' : 'border-white/[0.06] hover:border-white/[0.12]';
@@ -86,7 +90,7 @@ export default function CockpitProgressCard({
         </div>
 
         {/* Context or Active Step Micro-HUD with Stopwatch */}
-        {activeStep ? (
+        {resolvedActiveStep ? (
           <div className="w-full max-w-[17.5rem] px-2.5 py-1.5 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/[0.12] flex items-center justify-between gap-2 shadow-sm transition-all">
             <div className="flex items-center gap-2 min-w-0 flex-1">
               <span className="relative flex h-2 w-2 shrink-0">
@@ -94,9 +98,9 @@ export default function CockpitProgressCard({
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-400" />
               </span>
               <div className="flex items-center gap-1.5 min-w-0">
-                <span className="text-[10px] font-mono font-bold text-amber-300 shrink-0">Step {activeStep.id || activeStep.number}</span>
+                <span className="text-[10px] font-mono font-bold text-amber-300 shrink-0">Step {resolvedActiveStep.step || resolvedActiveStep.id || resolvedActiveStep.number}</span>
                 <span className="text-zinc-600 text-[10px]">•</span>
-                <span className="text-[11px] font-mono text-zinc-300 truncate" title={activeStep.title || activeStep.name}>{activeStep.title || activeStep.name}</span>
+                <span className="text-[11px] font-mono text-zinc-300 truncate" title={resolvedActiveStep.title || resolvedActiveStep.name}>{resolvedActiveStep.title || resolvedActiveStep.name}</span>
               </div>
             </div>
 
@@ -107,7 +111,7 @@ export default function CockpitProgressCard({
           </div>
         ) : (
           <div className="text-[11px] font-mono text-zinc-400 flex items-center justify-center gap-1.5">
-            <span className="text-zinc-300 font-medium">{isTrulyComplete ? 'All milestones achieved' : `${remaining} step${remaining === 1 ? '' : 's'} remaining`}</span>
+            <span className="text-zinc-300 font-medium">{isTrulyComplete ? 'All milestones achieved' : `${displayRemaining} step${displayRemaining === 1 ? '' : 's'} remaining`}</span>
             {!isTrulyComplete && (<><span className="text-zinc-600">•</span><span className="text-zinc-500">Ready</span></>)}
           </div>
         )}

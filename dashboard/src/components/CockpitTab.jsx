@@ -12,6 +12,7 @@ export default function CockpitTab({
   const hasNoSteps = totalPlanSteps === 0 && allPhases.length === 0;
 
   const activeStep = useMemo(() => {
+    if (selectedProject?.activeStep) return selectedProject.activeStep;
     for (const p of allPhases) {
       for (const s of (p.steps || [])) {
         if (isStepActive(s)) {
@@ -20,7 +21,7 @@ export default function CockpitTab({
       }
     }
     return null;
-  }, [allPhases]);
+  }, [allPhases, selectedProject?.activeStep]);
 
   return (
     <div className="flex flex-col gap-3">
