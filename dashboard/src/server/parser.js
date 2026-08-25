@@ -32,7 +32,11 @@ export function parsePlanFiles(projectId, projectPath) {
       if (utils?.parsePlanFileSteps) {
         parsed = utils.parsePlanFileSteps(filePath);
         stepCount = parsed.steps.length;
-        if (parsed.phaseNum && parsed.steps.length > 0) parsedPhases.push(parsed);
+        if (parsed.phaseNum && parsed.steps.length > 0) {
+          if (!parsedPhases.some(x => x.phaseNum === parsed.phaseNum)) {
+            parsedPhases.push(parsed);
+          }
+        }
       } else {
         const content = fs.readFileSync(filePath, 'utf8');
         for (const line of content.split(/\r?\n/)) {

@@ -2025,13 +2025,24 @@ UPDATE LOG:
 
 ---
 
-## 🔷 Phase 131: Clean Zen Color Harmonization for 100% States & Cockpit Cards — ⏳ IN PROGRESS
+## 🔷 Phase 130: Execution Roadmap Comprehensive Zen & Workflow Polish — ✅ 100% COMPLETE
 
-- [ ] **Step 131.1** — Clean Color Harmonization for CockpitProgressCard (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
-- [ ] **Step 131.2** — Clean Color Harmonization for HealthScoreGauge (`dashboard/src/components/health/HealthScoreGauge.jsx`)
-- [ ] **Step 131.3** — Clean Color Harmonization for AdvancedHUDV1 (`dashboard/src/components/intelligence/AdvancedHUDV1.jsx`)
-- [ ] **Step 131.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 131.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+- [x] **Step 130.1** — Refine UnifiedPlansTab Sub-Navigation (`dashboard/src/components/plans/UnifiedPlansTab.jsx`)
+- [x] **Step 130.2** — Refine PlanProgressTab Search & Filter Toolbar (`dashboard/src/components/plans/PlanProgressTab.jsx`)
+- [x] **Step 130.3** — Refine PhaseView Accordion Card & Blueprint Action (`dashboard/src/components/PhaseView.jsx`)
+- [x] **Step 130.4** — Refine StepItem Row & Actions (`dashboard/src/components/StepItem.jsx`)
+- [x] **Step 130.5** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 130.6** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 131: Clean Zen Color Harmonization for 100% States & Cockpit Cards — ✅ 100% COMPLETE
+
+- [x] **Step 131.1** — Clean Color Harmonization for CockpitProgressCard (`dashboard/src/components/cockpit/CockpitProgressCard.jsx`)
+- [x] **Step 131.2** — Clean Color Harmonization for HealthScoreGauge (`dashboard/src/components/health/HealthScoreGauge.jsx`)
+- [x] **Step 131.3** — Clean Color Harmonization for AdvancedHUDV1 (`dashboard/src/components/intelligence/AdvancedHUDV1.jsx`)
+- [x] **Step 131.4** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 131.5** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
 
 ---
 
@@ -2319,11 +2330,20 @@ UPDATE LOG:
 
 ---
 
-## 🔴 Phase 163: Sync Local and Global Progress Parser — ⏳ IN PROGRESS
+## 🔷 Phase 163: Sync Local and Global Progress Parser — ✅ 100% COMPLETE
 
-- [ ] **Step 163.1** — Support Local .agents/PROGRESS.md in parser.js (`dashboard/src/server/parser.js`)
-- [ ] **Step 163.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
-- [ ] **Step 163.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+- [x] **Step 163.1** — Support Local .agents/PROGRESS.md in parser.js (`dashboard/src/server/parser.js`)
+- [x] **Step 163.2** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 163.3** — Final Verification & Release Gate (`.agents/PROGRESS.md`)
+
+---
+
+## 🔷 Phase 164: Fix Phase Roadmap Duplication and Harmonize Historical Phase States — ✅ 100% COMPLETE
+
+- [x] **Step 164.1** — Deduplicate parsedPhases in parser.js (`dashboard/src/server/parser.js`)
+- [x] **Step 164.2** — Harmonize Phase 130 and 131 Completion in PROGRESS.md (`.agents/PROGRESS.md`)
+- [x] **Step 164.3** — Rebuild Engine & Dashboard Assets (`assets/engine.bin.js`)
+- [x] **Step 164.4** — Final Release Gate & Verification (`.agents/PROGRESS.md`)
 
 
 
